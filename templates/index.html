@@ -24,6 +24,12 @@
 </head>
 
 <body>
+    <h1>Search</h1>
+    <form action="{{ url_for('search') }}" method="get">
+        <input type="text" name="query" placeholder="Search for an app...">
+        <input type="submit" value="Search">
+    </form>
+    <br>
     <h1>App & Game Categories</h1>
     <table>
         <thead>
@@ -43,6 +49,8 @@
             {% endfor %}
         </tbody>
     </table>
+
+
 </body>
 
 </html>

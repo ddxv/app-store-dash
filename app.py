@@ -1,6 +1,11 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 
-from dbcon.queries import get_top_apps_by_installs, get_app_categories, get_single_app
+from dbcon.queries import (
+    get_top_apps_by_installs,
+    get_app_categories,
+    get_single_app,
+    get_apps_by_name,
+)
 
 app = Flask(__name__)
 
@@ -29,6 +34,14 @@ def category(category):
     apps = get_top_apps_by_installs(category_in=[category], limit=15)
     apps_dict = apps.to_dict(orient="records")
     return render_template("category_detail.html", category=category, apps=apps_dict)
+
+
+@app.route("/search")
+def search():
+    query = request.args.get("query")
+    apps = get_apps_by_name(query)
+    apps_dict = apps.to_dict(orient="records")
+    return render_template("search_results.html", apps=apps_dict, query=query)
 
 
 if __name__ == "__main__":

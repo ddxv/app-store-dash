@@ -54,6 +54,28 @@ def get_single_app(app_id : str) -> pd.DataFrame:
     return df
 
 
+def get_apps_by_name(search_input: str, limit: int = 100):
+    logger.info(f"App search: {search_input=}")
+    search_input = f"%%{search_input}%%"
+    sel_query = f"""SELECT
+                    sa.*,
+                    d.name as developer_name
+                    FROM
+                        store_apps sa
+                    LEFT JOIN developers d ON
+                        d.id = sa.developer
+                    WHERE
+                        sa.name ILIKE '{search_input}'
+                        OR sa.store_id ILIKE '{search_input}'
+                    LIMIT {limit}
+                    ;
+                    """
+
+    df = pd.read_sql(sel_query, DBCON.engine)
+    df["store"] = df["store"].replace({1: "android", 2: "ios"})
+    return df
+
+
 
 def query_search_developers(search_input: str, limit: int = 1000):
     logger.info(f"Developer search: {search_input=}")
