@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Top Installed Apps</title>
+</head>
+<body>
+    <h1>Top 10 Most Installed Apps</h1>
+    <ul>
+        {% for app in apps %}
+        <li><a href="{{ url_for('app_detail', store='google', app_id=app.id) }}">{{ app.name }}</a> - {{ app.installs }} installs</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
+

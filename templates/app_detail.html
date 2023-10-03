@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ app.title }}</title>
+</head>
+<body>
+    <h1>{{ app.title }}</h1>
+    <p>ID: {{ app.app_id }}</p>
+    <p>Installs: {{ app.installs }}</p>
+    <p>Reviews: {{ app.reviews }}</p>
+    <p>Rating: {{ app.rating }}</p>
+    <p>Last Updated: {{ app.last_updated }}</p>
+    <a href="{{ url_for('index') }}">Back to Top 10</a>
+</body>
+</html>
+
