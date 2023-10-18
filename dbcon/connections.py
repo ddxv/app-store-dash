@@ -66,7 +66,6 @@ class PostgresCon:
         try:
             self.db_user = CONFIG[self.db_name]["db_user"]
             self.db_pass = CONFIG[self.db_name]["db_password"]
-            self.db_name = CONFIG[self.db_name]["db_name"]
             logger.info("Auth data loaded")
         except Exception as error:
             logger.exception(f"Loading db_auth for {self.db_name}, error: {error}")
@@ -79,7 +78,7 @@ class PostgresCon:
                 self.db_uri,
                 connect_args={
                     "connect_timeout": 10,
-                    "application_name": "app-store-dash",
+                    "application_name": "ads-crawler-dash",
                 },
             )
             logger.info(f"Created PostgreSQL Engine {self.db_name}")

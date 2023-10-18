@@ -1,0 +1,32 @@
+name: Push-to-EC2
+
+# Trigger deployment only on push to main branch
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Deploy to EC2 on main branch push
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Checkout the files
+        uses: actions/checkout@v3
+      - name: Deploy to my EC2
+        uses: appleboy/ssh-action@master
+        env:
+          TARGETDIR: ${{ vars.TARGET_DIR }}
+        with:
+          host: ${{ secrets.HOST_DNS }}
+          username: ${{ vars.USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          port: 22
+          envs: TARGETDIR
+          script_stop: true
+          script: |
+            cd $TARGETDIR
+            pwd
+            git pull origin main
+            sudo systemctl restart app-store-dash
