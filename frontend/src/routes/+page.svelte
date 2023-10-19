@@ -1,36 +1,68 @@
 <script>
+	import { AppShell, ListBox, ListBoxItem } from '@skeletonlabs/skeleton';
+	export let valueSingle = 'books';
+
 	/** @type {import('./$types').PageData} */
 	export let data;
+	import Rating from './Rating.svelte';
 </script>
 
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
-<!-- <div>{data.post.quote}</div> -->
+<AppShell slotSidebarLeft="bg-surface-500/5 w-56 p-4">
+	<svelte:fragment slot="sidebarLeft">
+		<!-- Insert the list: -->
+		<ListBox>
+			<ListBoxItem bind:group={valueSingle} name="medium" value="google">Google</ListBoxItem>
+			<ListBoxItem bind:group={valueSingle} name="medium" value="ios">iOS</ListBoxItem>
+		</ListBox>
+		<br />
+		<hr class="!border-t-2" />
+		Categories
+		<ListBox>
+			<ListBoxItem bind:group={valueSingle} name="medium" value="games">Games</ListBoxItem>
+			<ListBoxItem bind:group={valueSingle} name="medium" value="apps">Apps</ListBoxItem>
+			<ListBoxItem bind:group={valueSingle} name="medium" value="tv">TV</ListBoxItem>
+			<ListBoxItem bind:group={valueSingle} name="medium" value="tv">TV</ListBoxItem>
+			<ListBoxItem bind:group={valueSingle} name="medium" value="tv">TV</ListBoxItem>
+			<ListBoxItem bind:group={valueSingle} name="medium" value="tv">TV</ListBoxItem>
+		</ListBox>
 
-<div>
-	{#if data}
-		{#each Object.entries(data) as [title, collection]}
-			<h2>{title}</h2>
-			{#each Object.entries(collection) as [appstore, apps]}
-				<h3>{appstore}</h3>
-				<div class="app-grid">
-					{#each apps as app}
-						<div class="app-item">
-							<a href={`/apps/${app.store_id}`} style="text-decoration: none; color: inherit;">
-								<img src={app.icon_url_512} alt={app.name} class="app-icon" />
-								<div>{app.name}</div>
-							</a>
-						</div>
-					{/each}
-				</div>
-				<hr class="section-divider" />
+		<!-- --- -->
+	</svelte:fragment>
+	<h1>
+		Welcome to My Apps Dash. Feel free to look around, if you have any questions just reach out or
+		ping me on GitHub.
+	</h1>
+	<p>
+		Visit <a href="https://github.com/ddxv/app-store-dash">github.com/ddxv/app-store-dash</a> to read
+		the documentation
+	</p>
+
+	<div>
+		{#if data}
+			{#each Object.entries(data) as [title, collection]}
+				<h1>{title}</h1>
+				{#each Object.entries(collection) as [appstore, apps]}
+					<h2>{appstore}</h2>
+					<div class="app-grid">
+						{#each apps as app}
+							<div class="app-item">
+								<a href={`/apps/${app.store_id}`} style="text-decoration: none; color: inherit;">
+									<img src={app.icon_url_512} alt={app.name} class="app-icon" />
+									<div>{app.name}</div>
+									<Rating total={5} size={20} rating={app.rating} />
+								</a>
+							</div>
+						{/each}
+					</div>
+					<hr class="section-divider" />
+				{/each}
 			{/each}
-		{/each}
-	{:else}
-		<p>Loading...</p>
-		{data}
-	{/if}
-</div>
+		{:else}
+			<p>Loading...</p>
+			{data}
+		{/if}
+	</div>
+</AppShell>
 
 <style>
 	/* Container Grid */
