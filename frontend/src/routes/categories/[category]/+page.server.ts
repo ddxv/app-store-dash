@@ -2,15 +2,15 @@ export const ssr = true;
 export const csr = true;
 console.log('Script executed');
 
-/** @type {import('../[id]/$types').PageServerLoad} */
+/** @type {import('../[category]/$types').PageServerLoad} */
 export async function load({ params }) {
 	console.log('load app started'); try {
-		const id = params.id;
+		const category = params.category;
 
-		const res = await fetch(`http://localhost:8000/api/apps/${id}`);
+		const res = await fetch(`http://localhost:8000/api/categories/${category}`);
 
 		if (!res.ok) {
-			throw new Error(`Failed to fetch ${id} with status ${res.status}`);
+			throw new Error(`Failed to fetch ${category} with status ${res.status}`);
 		}
 
 		const app_detail = await res.json();

@@ -12,6 +12,7 @@
 				<strong class="text-xl uppercase">App Store Data</strong>
 			</svelte:fragment>
 			<a href="/" class="btn variant-filled">Home</a>
+			<a href="/" class="btn variant-filled">Categories?</a>
 			<a href="https://ads.jamesoclaire.com" class="btn variant-filled">Ads.txt Dash</a>
 			<a href="https://jamesoclaire.com" class="btn variant-filled">Blog</a>
 			<a href="/about" class="btn variant-filled">About</a>
