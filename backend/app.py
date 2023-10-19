@@ -9,6 +9,17 @@ from api_app.controllers.apps import AppController
 
 from config import get_logger
 
+from litestar.config.cors import CORSConfig
+
+cors_config = CORSConfig(
+    allow_origins=[
+        "https://apps.jamesoclaire.com",
+        "https://www.jamesoclaire.com",
+        "localhost",
+        "*",
+    ]
+)
+
 logger = get_logger(__name__)
 
 
@@ -27,6 +38,7 @@ logging_config = LoggingConfig(
 
 app = Litestar(
     route_handlers=[AppController],
+    cors_config=cors_config,
     openapi_config=OpenAPIConfig(
         title="App Store API", version="0.0.1", openapi_controller=MyOpenAPIController
     ),

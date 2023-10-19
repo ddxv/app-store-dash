@@ -1,3 +1,4 @@
+import AppGrid from './AppGrid';
 import logo from './logo.svg';
 import './App.css';
 
@@ -23,8 +24,14 @@ function App() {
       <h1 className="text-3xl font-bold underline">
         Hello world! With Tailwind
       </h1>
+      <div>
+        <h1>Welcome to our app store</h1>
+        <AppGrid />
+      </div>
     </>
   );
 }
+
+
 
 export default App;
