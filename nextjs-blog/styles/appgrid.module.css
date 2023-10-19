@@ -1,0 +1,29 @@
+.appGrid {
+  display: flex;
+  overflow-x: auto;
+}
+
+.appItem {
+  flex: none;
+  width: 120px;
+  margin: 0 5px;
+  padding: 10px;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.appIcon {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+.appName {
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
