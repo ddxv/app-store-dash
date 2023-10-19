@@ -21,7 +21,7 @@ def get_app_categories() -> list[str]:
     return category_list
 
 
-def query_recent_apps(period: str = "weekly"):
+def query_recent_apps(period: str = "weekly", limit=20):
     logger.info(f"Query app_store for recent apps {period=}")
     if period == "weekly":
         table_name = "apps_new_weekly"
@@ -29,11 +29,22 @@ def query_recent_apps(period: str = "weekly"):
         table_name = "apps_new_monthly"
     else:
         table_name = "apps_new_weekly"
-    sel_query = f"""SELECT
-                    *
-                    FROM
-                    {table_name}
-                ;
+    sel_query = f"""
+                (
+                    SELECT 
+                        name, store, store_id, rating, icon_image_512
+                    FROM {table_name}
+                    WHERE store = 1
+                    LIMIT {limit}
+                )
+                UNION ALL
+                (
+                    SELECT
+                        name, store, store_id, rating, icon_image_512
+                    FROM {table_name}
+                    WHERE store = 2
+                    LIMIT {limit}
+                );
                 """
     df = pd.read_sql(sel_query, con=DBCON.engine)
     df = clean_app_df(df)
