@@ -12,17 +12,16 @@
 				<strong class="text-xl uppercase">App Store Data</strong>
 			</svelte:fragment>
 			<a href="/" class="btn variant-filled">Home</a>
+			<a href="https://ads.jamesoclaire.com" class="btn variant-filled">Ads.txt Dash</a>
 			<a href="https://jamesoclaire.com" class="btn variant-filled">Blog</a>
 			<a href="/about" class="btn variant-filled">About</a>
 			<svelte:fragment slot="trail">
 				<a
-					class="btn btn-sm variant-ghost-surface"
+					class="btn variant-ghost-surface"
 					href="https://github.com/ddxv/app-store-dash"
 					target="_blank"
-					rel="noreferrer"
+					rel="noreferrer">GitHub</a
 				>
-					GitHub
-				</a>
 			</svelte:fragment>
 		</AppBar>
 	</svelte:fragment>
