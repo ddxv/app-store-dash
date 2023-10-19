@@ -1,6 +1,7 @@
 <script>
 	/** @type {import('./$types').PageData} */
 	export let data;
+	import Rating from './Rating.svelte';
 </script>
 
 <h1>Welcome to SvelteKit</h1>
@@ -19,6 +20,7 @@
 							<a href={`/apps/${app.store_id}`} style="text-decoration: none; color: inherit;">
 								<img src={app.icon_url_512} alt={app.name} class="app-icon" />
 								<div>{app.name}</div>
+								<Rating total={5} size={20} rating={app.rating} />
 							</a>
 						</div>
 					{/each}

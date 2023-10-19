@@ -21,28 +21,18 @@ def get_app_categories() -> list[str]:
     return category_list
 
 
-def query_recent_apps(days: int = 7):
-    logger.info("Query app_store for recent apps")
-    limit = 10
-    my_date = (
-        datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(days=days)
-    ).strftime("%Y-%m-%d")
-    sel_query = f"""WITH RankedApps AS (
-                    SELECT
-                        *,
-                        ROW_NUMBER() OVER(PARTITION BY store 
-                        ORDER BY 
-                            installs DESC NULLS LAST, 
-                            review_count DESC NULLS LAST
-                    ) AS rn
-                    FROM store_apps sa
-                    WHERE
-                        sa.release_date >= '{my_date}'
-                        AND crawl_result = 1
-                )
-                SELECT *
-                FROM RankedApps
-                WHERE rn <= {limit}
+def query_recent_apps(period: str = "weekly"):
+    logger.info(f"Query app_store for recent apps {period=}")
+    if period == "weekly":
+        table_name = "apps_new_weekly"
+    elif period == "monthly":
+        table_name = "apps_new_monthly"
+    else:
+        table_name = "apps_new_weekly"
+    sel_query = f"""SELECT
+                    *
+                    FROM
+                    {table_name}
                 ;
                 """
     df = pd.read_sql(sel_query, con=DBCON.engine)
