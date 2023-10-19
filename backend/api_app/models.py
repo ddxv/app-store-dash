@@ -13,3 +13,15 @@ class AppsOverview:
     new_google: list[AppDetail]
     trending_google: list[AppDetail]
     trending_ios: list[AppDetail]
+
+
+@dataclass
+class CategoryDetail:
+    category: str
+    installs: int
+    reviews: int
+
+
+@dataclass
+class CategoriesOverview:
+    data: list[CategoryDetail]

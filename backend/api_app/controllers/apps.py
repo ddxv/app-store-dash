@@ -22,17 +22,6 @@ def get_string_date_from_days_ago(days: int) -> str:
     return mydate_str
 
 
-def category_overview() -> dict:
-    cats = get_appstore_categories()
-    # Make app count strings
-    cats["android"] = cats["android"].apply(
-        lambda x: "{:,.0f}".format(x) if x else "N/A"
-    )
-    cats["ios"] = cats["ios"].apply(lambda x: "{:,.0f}".format(x) if x else "N/A")
-    category_dicts = cats.to_dict(orient="records")
-    return category_dicts
-
-
 def get_app_overview_dict() -> AppsOverview:
     new_apps = query_recent_apps(period="weekly")
     trending_apps = query_recent_apps(period="monthly")
