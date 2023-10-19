@@ -34,8 +34,8 @@ def category_overview() -> dict:
 
 
 def get_app_overview_dict() -> AppsOverview:
-    new_apps = query_recent_apps(days=7)
-    trending_apps = query_recent_apps(days=30)
+    new_apps = query_recent_apps(period="weekly")
+    trending_apps = query_recent_apps(period="monthly")
     trending_ios_apps = trending_apps[~trending_apps["store"].str.contains("oogl")]
     trending_google_apps = trending_apps[trending_apps["store"].str.contains("oogl")]
     new_ios_dicts = new_apps[~new_apps["store"].str.contains("oogl")].to_dict(
