@@ -32,6 +32,11 @@
 				</TabAnchor>
 			</TabGroup>
 			<svelte:fragment slot="trail">
+				<div class="input-group input-group-divider grid-cols-[auto_1fr_auto]">
+					<div class="input-group-shim">Search</div>
+					<input type="search" placeholder=" Apps..." />
+					<button class="variant-filled-secondary">Submit</button>
+				</div>
 				<TabGroup
 					justify="justify-end"
 					active="variant-filled-primary"

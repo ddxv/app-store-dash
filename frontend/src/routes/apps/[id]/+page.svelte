@@ -13,7 +13,7 @@
 			<img src={data.myapp.icon_url_512} alt={data.myapp.name} class="app-icon" />
 		{/if}
 		<div>
-			<h1>{data.myapp.name}</h1>
+			<h1 class="h1">{data.myapp.name}</h1>
 			<Rating total={5} size={50} rating={data.myapp.rating} />
 		</div>
 	</div>
@@ -49,7 +49,7 @@
 	</div>
 	<br />
 
-	<h2>Additional Information</h2>
+	<h2 class="h2">Additional Information</h2>
 	<div class="additional-info">
 		<p>Category: {data.myapp.category}</p>
 		<p>Free: {data.myapp.free}</p>
@@ -67,7 +67,7 @@
 		<p>First Crawled: {data.myapp.created_at}</p>
 	</div>
 
-	<h2>Additional Information</h2>
+	<h2 class="h2">Additional Information</h2>
 	<div class="additional-info">
 		<!-- ... display additional information details -->
 	</div>

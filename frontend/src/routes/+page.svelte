@@ -28,21 +28,22 @@
 
 		<!-- --- -->
 	</svelte:fragment>
-	<h1>
+	<h1 class="h1">
 		Welcome to My Apps Dash. Feel free to look around, if you have any questions just reach out or
 		ping me on GitHub.
 	</h1>
 	<p>
-		Visit <a href="https://github.com/ddxv/app-store-dash">github.com/ddxv/app-store-dash</a> to read
-		the documentation
+		Visit <a class="anchor" href="https://github.com/ddxv/app-store-dash"
+			>github.com/ddxv/app-store-dash</a
+		> to read the documentation
 	</p>
 
 	<div>
 		{#if data}
 			{#each Object.entries(data) as [title, collection]}
-				<h1>{title}</h1>
+				<h1 class="h1">{title}</h1>
 				{#each Object.entries(collection) as [appstore, apps]}
-					<h2>{appstore}</h2>
+					<h2 class="h2">{appstore}</h2>
 					<div class="app-grid">
 						{#each apps as app}
 							<div class="app-item">
