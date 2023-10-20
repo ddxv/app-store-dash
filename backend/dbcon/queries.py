@@ -32,7 +32,7 @@ def query_recent_apps(period: str = "weekly", limit=20):
     sel_query = f"""
                 (
                     SELECT 
-                        name, store, store_id, rating, icon_image_512
+                        name, store, store_id, installs, review_count, rating, icon_url_512
                     FROM {table_name}
                     WHERE store = 1
                     LIMIT {limit}
@@ -40,7 +40,7 @@ def query_recent_apps(period: str = "weekly", limit=20):
                 UNION ALL
                 (
                     SELECT
-                        name, store, store_id, rating, icon_image_512
+                        name, store, store_id, installs, review_count, rating, icon_url_512
                     FROM {table_name}
                     WHERE store = 2
                     LIMIT {limit}
