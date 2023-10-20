@@ -18,6 +18,10 @@
 			<div>
 				<Rating total={5} size={50} rating={data.myapp.rating} />
 			</div>
+
+			{#if data.myapp.feature_image}
+				<img src={data.myapp.featured_image} alt={data.myapp.name} class="app-icon" />
+			{/if}
 		</div>
 		<!-- If app_rating is another Svelte component -->
 		<!-- <AppRating app={data.myapp} /> -->

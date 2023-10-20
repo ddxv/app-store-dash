@@ -15,10 +15,26 @@ def query_recent_apps(period: str = "weekly", limit=20):
         table_name = "apps_new_monthly"
     else:
         table_name = "apps_new_weekly"
+    my_cols = ", ".join(
+        [
+            "name",
+            "store",
+            "store_id",
+            "installs",
+            "review_count",
+            "rating_count",
+            "rating",
+            "icon_url_512",
+            "featured_image_url",
+            "phone_image_url_1",
+            "tablet_image_url_1",
+        ]
+    )
+
     sel_query = f"""
                 (
                     SELECT 
-                        name, store, store_id, installs, review_count, rating_count, rating, icon_url_512
+                        {my_cols}
                     FROM {table_name}
                     WHERE store = 1
                     LIMIT {limit}
@@ -26,7 +42,7 @@ def query_recent_apps(period: str = "weekly", limit=20):
                 UNION ALL
                 (
                     SELECT
-                        name, store, store_id, installs, review_count, rating_count, rating, icon_url_512
+                        {my_cols}
                     FROM {table_name}
                     WHERE store = 2
                     LIMIT {limit}

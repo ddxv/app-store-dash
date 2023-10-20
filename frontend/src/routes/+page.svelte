@@ -2,6 +2,10 @@
 	/** @type {import('./$types').PageData} */
 	export let data;
 	import Rating from './Rating.svelte';
+	export let colSpanText = '';
+	function getClass(app) {
+		return app.featured_image_url && app.featured_image_url !== 'null' ? 'col-span-2' : '';
+	}
 </script>
 
 <h1 class="h1 p-4">Welcome</h1>
@@ -15,24 +19,76 @@
 					<hr class="section-divider" />
 					{#each Object.entries(collectionData.data) as [_collection2, collectionData2]}
 						<h2 class="h2 p-4">{collectionData2.title}</h2>
-						<div class="app-grid">
+						<section class="grid grid-cols-3 md:grid-cols-5 gap-4">
 							{#each collectionData2.apps as app}
-								<a href={`/apps/${app.store_id}`} style="card overflow-hidden">
+								<a href={`/apps/${app.store_id}`} class={`card overflow-hidden ${getClass(app)}`}>
 									<div class="app-item">
 										<header>
-											<img src={app.icon_url_512} alt={app.name} />
+											<div>
+												{#if app.featured_image_url && app.featured_image_url != 'null'}
+													<div class="justify-center">
+														<img
+															class="h-auto object-fill rounded-lg"
+															src={app.featured_image_url}
+															alt={app.name}
+														/>
+													</div>
+													<div class="inline-flex text-left">
+														<img
+															class="h-auto w-1/4 p-3 rounded-lg"
+															src={app.icon_url_512}
+															alt={app.name}
+														/>
+														<div class="inline-block">
+															<h5 class="h5 p-3">{app.name}</h5>
+															{#if app.rating_count != 0 && app.rating_count != 'N/A'}
+																<div class="inline-flex p-2">
+																	<Rating total={5} size={20} rating={app.rating} />
+																	({app.rating_count})
+																</div>
+															{/if}
+															{#if app.installs != 0 && app.installs != 'N/A'}
+																<div class="block p-2">
+																	i: {app.installs}
+																</div>
+															{/if}
+														</div>
+													</div>
+												{:else if app.tablet_image_url && app.tablet_image_url != 'null'}
+													<div>
+														<img
+															class="h-auto max-w-full rounded-lg"
+															src={app.phone_image_url_1}
+															alt={app.name}
+														/>
+														<img
+															class="h-auto w-1/4 rounded-lg"
+															src={app.icon_url_512}
+															alt={app.name}
+														/>
+													</div>
+												{:else}
+													<img
+														class="h-auto max-w-full rounded-lg"
+														src={app.icon_url_512}
+														alt={app.name}
+													/>
+													<div class="card-footer p-2">
+														<h5 class="h5">{app.name}</h5>
+														{#if app.rating_count != 0 && app.rating_count != 'N/A'}
+															<div class="inline-flex">
+																<Rating total={5} size={20} rating={app.rating} />
+																({app.rating_count})
+															</div>
+														{/if}
+													</div>
+												{/if}
+											</div>
 										</header>
-										<div class="card-footer p-2">
-											<h5 class="h5">{app.name}</h5>
-											{#if app.rating_count != 0 && app.rating_count != null}
-												<Rating total={5} size={20} rating={app.rating} />
-												({app.rating_count})
-											{/if}
-										</div>
 									</div>
 								</a>
 							{/each}
-						</div>
+						</section>
 					{/each}
 				</div>
 				<p class="p-2" />
@@ -46,12 +102,12 @@
 
 <style>
 	/* Container Grid */
-	.app-grid {
+	/* .app-grid {
 		display: grid;
-		gap: 15px; /* Gap between grid items */
+		gap: 15px;
 		grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-		padding: 20px; /* Padding around the entire grid */
-	}
+		padding: 20px;
+	/* } 
 
 	/* Individual App Container */
 	.app-item {
