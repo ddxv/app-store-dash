@@ -24,17 +24,16 @@
 
 		<div class="card-footer important-info">
 			<p>Store: {data.myapp.store}</p>
-			<span class="inline-flex items-baseline">
+			<p>
 				Store Link: <a
-					class="anchor inline-flex"
+					class="anchor inline-flex items-baseline"
 					href={data.myapp.store_link}
 					target="_blank"
-					rel="noopener noreferrer"
 				>
 					{data.myapp.store_link}
 					<ExternalLinkSvg />
 				</a>
-			</span>
+			</p>
 			<p>Store ID: {data.myapp.store_id}</p>
 			{#if data.myapp.installs != 'N/A'}
 				<p><strong>Installs:</strong> {data.myapp.installs}</p>
@@ -42,20 +41,28 @@
 			<p><strong>Rating:</strong> {data.myapp.rating}</p>
 			<p><strong>Ratings:</strong> {data.myapp.rating_count}</p>
 			<p><strong>Reviews:</strong> {data.myapp.review_count}</p>
-			{#if data.myapp.developer_id != 'N/A'}
+			{#if data.myapp.developer_id}
 				Developer: <a
-					class="anchor inline-flex"
-					href={`https://apps.apple.com/us/developer/-/id${data.myapp.developer_id}`}
+					class="anchor inline-flex items-baseline"
+					href={data.myapp.store_developer_link}
+					target="_blank"
 				>
 					{data.myapp.developer_name}
 					<ExternalLinkSvg />
 				</a>
 			{:else}
 				<p>Developer Name: {data.myapp.developer_name}</p>
+				<p>Developer ID: {data.myapp.developer_id}</p>
 			{/if}
-
-			<p>Developer ID: {data.myapp.developer_id}</p>
-			<p>Developer URL: {data.myapp.developer_url}</p>
+			{#if data.myapp.developer_url}
+				<p>
+					Developer URL:
+					<a class="anchor inline-flex" href="https://{data.myapp.developer_url}" target="_blank">
+						{data.myapp.developer_url}
+						<ExternalLinkSvg />
+					</a>
+				</p>
+			{/if}
 			<p>Store Last Crawled: {data.myapp.updated_at}</p>
 		</div>
 		<br />

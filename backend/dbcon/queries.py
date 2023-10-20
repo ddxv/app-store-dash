@@ -1,5 +1,3 @@
-import datetime
-
 import numpy as np
 import pandas as pd
 from sqlalchemy import text
@@ -8,17 +6,6 @@ from config import get_logger
 from dbcon.connections import get_db_connection
 
 logger = get_logger(__name__)
-
-
-def get_app_categories() -> list[str]:
-    sel_query = """SELECT DISTINCT category
-                    FROM networks_with_app_metrics
-                    ;
-                    """
-    df = pd.read_sql(sel_query, DBCON.engine)
-    category_list = df["category"].tolist()
-    category_list.sort()
-    return category_list
 
 
 def query_recent_apps(period: str = "weekly", limit=20):
@@ -48,29 +35,6 @@ def query_recent_apps(period: str = "weekly", limit=20):
                 """
     df = pd.read_sql(sel_query, con=DBCON.engine)
     df = clean_app_df(df)
-    return df
-
-
-def query_app_store_sources(start_date: str = "2021-01-01") -> pd.DataFrame:
-    logger.info(f"Query app_store sources: table_name=app_store_sources {start_date=}")
-    sel_query = f"""SELECT 
-                        created_at::date AS date,
-                        sa.store,
-                        COALESCE(crawl_source, 'unknown') AS crawl_source,
-                        count(*) as app_count
-                    FROM store_apps sa
-                        LEFT JOIN logging.store_app_sources sas
-                        ON sas.store_app = sa.id
-                    WHERE sa.created_at >= '{start_date}'
-                    GROUP BY 
-                        created_at::date, 
-                        sa.store,
-                        COALESCE(crawl_source, 'unknown')
-                    ;
-                    """
-    df = pd.read_sql(sel_query, con=DBCON.engine)
-    df["date"] = pd.to_datetime(df["date"], format="%Y-%m-%d")
-    df["store"] = df["store"].replace({1: "Google Play", 2: "Apple App Store"})
     return df
 
 
@@ -406,7 +370,26 @@ def clean_app_df(df: pd.DataFrame) -> pd.DataFrame:
         np.where(df["store"].str.contains("Google"), play_link, ios_link)
         + df["store_id"]
     )
+    df["store_dev_link"] = (
+        np.where(df["store"].str.contains("Google"), play_link, ios_link)
+        + df["store_id"]
+    )
+
+    play_dev_link = "https://play.google.com/store/apps/dev?id="
+    ios_dev_link = "https://apps.apple.com/us/developer/-/id"
+
+    df["store_developer_link"] = (
+        np.where(df["store"].str.contains("Google"), play_dev_link, ios_dev_link)
+        + df["developer_id"]
+    )
+    df["store_developer_link"] = (
+        np.where(df["store"].str.contains("Google"), play_dev_link, ios_dev_link)
+        + df["developer_id"]
+    )
     df["rating_percent"] = (1 - (df["rating"] / 5)) * 100
+    date_cols = ["created_at", "store_last_updated"]
+    for x in date_cols:
+        df[x] = df[x].dt.strftime("%Y-%m-%d")
     return df
 
 
@@ -446,11 +429,7 @@ def get_apps_by_name(search_input: str, limit: int = 100):
     return df
 
 
-try:
-    logger.info("set db engine")
-    DBCON = get_db_connection("madrone")
-    DBCON.set_engine()
-    APP_CATEGORIES = get_app_categories()
-except Exception:
-    logger.info("Database Connection failed")
-    APP_CATEGORIES = ["cat1", "cat2"]
+logger.info("set db engine")
+DBCON = get_db_connection("madrone")
+DBCON.set_engine()
+APP_CATEGORIES_MAP = get_appstore_categories()
