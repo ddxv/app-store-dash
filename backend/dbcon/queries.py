@@ -387,7 +387,7 @@ def clean_app_df(df: pd.DataFrame) -> pd.DataFrame:
         + df["developer_id"]
     )
     df["rating_percent"] = (1 - (df["rating"] / 5)) * 100
-    date_cols = ["created_at", "store_last_updated"]
+    date_cols = ["created_at", "store_last_updated", "updated_at"]
     for x in date_cols:
         df[x] = df[x].dt.strftime("%Y-%m-%d")
     return df
