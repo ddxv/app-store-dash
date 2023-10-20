@@ -5,7 +5,7 @@
 </script>
 
 <!-- App Shell -->
-<AppShell>
+<AppShell regionPage="p-8">
 	<svelte:fragment slot="header">
 		<!-- App Bar -->
 		<AppBar>
@@ -57,7 +57,6 @@
 		</AppBar>
 	</svelte:fragment>
 
-	<!-- Page Route Content -->
-
 	<slot />
+	<!-- Page Route Content -->
 </AppShell>

@@ -50,7 +50,7 @@
 								<a href={`/apps/${app.store_id}`} style="text-decoration: none; color: inherit;">
 									<img src={app.icon_url_512} alt={app.name} class="app-icon" />
 									<div>{app.name}</div>
-									<Rating total={5} size={20} rating={app.rating} />
+									<Rating total={5} size={20} rating={app.rating} /> ({app.rating_count})
 								</a>
 							</div>
 						{/each}
