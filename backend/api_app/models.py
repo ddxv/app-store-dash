@@ -8,11 +8,21 @@ class AppDetail:
 
 
 @dataclass
+class AppGroup:
+    title: str
+    apps: list[AppDetail]
+
+
+@dataclass
+class Section:
+    title: str
+    data: list[AppGroup]
+
+
+@dataclass
 class AppsOverview:
-    new_ios: list[AppDetail]
-    new_google: list[AppDetail]
-    trending_google: list[AppDetail]
-    trending_ios: list[AppDetail]
+    new: Section
+    trending: Section
 
 
 @dataclass

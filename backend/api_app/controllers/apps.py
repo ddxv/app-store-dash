@@ -3,7 +3,7 @@ import os
 
 from litestar import Controller, get
 
-from api_app.models import AppDetail, AppsOverview
+from api_app.models import AppDetail, AppsOverview, Section, AppGroup
 
 from dbcon.queries import get_appstore_categories, query_recent_apps, get_single_app
 
@@ -35,20 +35,23 @@ def get_app_overview_dict() -> AppsOverview:
     )
     trending_google_dicts = trending_google_apps.to_dict(orient="records")
     trending_ios_dicts = trending_ios_apps.to_dict(orient="records")
-    trending_title = "Trending Apps this Month"
-    recent_title = "New Apps this Month"
-    trending_dicts: dict = {}
-    trending_dicts[trending_title] = {}
-    trending_dicts[recent_title] = {}
-    trending_dicts["new_google"] = new_google_dicts
-    trending_dicts["new_ios"] = new_ios_dicts
-    trending_dicts["trending_google"] = trending_google_dicts
-    trending_dicts["trending_ios"] = trending_ios_dicts
+    trending_title = "New Apps this Month"
+    recent_title = "New Apps this Week"
     my_dict = AppsOverview(
-        new_google=new_google_dicts,
-        new_ios=new_ios_dicts,
-        trending_google=trending_google_dicts,
-        trending_ios=trending_ios_dicts,
+        new=Section(
+            title=recent_title,
+            data=[
+                AppGroup(title="Google", apps=new_google_dicts),
+                AppGroup(title="iOS", apps=new_ios_dicts),
+            ],
+        ),
+        trending=Section(
+            title=trending_title,
+            data=[
+                AppGroup(title="Google", apps=trending_google_dicts),
+                AppGroup(title="iOS", apps=trending_ios_dicts),
+            ],
+        ),
     )
     return my_dict
 

@@ -32,7 +32,7 @@ def query_recent_apps(period: str = "weekly", limit=20):
     sel_query = f"""
                 (
                     SELECT 
-                        name, store, store_id, installs, review_count, rating, icon_url_512
+                        name, store, store_id, installs, review_count, rating_count, rating, icon_url_512
                     FROM {table_name}
                     WHERE store = 1
                     LIMIT {limit}
@@ -40,7 +40,7 @@ def query_recent_apps(period: str = "weekly", limit=20):
                 UNION ALL
                 (
                     SELECT
-                        name, store, store_id, installs, review_count, rating, icon_url_512
+                        name, store, store_id, installs, review_count, rating_count, rating, icon_url_512
                     FROM {table_name}
                     WHERE store = 2
                     LIMIT {limit}
@@ -394,6 +394,9 @@ def clean_app_df(df: pd.DataFrame) -> pd.DataFrame:
     df["store"] = df["store"].replace({1: "Google Play", 2: "Apple App Store"})
     df["installs"] = df["installs"].apply(lambda x: "{:,.0f}".format(x) if x else "N/A")
     df["review_count"] = df["review_count"].apply(
+        lambda x: "{:,.0f}".format(x) if x else "N/A"
+    )
+    df["rating_count"] = df["rating_count"].apply(
         lambda x: "{:,.0f}".format(x) if x else "N/A"
     )
     df["rating"] = df["rating"].apply(lambda x: round(x, 2) if x else 0)
