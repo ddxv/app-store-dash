@@ -1,4 +1,5 @@
 import datetime
+import numpy as np
 
 from api_app.models import CategoriesOverview
 from config import get_logger
@@ -14,33 +15,34 @@ logger = get_logger(__name__)
 """
 
 
-def get_string_date_from_days_ago(days: int) -> str:
-    mydate = datetime.datetime.utcnow() - datetime.timedelta(days=days)
-    mydate_str = mydate.strftime("%Y-%m-%d")
-    return mydate_str
-
-
-def category_overview() -> dict:
+def category_overview() -> CategoriesOverview:
     cats = get_appstore_categories()
     cats = cats[cats["total_apps"] > 100]
-    categories = cats["category"].unique().tolist()
 
-    game_categories = [x for x in categories if "game_" in x]
-    app_categories = [x for x in categories if x not in game_categories]
+    cats["name"] = cats["category"]
+    cats["name"] = (
+        cats["name"]
+        .str.replace("game_", "")
+        .str.replace("_and_", " & ")
+        .str.replace("_", " ")
+        .str.title()
+    )
+    cats = cats.rename(columns={"category": "id"})
 
-    apps = [{"id": x, "name": x.replace("_", " ").title()} for x in app_categories]
+    cats[["android", "ios", "total_apps"]] = cats[
+        ["android", "ios", "total_apps"]
+    ].astype(int)
 
-    games = [
-        {"id": x, "name": x.replace("game_", "").replace("_", " ").title()}
-        for x in game_categories
-    ]
+    cats["type"] = np.where(cats.id.str.contains("_game|games"), "game", "app")
 
-    category_dicts = CategoriesOverview(apps=apps, games=games)
+    category_dicts = cats.to_dict(orient="records")
 
-    return category_dicts
+    overview = CategoriesOverview(categories=category_dicts)
+
+    return overview
 
 
-class AppController(Controller):
+class CategoryController(Controller):
     path = "/api/categories"
 
     @get(path="/")
@@ -50,9 +52,9 @@ class AppController(Controller):
 
         Returns:
             A dictionary representation of the list of categories
-            each with an id, name and total of installs
+            each with an id, name, type and total of apps
         """
         logger.info("inside a request")
-        my_dict = category_overview()
+        overview = category_overview()
 
-        return my_dict
+        return overview

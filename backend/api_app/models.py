@@ -28,11 +28,12 @@ class AppsOverview:
 @dataclass
 class CategoryDetail:
     id: str
-    name: int
-    total: int
+    name: str
+    android: int
+    ios: int
+    type: str
 
 
 @dataclass
 class CategoriesOverview:
-    apps: list[CategoryDetail]
-    games: list[CategoryDetail]
+    categories: list[CategoryDetail]

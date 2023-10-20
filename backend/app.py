@@ -1,4 +1,4 @@
-from api_app.controllers.apps import AppController
+from api_app.controllers.apps import AppController, CategoryController
 from config import get_logger
 from litestar import Litestar
 from litestar.config.cors import CORSConfig
@@ -33,7 +33,7 @@ logging_config = LoggingConfig(
 )
 
 app = Litestar(
-    route_handlers=[AppController],
+    route_handlers=[AppController, CategoryController],
     cors_config=cors_config,
     openapi_config=OpenAPIConfig(
         title="App Store API", version="0.0.1", openapi_controller=MyOpenAPIController

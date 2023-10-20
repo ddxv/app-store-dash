@@ -426,4 +426,3 @@ def get_apps_by_name(search_input: str, limit: int = 100):
 logger.info("set db engine")
 DBCON = get_db_connection("madrone")
 DBCON.set_engine()
-APP_CATEGORIES_MAP = get_appstore_categories()
