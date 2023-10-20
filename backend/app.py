@@ -1,4 +1,5 @@
-from api_app.controllers.apps import AppController, CategoryController
+from api_app.controllers.apps import AppController
+from api_app.controllers.categories import CategoryController
 from config import get_logger
 from litestar import Litestar
 from litestar.config.cors import CORSConfig
