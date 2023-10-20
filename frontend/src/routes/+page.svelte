@@ -1,41 +1,17 @@
 <script>
-	import { AppShell, ListBox, ListBoxItem } from '@skeletonlabs/skeleton';
-	export let valueSingle = 'books';
-
 	/** @type {import('./$types').PageData} */
 	export let data;
 	import Rating from './Rating.svelte';
-	import { getRandomValues } from 'crypto';
 </script>
 
-<AppShell slotSidebarLeft="bg-surface-500/5 w-56 p-4">
-	<svelte:fragment slot="sidebarLeft">
-		<!-- Insert the list: -->
-		<ListBox>
-			<ListBoxItem bind:group={valueSingle} name="medium" value="google">Google</ListBoxItem>
-			<ListBoxItem bind:group={valueSingle} name="medium" value="ios">iOS</ListBoxItem>
-		</ListBox>
-		<br />
-		<hr class="!border-t-2" />
-		Categories
-		<ListBox>
-			<ListBoxItem bind:group={valueSingle} name="medium" value="games">Games</ListBoxItem>
-			<ListBoxItem bind:group={valueSingle} name="medium" value="apps">Apps</ListBoxItem>
-			<ListBoxItem bind:group={valueSingle} name="medium" value="tv">TV</ListBoxItem>
-			<ListBoxItem bind:group={valueSingle} name="medium" value="tv">TV</ListBoxItem>
-			<ListBoxItem bind:group={valueSingle} name="medium" value="tv">TV</ListBoxItem>
-			<ListBoxItem bind:group={valueSingle} name="medium" value="tv">TV</ListBoxItem>
-		</ListBox>
+<h1 class="h1 p-4">Welcome</h1>
 
-		<!-- --- -->
-	</svelte:fragment>
-	<h1 class="h1 p-4">Welcome</h1>
-
-	<div>
-		{#if data}
-			{#each Object.entries(data) as [_prop, values]}
-				{#each Object.entries(values) as [_collection, collectionData]}
-					<h1 class="h1">{collectionData.title}</h1>
+<div>
+	{#if data}
+		{#each Object.entries(data) as [_prop, values]}
+			{#each Object.entries(values) as [_collection, collectionData]}
+				<div class="card p-2">
+					<h1 class="h1 p-2">{collectionData.title}</h1>
 					<hr class="section-divider" />
 					{#each Object.entries(collectionData.data) as [_collection2, collectionData2]}
 						<h2 class="h2 p-4">{collectionData2.title}</h2>
@@ -58,15 +34,15 @@
 							{/each}
 						</div>
 					{/each}
-					<hr class="section-divider" />
-				{/each}
+				</div>
+				<p class="p-2" />
 			{/each}
-		{:else}
-			<p>Loading...</p>
-			{data}
-		{/if}
-	</div>
-</AppShell>
+		{/each}
+	{:else}
+		<p>Loading...</p>
+		{data}
+	{/if}
+</div>
 
 <style>
 	/* Container Grid */

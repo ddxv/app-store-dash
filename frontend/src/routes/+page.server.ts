@@ -3,7 +3,7 @@ export const csr: boolean = false;
 console.log('Script executed');
 
 interface LoadResponse {
-    myapps: any; // Replace 'any' with the expected structure of the trending_apps if known
+    myapps: any;
     status?: number;
     error?: string;
 }
@@ -18,7 +18,7 @@ export async function load(): Promise<LoadResponse> {
             throw new Error(`Failed to fetch with status ${res.status}`);
         }
 
-        const trending_apps: any = await res.json(); // Replace 'any' with the expected structure of the trending_apps if known
+        const trending_apps: any = await res.json();
         console.log(`loaded trending_apps with len: ${Object.keys(trending_apps).length}`);
         return { myapps: trending_apps };
     } catch (error) {
