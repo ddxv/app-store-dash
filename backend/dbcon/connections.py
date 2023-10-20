@@ -1,7 +1,6 @@
+from config import CONFIG, get_logger
 from sqlalchemy import create_engine
 from sshtunnel import SSHTunnelForwarder
-
-from config import CONFIG, get_logger
 
 logger = get_logger(__name__)
 

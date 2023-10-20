@@ -27,11 +27,12 @@ class AppsOverview:
 
 @dataclass
 class CategoryDetail:
-    category: str
-    installs: int
-    reviews: int
+    id: str
+    name: int
+    total: int
 
 
 @dataclass
 class CategoriesOverview:
-    data: list[CategoryDetail]
+    apps: list[CategoryDetail]
+    games: list[CategoryDetail]

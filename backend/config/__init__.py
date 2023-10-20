@@ -1,8 +1,8 @@
 import logging
 import pathlib
 import sys
-from logging.handlers import RotatingFileHandler
 import tomllib
+from logging.handlers import RotatingFileHandler
 
 PROJECT_NAME = "app-store"
 

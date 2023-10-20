@@ -1,13 +1,9 @@
 import datetime
-import os
 
-from litestar import Controller, get
-
-from api_app.models import AppDetail, AppsOverview, Section, AppGroup
-
-from dbcon.queries import get_appstore_categories, query_recent_apps, get_single_app
-
+from api_app.models import AppDetail, AppGroup, AppsOverview, Section
 from config import get_logger
+from dbcon.queries import get_single_app, query_recent_apps
+from litestar import Controller, get
 
 logger = get_logger(__name__)
 

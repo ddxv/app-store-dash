@@ -1,15 +1,11 @@
+from api_app.controllers.apps import AppController
+from config import get_logger
 from litestar import Litestar
+from litestar.config.cors import CORSConfig
+from litestar.logging import LoggingConfig
 
 # from litestar.logging import LoggingConfig
 from litestar.openapi import OpenAPIConfig, OpenAPIController
-
-from litestar.logging import LoggingConfig
-
-from api_app.controllers.apps import AppController
-
-from config import get_logger
-
-from litestar.config.cors import CORSConfig
 
 cors_config = CORSConfig(
     allow_origins=[

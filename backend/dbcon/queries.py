@@ -1,9 +1,8 @@
 import numpy as np
 import pandas as pd
-from sqlalchemy import text
-
 from config import get_logger
 from dbcon.connections import get_db_connection
+from sqlalchemy import text
 
 logger = get_logger(__name__)
 
@@ -366,29 +365,24 @@ def clean_app_df(df: pd.DataFrame) -> pd.DataFrame:
     df["rating"] = df["rating"].apply(lambda x: round(x, 2) if x else 0)
     ios_link = "https://apps.apple.com/us/app/-/id"
     play_link = "https://play.google.com/store/apps/details?id="
+    play_dev_link = "https://play.google.com/store/apps/dev?id="
+    ios_dev_link = "https://apps.apple.com/us/developer/-/id"
+
     df["store_link"] = (
         np.where(df["store"].str.contains("Google"), play_link, ios_link)
         + df["store_id"]
     )
-    df["store_dev_link"] = (
-        np.where(df["store"].str.contains("Google"), play_link, ios_link)
-        + df["store_id"]
-    )
+    if "developer_id" in df.columns:
+        df["store_developer_link"] = (
+            np.where(df["store"].str.contains("Google"), play_dev_link, ios_dev_link)
+            + df["developer_id"]
+        )
 
-    play_dev_link = "https://play.google.com/store/apps/dev?id="
-    ios_dev_link = "https://apps.apple.com/us/developer/-/id"
-
-    df["store_developer_link"] = (
-        np.where(df["store"].str.contains("Google"), play_dev_link, ios_dev_link)
-        + df["developer_id"]
-    )
-    df["store_developer_link"] = (
-        np.where(df["store"].str.contains("Google"), play_dev_link, ios_dev_link)
-        + df["developer_id"]
-    )
     df["rating_percent"] = (1 - (df["rating"] / 5)) * 100
     date_cols = ["created_at", "store_last_updated", "updated_at"]
     for x in date_cols:
+        if x not in df.columns:
+            continue
         df[x] = df[x].dt.strftime("%Y-%m-%d")
     return df
 
