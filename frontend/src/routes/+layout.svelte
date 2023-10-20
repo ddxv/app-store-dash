@@ -1,12 +1,18 @@
 <script>
+	import { myList } from '../stores.ts';
 	import '../app.postcss';
 	import { AppShell, AppBar, TabGroup, TabAnchor } from '@skeletonlabs/skeleton';
 	import { page } from '$app/stores';
 	import SearchIcon from '../../static/SearchIcon.svelte';
 	import { ListBox, ListBoxItem } from '@skeletonlabs/skeleton';
 	export let valueSingle = 'books';
-	/** @type {import('./$types').PageData} */
-	export let data;
+	//export let data;
+	/** @type {import('../stores.ts').Categories} */
+	let myVals;
+
+	myList.subscribe((values) => {
+		myVals = values;
+	});
 </script>
 
 <!-- App Shell -->
@@ -77,11 +83,13 @@
 					<hr class="!border-t-2" />
 					<ListBoxItem bind:group={valueSingle} name="medium" value="books">BOOKS</ListBoxItem>
 					<ListBoxItem bind:group={valueSingle} name="medium" value="tv">TV</ListBoxItem>
-					{#if data}
-						{#each Object.entries(data.mycats.categories) as [_prop, values]}
-							<ListBoxItem bind:group={valueSingle} name="medium" value="${values.id}"
-								>{values.name}</ListBoxItem
-							>
+					{#if myVals}
+						{#each Object.entries(myVals.mycats.categories) as [_prop, values]}
+							{#if values.id}
+								<ListBoxItem bind:group={valueSingle} name="medium" value="${values.id}"
+									>{values.name}</ListBoxItem
+								>
+							{/if}
 						{/each}
 					{/if}
 				</ListBox>
