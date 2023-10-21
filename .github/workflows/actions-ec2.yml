@@ -30,9 +30,9 @@ jobs:
             pwd
             git pull origin main
             cd frontend
-            sudo ln -s scripts/app-store-api.service /etc/systemd/system/app-store-api.service
-            sudo ln -s scripts/app-store-frontend.socket /etc/systemd/system/app-store-frontend.socket
-            sudo ln -s scripts/app-store-frontend.service /etc/systemd/system/app-store-frontend.service
+            sudo systemctl enable /home/ubuntu/app-store-dash/scripts/app-store-api.service
+            sudo systemctl enable /home/ubuntu/app-store-dash/scripts/app-store-frontend.socket
+            sudo systemctl enable /home/ubuntu/app-store-dash/scripts/app-store-frontend.service
             sudo systemctl daemon-reload
             sudo systemctl restart app-store-api
             npm run build
