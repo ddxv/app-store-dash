@@ -41,7 +41,7 @@ myscript TODO: bash script should do:
 
 system link to location: `/etc/systemd/system/app-store-api.socket`
 
-```Shell
+```ini
 [Unit]
 Description=Gunicorn socket
 
@@ -57,7 +57,7 @@ WantedBy=sockets.target
 
 location: `/etc/systemd/system/app-store-api.service`
 
-```Shell
+```ini
 [Unit]
 Description=Gunicorn instance to serve App Store API
 After=network.target
