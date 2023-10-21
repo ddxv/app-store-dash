@@ -30,10 +30,10 @@ jobs:
             pwd
             git pull origin main
             cd frontend
-            npm run build
-            ln -s scripts/app-store-api.service /etc/systemd/system/app-store-api.service
-            ln -s scripts/app-store-frontend.socket /etc/systemd/system/app-store-frontend.socket
-            ln -s scripts/app-store-frontend.service /etc/systemd/system/app-store-frontend.service
+            sudo ln -s scripts/app-store-api.service /etc/systemd/system/app-store-api.service
+            sudo ln -s scripts/app-store-frontend.socket /etc/systemd/system/app-store-frontend.socket
+            sudo ln -s scripts/app-store-frontend.service /etc/systemd/system/app-store-frontend.service
             sudo systemctl daemon-reload
             sudo systemctl restart app-store-api
+            npm run build
             sudo systemctl restart app-store-frontend
