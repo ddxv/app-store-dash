@@ -17,7 +17,7 @@ jobs:
       - name: Deploy to my EC2
         uses: appleboy/ssh-action@master
         env:
-          TARGETDIR: ${{ vars.TARGET_DIR }}
+          TARGETDIR: app-store-dash
         with:
           host: ${{ secrets.HOST_DNS }}
           username: ${{ vars.USERNAME }}
@@ -29,4 +29,11 @@ jobs:
             cd $TARGETDIR
             pwd
             git pull origin main
-            sudo systemctl restart app-store-dash
+            cd frontend
+            npm build
+            ln -s scripts/app-store-api.service /etc/systemd/system/app-store-api.service
+            ln -s scripts/app-store-frontend.socket /etc/systemd/system/app-store-frontend.socket
+            ln -s scripts/app-store-frontend.service /etc/systemd/system/app-store-frontend.service
+            sudo systemctl daemon-reload
+            sudo systemctl restart app-store-api
+            sudo systemctl restart app-store-frontend

@@ -1,8 +1,8 @@
 <script>
 	/** @type {import('./$types').PageData} */
 	export let data;
+	import IconDownload from '../../static/IconDownload.svelte';
 	import Rating from './Rating.svelte';
-	export let colSpanText = '';
 	function getClass(app) {
 		return app.featured_image_url && app.featured_image_url !== 'null' ? 'col-span-2' : '';
 	}
@@ -49,7 +49,10 @@
 															{/if}
 															{#if app.installs != 0 && app.installs != 'N/A'}
 																<div class="block p-2">
-																	i: {app.installs}
+																	<div class="inline-flex">
+																		<IconDownload />
+																		{app.installs}
+																	</div>
 																</div>
 															{/if}
 														</div>

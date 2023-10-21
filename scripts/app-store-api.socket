@@ -1,0 +1,9 @@
+[Unit]
+Description=Gunicorn socket
+
+[Socket]
+ListenStream=/run/app-store-api.sock
+User=www-data
+
+[Install]
+WantedBy=sockets.target

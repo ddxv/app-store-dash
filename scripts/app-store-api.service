@@ -1,0 +1,19 @@
+[Unit]
+Description=Gunicorn instance to serve App Store API
+After=network.target
+
+[Service]
+Type=Notify
+User=ubuntu
+Group=ubuntu
+RuntimeDirectory=gunicorn
+WorkingDirectory=/home/ubuntu/app-store-dash/backend
+Environment=/home/ubuntu/venvs/app-store-dash-env/bin
+ExecStart=/home/ubuntu/venv/app-store-dash-env/bin/gunicorn -k uvicorn.workers.UvicornWorker --workers 1 --bind unix:app-store-api.sock -m 007 app:app
+ExecReload=/bin/kill -s HUP $MAINPID
+Restart=on-failure
+KillMode=mixed
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

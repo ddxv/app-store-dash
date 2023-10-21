@@ -1,9 +1,9 @@
 <script>
-	import { myList } from '../stores.ts';
+	import { myList } from '../stores';
 	import '../app.postcss';
 	import { AppShell, AppBar, TabGroup, TabAnchor } from '@skeletonlabs/skeleton';
 	import { page } from '$app/stores';
-	import SearchIcon from '../../static/SearchIcon.svelte';
+	import IconSearch from '../../static/IconSearch.svelte';
 	import { ListBox, ListBoxItem } from '@skeletonlabs/skeleton';
 	export let valueSingle = 'books';
 	//export let data;
@@ -45,7 +45,7 @@
 			<svelte:fragment slot="trail">
 				<div class="input-group grid-cols-[auto_1fr_auto]">
 					<div class="input-group-shim">
-						<SearchIcon />
+						<IconSearch />
 					</div>
 					<input type="search" placeholder=" Apps..." />
 				</div>
