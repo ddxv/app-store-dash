@@ -19,7 +19,7 @@
 				<Rating total={5} size={50} rating={data.myapp.rating} />
 			</div>
 
-			{#if data.myapp.feature_image}
+			{#if data.myapp.featured_image}
 				<img src={data.myapp.featured_image} alt={data.myapp.name} class="app-icon" />
 			{/if}
 		</div>

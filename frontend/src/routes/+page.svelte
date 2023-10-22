@@ -1,7 +1,6 @@
 <script>
-	/** @type {import('./$types').PageData} */
 	export let data;
-	import IconDownload from '../../static/IconDownload.svelte';
+	import IconDownload from '$lib/IconDownload.svelte';
 	import Rating from './Rating.svelte';
 	function getClass(app) {
 		return app.featured_image_url && app.featured_image_url !== 'null' ? 'col-span-2' : '';
@@ -11,88 +10,87 @@
 <h1 class="h1 p-4">Welcome</h1>
 
 <div>
-	{#if data}
-		{#each Object.entries(data) as [_prop, values]}
-			{#each Object.entries(values) as [_collection, collectionData]}
+	{#if data.myapps}
+		{#each Object.entries(data.myapps) as [_prop, values]}
+			<h1 class="h1 p-2">{values.title}</h1>
+			{#each Object.entries(values.data) as [_collection, collectionData]}
 				<div class="card p-2">
-					<h1 class="h1 p-2">{collectionData.title}</h1>
+					<h2 class="h2 p-4">valuesdata={collectionData.title}</h2>
 					<hr class="section-divider" />
-					{#each Object.entries(collectionData.data) as [_collection2, collectionData2]}
-						<h2 class="h2 p-4">{collectionData2.title}</h2>
-						<section class="grid grid-cols-3 md:grid-cols-5 gap-4">
-							{#each collectionData2.apps as app}
-								<a href={`/apps/${app.store_id}`} class={`card overflow-hidden ${getClass(app)}`}>
-									<div class="app-item">
-										<header>
-											<div>
-												{#if app.featured_image_url && app.featured_image_url != 'null'}
-													<div class="justify-center">
-														<img
-															class="h-auto object-fill rounded-lg"
-															src={app.featured_image_url}
-															alt={app.name}
-														/>
-													</div>
-													<div class="inline-flex text-left">
-														<img
-															class="h-auto w-1/4 p-3 rounded-lg"
-															src={app.icon_url_512}
-															alt={app.name}
-														/>
-														<div class="inline-block">
-															<h5 class="h5 p-3">{app.name}</h5>
-															{#if app.rating_count != 0 && app.rating_count != 'N/A'}
-																<div class="inline-flex p-2">
-																	<Rating total={5} size={20} rating={app.rating} />
-																	({app.rating_count})
-																</div>
-															{/if}
-															{#if app.installs != 0 && app.installs != 'N/A'}
-																<div class="block p-2">
-																	<div class="inline-flex">
-																		<IconDownload />
-																		{app.installs}
-																	</div>
-																</div>
-															{/if}
-														</div>
-													</div>
-												{:else if app.tablet_image_url && app.tablet_image_url != 'null'}
-													<div>
-														<img
-															class="h-auto max-w-full rounded-lg"
-															src={app.phone_image_url_1}
-															alt={app.name}
-														/>
-														<img
-															class="h-auto w-1/4 rounded-lg"
-															src={app.icon_url_512}
-															alt={app.name}
-														/>
-													</div>
-												{:else}
+					<section class="grid grid-cols-3 md:grid-cols-5 gap-4">
+						{#each collectionData.apps as app}
+							<a href={`/apps/${app.store_id}`} class={`card overflow-hidden ${getClass(app)}`}>
+								<div class="app-item">
+									<header>
+										<div>
+											{#if app.featured_image_url && app.featured_image_url != 'null'}
+												<div class="justify-center">
 													<img
-														class="h-auto max-w-full rounded-lg"
+														class="h-auto object-fill rounded-lg"
+														src={app.featured_image_url}
+														alt={app.name}
+													/>
+												</div>
+												<div class="inline-flex text-left">
+													<img
+														class="h-auto w-1/4 p-3 rounded-lg"
 														src={app.icon_url_512}
 														alt={app.name}
 													/>
-													<div class="card-footer p-2">
-														<h5 class="h5">{app.name}</h5>
+													<div class="inline-block">
+														<h5 class="h5 p-3">{app.name}</h5>
 														{#if app.rating_count != 0 && app.rating_count != 'N/A'}
-															<div class="inline-flex">
+															<div class="inline-flex p-2">
 																<Rating total={5} size={20} rating={app.rating} />
 																({app.rating_count})
 															</div>
 														{/if}
+														{#if app.installs != 0 && app.installs != 'N/A'}
+															<div class="block p-2">
+																<div class="inline-flex">
+																	<IconDownload />
+																	{app.installs}
+																</div>
+															</div>
+														{/if}
 													</div>
-												{/if}
-											</div>
-										</header>
-									</div>
-								</a>
-							{/each}
-						</section>
-					{/each}
+												</div>
+											{:else if app.tablet_image_url && app.tablet_image_url != 'null'}
+												<div>
+													<img
+														class="h-auto max-w-full rounded-lg"
+														src={app.phone_image_url_1}
+														alt={app.name}
+													/>
+													<img
+														class="h-auto w-1/4 rounded-lg"
+														src={app.icon_url_512}
+														alt={app.name}
+													/>
+												</div>
+											{:else}
+												<img
+													class="h-auto max-w-full rounded-lg"
+													src={app.icon_url_512}
+													alt={app.name}
+												/>
+												<div class="card-footer p-2">
+													<h5 class="h5">{app.name}</h5>
+													{#if app.rating_count != 0 && app.rating_count != 'N/A'}
+														<div class="inline-flex">
+															<Rating total={5} size={20} rating={app.rating} />
+															({app.rating_count})
+														</div>
+													{/if}
+												</div>
+											{/if}
+										</div>
+									</header>
+								</div>
+							</a>
+						{/each}
+					</section>
+					<!-- {/each} -->
 				</div>
 				<p class="p-2" />
 			{/each}

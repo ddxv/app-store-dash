@@ -1,18 +1,11 @@
 <script>
-	import { myList } from '../stores';
 	import '../app.postcss';
 	import { AppShell, AppBar, TabGroup, TabAnchor } from '@skeletonlabs/skeleton';
 	import { page } from '$app/stores';
-	import IconSearch from '../../static/IconSearch.svelte';
+	import IconSearch from '$lib/IconSearch.svelte';
 	import { ListBox, ListBoxItem } from '@skeletonlabs/skeleton';
 	export let valueSingle = 'books';
-	//export let data;
-	/** @type {import('../stores.ts').Categories} */
-	let myVals;
-
-	myList.subscribe((values) => {
-		myVals = values;
-	});
+	export let data;
 </script>
 
 <!-- App Shell -->
@@ -83,8 +76,8 @@
 					<hr class="!border-t-2" />
 					<ListBoxItem bind:group={valueSingle} name="medium" value="books">BOOKS</ListBoxItem>
 					<ListBoxItem bind:group={valueSingle} name="medium" value="tv">TV</ListBoxItem>
-					{#if myVals}
-						{#each Object.entries(myVals.mycats.categories) as [_prop, values]}
+					{#if data}
+						{#each Object.entries(data.mycats.categories) as [_prop, values]}
 							{#if values.id}
 								<ListBoxItem bind:group={valueSingle} name="medium" value="${values.id}"
 									>{values.name}</ListBoxItem
