@@ -3,7 +3,6 @@ Description=Gunicorn instance to serve App Store API
 After=network.target
 
 [Service]
-Type=Notify
 User=ubuntu
 Group=ubuntu
 RuntimeDirectory=gunicorn
