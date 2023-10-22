@@ -31,7 +31,6 @@ jobs:
             git pull origin main
             cd frontend
             sudo systemctl enable /home/ubuntu/app-store-dash/scripts/app-store-api.service
-            sudo systemctl enable /home/ubuntu/app-store-dash/scripts/app-store-api.socket
             sudo systemctl enable /home/ubuntu/app-store-dash/scripts/app-store-frontend.service
             sudo systemctl daemon-reload
             sudo systemctl restart app-store-api
