@@ -1,8 +1,8 @@
 <script>
-	import ExternalLinkSvg from '../../ExternalLinkSVG.svelte';
+	import ExternalLinkSvg from '$lib/ExternalLinkSVG.svelte';
 	/** @type {import('../[id]/$types').PageData} */
 	export let data;
-	import Rating from '../../Rating.svelte';
+	import Rating from '$lib/Rating.svelte';
 </script>
 
 <!-- Navbar component inclusion should be done here, I assume it's a Svelte component -->
@@ -23,8 +23,6 @@
 				<img src={data.myapp.featured_image} alt={data.myapp.name} class="app-icon" />
 			{/if}
 		</div>
-		<!-- If app_rating is another Svelte component -->
-		<!-- <AppRating app={data.myapp} /> -->
 
 		<div class="card-footer important-info">
 			<p>Store: {data.myapp.store}</p>

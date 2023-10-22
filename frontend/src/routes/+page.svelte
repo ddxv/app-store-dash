@@ -1,7 +1,6 @@
 <script>
 	export let data;
-	import IconDownload from '$lib/IconDownload.svelte';
-	import Rating from './Rating.svelte';
+	import AppDetails from '$lib/RatingInstalls.svelte';
 	function getClass(app) {
 		return app.featured_image_url && app.featured_image_url !== 'null' ? 'col-span-2' : '';
 	}
@@ -23,6 +22,7 @@
 								<div class="app-item">
 									<header>
 										<div>
+											<!-- Show Featured Image (spans 2 cols) -->
 											{#if app.featured_image_url && app.featured_image_url != 'null'}
 												<div class="justify-center">
 													<img
@@ -37,24 +37,9 @@
 														src={app.icon_url_512}
 														alt={app.name}
 													/>
-													<div class="inline-block">
-														<h5 class="h5 p-3">{app.name}</h5>
-														{#if app.rating_count != 0 && app.rating_count != 'N/A'}
-															<div class="inline-flex p-2">
-																<Rating total={5} size={20} rating={app.rating} />
-																({app.rating_count})
-															</div>
-														{/if}
-														{#if app.installs != 0 && app.installs != 'N/A'}
-															<div class="block p-2">
-																<div class="inline-flex">
-																	<IconDownload />
-																	{app.installs}
-																</div>
-															</div>
-														{/if}
-													</div>
+													<AppDetails {app} />
 												</div>
+												<!-- Show Icon Only (smaller) -->
 											{:else if app.tablet_image_url && app.tablet_image_url != 'null'}
 												<div>
 													<img
@@ -74,15 +59,7 @@
 													src={app.icon_url_512}
 													alt={app.name}
 												/>
-												<div class="card-footer p-2">
-													<h5 class="h5">{app.name}</h5>
-													{#if app.rating_count != 0 && app.rating_count != 'N/A'}
-														<div class="inline-flex">
-															<Rating total={5} size={20} rating={app.rating} />
-															({app.rating_count})
-														</div>
-													{/if}
-												</div>
+												<AppDetails {app} />
 											{/if}
 										</div>
 									</header>

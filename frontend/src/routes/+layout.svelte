@@ -14,7 +14,7 @@
 		<!-- App Bar -->
 		<AppBar>
 			<svelte:fragment slot="lead">
-				<strong class="text-xl uppercase">App Store Data</strong>
+				<a href="/" class="text-xl uppercase"><strong>App Store Data</strong></a>
 			</svelte:fragment>
 			<TabGroup
 				justify="justify-start"

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Star from './Star.svelte';
 	// import { twMerge } from 'tailwind-merge';
-	import generateId from '../lib/utils/generateIds.js';
+	import generateId from './utils/generateIds.js';
 	import type { ComponentType } from 'svelte';
 
 	// export let divClass: string = 'flex items-center';

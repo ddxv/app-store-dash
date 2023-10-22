@@ -30,7 +30,6 @@ def query_recent_apps(period: str = "weekly", limit=20):
             "tablet_image_url_1",
         ]
     )
-
     sel_query = f"""
                 (
                     SELECT 
@@ -51,6 +50,7 @@ def query_recent_apps(period: str = "weekly", limit=20):
                 );
                 """
     df = pd.read_sql(sel_query, con=DBCON.engine)
+
     df = clean_app_df(df)
     return df
 
@@ -373,13 +373,11 @@ def get_single_app(app_id: str) -> pd.DataFrame:
 
 def clean_app_df(df: pd.DataFrame) -> pd.DataFrame:
     df["store"] = df["store"].replace({1: "Google Play", 2: "Apple App Store"})
-    df["installs"] = df["installs"].apply(lambda x: "{:,.0f}".format(x) if x else "N/A")
-    df["review_count"] = df["review_count"].apply(
-        lambda x: "{:,.0f}".format(x) if x else "N/A"
-    )
-    df["rating_count"] = df["rating_count"].apply(
-        lambda x: "{:,.0f}".format(x) if x else "N/A"
-    )
+    string_nums = ["installs", "review_count", "rating_count"]
+    for col in string_nums:
+        df[col] = df[col].apply(
+            lambda x: "{:,.0f}".format(x) if not np.isnan(x) else "N/A"
+        )
     df["rating"] = df["rating"].apply(lambda x: round(x, 2) if x else 0)
     ios_link = "https://apps.apple.com/us/app/-/id"
     play_link = "https://play.google.com/store/apps/details?id="
@@ -396,7 +394,6 @@ def clean_app_df(df: pd.DataFrame) -> pd.DataFrame:
             + df["developer_id"]
         )
 
-    df["rating_percent"] = (1 - (df["rating"] / 5)) * 100
     date_cols = ["created_at", "store_last_updated", "updated_at"]
     for x in date_cols:
         if x not in df.columns:
