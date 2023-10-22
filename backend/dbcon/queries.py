@@ -37,6 +37,7 @@ def query_recent_apps(period: str = "weekly", limit=20):
                         {my_cols}
                     FROM {table_name}
                     WHERE store = 1
+                    ORDER BY installs DESC NULLS LAST
                     LIMIT {limit}
                 )
                 UNION ALL
@@ -45,6 +46,7 @@ def query_recent_apps(period: str = "weekly", limit=20):
                         {my_cols}
                     FROM {table_name}
                     WHERE store = 2
+                    ORDER BY rating_count DESC NULLS LAST
                     LIMIT {limit}
                 );
                 """
