@@ -37,3 +37,4 @@ jobs:
             sudo systemctl restart app-store-api
             npm run build
             sudo systemctl restart app-store-frontend
+            sudo chown -R www-data:www-data /tmp/app-store-frontend.sock

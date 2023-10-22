@@ -8,13 +8,11 @@ After=network.target
 Type=simple
 User=ubuntu
 Group=ubuntu
-WorkingDirectory=/home/ubuntu/app-store-dash/frontend
+SupplementaryGroups=www-data
 Environment=NODE_ENV=production SOCKET_PATH=/tmp/app-store-frontend.sock
 ExecStart=/usr/local/bin/node /home/ubuntu/app-store-dash/frontend/build
-ExecReload=/bin/kill -s HUP $MAINPID
 Restart=on-failure
 KillMode=mixed
-PrivateTmp=true
 
 [Install]
 WantedBy=multi-user.target
