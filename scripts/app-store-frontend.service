@@ -1,5 +1,5 @@
 [Unit]
-Description=Gunicorn instance to serve App Store API
+Description=Gunicorn instance to serve frontend for App Store Dash
 After=network.target
 
 [Service]
@@ -8,7 +8,7 @@ User=ubuntu
 Group=ubuntu
 RuntimeDirectory=gunicorn
 WorkingDirectory=/home/ubuntu/app-store-dash/frontend
-ExecStart=npm run
+ExecStart=npm run preview
 ExecReload=/bin/kill -s HUP $MAINPID
 Restart=on-failure
 KillMode=mixed

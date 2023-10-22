@@ -110,6 +110,7 @@ sudo systemctl restart nginx.service
 
 ## Start the service and socket
 
+NOTE: If you have a socket and a service, you do not need to start the service, the socket will start the related service
 - `systemctl enable app-store-api.socket` to automatically start socket on server reboot
 - `sudo systemctl start app-store-api.socket` start
 - `sudo systemctl status app-store-api` to check status
@@ -124,8 +125,7 @@ Checking your local API docs:
 
 `http://127.0.0.1:8000/api/docs`
 
-Restarting Unit service
-- `sudo systemctl stop app-store-api`
-- `sudo systemctl start app-store-api`
-
-
+Restarting Unit service manually, ensure you do not start the service, let the socket start the related service.
+- `sudo systemctl stop app-store-api.socket`
+- `sudo systemctl stop app-store-api.service`
+- `sudo systemctl start app-store-api.socket`
