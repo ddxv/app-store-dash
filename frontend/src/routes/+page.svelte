@@ -15,7 +15,7 @@
 			<h1 class="h1 p-2">{values.title}</h1>
 			{#each Object.entries(values.data) as [_collection, collectionData]}
 				<div class="card p-2">
-					<h2 class="h2 p-4">valuesdata={collectionData.title}</h2>
+					<h2 class="h2 p-4">{collectionData.title}</h2>
 					<hr class="section-divider" />
 					<section class="grid grid-cols-3 md:grid-cols-5 gap-4">
 						{#each collectionData.apps as app}
