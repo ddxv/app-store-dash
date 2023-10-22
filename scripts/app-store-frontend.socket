@@ -1,9 +1,0 @@
-[Unit]
-Description=Node for App Store Frontend socket
-
-[Socket]
-ListenStream=/run/app-store-frontend.sock
-User=www-data
-
-[Install]
-WantedBy=sockets.target
