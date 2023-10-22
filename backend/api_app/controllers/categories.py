@@ -44,7 +44,7 @@ def category_overview() -> CategoriesOverview:
 class CategoryController(Controller):
     path = "/api/categories"
 
-    @get(path="/")
+    @get(path="/", cache=True)
     async def get_categories_overview(self) -> CategoriesOverview:
         """
         Handles a GET request for a list of categories
