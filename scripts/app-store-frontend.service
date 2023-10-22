@@ -9,7 +9,7 @@ Type=simple
 User=ubuntu
 Group=ubuntu
 WorkingDirectory=/home/ubuntu/app-store-dash/frontend
-Environment=NODE_ENV=production SOCKET_PATH=/tmp/socket
+Environment=NODE_ENV=production SOCKET_PATH=/run/app-store-frontend.sock
 ExecStart=/usr/local/bin/node /home/ubuntu/app-store-dash/frontend/build
 ExecReload=/bin/kill -s HUP $MAINPID
 Restart=on-failure
