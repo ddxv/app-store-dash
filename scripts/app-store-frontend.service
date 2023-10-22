@@ -5,7 +5,6 @@ StartLimitIntervalSec=30
 After=network.target
 
 [Service]
-Type=Notify
 User=ubuntu
 Group=ubuntu
 RuntimeDirectory=gunicorn
