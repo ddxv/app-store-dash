@@ -1,5 +1,7 @@
 [Unit]
 Description=Gunicorn instance to serve frontend for App Store Dash
+StartLimitBurst=3
+StartLimitIntervalSec=30
 After=network.target
 
 [Service]
@@ -8,7 +10,8 @@ User=ubuntu
 Group=ubuntu
 RuntimeDirectory=gunicorn
 WorkingDirectory=/home/ubuntu/app-store-dash/frontend
-ExecStart=npm run preview
+Environment=PORT=5001 NODE_ENV=production
+ExecStart=/usr/local/bin/node /home/james/app-store-dash/frontend/build
 ExecReload=/bin/kill -s HUP $MAINPID
 Restart=on-failure
 KillMode=mixed
