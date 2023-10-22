@@ -1,5 +1,5 @@
 [Unit]
-Description=Gunicorn App Store Frontend socket
+Description=Node for App Store Frontend socket
 
 [Socket]
 ListenStream=/run/app-store-frontend.sock
