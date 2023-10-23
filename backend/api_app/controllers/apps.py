@@ -2,7 +2,7 @@ import datetime
 
 from api_app.models import AppDetail, AppsOverview, Collection, StoreSection
 from config import get_logger
-from dbcon.queries import get_single_app, query_recent_apps
+from dbcon.queries import get_single_app, query_recent_apps, get_app_history
 from litestar import Controller, get
 from litestar.exceptions import NotFoundException
 
@@ -52,7 +52,7 @@ def get_app_overview_dict() -> AppsOverview:
 class AppController(Controller):
     path = "/api/apps"
 
-    @get(path="/")
+    @get(path="/", cache=3600)
     async def get_apps_overview(self) -> AppsOverview:
         """
         Handles a GET request for a list of apps
@@ -86,5 +86,8 @@ class AppController(Controller):
                 f"Store ID not found: {store_id!r}", status_code=404
             )
         app_dict = app_df.to_dict(orient="records")[0]
+        store_app = app_dict["id"]
+        app_hist = get_app_history(store_app)
+        app_dict["history_table"] = app_hist.to_html()
 
         return app_dict

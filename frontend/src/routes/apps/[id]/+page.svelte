@@ -89,14 +89,9 @@
 
 		<h2 class="h2">Historical Information</h2>
 		<div class="additional-info">
-			<!-- ... display additional information details -->
+			{@html data.myapp.history_table}
 		</div>
 	</div>
-
-	<!-- <h2>Historical Information</h2>
-<div class="additional-info">
-	{@html data.myapp.history}
-</div> -->
 
 	<a href="/">Back to Home</a>
 {:else}
