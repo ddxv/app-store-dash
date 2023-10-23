@@ -7,18 +7,23 @@ from sqlalchemy import text
 logger = get_logger(__name__)
 
 
-def query_recent_apps(period: str = "weekly", limit=20):
-    logger.info(f"Query app_store for recent apps {period=}")
-    if period == "weekly":
+def query_recent_apps(collection: str, limit=20):
+    logger.info(f"Query app_store for recent apps {collection=}")
+    if collection == "new_weekly":
         table_name = "apps_new_weekly"
-    elif period == "monthly":
+    elif collection == "new_monthly":
         table_name = "apps_new_monthly"
+    elif collection == "new_yearly":
+        table_name = "apps_new_yearly"
+    elif collection == "top":
+        table_name = "top_categories"
     else:
         table_name = "apps_new_weekly"
     my_cols = ", ".join(
         [
             "name",
             "store",
+            "mapped_category",
             "store_id",
             "installs",
             "review_count",
@@ -37,7 +42,6 @@ def query_recent_apps(period: str = "weekly", limit=20):
                     FROM {table_name}
                     WHERE store = 1
                     ORDER BY installs DESC NULLS LAST
-                    LIMIT {limit}
                 )
                 UNION ALL
                 (
@@ -46,11 +50,16 @@ def query_recent_apps(period: str = "weekly", limit=20):
                     FROM {table_name}
                     WHERE store = 2
                     ORDER BY rating_count DESC NULLS LAST
-                    LIMIT {limit}
                 );
                 """
     df = pd.read_sql(sel_query, con=DBCON.engine)
-
+    groups = df.groupby("store")
+    for _store, group in groups:
+        overall = group.sort_values(["installs", "rating_count"], ascending=False).head(
+            limit
+        )
+        overall["mapped_category"] = "overall"
+        df = pd.concat([df, overall], axis=0)
     df = clean_app_df(df)
     return df
 

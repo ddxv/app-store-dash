@@ -1,6 +1,11 @@
 import datetime
 
-from api_app.models import AppDetail, AppsOverview, Collection, StoreSection
+from api_app.models import (
+    AppDetail,
+    Collection,
+    StoreSection,
+    Category,
+)
 from config import get_logger
 from dbcon.queries import get_single_app, query_recent_apps, get_app_history
 from litestar import Controller, get
@@ -19,51 +24,55 @@ def get_string_date_from_days_ago(days: int) -> str:
     return mydate_str
 
 
-def get_app_overview_dict() -> AppsOverview:
-    new_weekly = query_recent_apps(period="weekly")
-    new_monthly = query_recent_apps(period="monthly")
-    monthly_ios_apps = new_monthly[~new_monthly["store"].str.contains("oogl")]
-    monthly_google_apps = new_monthly[new_monthly["store"].str.contains("oogl")]
-    weekly_ios_dicts = new_weekly[~new_weekly["store"].str.contains("oogl")].to_dict(
-        orient="records"
+def get_app_overview_dict(collection: str) -> Collection:
+    category_limit = 20
+    collections = {
+        "new_weekly": {"title": "New Apps this Week"},
+        "new_monthly": {"title": "New Apps this Month"},
+        "new_yearly": {"title": "New Apps this Year"},
+        "top": {"title": "Alltime Top"},
+    }
+    df = query_recent_apps(collection=collection, limit=category_limit)
+    categories_dict = {}
+    groups = df.groupby(["mapped_category"])
+    for category_key, apps in groups:
+        ios_dicts = (
+            apps[~apps["store"].str.contains("oogl")]
+            .head(category_limit)
+            .to_dict(orient="records")
+        )
+        google_dicts = (
+            apps[apps["store"].str.contains("oogl")]
+            .head(category_limit)
+            .to_dict(orient="records")
+        )
+        categories_dict[category_key] = Category(
+            key=category_key,
+            google=StoreSection(title="Google", apps=google_dicts),
+            ios=StoreSection(title="iOS", apps=ios_dicts),
+        )
+    response_collection = Collection(
+        title=collections[collection]["title"], categories=categories_dict
     )
-    weekly_google_dicts = new_weekly[new_weekly["store"].str.contains("oogl")].to_dict(
-        orient="records"
-    )
-    monthly_google_dicts = monthly_google_apps.to_dict(orient="records")
-    monthly_ios_dicts = monthly_ios_apps.to_dict(orient="records")
-    monthly_title = "New Apps this Month"
-    weekly_title = "New Apps this Week"
-    my_dict = AppsOverview(
-        new_weekly=Collection(
-            title=weekly_title,
-            google=StoreSection(title="Google", apps=weekly_google_dicts),
-            ios=StoreSection(title="iOS", apps=weekly_ios_dicts),
-        ),
-        new_monthly=Collection(
-            title=monthly_title,
-            google=StoreSection(title="Google", apps=monthly_google_dicts),
-            ios=StoreSection(title="iOS", apps=monthly_ios_dicts),
-        ),
-    )
-    return my_dict
+    return response_collection
 
 
 class AppController(Controller):
     path = "/api/apps"
 
-    @get(path="/", cache=3600)
-    async def get_apps_overview(self) -> AppsOverview:
+    @get(path="/collections/{collection:str}", cache=3600)
+    async def get_apps_overview(self, collection: str) -> Collection:
         """
         Handles a GET request for a list of apps
 
         Args:
+            collection:collection
 
         Returns:
             A dictionary representation of the list of apps for homepasge
         """
         logger.info(f"{self.path} start")
-        home_dict = get_app_overview_dict()
+        home_dict = get_app_overview_dict(collection=collection)
 
         return home_dict
 

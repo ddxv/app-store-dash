@@ -14,16 +14,24 @@ class StoreSection:
 
 
 @dataclass
-class Collection:
-    title: str  # Title like "Weekly by Downloads"
+class Category:
+    key: str  # mapped id like game_puzzle
     ios: StoreSection
     google: StoreSection
+
+
+@dataclass
+class Collection:
+    title: str  # Title like "Weekly by Downloads"
+    categories: dict[str, Category]  # Dict of category_id to Category
 
 
 @dataclass
 class AppsOverview:
     new_weekly: Collection
     new_monthly: Collection
+    new_yearly: Collection
+    top: Collection
 
 
 @dataclass
