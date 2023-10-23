@@ -1,5 +1,5 @@
 export const ssr: boolean = true;
-export const csr: boolean = false;
+export const csr: boolean = true;
 console.log('Script executed');
 
 interface LoadResponse {

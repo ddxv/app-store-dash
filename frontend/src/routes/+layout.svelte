@@ -4,7 +4,17 @@
 	import { page } from '$app/stores';
 	import IconSearch from '$lib/IconSearch.svelte';
 	import { ListBox, ListBoxItem } from '@skeletonlabs/skeleton';
-	export let valueSingle = 'books';
+
+	import { myListSelectionStore } from '../stores';
+	let localMyList = $myListSelectionStore;
+	// Reactive statement to update the store when localValue changes
+	$: myListSelectionStore.set(localMyList);
+
+	import { myStoreSelection } from '../stores';
+	let localMyStore = $myStoreSelection;
+	$: myStoreSelection.set(localMyStore);
+
+	let myCategories = ['books'];
 	export let data;
 </script>
 
@@ -65,27 +75,42 @@
 	<svelte:fragment slot="sidebarLeft">
 		{#if $page.url.pathname == '/'}
 			<div class="p-2">
-				<ListBox>
-					<br />
-					Type
-					<hr class="!border-t-2" />
-					<ListBoxItem bind:group={valueSingle} name="medium" value="google">Google</ListBoxItem>
-					<ListBoxItem bind:group={valueSingle} name="medium" value="ios">iOS</ListBoxItem>
-					<br />
-					Categories
-					<hr class="!border-t-2" />
-					<ListBoxItem bind:group={valueSingle} name="medium" value="books">BOOKS</ListBoxItem>
-					<ListBoxItem bind:group={valueSingle} name="medium" value="tv">TV</ListBoxItem>
-					{#if data}
-						{#each Object.entries(data.mycats.categories) as [_prop, values]}
-							{#if values.id}
-								<ListBoxItem bind:group={valueSingle} name="medium" value="${values.id}"
-									>{values.name}</ListBoxItem
-								>
-							{/if}
-						{/each}
-					{/if}
-				</ListBox>
+				<br />
+				<h4 class="h4">List</h4>
+				<div class=" card p-4 text-token">
+					<ListBox>
+						<ListBoxItem bind:group={localMyList} name="medium" value="new_weekly"
+							>New this Week by Downloads</ListBoxItem
+						>
+						<ListBoxItem bind:group={localMyList} name="medium" value="new_monthly"
+							>New this Month by Downloads</ListBoxItem
+						>
+					</ListBox>
+				</div>
+
+				<br />
+				<h4 class="h4">Stores</h4>
+				<div class=" card p-4 text-token">
+					<ListBox>
+						<ListBoxItem bind:group={localMyStore} name="medium" value="google">Google</ListBoxItem>
+						<ListBoxItem bind:group={localMyStore} name="medium" value="ios">Apple</ListBoxItem>
+					</ListBox>
+				</div>
+				<br />
+				<h4 class="h4">Categories</h4>
+				<div class=" card p-4 text-token">
+					<ListBox multiple>
+						{#if data}
+							{#each Object.entries(data.mycats.categories) as [_prop, values]}
+								{#if values.id}
+									<ListBoxItem bind:group={myCategories} name="medium" value="${values.id}"
+										>{values.name}</ListBoxItem
+									>
+								{/if}
+							{/each}
+						{/if}
+					</ListBox>
+				</div>
 			</div>
 		{/if}
 		<!-- --- -->

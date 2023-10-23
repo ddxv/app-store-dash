@@ -1,6 +1,6 @@
 import datetime
 
-from api_app.models import AppDetail, AppGroup, AppsOverview, Section
+from api_app.models import AppDetail, AppsOverview, Collection, StoreSection
 from config import get_logger
 from dbcon.queries import get_single_app, query_recent_apps
 from litestar import Controller, get
@@ -19,34 +19,30 @@ def get_string_date_from_days_ago(days: int) -> str:
 
 
 def get_app_overview_dict() -> AppsOverview:
-    new_apps = query_recent_apps(period="weekly")
-    trending_apps = query_recent_apps(period="monthly")
-    trending_ios_apps = trending_apps[~trending_apps["store"].str.contains("oogl")]
-    trending_google_apps = trending_apps[trending_apps["store"].str.contains("oogl")]
-    new_ios_dicts = new_apps[~new_apps["store"].str.contains("oogl")].to_dict(
+    new_weekly = query_recent_apps(period="weekly")
+    new_monthly = query_recent_apps(period="monthly")
+    monthly_ios_apps = new_monthly[~new_monthly["store"].str.contains("oogl")]
+    monthly_google_apps = new_monthly[new_monthly["store"].str.contains("oogl")]
+    weekly_ios_dicts = new_weekly[~new_weekly["store"].str.contains("oogl")].to_dict(
         orient="records"
     )
-    new_google_dicts = new_apps[new_apps["store"].str.contains("oogl")].to_dict(
+    weekly_google_dicts = new_weekly[new_weekly["store"].str.contains("oogl")].to_dict(
         orient="records"
     )
-    trending_google_dicts = trending_google_apps.to_dict(orient="records")
-    trending_ios_dicts = trending_ios_apps.to_dict(orient="records")
-    trending_title = "New Apps this Month"
-    recent_title = "New Apps this Week"
+    monthly_google_dicts = monthly_google_apps.to_dict(orient="records")
+    monthly_ios_dicts = monthly_ios_apps.to_dict(orient="records")
+    monthly_title = "New Apps this Month"
+    weekly_title = "New Apps this Week"
     my_dict = AppsOverview(
-        new=Section(
-            title=recent_title,
-            data=[
-                AppGroup(title="Google", apps=new_google_dicts),
-                AppGroup(title="iOS", apps=new_ios_dicts),
-            ],
+        new_weekly=Collection(
+            title=weekly_title,
+            google=StoreSection(title="Google", apps=weekly_google_dicts),
+            ios=StoreSection(title="iOS", apps=weekly_ios_dicts),
         ),
-        trending=Section(
-            title=trending_title,
-            data=[
-                AppGroup(title="Google", apps=trending_google_dicts),
-                AppGroup(title="iOS", apps=trending_ios_dicts),
-            ],
+        new_monthly=Collection(
+            title=monthly_title,
+            google=StoreSection(title="Google", apps=monthly_google_dicts),
+            ios=StoreSection(title="iOS", apps=monthly_ios_dicts),
         ),
     )
     return my_dict

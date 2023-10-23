@@ -4,74 +4,68 @@
 	function getClass(app) {
 		return app.featured_image_url && app.featured_image_url !== 'null' ? 'col-span-2' : '';
 	}
+	// import myListSelection from './+layout.svelte';
+	import { myListSelectionStore } from '../stores';
+	import { myStoreSelection } from '../stores';
 </script>
 
-<h1 class="h1 p-4">Welcome</h1>
+<h1 class="h1 p-4">Welcome!</h1>
 
 <div>
 	{#if data.myapps}
-		{#each Object.entries(data.myapps) as [_prop, values]}
-			<h1 class="h1 p-2">{values.title}</h1>
-			{#each Object.entries(values.data) as [_collection, collectionData]}
-				<div class="card p-2">
-					<h2 class="h2 p-4">{collectionData.title}</h2>
-					<hr class="section-divider" />
-					<section class="grid grid-cols-3 md:grid-cols-5 gap-4">
-						{#each collectionData.apps as app}
-							<a href={`/apps/${app.store_id}`} class={`card overflow-hidden ${getClass(app)}`}>
-								<div class="app-item">
-									<header>
-										<div>
-											<!-- Show Featured Image (spans 2 cols) -->
-											{#if app.featured_image_url && app.featured_image_url != 'null'}
-												<div class="justify-center">
-													<img
-														class="h-auto object-fill rounded-lg"
-														src={app.featured_image_url}
-														alt={app.name}
-													/>
-												</div>
-												<div class="inline-flex text-left">
-													<img
-														class="h-auto w-1/4 p-3 rounded-lg"
-														src={app.icon_url_512}
-														alt={app.name}
-													/>
-													<AppDetails {app} />
-												</div>
-												<!-- Show Icon Only (smaller) -->
-											{:else if app.tablet_image_url && app.tablet_image_url != 'null'}
-												<div>
-													<img
-														class="h-auto max-w-full rounded-lg"
-														src={app.phone_image_url_1}
-														alt={app.name}
-													/>
-													<img
-														class="h-auto w-1/4 rounded-lg"
-														src={app.icon_url_512}
-														alt={app.name}
-													/>
-												</div>
-											{:else}
-												<img
-													class="h-auto max-w-full rounded-lg"
-													src={app.icon_url_512}
-													alt={app.name}
-												/>
-												<AppDetails {app} />
-											{/if}
+		<h1 class="h1 p-2">{data.myapps[$myListSelectionStore].title}</h1>
+		<div class="card p-2">
+			<h2 class="h2 p-4">{data.myapps[$myListSelectionStore][$myStoreSelection].title}</h2>
+			<hr class="section-divider" />
+			<section class="grid grid-cols-3 md:grid-cols-5 gap-4">
+				{#each data.myapps[$myListSelectionStore][$myStoreSelection].apps as app}
+					<a href={`/apps/${app.store_id}`} class={`card overflow-hidden ${getClass(app)}`}>
+						<div class="app-item">
+							<header>
+								<div>
+									<!-- Show Featured Image (spans 2 cols) -->
+									{#if app.featured_image_url && app.featured_image_url != 'null'}
+										<div class="justify-center">
+											<img
+												class="h-auto object-fill rounded-lg"
+												src={app.featured_image_url}
+												alt={app.name}
+											/>
 										</div>
-									</header>
+										<div class="inline-flex text-left">
+											<img
+												class="h-auto w-1/4 p-3 rounded-lg"
+												src={app.icon_url_512}
+												alt={app.name}
+											/>
+											<AppDetails {app} />
+										</div>
+										<!-- Show Icon Only (smaller) -->
+									{:else if app.tablet_image_url && app.tablet_image_url != 'null'}
+										<div>
+											<img
+												class="h-auto max-w-full rounded-lg"
+												src={app.phone_image_url_1}
+												alt={app.name}
+											/>
+											<img class="h-auto w-1/4 rounded-lg" src={app.icon_url_512} alt={app.name} />
+										</div>
+									{:else}
+										<img
+											class="h-auto max-w-full rounded-lg"
+											src={app.icon_url_512}
+											alt={app.name}
+										/>
+										<AppDetails {app} />
+									{/if}
 								</div>
-							</a>
-						{/each}
-					</section>
-					<!-- {/each} -->
-				</div>
-				<p class="p-2" />
-			{/each}
-		{/each}
+							</header>
+						</div>
+					</a>
+				{/each}
+			</section>
+		</div>
+		<p class="p-2" />
 	{:else}
 		<p>Loading...</p>
 		{data}

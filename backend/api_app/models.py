@@ -8,21 +8,22 @@ class AppDetail:
 
 
 @dataclass
-class AppGroup:
-    title: str
+class StoreSection:
+    title: str  # iOS or Google
     apps: list[AppDetail]
 
 
 @dataclass
-class Section:
-    title: str
-    data: list[AppGroup]
+class Collection:
+    title: str  # Title like "Weekly by Downloads"
+    ios: StoreSection
+    google: StoreSection
 
 
 @dataclass
 class AppsOverview:
-    new: Section
-    trending: Section
+    new_weekly: Collection
+    new_monthly: Collection
 
 
 @dataclass
