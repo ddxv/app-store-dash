@@ -38,9 +38,6 @@
 				<TabAnchor href="/" selected={$page.url.pathname === '/'}>
 					<span>HOME</span>
 				</TabAnchor>
-				<TabAnchor href="/categories" selected={$page.url.pathname === '/categories'}>
-					<span>CATEGORIES</span>
-				</TabAnchor>
 				<TabAnchor href="/about" selected={$page.url.pathname === '/about'}>
 					<span>ABOUT</span>
 				</TabAnchor>

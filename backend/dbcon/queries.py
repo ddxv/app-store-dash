@@ -347,9 +347,9 @@ def get_top_apps_by_installs(
     return df
 
 
-def get_single_app(app_id: str) -> pd.DataFrame:
-    logger.info(f"Query for single app_id={app_id}")
-    where_str = f"WHERE store_id = '{app_id}'"
+def get_single_app(store_id: str) -> pd.DataFrame:
+    logger.info(f"Query for single app_id={store_id}")
+    where_str = f"WHERE store_id = '{store_id}'"
     where_str = text(where_str)
     sel_query = f"""SELECT
                         sa.*,
@@ -367,7 +367,8 @@ def get_single_app(app_id: str) -> pd.DataFrame:
                     ;
                     """
     df = pd.read_sql(sel_query, DBCON.engine)
-    df = clean_app_df(df)
+    if not df.empty:
+        df = clean_app_df(df)
     return df
 
 
@@ -376,7 +377,7 @@ def clean_app_df(df: pd.DataFrame) -> pd.DataFrame:
     string_nums = ["installs", "review_count", "rating_count"]
     for col in string_nums:
         df[col] = df[col].apply(
-            lambda x: "{:,.0f}".format(x) if not np.isnan(x) else "N/A"
+            lambda x: "N/A" if (x is None or np.isnan(x)) else "{:,.0f}".format(x)
         )
     df["rating"] = df["rating"].apply(lambda x: round(x, 2) if x else 0)
     ios_link = "https://apps.apple.com/us/app/-/id"

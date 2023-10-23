@@ -1,5 +1,5 @@
 export const ssr = true;
-export const csr = false;
+export const csr = true;
 console.log('Script executed');
 
 /** @type {import('../[id]/$types').PageServerLoad} */

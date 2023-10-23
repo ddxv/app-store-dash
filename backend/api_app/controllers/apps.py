@@ -4,6 +4,7 @@ from api_app.models import AppDetail, AppsOverview, Collection, StoreSection
 from config import get_logger
 from dbcon.queries import get_single_app, query_recent_apps
 from litestar import Controller, get
+from litestar.exceptions import NotFoundException
 
 logger = get_logger(__name__)
 
@@ -61,7 +62,7 @@ class AppController(Controller):
         Returns:
             A dictionary representation of the list of apps for homepasge
         """
-        logger.info("inside a request")
+        logger.info(f"{self.path} start")
         home_dict = get_app_overview_dict()
 
         return home_dict
@@ -77,8 +78,13 @@ class AppController(Controller):
         Returns:
             json
         """
+        logger.info(f"{self.path} start")
 
         app_df = get_single_app(store_id)
+        if app_df.empty:
+            raise NotFoundException(
+                f"Store ID not found: {store_id!r}", status_code=404
+            )
         app_dict = app_df.to_dict(orient="records")[0]
 
         return app_dict

@@ -53,7 +53,7 @@ class CategoryController(Controller):
             A dictionary representation of the list of categories
             each with an id, name, type and total of apps
         """
-        logger.info("inside a request")
+        logger.info(f"{self.path} start")
         overview = category_overview()
 
         return overview
