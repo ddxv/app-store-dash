@@ -33,6 +33,7 @@
 														class="h-auto object-fill rounded-lg"
 														src={app.featured_image_url}
 														alt={app.name}
+														referrerpolicy="no-referrer"
 													/>
 												</div>
 												<div class="inline-flex text-left">
@@ -40,6 +41,7 @@
 														class="h-auto w-1/4 p-3 rounded-lg"
 														src={app.icon_url_512}
 														alt={app.name}
+														referrerpolicy="no-referrer"
 													/>
 													<AppDetails {app} />
 												</div>
@@ -50,11 +52,13 @@
 														class="h-auto max-w-full rounded-lg"
 														src={app.phone_image_url_1}
 														alt={app.name}
+														referrerpolicy="no-referrer"
 													/>
 													<img
 														class="h-auto w-1/4 rounded-lg"
 														src={app.icon_url_512}
 														alt={app.name}
+														referrerpolicy="no-referrer"
 													/>
 												</div>
 											{:else}
@@ -62,6 +66,7 @@
 													class="h-auto max-w-full rounded-lg"
 													src={app.icon_url_512}
 													alt={app.name}
+													referrerpolicy="no-referrer"
 												/>
 												<AppDetails {app} />
 											{/if}

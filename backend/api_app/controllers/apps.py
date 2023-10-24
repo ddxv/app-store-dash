@@ -26,12 +26,7 @@ def get_string_date_from_days_ago(days: int) -> str:
 
 def get_app_overview_dict(collection: str) -> Collection:
     category_limit = 20
-    collections = {
-        "new_weekly": {"title": "New Apps this Week"},
-        "new_monthly": {"title": "New Apps this Month"},
-        "new_yearly": {"title": "New Apps this Year"},
-        "top": {"title": "Alltime Top"},
-    }
+
     df = query_recent_apps(collection=collection, limit=category_limit)
     categories_dicts = []
     groups = df.groupby(["mapped_category"])
@@ -54,7 +49,7 @@ def get_app_overview_dict(collection: str) -> Collection:
             )
         )
     response_collection = Collection(
-        title=collections[collection]["title"], categories=categories_dicts
+        title=COLLECTIONS[collection]["title"], categories=categories_dicts
     )
     return response_collection
 
@@ -73,11 +68,11 @@ class AppController(Controller):
         Returns:
             A dictionary representation of the list of apps for homepasge
         """
-        request.logger.info("inside a request")
         logger.info(f"{self.path} start")
         print(f"collection={collection}")
         home_dict = get_app_overview_dict(collection=collection)
 
+        logger.info(f"{self.path} return")
         return home_dict
 
     @get(path="/{store_id:str}", cache=3600)
@@ -104,3 +99,11 @@ class AppController(Controller):
         app_dict["history_table"] = app_hist.to_html()
 
         return app_dict
+
+
+COLLECTIONS = {
+    "new_weekly": {"title": "New Apps this Week"},
+    "new_monthly": {"title": "New Apps this Month"},
+    "new_yearly": {"title": "New Apps this Year"},
+    "top": {"title": "Alltime Top"},
+}

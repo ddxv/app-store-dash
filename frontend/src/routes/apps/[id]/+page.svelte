@@ -13,14 +13,24 @@
 		<div class="card-header">
 			<h1 class="h1">{data.myapp.name}</h1>
 			{#if data.myapp.icon_url_512}
-				<img src={data.myapp.icon_url_512} alt={data.myapp.name} class="app-icon" />
+				<img
+					src={data.myapp.icon_url_512}
+					alt={data.myapp.name}
+					class="app-icon"
+					referrerpolicy="no-referrer"
+				/>
 			{/if}
 			<div>
 				<Rating total={5} size={50} rating={data.myapp.rating} />
 			</div>
 
 			{#if data.myapp.featured_image}
-				<img src={data.myapp.featured_image} alt={data.myapp.name} class="app-icon" />
+				<img
+					src={data.myapp.featured_image}
+					alt={data.myapp.name}
+					class="app-icon"
+					referrerpolicy="no-referrer"
+				/>
 			{/if}
 		</div>
 

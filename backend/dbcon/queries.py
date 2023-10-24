@@ -52,6 +52,21 @@ def query_recent_apps(collection: str, limit=20):
                     ORDER BY rating_count DESC NULLS LAST
                 );
                 """
+    sel_query = f"""WITH NumberedRows AS (
+                    SELECT 
+                        {my_cols},
+                        ROW_NUMBER() OVER (PARTITION BY store, mapped_category
+                    ORDER BY 
+                        CASE WHEN store = 1 THEN installs ELSE rating_count END DESC NULLS LAST
+                ) AS rn
+                FROM {table_name}
+            )
+            SELECT 
+                {my_cols}
+            FROM NumberedRows
+            WHERE rn <= {limit}
+            ;
+            """
     df = pd.read_sql(sel_query, con=DBCON.engine)
     groups = df.groupby("store")
     for _store, group in groups:
