@@ -1,4 +1,5 @@
 import { writable } from 'svelte/store';
 
-export const myListSelectionStore = writable('new_weekly');
+export const myCollectionStore = writable('new_weekly');
 export const myStoreSelection = writable('google');
+export const myCategorySelection = writable('overall');

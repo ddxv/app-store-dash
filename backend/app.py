@@ -1,6 +1,5 @@
 from api_app.controllers.apps import AppController
 from api_app.controllers.categories import CategoryController
-from config import get_logger
 from litestar import Litestar
 from litestar.config.cors import CORSConfig
 from litestar.logging import LoggingConfig
@@ -10,14 +9,9 @@ from litestar.openapi import OpenAPIConfig, OpenAPIController
 
 cors_config = CORSConfig(
     allow_origins=[
-        "https://apps.jamesoclaire.com",
-        "https://www.jamesoclaire.com",
         "localhost",
-        "*",
     ]
 )
-
-logger = get_logger(__name__)
 
 
 class MyOpenAPIController(OpenAPIController):

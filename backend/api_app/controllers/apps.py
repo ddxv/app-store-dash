@@ -8,7 +8,7 @@ from api_app.models import (
 )
 from config import get_logger
 from dbcon.queries import get_single_app, query_recent_apps, get_app_history
-from litestar import Controller, get
+from litestar import Controller, get, Request
 from litestar.exceptions import NotFoundException
 
 logger = get_logger(__name__)
@@ -33,7 +33,7 @@ def get_app_overview_dict(collection: str) -> Collection:
         "top": {"title": "Alltime Top"},
     }
     df = query_recent_apps(collection=collection, limit=category_limit)
-    categories_dict = {}
+    categories_dicts = []
     groups = df.groupby(["mapped_category"])
     for category_key, apps in groups:
         ios_dicts = (
@@ -46,13 +46,15 @@ def get_app_overview_dict(collection: str) -> Collection:
             .head(category_limit)
             .to_dict(orient="records")
         )
-        categories_dict[category_key] = Category(
-            key=category_key,
-            google=StoreSection(title="Google", apps=google_dicts),
-            ios=StoreSection(title="iOS", apps=ios_dicts),
+        categories_dicts.append(
+            Category(
+                key=category_key,
+                google=StoreSection(title="Google", apps=google_dicts),
+                ios=StoreSection(title="iOS", apps=ios_dicts),
+            )
         )
     response_collection = Collection(
-        title=collections[collection]["title"], categories=categories_dict
+        title=collections[collection]["title"], categories=categories_dicts
     )
     return response_collection
 
@@ -61,7 +63,7 @@ class AppController(Controller):
     path = "/api/apps"
 
     @get(path="/collections/{collection:str}", cache=3600)
-    async def get_apps_overview(self, collection: str) -> Collection:
+    async def get_apps_overview(self, request: Request, collection: str) -> Collection:
         """
         Handles a GET request for a list of apps
 
@@ -71,7 +73,9 @@ class AppController(Controller):
         Returns:
             A dictionary representation of the list of apps for homepasge
         """
+        request.logger.info("inside a request")
         logger.info(f"{self.path} start")
+        print(f"collection={collection}")
         home_dict = get_app_overview_dict(collection=collection)
 
         return home_dict

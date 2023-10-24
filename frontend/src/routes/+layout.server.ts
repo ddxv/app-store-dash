@@ -9,7 +9,7 @@ export interface Categories {
 
 /** @type {import('./$types').PageServerLoad} */
 export async function load(): Promise<Categories> {
-    console.log(`stores load categories start`);
+    console.log(`load categories start`);
     try {
 
         const res = await fetch(`http://localhost:8000/api/categories`);
@@ -20,11 +20,11 @@ export async function load(): Promise<Categories> {
 
         const categories = await res.json();
 
-        console.log(`stores loaded categories with len: ${Object.keys(categories).length}`);
+        console.log(`load categories len: ${Object.keys(categories).length}`);
         return { mycats: categories };
 
     } catch (error) {
-        console.error('Failed to load data:', error);
+        console.error('Failed to load layout categories data:', error);
         return {
             mycats: null,
             status: 500,

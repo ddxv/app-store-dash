@@ -1,6 +1,5 @@
 export const ssr = true;
-export const csr = true;
-console.log('Script executed');
+export const csr = false;
 
 /** @type {import('../[id]/$types').PageServerLoad} */
 export async function load({ params }) {
@@ -18,7 +17,7 @@ export async function load({ params }) {
 		return { myapp: app_detail };
 
 	} catch (error) {
-		console.error('Failed to load data:', error);
+		console.error('Failed to load app data:', error);
 		return {
 			status: 500,
 			error: 'Failed to load trending apps'

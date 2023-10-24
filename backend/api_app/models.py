@@ -23,7 +23,7 @@ class Category:
 @dataclass
 class Collection:
     title: str  # Title like "Weekly by Downloads"
-    categories: dict[str, Category]  # Dict of category_id to Category
+    categories: list[Category]  # Dict of category_id to Category
 
 
 @dataclass

@@ -1,5 +1,10 @@
 export const ssr: boolean = true;
 export const csr: boolean = true;
+import { myCollectionStore as myCollectionSelection } from '../stores';
+let collectionValue: string;
+myCollectionSelection.subscribe(value => {
+    collectionValue = value;
+})();
 console.log('Script executed');
 
 interface LoadResponse {
@@ -10,17 +15,18 @@ interface LoadResponse {
 
 /** @type {import('./$types').PageServerLoad} */
 export async function load(): Promise<LoadResponse> {
-    console.log('load started');
+    console.log(`load started collection=${collectionValue}`);
     try {
-        const res = await fetch('http://localhost:8000/api/apps');
+        const res = await fetch(`http://localhost:8000/api/apps/collections/${collectionValue}`);
 
         if (!res.ok) {
-            throw new Error(`Failed to fetch with status ${res.status}`);
+            const text = await res.text();
+            throw new Error(`Failed to fetch collections status ${res.status} ${text}`);
         }
 
-        const trending_apps: any = await res.json();
-        console.log(`loaded trending_apps with len: ${Object.keys(trending_apps).length}`);
-        return { myapps: trending_apps };
+        const app_collections: any = await res.json();
+        console.log(`loaded collections with len: ${Object.keys(app_collections).length}`);
+        return { myapps: app_collections };
     } catch (error) {
         console.error('Failed to load data:', error);
         return {

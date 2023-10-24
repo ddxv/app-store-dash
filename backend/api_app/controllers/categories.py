@@ -28,6 +28,11 @@ def category_overview() -> CategoriesOverview:
     )
     cats = cats.rename(columns={"category": "id"})
 
+    summary = cats[["android", "ios", "total_apps"]].sum()
+    summary["name"] = "Overall"
+    summary["id"] = "overall"
+    cats.loc["Overall"] = summary
+
     cats[["android", "ios", "total_apps"]] = cats[
         ["android", "ios", "total_apps"]
     ].astype(int)

@@ -5,16 +5,19 @@
 	import IconSearch from '$lib/IconSearch.svelte';
 	import { ListBox, ListBoxItem } from '@skeletonlabs/skeleton';
 
-	import { myListSelectionStore } from '../stores';
-	let localMyList = $myListSelectionStore;
+	import { myCollectionStore } from '../stores';
+	let localMyList = $myCollectionStore;
 	// Reactive statement to update the store when localValue changes
-	$: myListSelectionStore.set(localMyList);
+	$: myCollectionStore.set(localMyList);
 
 	import { myStoreSelection } from '../stores';
 	let localMyStore = $myStoreSelection;
 	$: myStoreSelection.set(localMyStore);
 
-	let myCategories = ['books'];
+	import { myCategorySelection } from '../stores';
+	let localCategories = $myCategorySelection;
+	$: myCategorySelection.set(localCategories);
+
 	export let data;
 </script>
 
@@ -82,6 +85,10 @@
 						<ListBoxItem bind:group={localMyList} name="medium" value="new_monthly"
 							>New this Month by Downloads</ListBoxItem
 						>
+						<ListBoxItem bind:group={localMyList} name="medium" value="new_yearly"
+							>New this Year by Downloads</ListBoxItem
+						>
+						<ListBoxItem bind:group={localMyList} name="medium" value="top">Alltime</ListBoxItem>
 					</ListBox>
 				</div>
 
@@ -96,11 +103,11 @@
 				<br />
 				<h4 class="h4">Categories</h4>
 				<div class=" card p-4 text-token">
-					<ListBox multiple>
+					<ListBox>
 						{#if data}
 							{#each Object.entries(data.mycats.categories) as [_prop, values]}
 								{#if values.id}
-									<ListBoxItem bind:group={myCategories} name="medium" value="${values.id}"
+									<ListBoxItem bind:group={localCategories} name="medium" value={values.id}
 										>{values.name}</ListBoxItem
 									>
 								{/if}
