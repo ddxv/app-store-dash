@@ -1,4 +1,5 @@
 <script>
+	/** @type {import('../[collection]/$types').PageData} */
 	export let data;
 	import AppDetails from '$lib/RatingInstalls.svelte';
 	function getClass(app) {
@@ -6,22 +7,33 @@
 	}
 	import { myStoreSelection } from '../../../stores';
 	import { myCategorySelection } from '../../../stores';
+
+	import { myCategoryMap } from '../../../stores';
 </script>
 
 <h1 class="h1 p-4">Welcome!</h1>
 
 <div>
-	{#if data.myapps}
-		<!-- {#each Object.keys(data.myapps) as key} -->
+	{#if data}
 		<h1 class="h1 p-2">{data.myapps.title}</h1>
 		{#each Object.entries(data.myapps.categories) as [_key, cat]}
 			{#if cat.key == $myCategorySelection}
 				<div class="card p-2">
-					<h2 class="h2 p-4">{cat[$myStoreSelection].title}: {$myCategorySelection}</h2>
+					<h2 class="h2 p-4">
+						{cat[$myStoreSelection].title}:
+						{#if $myCategoryMap}
+							{#each Object.entries($myCategoryMap.mycats.categories) as [_key, catMap]}
+								{#if catMap.id == cat.key}
+									{catMap.name}
+								{/if}
+							{/each}
+						{:else}
+							cat
+						{/if}
+					</h2>
 					<hr class="section-divider" />
 					<section class="grid grid-cols-3 md:grid-cols-5 gap-4">
 						{#each cat[$myStoreSelection].apps as app}
-							<!-- {#each data.myapps[$myCollectionSelection][$myStoreSelection].apps as app} -->
 							<a href={`/apps/${app.store_id}`} class={`card overflow-hidden ${getClass(app)}`}>
 								<div class="app-item">
 									<header>
@@ -46,7 +58,7 @@
 													<AppDetails {app} />
 												</div>
 												<!-- Show Icon Only (smaller) -->
-											{:else if app.tablet_image_url && app.tablet_image_url != 'null'}
+											{:else if app.tablet_image_url_1 && app.tablet_image_url_1 != 'null'}
 												<div>
 													<img
 														class="h-auto max-w-full rounded-lg"

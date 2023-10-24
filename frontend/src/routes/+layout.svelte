@@ -21,6 +21,13 @@
 	$: classesActive = (href) => (href === $page.url.pathname ? '!bg-primary-500' : '');
 
 	export let data;
+
+	import { myCategoryMap } from '../stores';
+	myCategoryMap.set(data);
+
+	function setCategorySelection(id) {
+		localCategories = id;
+	}
 </script>
 
 <!-- App Shell -->
@@ -113,7 +120,43 @@
 					</ListBox>
 				</div>
 				<br />
-				<h4 class="h4">Categories</h4>
+
+				<h4 class="h4">Categories NEW</h4>
+
+				{#if $myCategoryMap}
+					<!-- Responsive Container (recommended) -->
+					<div class="table-container">
+						<!-- Native Table Element -->
+						<table class="table table-hover table-interactive table-compact">
+							<thead>
+								<tr>
+									<th>Category</th>
+									<th>Android</th>
+									<th>iOS</th>
+								</tr>
+							</thead>
+							<tbody>
+								{#each Object.entries($myCategoryMap.mycats.categories) as [_i, row]}
+									{#if row.id == localCategories}
+										<tr class="table-row-checked" on:click={() => setCategorySelection(row.id)}>
+											<td>{row.name}</td>
+											<td>{row.android}</td>
+											<td>{row.ios}</td>
+										</tr>
+									{:else}
+										<tr on:click={() => setCategorySelection(row.id)}>
+											<td>{row.name}</td>
+											<td>{row.android}</td>
+											<td>{row.ios}</td>
+										</tr>
+									{/if}
+								{/each}
+							</tbody>
+						</table>
+					</div>
+				{/if}
+
+				<h4 class="h4">Categories OLD</h4>
 				<div class=" card p-4 text-token">
 					<ListBox>
 						{#if data}

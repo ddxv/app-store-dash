@@ -9,9 +9,6 @@ export interface Categories {
 
 
 
-
-
-
 /** @type {import('./$types').PageServerLoad} */
 export async function load(): Promise<Categories> {
     console.log(`load categories start`);
