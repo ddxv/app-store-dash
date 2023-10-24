@@ -18,6 +18,8 @@
 	let localCategories = $myCategorySelection;
 	$: myCategorySelection.set(localCategories);
 
+	$: classesActive = (href) => (href === $page.url.pathname ? '!bg-primary-500' : '');
+
 	export let data;
 </script>
 
@@ -73,23 +75,33 @@
 		</AppBar>
 	</svelte:fragment>
 	<svelte:fragment slot="sidebarLeft">
-		{#if $page.url.pathname == '/'}
+		{#if $page.url.pathname == '/' || $page.url.pathname.startsWith('/collections')}
 			<div class="p-2">
 				<br />
 				<h4 class="h4">List</h4>
 				<div class=" card p-4 text-token">
-					<ListBox>
-						<ListBoxItem bind:group={localMyList} name="medium" value="new_weekly"
-							>New this Week by Downloads</ListBoxItem
-						>
-						<ListBoxItem bind:group={localMyList} name="medium" value="new_monthly"
-							>New this Month by Downloads</ListBoxItem
-						>
-						<ListBoxItem bind:group={localMyList} name="medium" value="new_yearly"
-							>New this Year by Downloads</ListBoxItem
-						>
-						<ListBoxItem bind:group={localMyList} name="medium" value="top">Alltime</ListBoxItem>
-					</ListBox>
+					<nav class="list-nav">
+						<ul>
+							<li>
+								<a href="/collections/new_weekly" class={classesActive('/collections/new_weekly')}
+									>New this Week by Downloads</a
+								>
+							</li>
+							<li>
+								<a href="/collections/new_monthly" class={classesActive('/collections/new_monthly')}
+									>New this Month by Downloads</a
+								>
+							</li>
+							<li>
+								<a href="/collections/new_yearly" class={classesActive('/collections/new_yearly')}
+									>New this Year by Downloads</a
+								>
+							</li>
+							<li>
+								<a href="/collections/top" class={classesActive('/collections/top')}>Alltime Top</a>
+							</li>
+						</ul>
+					</nav>
 				</div>
 
 				<br />

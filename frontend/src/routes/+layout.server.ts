@@ -1,11 +1,16 @@
 export const ssr = true;
-export const csr = true;
+export const csr = false;
 
 export interface Categories {
     mycats: any;
     status?: number;
     error?: string;
 }
+
+
+
+
+
 
 /** @type {import('./$types').PageServerLoad} */
 export async function load(): Promise<Categories> {
