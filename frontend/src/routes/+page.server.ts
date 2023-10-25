@@ -1,5 +1,5 @@
 import { redirect } from '@sveltejs/kit';
 
 export function load() {
-	throw redirect(307, '/collections/new_weekly');
+	throw redirect(307, '/collections/top');
 }

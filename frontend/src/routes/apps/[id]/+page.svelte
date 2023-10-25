@@ -8,15 +8,15 @@
 
 {#if data.myapp}
 	<!-- App Icon Title & Info -->
-	<section class="grid grid-cols-1 md:grid-cols-2 gap-4">
-		<div class="card p-8">
+	<section class="grid grid-flow-cols-1 md:grid-cols-2 gap-4">
+		<div class="card variant-glass-surface p-8">
 			<div class="card-header p-4">
 				<div class="inline-flex">
 					{#if data.myapp.icon_url_512}
 						<img
 							src={data.myapp.icon_url_512}
 							alt={data.myapp.name}
-							class="w-60 h-60"
+							class="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 xl:w-60 xl:h-60"
 							referrerpolicy="no-referrer"
 						/>
 					{/if}
@@ -109,7 +109,7 @@
 			</div>
 		</div>
 		<!-- App Pictures -->
-		<div>
+		<div class="card variant-glass-surface p-8">
 			{#if data.myapp.featured_image_url}
 				<div>
 					<img

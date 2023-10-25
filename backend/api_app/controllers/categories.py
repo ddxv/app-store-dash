@@ -37,6 +37,8 @@ def category_overview() -> CategoriesOverview:
         ["android", "ios", "total_apps"]
     ].astype(int)
 
+    cats = cats.sort_values("total_apps", ascending=False)
+
     cats["type"] = np.where(cats.id.str.contains("_game|games"), "game", "app")
 
     category_dicts = cats.to_dict(orient="records")

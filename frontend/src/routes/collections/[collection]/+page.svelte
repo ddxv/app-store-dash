@@ -20,12 +20,12 @@
 
 <div>
 	{#if data.myapps}
-		<h1 class="h1 p-2">{data.myapps.title}</h1>
+		<h1 class="h1 p-2">Apps: {data.myapps.title}</h1>
 		{#each Object.entries(data.myapps.categories) as [_key, cat]}
 			{#if cat.key == $myCategorySelection}
 				<div class="card p-2">
-					<h2 class="h2 p-4">
-						{cat[$myStoreSelection].title}:
+					<!-- <h1 class="h1 p-4">
+						Store: {cat[$myStoreSelection].title} Category:
 						{#if $myCategoryMap}
 							{#each Object.entries($myCategoryMap.mycats.categories) as [_key, catMap]}
 								{#if catMap.id == cat.key}
@@ -35,13 +35,12 @@
 						{:else}
 							cat
 						{/if}
-					</h2>
-					<hr class="section-divider" />
-					<section class="grid grid-cols-3 md:grid-cols-4 gap-4">
+					</h1> -->
+					<section class="grid grid-cols-1 md:grid-cols-4 gap-4">
 						{#each cat[$myStoreSelection].apps as app}
 							<a
 								href={`/apps/${app.store_id}`}
-								class={`card card-hover overflow-hidden ${getClass(app)}`}
+								class={`card variant-glass-secondary card-hover overflow-hidden ${getClass(app)}`}
 							>
 								<div>
 									<header>
