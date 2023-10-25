@@ -73,7 +73,7 @@
 					border=""
 					class="bg-surface-100-800-token w-full"
 				>
-					<TabAnchor href="https://ads.jamesoclaire.com">
+					<TabAnchor href="https://ads.jamesoclaire.com/dash/ads">
 						<span>Ads.txt Dash</span>
 					</TabAnchor>
 					<TabAnchor href="https://jamesoclaire.com">

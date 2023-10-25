@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { AppFullDetail, Categories, Collections } from '../../../types';
+	import type { AppFullDetail, Collections } from '../../../types';
 	/** @type {import('../[collection]/$types').PageData} */
 	export let data: Collections;
 	import AppDetails from '$lib/RatingInstalls.svelte';
@@ -12,8 +12,6 @@
 
 	import { myStoreSelection } from '../../../stores';
 	import { myCategorySelection } from '../../../stores';
-
-	import { myCategoryMap } from '../../../stores';
 </script>
 
 <h1 class="h1 p-4">Welcome!</h1>
@@ -24,18 +22,6 @@
 		{#each Object.entries(data.myapps.categories) as [_key, cat]}
 			{#if cat.key == $myCategorySelection}
 				<div class="card p-2">
-					<!-- <h1 class="h1 p-4">
-						Store: {cat[$myStoreSelection].title} Category:
-						{#if $myCategoryMap}
-							{#each Object.entries($myCategoryMap.mycats.categories) as [_key, catMap]}
-								{#if catMap.id == cat.key}
-									{catMap.name}
-								{/if}
-							{/each}
-						{:else}
-							cat
-						{/if}
-					</h1> -->
 					<section class="grid grid-cols-1 md:grid-cols-4 gap-4">
 						{#each cat[$myStoreSelection].apps as app}
 							<a
