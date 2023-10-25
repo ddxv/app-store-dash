@@ -53,6 +53,5 @@ repos:
         language: system
         entry: npx svelte-check --fail-on-warnings
         files: \.(js|ts|svelte)$
-        always_run: true
         pass_filenames: false
         require_serial: true
