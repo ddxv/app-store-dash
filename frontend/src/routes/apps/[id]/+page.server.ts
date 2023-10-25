@@ -1,8 +1,10 @@
 export const ssr = true;
 export const csr = true;
 
+import type { AppFullDetails } from '../../../types.js';
+
 /** @type {import('../[id]/$types').PageServerLoad} */
-export async function load({ params }) {
+export async function load({ params }): Promise<AppFullDetails> {
 	console.log('load app started');
 	try {
 		const id = params.id;

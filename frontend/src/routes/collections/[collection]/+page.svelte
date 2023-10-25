@@ -1,8 +1,9 @@
-<script>
+<script lang="ts">
+	import type { AppFullDetail, Categories, Collections } from '../../../types';
 	/** @type {import('../[collection]/$types').PageData} */
-	export let data;
+	export let data: Collections;
 	import AppDetails from '$lib/RatingInstalls.svelte';
-	function getClass(app) {
+	function getClass(app: AppFullDetail) {
 		return (app.featured_image_url && app.featured_image_url !== 'null') ||
 			(app.tablet_image_url_1 && app.tablet_image_url_1 !== 'null')
 			? 'col-span-2'
@@ -18,7 +19,7 @@
 <h1 class="h1 p-4">Welcome!</h1>
 
 <div>
-	{#if data}
+	{#if data.myapps}
 		<h1 class="h1 p-2">{data.myapps.title}</h1>
 		{#each Object.entries(data.myapps.categories) as [_key, cat]}
 			{#if cat.key == $myCategorySelection}

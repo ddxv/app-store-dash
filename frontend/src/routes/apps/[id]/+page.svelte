@@ -1,11 +1,12 @@
-<script>
+<script lang="ts">
 	import ExternalLinkSvg from '$lib/ExternalLinkSVG.svelte';
+	import type { AppFullDetails } from '../../../types';
 	/** @type {import('../[id]/$types').PageData} */
-	export let data;
+	export let data: AppFullDetails;
 	import AppDetails from '$lib/RatingInstallsLarge.svelte';
 </script>
 
-{#if data}
+{#if data.myapp}
 	<!-- App Icon Title & Info -->
 	<section class="grid grid-cols-1 md:grid-cols-2 gap-4">
 		<div class="card p-8">
@@ -20,7 +21,7 @@
 						/>
 					{/if}
 					<div class="p-4">
-						{#if data.myapp.installs && data.myapp.installs != 0}
+						{#if data.myapp.installs && data.myapp.installs != '0'}
 							<AppDetails app={data.myapp} />
 						{/if}
 					</div>
@@ -156,11 +157,5 @@
 		transition: width 0.3s ease;
 		border-radius: 10px; /* Rounded corners */
 		/* flex-grow: 1; Allow the bar to grow and take available space */
-	}
-
-	.label,
-	.count {
-		margin: 0 10px;
-		font-size: 14px;
 	}
 </style>

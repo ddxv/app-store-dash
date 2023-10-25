@@ -46,3 +46,12 @@ repos:
           - "@typescript-eslint/eslint-plugin"
           - "@typescript-eslint/parser"
           - svelte-eslint-parser
+  - repo: local
+    hooks:
+      - id: svelte-check
+        name: Svelte check
+        language: system
+        entry: npx svelte-check --fail-on-warnings
+        always_run: true
+        pass_filenames: false
+        require_serial: true

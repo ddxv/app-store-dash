@@ -1,16 +1,12 @@
 export const ssr: boolean = true;
 export const csr: boolean = true;
 
+import type { Collection, Collections } from '../../../types.js';
+
 console.log('Script executed');
 
-interface LoadResponse {
-	myapps: any;
-	status?: number;
-	error?: string;
-}
-
 /** @type {import('../[collection]/$types').PageServerLoad} */
-export async function load({ params }): Promise<LoadResponse> {
+export async function load({ params }): Promise<Collections> {
 	const collectionValue = params.collection;
 	console.log(`load started collection=${collectionValue}`);
 	try {
@@ -21,13 +17,12 @@ export async function load({ params }): Promise<LoadResponse> {
 			throw new Error(`Failed to fetch collections status ${res.status} ${text}`);
 		}
 
-		const app_collections: any = await res.json();
+		const app_collections: Collection = await res.json();
 		console.log(`loaded collections with len: ${Object.keys(app_collections).length}`);
 		return { myapps: app_collections };
 	} catch (error) {
 		console.error('Failed to load data:', error);
 		return {
-			myapps: {},
 			status: 500,
 			error: 'Failed to load trending apps'
 		};

@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import '../app.postcss';
 	import { AppShell, AppBar, TabGroup, TabAnchor } from '@skeletonlabs/skeleton';
 	import { page } from '$app/stores';
@@ -18,14 +18,15 @@
 	let localCategories = $myCategorySelection;
 	$: myCategorySelection.set(localCategories);
 
-	$: classesActive = (href) => (href === $page.url.pathname ? '!bg-primary-500' : '');
+	$: classesActive = (href: string) => (href === $page.url.pathname ? '!bg-primary-500' : '');
 
-	export let data;
+	export let data: Categories;
 
 	import { myCategoryMap } from '../stores';
+	import type { Categories } from '../types';
 	myCategoryMap.set(data);
 
-	function setCategorySelection(id) {
+	function setCategorySelection(id: string) {
 		localCategories = id;
 	}
 </script>

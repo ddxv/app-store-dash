@@ -1,11 +1,7 @@
 export const ssr = true;
 export const csr = false;
 
-export interface Categories {
-	mycats: any;
-	status?: number;
-	error?: string;
-}
+import type { Categories, MyCats } from '../types';
 
 /** @type {import('./$types').PageServerLoad} */
 export async function load(): Promise<Categories> {
@@ -17,14 +13,14 @@ export async function load(): Promise<Categories> {
 			throw new Error(`Failed to fetch categories with status ${res.status}`);
 		}
 
-		const categories = await res.json();
+		const categories: MyCats = await res.json();
 
 		console.log(`load categories len: ${Object.keys(categories).length}`);
 		return { mycats: categories };
 	} catch (error) {
 		console.error('Failed to load layout categories data:', error);
 		return {
-			mycats: null,
+			mycats: { categories: {} },
 			status: 500,
 			error: 'Failed to load categories'
 		};
