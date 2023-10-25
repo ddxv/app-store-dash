@@ -1,10 +1,10 @@
 export const ssr = true;
 export const csr = false;
 
-import type { Categories, MyCats } from '../types';
+import type { CategoriesInfo, MyCats } from '../types';
 
 /** @type {import('./$types').PageServerLoad} */
-export async function load(): Promise<Categories> {
+export async function load(): Promise<CategoriesInfo> {
 	console.log(`load categories start`);
 	try {
 		const res = await fetch(`http://localhost:8000/api/categories`);

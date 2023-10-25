@@ -21,14 +21,15 @@
 
 	$: classesActive = (href: string) => (href === $page.url.pathname ? buttonSelectedColor : '');
 
-	export let data: Categories;
+	export let data: CategoriesInfo;
 
 	import { myCategoryMap } from '../stores';
-	import type { Categories } from '../types';
+	import type { CategoriesInfo } from '../types';
 	myCategoryMap.set(data);
 
 	function setCategorySelection(id: string) {
 		localCategories = id;
+		window.location.href = `/categories/${id}`;
 	}
 
 	let searchTerm: string;
@@ -63,6 +64,9 @@
 			>
 				<TabAnchor href="/" selected={$page.url.pathname === '/'}>
 					<span>HOME</span>
+				</TabAnchor>
+				<TabAnchor href="/categories" selected={$page.url.pathname === '/categories'}>
+					<span>CATEGORIES</span>
 				</TabAnchor>
 				<TabAnchor href="/about" selected={$page.url.pathname === '/about'}>
 					<span>ABOUT</span>
@@ -169,9 +173,10 @@
 					</ListBox>
 				</div>
 			</div>
+		{/if}
 
+		{#if $page.url.pathname == '/categories' || $page.url.pathname.startsWith('/categories')}
 			<h4 class="h4">Categories TABLE</h4>
-
 			{#if $myCategoryMap}
 				<!-- Responsive Container (recommended) -->
 				<div class="table-container">

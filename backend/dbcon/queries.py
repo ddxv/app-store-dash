@@ -75,7 +75,7 @@ def query_recent_apps(collection: str, limit=20):
         )
         overall["mapped_category"] = "overall"
         df = pd.concat([df, overall], axis=0)
-        df = clean_app_df(df)
+    df = clean_app_df(df)
     return df
 
 
@@ -326,7 +326,7 @@ def get_appstore_categories() -> pd.DataFrame:
 
 
 def get_category_top_apps_by_installs(category: str, limit: int = 10) -> pd.DataFrame:
-    logger.info(f"Query top installs {category=}")
+    logger.info(f"Query {category=} for top installs")
     sel_query = """SELECT * 
             FROM 
                 top_categories
