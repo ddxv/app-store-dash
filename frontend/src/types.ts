@@ -3,6 +3,12 @@ export interface AppGroup {
 	title: string;
 }
 
+export interface CategoryResponse {
+	results?: AppGroup;
+	status?: number;
+	error?: string;
+}
+
 export interface SearchResponse {
 	results?: AppGroup;
 	status?: number;
