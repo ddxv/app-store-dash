@@ -2,137 +2,165 @@
 	import ExternalLinkSvg from '$lib/ExternalLinkSVG.svelte';
 	/** @type {import('../[id]/$types').PageData} */
 	export let data;
-	import Rating from '$lib/Rating.svelte';
+	import AppDetails from '$lib/RatingInstallsLarge.svelte';
 </script>
 
-<!-- Navbar component inclusion should be done here, I assume it's a Svelte component -->
-<!-- <Navbar /> -->
-
 {#if data}
-	<div class="card p-8">
-		<div class="card-header">
-			<h1 class="h1">{data.myapp.name}</h1>
-			{#if data.myapp.icon_url_512}
-				<img
-					src={data.myapp.icon_url_512}
-					alt={data.myapp.name}
-					class="app-icon"
-					referrerpolicy="no-referrer"
-				/>
-			{/if}
-			<div>
-				<Rating total={5} size={50} rating={data.myapp.rating} />
+	<!-- App Icon Title & Info -->
+	<section class="grid grid-cols-1 md:grid-cols-2 gap-4">
+		<div class="card p-8">
+			<div class="card-header p-4">
+				<div class="inline-flex">
+					{#if data.myapp.icon_url_512}
+						<img
+							src={data.myapp.icon_url_512}
+							alt={data.myapp.name}
+							class="w-60 h-60"
+							referrerpolicy="no-referrer"
+						/>
+					{/if}
+					<div class="p-4">
+						{#if data.myapp.installs && data.myapp.installs != 0}
+							<AppDetails app={data.myapp} />
+						{/if}
+					</div>
+				</div>
 			</div>
 
-			{#if data.myapp.featured_image}
-				<img
-					src={data.myapp.featured_image}
-					alt={data.myapp.name}
-					class="app-icon"
-					referrerpolicy="no-referrer"
-				/>
-			{/if}
-		</div>
-
-		<div class="card-footer important-info">
-			<p>Store: {data.myapp.store}</p>
-			<p>
-				Store Link: <a
-					class="anchor inline-flex items-baseline"
-					href={data.myapp.store_link}
-					target="_blank"
-				>
-					{data.myapp.store_link}
-					<ExternalLinkSvg />
-				</a>
-			</p>
-			<p>Store ID: {data.myapp.store_id}</p>
-			{#if data.myapp.installs != 'N/A'}
-				<p><strong>Installs:</strong> {data.myapp.installs}</p>
-			{/if}
-			<p><strong>Rating:</strong> {data.myapp.rating}</p>
-			<p><strong>Ratings:</strong> {data.myapp.rating_count}</p>
-			<p><strong>Reviews:</strong> {data.myapp.review_count}</p>
-			{#if data.myapp.developer_id}
-				Developer: <a
-					class="anchor inline-flex items-baseline"
-					href={data.myapp.store_developer_link}
-					target="_blank"
-				>
-					{data.myapp.developer_name}
-					<ExternalLinkSvg />
-				</a>
-			{:else}
-				<p>Developer Name: {data.myapp.developer_name}</p>
-				<p>Developer ID: {data.myapp.developer_id}</p>
-			{/if}
-			{#if data.myapp.developer_url}
-				<p>
-					Developer URL:
-					<a class="anchor inline-flex" href="https://{data.myapp.developer_url}" target="_blank">
-						{data.myapp.developer_url}
-						<ExternalLinkSvg />
+			<div class="card-footer flex">
+				<div class="block">
+					<p>Store ID: {data.myapp.store_id}</p>
+					{#if data.myapp.developer_id}
+						Developer: <a
+							class="anchor inline-flex items-baseline"
+							href={data.myapp.store_developer_link}
+							target="_blank"
+						>
+							{data.myapp.developer_name}
+							<ExternalLinkSvg />
+						</a>
+					{:else}
+						<p>Developer Name: {data.myapp.developer_name}</p>
+						<p>Developer ID: {data.myapp.developer_id}</p>
+					{/if}
+					{#if data.myapp.developer_url}
+						<p>
+							Developer URL:
+							<a
+								class="anchor inline-flex"
+								href="https://{data.myapp.developer_url}"
+								target="_blank"
+							>
+								{data.myapp.developer_url}
+								<ExternalLinkSvg />
+							</a>
+						</p>
+					{/if}
+					<p>Store Last Crawled: {data.myapp.updated_at}</p>
+				</div>
+				<div class="ml-auto">
+					<a class="anchor inline-flex items-baseline" href={data.myapp.store_link} target="_blank">
+						<img class="w-60" src="/gp_en_badge_web_generic.png" alt={data.myapp.name} />
 					</a>
-				</p>
+				</div>
+			</div>
+			<br />
+			<div class="w-max-full flex">
+				<h1 class="h1 p-2 self-center">{data.myapp.rating}</h1>
+				<div class="flex-1">
+					{#each [...data.myapp.histogram].reverse() as count, index}
+						<div class="flex bar-spacer">
+							<span class="label">{data.myapp.histogram.length - index}★</span>
+							<div class="bar-container">
+								<div
+									class="bar"
+									style="width: {(count / data.myapp.rating_count_num) * 100}%"
+									title="{index + 1} star: {count} ratings"
+								/>
+								<!-- <span class="count">{count}</span> -->
+							</div>
+						</div>
+					{/each}
+				</div>
+			</div>
+
+			<h4 class="h4">Additional Information</h4>
+			<div class="p-4">
+				<p>Category: {data.myapp.category}</p>
+				<p>Free: {data.myapp.free}</p>
+				<p>Price: {data.myapp.price}</p>
+				<p>Size: {data.myapp.size || 'N/A'}</p>
+				<p>Minimum Android Version: {data.myapp.minimum_android || 'N/A'}</p>
+				<p>Developer Email: {data.myapp.developer_email || 'N/A'}</p>
+				<p>Content Rating: {data.myapp.content_rating || 'N/A'}</p>
+				<p>Ad Supported: {data.myapp.ad_supported || 'N/A'}</p>
+				<p>In-App Purchases: {data.myapp.in_app_purchases || 'N/A'}</p>
+				<p>Editor's Choice: {data.myapp.editors_choice || 'N/A'}</p>
+				<p>Last Crawl Result: {data.myapp.crawl_result}</p>
+				<p>First Released: {data.myapp.release_date}</p>
+				<p>Store Last Updated: {data.myapp.store_last_updated}</p>
+				<p>First Crawled: {data.myapp.created_at}</p>
+			</div>
+
+			<h4 class="h4">Historical Information</h4>
+			<div>
+				{@html data.myapp.history_table}
+			</div>
+		</div>
+		<!-- App Pictures -->
+		<div>
+			{#if data.myapp.featured_image_url}
+				<div>
+					<img
+						class="h-auto max-w-full rounded-lg p-4 mx-auto"
+						src={data.myapp.featured_image_url}
+						alt=""
+					/>
+				</div>
 			{/if}
-			<p>Store Last Crawled: {data.myapp.updated_at}</p>
+			<section class="grid grid-cols-2 md:grid-cols-3 gap-4">
+				{#each [data.myapp.phone_image_url_1, data.myapp.phone_image_url_2, data.myapp.phone_image_url_3, data.myapp.tablet_image_url_1, data.myapp.tablet_image_url_2, data.myapp.tablet_image_url_3] as imageUrl}
+					{#if imageUrl && imageUrl != 'null'}
+						<div>
+							<img class="h-auto max-w-full rounded-lg" src={imageUrl} alt="" />
+						</div>
+					{/if}
+				{/each}
+			</section>
 		</div>
-		<br />
-
-		<h2 class="h2">Additional Information</h2>
-		<div class="additional-info">
-			<p>Category: {data.myapp.category}</p>
-			<p>Free: {data.myapp.free}</p>
-			<p>Price: {data.myapp.price}</p>
-			<p>Size: {data.myapp.size || 'N/A'}</p>
-			<p>Minimum Android Version: {data.myapp.minimum_android || 'N/A'}</p>
-			<p>Developer Email: {data.myapp.developer_email || 'N/A'}</p>
-			<p>Content Rating: {data.myapp.content_rating || 'N/A'}</p>
-			<p>Ad Supported: {data.myapp.ad_supported || 'N/A'}</p>
-			<p>In-App Purchases: {data.myapp.in_app_purchases || 'N/A'}</p>
-			<p>Editor's Choice: {data.myapp.editors_choice || 'N/A'}</p>
-			<p>Last Crawl Result: {data.myapp.crawl_result}</p>
-			<p>First Released: {data.myapp.release_date}</p>
-			<p>Store Last Updated: {data.myapp.store_last_updated}</p>
-			<p>First Crawled: {data.myapp.created_at}</p>
-		</div>
-
-		<h2 class="h2">Historical Information</h2>
-		<div class="additional-info">
-			{@html data.myapp.history_table}
-		</div>
-	</div>
-
+	</section>
 	<a href="/">Back to Home</a>
 {:else}
 	<p>Loading...</p>
 {/if}
 
 <style>
-	.important-info {
-		font-size: 1.2em;
-		margin-bottom: 20px;
+	.bar-spacer {
+		margin: 10px;
 	}
 
-	.additional-info {
-		background-color: #f7f7f7;
-		padding: 10px;
-		border-radius: 5px;
-	}
-
-	.additional-info p {
-		margin: 5px 0;
-	}
-
-	.app-icon {
-		width: 256px;
-		height: 256px;
-		vertical-align: middle;
-		margin-right: 10px;
-	}
-
-	.app-header {
+	.bar-container {
 		display: flex;
+		align-self: center;
 		align-items: center;
+		background-color: gainsboro;
+		flex-grow: 1; /*Allow the bar to grow and take available space */
+		border-radius: 10px; /* Rounded corners */
+		margin-left: 5px;
+		padding: 0px;
+	}
+
+	.bar {
+		height: 20px; /* Fixed height for each bar */
+		background-color: #3498db;
+		transition: width 0.3s ease;
+		border-radius: 10px; /* Rounded corners */
+		/* flex-grow: 1; Allow the bar to grow and take available space */
+	}
+
+	.label,
+	.count {
+		margin: 0 10px;
+		font-size: 14px;
 	}
 </style>

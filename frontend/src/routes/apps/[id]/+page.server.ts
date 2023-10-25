@@ -1,5 +1,5 @@
 export const ssr = true;
-export const csr = false;
+export const csr = true;
 
 /** @type {import('../[id]/$types').PageServerLoad} */
 export async function load({ params }) {

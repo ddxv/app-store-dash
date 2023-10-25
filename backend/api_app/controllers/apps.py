@@ -95,7 +95,14 @@ class AppController(Controller):
         app_dict = app_df.to_dict(orient="records")[0]
         store_app = app_dict["id"]
         app_hist = get_app_history(store_app)
-        app_dict["history_table"] = app_hist.to_html()
+        app_dict["histogram"] = (
+            app_hist.sort_values(["id"]).tail(1)["histogram"].values[0]
+        )
+        app_dict["history_table"] = (
+            app_hist.drop(["id", "store_app"], axis=1)
+            .style.format(precision=3, thousands=".", decimal=",")
+            .to_html(index=None, classes="pretty-table")
+        )
 
         return app_dict
 

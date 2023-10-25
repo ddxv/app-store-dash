@@ -400,6 +400,7 @@ def clean_app_df(df: pd.DataFrame) -> pd.DataFrame:
     df["store"] = df["store"].replace({1: "Google Play", 2: "Apple App Store"})
     string_nums = ["installs", "review_count", "rating_count"]
     for col in string_nums:
+        df[f"{col}_num"] = df[col]
         df[col] = df[col].apply(
             lambda x: "N/A" if (x is None or np.isnan(x)) else "{:,.0f}".format(x)
         )

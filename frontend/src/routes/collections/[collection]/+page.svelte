@@ -3,7 +3,10 @@
 	export let data;
 	import AppDetails from '$lib/RatingInstalls.svelte';
 	function getClass(app) {
-		return app.featured_image_url && app.featured_image_url !== 'null' ? 'col-span-2' : '';
+		return (app.featured_image_url && app.featured_image_url !== 'null') ||
+			(app.tablet_image_url_1 && app.tablet_image_url_1 !== 'null')
+			? 'col-span-2'
+			: '';
 	}
 
 	import { myStoreSelection } from '../../../stores';
@@ -33,17 +36,20 @@
 						{/if}
 					</h2>
 					<hr class="section-divider" />
-					<section class="grid grid-cols-3 md:grid-cols-5 gap-4">
+					<section class="grid grid-cols-3 md:grid-cols-4 gap-4">
 						{#each cat[$myStoreSelection].apps as app}
-							<a href={`/apps/${app.store_id}`} class={`card overflow-hidden ${getClass(app)}`}>
-								<div class="app-item">
+							<a
+								href={`/apps/${app.store_id}`}
+								class={`card card-hover overflow-hidden ${getClass(app)}`}
+							>
+								<div>
 									<header>
 										<div>
 											<!-- Show Featured Image (spans 2 cols) -->
 											{#if app.featured_image_url && app.featured_image_url != 'null'}
 												<div class="justify-center">
 													<img
-														class="h-auto object-fill rounded-lg"
+														class="h-48 w-full object-cover rounded-lg"
 														src={app.featured_image_url}
 														alt={app.name}
 														referrerpolicy="no-referrer"
@@ -51,37 +57,62 @@
 												</div>
 												<div class="inline-flex text-left">
 													<img
-														class="h-auto w-1/4 p-3 rounded-lg"
+														class="h-24 w-24 p-3 rounded-lg"
 														src={app.icon_url_512}
 														alt={app.name}
 														referrerpolicy="no-referrer"
 													/>
 													<AppDetails {app} />
 												</div>
-												<!-- Show Icon Only (smaller) -->
+												<!-- Show Tablet -->
 											{:else if app.tablet_image_url_1 && app.tablet_image_url_1 != 'null'}
 												<div>
 													<img
-														class="h-auto max-w-full rounded-lg"
+														class="object-top object-cover h-48 w-full rounded-lg"
+														src={app.tablet_image_url_1}
+														alt={app.name}
+														referrerpolicy="no-referrer"
+													/>
+													<div class="inline-flex text-left">
+														<img
+															class="h-24 w-24 p-3 rounded-lg"
+															src={app.icon_url_512}
+															alt={app.name}
+															referrerpolicy="no-referrer"
+														/>
+														<AppDetails {app} />
+													</div>
+												</div>
+												<!-- Show Phone Screenshot -->
+											{:else if app.phone_image_url_1 && app.phone_image_url_1 != 'null'}
+												<div>
+													<img
+														class="object-top object-cover h-48 w-full rounded-lg"
 														src={app.phone_image_url_1}
 														alt={app.name}
 														referrerpolicy="no-referrer"
 													/>
+													<div class="inline-flex text-left">
+														<img
+															class="h-24 w-24 p-3 rounded-lg"
+															src={app.icon_url_512}
+															alt={app.name}
+															referrerpolicy="no-referrer"
+														/>
+														<AppDetails {app} />
+													</div>
+												</div>
+												<!-- Show Icon Only (smaller) -->
+											{:else}
+												<div class="mx-auto block text-center">
 													<img
-														class="h-auto w-1/4 rounded-lg"
+														class="h-48 max-w-full rounded-lg mx-auto"
 														src={app.icon_url_512}
 														alt={app.name}
 														referrerpolicy="no-referrer"
 													/>
+													<AppDetails {app} />
 												</div>
-											{:else}
-												<img
-													class="h-auto max-w-full rounded-lg"
-													src={app.icon_url_512}
-													alt={app.name}
-													referrerpolicy="no-referrer"
-												/>
-												<AppDetails {app} />
 											{/if}
 										</div>
 									</header>
@@ -98,31 +129,3 @@
 		{data}
 	{/if}
 </div>
-
-<style>
-	/* Container Grid */
-	/* .app-grid {
-		display: grid;
-		gap: 15px;
-		grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-		padding: 20px;
-	/* } 
-
-	/* Individual App Container */
-	.app-item {
-		display: flex;
-		flex-direction: column;
-		align-items: center; /* Center items horizontally */
-		justify-content: top; /* Center items vertically */
-		text-align: center;
-		border: 1px solid #e0e0e0; /* Optional border */
-		padding: 5px;
-		border-radius: 8px; /* Rounded corners */
-		transition: transform 0.3s; /* Hover effect */
-	}
-
-	.app-item:hover {
-		transform: scale(1.05); /* Zoom in effect on hover */
-		box-shadow: 0 8px 8px rgba(0, 0, 0, 0.1); /* Shadow on hover */
-	}
-</style>
