@@ -52,7 +52,7 @@ def query_recent_apps(collection: str, limit=20):
                     ORDER BY rating_count DESC NULLS LAST
                 );
                 """
-    sel_query = f"""WITH NumberedRows AS (
+    sel_query = f"""WITH    NumberedRows AS (
                     SELECT 
                         {my_cols},
                         ROW_NUMBER() OVER (PARTITION BY store, mapped_category

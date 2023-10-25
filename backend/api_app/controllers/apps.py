@@ -26,7 +26,6 @@ def get_string_date_from_days_ago(days: int) -> str:
 
 def get_app_overview_dict(collection: str) -> Collection:
     category_limit = 20
-
     df = query_recent_apps(collection=collection, limit=category_limit)
     categories_dicts = []
     groups = df.groupby(["mapped_category"])
