@@ -5,6 +5,7 @@
 	function getClass(app) {
 		return app.featured_image_url && app.featured_image_url !== 'null' ? 'col-span-2' : '';
 	}
+
 	import { myStoreSelection } from '../../../stores';
 	import { myCategorySelection } from '../../../stores';
 
