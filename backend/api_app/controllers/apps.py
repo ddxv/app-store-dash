@@ -3,12 +3,17 @@ import datetime
 from api_app.models import (
     AppDetail,
     Collection,
-    StoreSection,
+    AppGroup,
     Category,
 )
 from config import get_logger
-from dbcon.queries import get_single_app, query_recent_apps, get_app_history
-from litestar import Controller, get, Request
+from dbcon.queries import (
+    get_single_app,
+    query_recent_apps,
+    get_app_history,
+    search_apps,
+)
+from litestar import Controller, get
 from litestar.exceptions import NotFoundException
 
 logger = get_logger(__name__)
@@ -16,6 +21,13 @@ logger = get_logger(__name__)
 """
 /apps/{store_id} a specific app
 """
+
+
+def get_search_results(search_term: str) -> AppGroup:
+    df = search_apps(search_input=search_term, limit=20)
+    apps_dict = df.to_dict(orient="records")
+    app_group = AppGroup(title=search_term, apps=apps_dict)
+    return app_group
 
 
 def get_string_date_from_days_ago(days: int) -> str:
@@ -43,8 +55,8 @@ def get_app_overview_dict(collection: str) -> Collection:
         categories_dicts.append(
             Category(
                 key=category_key,
-                google=StoreSection(title="Google", apps=google_dicts),
-                ios=StoreSection(title="iOS", apps=ios_dicts),
+                google=AppGroup(title="Google", apps=google_dicts),
+                ios=AppGroup(title="iOS", apps=ios_dicts),
             )
         )
     response_collection = Collection(
@@ -57,7 +69,7 @@ class AppController(Controller):
     path = "/api/apps"
 
     @get(path="/collections/{collection:str}", cache=3600)
-    async def get_apps_overview(self, request: Request, collection: str) -> Collection:
+    async def get_apps_overview(self, collection: str) -> Collection:
         """
         Handles a GET request for a list of apps
 
@@ -105,6 +117,12 @@ class AppController(Controller):
         )
 
         return app_dict
+
+    @get(path="/search/{search_term:str}", cache=3600)
+    async def search(self, search_term: str) -> AppGroup:
+        logger.info(f"{self.path} term={search_term}")
+        apps_dict = get_search_results(search_term)
+        return apps_dict
 
 
 COLLECTIONS = {

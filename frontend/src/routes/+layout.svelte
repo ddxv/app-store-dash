@@ -30,6 +30,18 @@
 	function setCategorySelection(id: string) {
 		localCategories = id;
 	}
+
+	let searchTerm: string;
+
+	function navigateToSearch(event: any) {
+		if (event.key === 'Enter' && searchTerm.trim() !== '') {
+			// Replace spaces with '+'
+			const encodedSearchTerm = encodeURIComponent(searchTerm.replace(/\s+/g, '+'));
+
+			// Navigate to the search route
+			window.location.href = `/search/${encodedSearchTerm}`;
+		}
+	}
 </script>
 
 <!-- App Shell -->
@@ -61,7 +73,12 @@
 					<div class="input-group-shim">
 						<IconSearch />
 					</div>
-					<input type="search" placeholder=" Apps..." />
+					<input
+						type="search"
+						bind:value={searchTerm}
+						on:keydown={navigateToSearch}
+						placeholder=" Apps..."
+					/>
 				</div>
 
 				<TabGroup
