@@ -5,6 +5,7 @@
 	export let data: AppFullDetails;
 	import AppDetails from '$lib/RatingInstallsLarge.svelte';
 	import AppPlot from '$lib/AppPlot.svelte';
+	import AvailableOniOs from '$lib/svg/AvailableOniOS.svelte';
 </script>
 
 {#if data.myapp}
@@ -62,7 +63,11 @@
 				</div>
 				<div class="ml-auto">
 					<a class="anchor inline-flex items-baseline" href={data.myapp.store_link} target="_blank">
-						<img class="w-60" src="/gp_en_badge_web_generic.png" alt={data.myapp.name} />
+						{#if data.myapp.store_link.includes('google')}
+							<img class="w-60" src="/gp_en_badge_web_generic.png" alt={data.myapp.name} />
+						{:else}
+							<AvailableOniOs />
+						{/if}
 					</a>
 				</div>
 			</div>
