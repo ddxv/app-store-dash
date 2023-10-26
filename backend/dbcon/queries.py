@@ -419,8 +419,8 @@ def query_app_history(store_app: int) -> pd.DataFrame:
 def query_single_developer(developer_id: str):
     logger.info(f"Developers: {developer_id=}")
     sel_query = """SELECT
-                        d.*,
-                        pd.*,
+                        d.name AS developer_name,
+                        pd.url as developer_url
                         sa.*
                     FROM
                         app_urls_map aum
