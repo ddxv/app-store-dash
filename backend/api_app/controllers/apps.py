@@ -109,6 +109,7 @@ class AppController(Controller):
             )
         app_dict = app_df.to_dict(orient="records")[0]
         store_app = app_dict["id"]
+        app_name = app_dict["name"]
         app_hist = get_app_history(store_app)
         app_dict["histogram"] = (
             app_hist.sort_values(["id"]).tail(1)["histogram"].values[0]
@@ -118,7 +119,15 @@ class AppController(Controller):
             .style.format(precision=0, thousands=",", decimal=".")
             .to_html(index=None, classes="pretty-table")
         )
+        app_hist["group"] = app_name
+        app_hist = app_hist[
+            ~((app_hist["installs"].isnull()) & (app_hist["rating_count"].isnull()))
+        ]
+        metrics = ["installs", "rating", "review_count", "rating_count"]
 
+        xaxis_col = "crawled_date"
+        data = app_hist[["group", xaxis_col] + metrics].to_dict(orient="records")
+        app_dict["historyData"] = data
         return app_dict
 
     @get(path="/search/{search_term:str}", cache=3600)
