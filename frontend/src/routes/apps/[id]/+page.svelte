@@ -1,10 +1,12 @@
 <script lang="ts">
-	import ExternalLinkSvg from '$lib/ExternalLinkSVG.svelte';
+	import ExternalLinkSvg from '$lib/svg/ExternalLinkSVG.svelte';
 	import type { AppFullDetails } from '../../../types';
 	/** @type {import('../[id]/$types').PageData} */
 	export let data: AppFullDetails;
 	import AppDetails from '$lib/RatingInstallsLarge.svelte';
 	import AppPlot from '$lib/AppPlot.svelte';
+	import AvailableOniOs from '$lib/svg/AvailableOniOS.svelte';
+	let sum = (arr: number[]) => arr.reduce((acc, curr) => acc + curr, 0);
 </script>
 
 {#if data.myapp}
@@ -27,6 +29,15 @@
 						{/if}
 					</div>
 				</div>
+
+				{#if data.myapp.developer_id}
+					<a href="/developers/{data.myapp.developer_id}" class="btn variant-filled"
+						><span>{data.myapp.developer_name}</span></a
+					>
+				{/if}
+				<a href="/categories/{data.myapp.category}" class="btn variant-filled"
+					><span>{data.myapp.category}</span></a
+				>
 			</div>
 
 			<div class="card-footer flex">
@@ -62,13 +73,20 @@
 				</div>
 				<div class="ml-auto">
 					<a class="anchor inline-flex items-baseline" href={data.myapp.store_link} target="_blank">
-						<img class="w-60" src="/gp_en_badge_web_generic.png" alt={data.myapp.name} />
+						{#if data.myapp.store_link.includes('google')}
+							<img class="w-60" src="/gp_en_badge_web_generic.png" alt={data.myapp.name} />
+						{:else}
+							<AvailableOniOs />
+						{/if}
 					</a>
 				</div>
 			</div>
 			<br />
 			<div class="w-max-full flex">
-				<h1 class="h1 p-2 self-center">{data.myapp.rating}</h1>
+				<div class="self-center">
+					<h1 class="h1 p-2">{data.myapp.rating}</h1>
+					Ratings: {sum(data.myapp.histogram)}
+				</div>
 				<div class="flex-1">
 					{#each [...data.myapp.histogram].reverse() as count, index}
 						<div class="flex bar-spacer">
@@ -76,10 +94,9 @@
 							<div class="bar-container">
 								<div
 									class="bar"
-									style="width: {(count / data.myapp.rating_count_num) * 100}%"
+									style="width: {(count / sum(data.myapp.histogram)) * 100}%"
 									title="{index + 1} star: {count} ratings"
 								/>
-								<!-- <span class="count">{count}</span> -->
 							</div>
 						</div>
 					{/each}
@@ -88,7 +105,6 @@
 
 			<h4 class="h4">Additional Information</h4>
 			<div class="p-4">
-				<p>Category: {data.myapp.category}</p>
 				<p>Free: {data.myapp.free}</p>
 				<p>Price: {data.myapp.price}</p>
 				<p>Size: {data.myapp.size || 'N/A'}</p>
