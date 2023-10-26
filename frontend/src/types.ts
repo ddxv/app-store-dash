@@ -3,6 +3,24 @@ export interface AppGroup {
 	title: string;
 }
 
+export interface Category {
+	key: string;
+	google: AppGroup;
+	ios: AppGroup;
+}
+
+export interface CategoryResponse {
+	results?: Category;
+	status?: number;
+	error?: string;
+}
+
+export interface SearchResponse {
+	results?: AppGroup;
+	status?: number;
+	error?: string;
+}
+
 export interface Collection {
 	categories: AppGroup;
 	title: string;
@@ -14,7 +32,7 @@ export interface Collections {
 	error?: string;
 }
 
-export interface Category {
+export interface CategoryInfo {
 	id: string;
 	name: string;
 	android: string;
@@ -22,10 +40,10 @@ export interface Category {
 }
 
 export interface MyCats {
-	categories: Record<string, Category>;
+	categories: Record<string, CategoryInfo>;
 }
 
-export interface Categories {
+export interface CategoriesInfo {
 	mycats: MyCats;
 	status?: number;
 	error?: string;

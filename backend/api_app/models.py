@@ -3,12 +3,14 @@ from dataclasses import dataclass
 
 @dataclass
 class AppDetail:
+    """TODO: Fill out all details."""
+
     store_id: str
     name: str
 
 
 @dataclass
-class StoreSection:
+class AppGroup:
     title: str  # iOS or Google
     apps: list[AppDetail]
 
@@ -16,8 +18,8 @@ class StoreSection:
 @dataclass
 class Category:
     key: str  # mapped id like game_puzzle
-    ios: StoreSection
-    google: StoreSection
+    ios: AppGroup
+    google: AppGroup
 
 
 @dataclass

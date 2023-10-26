@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 from config import get_logger
 from dbcon.connections import get_db_connection
-from sqlalchemy import text
+from sqlalchemy import text, TextClause
 
 logger = get_logger(__name__)
 
@@ -325,56 +325,30 @@ def get_appstore_categories() -> pd.DataFrame:
     return df
 
 
-def get_top_apps_by_installs(
-    category_in: list[str] | None = None, limit: int = 10
-) -> pd.DataFrame:
-    logger.info("Query top installs")
-    if category_in is not None:
-        my_list_str = "('" + "','".join(category_in) + "')"
-        where_str = f""" JOIN category_mapping cm 
-                    ON sa.category = cm.original_category
-                    WHERE cm.mapped_category IN {my_list_str}
-                    """
-    else:
-        where_str = ""
-
-    sel_query = f"""
-                WITH RankedApps AS (
-                    SELECT
-                        *,
-                        ROW_NUMBER() OVER(PARTITION BY store 
-                        ORDER BY installs DESC NULLS LAST, review_count DESC NULLS LAST
-                    ) AS rn
-                    FROM store_apps sa
-                    {where_str}
-                )
-                SELECT *
-                FROM RankedApps
-                WHERE rn <= {limit}
-                ;
-                """
-
-    df = pd.read_sql(sel_query, DBCON.engine)
-    # df["store"] = df["store"].replace({1: "android", 2: "ios"})
-    df["store"] = df["store"].replace({1: "Google Play", 2: "Apple App Store"})
-    df["installs"] = df["installs"].apply(lambda x: "{:,.0f}".format(x) if x else "N/A")
-    df["review_count"] = df["review_count"].apply(
-        lambda x: "{:,.0f}".format(x) if x else "N/A"
+def get_category_top_apps_by_installs(category: str, limit: int = 10) -> pd.DataFrame:
+    logger.info(f"Query {category=} for top installs")
+    sel_query = """SELECT * 
+            FROM 
+                top_categories
+            WHERE 
+                mapped_category = %s
+            LIMIT %s
+            ;
+        """
+    df = pd.read_sql(
+        sel_query,
+        DBCON.engine,
+        params=(category, limit),
     )
-    df["rating"] = df["rating"].apply(lambda x: "{:.2f}".format(x) if x else "N/A")
-    ios_link = "https://apps.apple.com/us/app/-/id"
-    play_link = "https://play.google.com/store/apps/details?id="
-    df["store_link"] = (
-        np.where(df["store"].str.contains("Google"), play_link, ios_link)
-        + df["store_id"]
-    )
+    if not df.empty:
+        df = clean_app_df(df)
     return df
 
 
 def get_single_app(store_id: str) -> pd.DataFrame:
     logger.info(f"Query for single app_id={store_id}")
     where_str = f"WHERE store_id = '{store_id}'"
-    where_str = text(where_str)
+    where_stmt: TextClause = text(where_str)
     sel_query = f"""SELECT
                         sa.*,
                         d.developer_id,
@@ -387,7 +361,7 @@ def get_single_app(store_id: str) -> pd.DataFrame:
                         ON aum.store_app = sa.id
                     LEFT JOIN pub_domains pd
                         ON pd.id = aum.pub_domain
-                    {where_str}
+                    {where_stmt}
                     ;
                     """
     df = pd.read_sql(sel_query, DBCON.engine)
@@ -431,36 +405,70 @@ def clean_app_df(df: pd.DataFrame) -> pd.DataFrame:
 def get_app_history(store_app: int) -> pd.DataFrame:
     logger.info(f"Query for history single app_id={store_app}")
     where_str = f"WHERE store_app = '{store_app}'"
-    where_str = text(where_str)
+    where_stmt: TextClause = text(where_str)
     sel_query = f"""SELECT
                     *
                     FROM store_apps_country_history sah
-                    {where_str}
+                    {where_stmt}
                     ;
                     """
     df = pd.read_sql(sel_query, DBCON.engine)
     return df
 
 
-def get_apps_by_name(search_input: str, limit: int = 100):
+# def search_apps(search_input: str, limit: int = 100):
+#     logger.info(f"App search: {search_input=}")
+#     search_input = f"%%{search_input}%%"
+#     sel_query = f"""SELECT
+#                     sa.*,
+#                     d.name as developer_name
+#                     FROM
+#                         store_apps sa
+#                     LEFT JOIN developers d ON
+#                         d.id = sa.developer
+#                     WHERE
+#                         sa.name ILIKE '{search_input}'
+#                         OR sa.store_id ILIKE '{search_input}'
+#                         OR d.name ILIKE '{search_input}'
+#                     ORDER BY installs DESC NULLS LAST, rating_count DESC NULLS LAST
+#                     LIMIT {limit}
+#                     ;
+#                     """
+#     df = pd.read_sql(sel_query, DBCON.engine)
+#     if not df.empty:
+#         df = clean_app_df(df)
+#     return df
+
+
+def search_apps(search_input: str, limit: int = 100):
     logger.info(f"App search: {search_input=}")
-    search_input = f"%%{search_input}%%"
-    sel_query = f"""SELECT
+    search_pattern = f"%{search_input}%"
+
+    sel_query = """
+                SELECT
                     sa.*,
                     d.name as developer_name
-                    FROM
-                        store_apps sa
-                    LEFT JOIN developers d ON
-                        d.id = sa.developer
-                    WHERE
-                        sa.name ILIKE '{search_input}'
-                        OR sa.store_id ILIKE '{search_input}'
-                    LIMIT {limit}
-                    ;
-                    """
+                FROM
+                    store_apps sa
+                LEFT JOIN developers d ON
+                    d.id = sa.developer
+                WHERE
+                    sa.name ILIKE %s
+                    OR sa.store_id ILIKE %s
+                    OR d.name ILIKE %s
+                ORDER BY installs DESC NULLS LAST, rating_count DESC NULLS LAST
+                LIMIT %s;
+                """
 
-    df = pd.read_sql(sel_query, DBCON.engine)
-    df["store"] = df["store"].replace({1: "android", 2: "ios"})
+    df = pd.read_sql(
+        sel_query,
+        DBCON.engine,
+        params=(search_pattern, search_pattern, search_pattern, limit),
+    )
+
+    if not df.empty:
+        df = clean_app_df(df)
+
     return df
 
 

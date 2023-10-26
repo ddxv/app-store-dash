@@ -21,7 +21,7 @@ class MyOpenAPIController(OpenAPIController):
 logging_config = LoggingConfig(
     loggers={
         "my_app": {
-            "level": "INFO",
+            "level": "DEBUG",
             "handlers": ["queue_listener"],
         }
     }
