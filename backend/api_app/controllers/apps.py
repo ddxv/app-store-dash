@@ -1,4 +1,6 @@
 import datetime
+import pandas as pd
+import numpy as np
 
 from api_app.models import (
     AppDetail,
@@ -125,9 +127,30 @@ class AppController(Controller):
         ]
         metrics = ["installs", "rating", "review_count", "rating_count"]
 
+        app_hist = app_hist.sort_values("crawled_date")
+        app_hist["date_change"] = app_hist["crawled_date"] - app_hist[
+            "crawled_date"
+        ].shift(1)
+        app_hist["days_changed"] = app_hist["date_change"].apply(
+            lambda x: np.nan if pd.isnull(x) else x.days
+        )
+
+        change_metrics = []
+        for metric in metrics:
+            app_hist[f"{metric}_change"] = app_hist[metric] - app_hist.shift(1)[metric]
+            app_hist[f"{metric}_avg_per_day"] = (
+                app_hist[f"{metric}_change"] / app_hist["days_changed"]
+            )
+            change_metrics.append(metric + "_avg_per_day")
+
+        app_hist = app_hist.melt(
+            id_vars=["crawled_date"], value_vars=change_metrics
+        ).rename(columns={"variable": "group"})
+
         xaxis_col = "crawled_date"
-        data = app_hist[["group", xaxis_col] + metrics].to_dict(orient="records")
+        data = app_hist[["group", xaxis_col] + change_metrics].to_dict(orient="records")
         app_dict["historyData"] = data
+        app_dict["historyGroups"] = change_metrics
         return app_dict
 
     @get(path="/search/{search_term:str}", cache=3600)
