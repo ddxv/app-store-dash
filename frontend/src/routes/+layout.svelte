@@ -2,7 +2,7 @@
 	import '../app.postcss';
 	import { AppShell, AppBar, TabGroup, TabAnchor } from '@skeletonlabs/skeleton';
 	import { page } from '$app/stores';
-	import IconSearch from '$lib/IconSearch.svelte';
+	import IconSearch from '$lib/svg/IconSearch.svelte';
 	import { ListBox, ListBoxItem } from '@skeletonlabs/skeleton';
 
 	import { myCollectionStore } from '../stores';
@@ -25,6 +25,9 @@
 
 	import { myCategoryMap } from '../stores';
 	import type { CategoriesInfo } from '../types';
+	import IconGoogle from '$lib/svg/IconGoogle.svelte';
+	import IconiOS from '$lib/svg/IconiOS.svelte';
+	import IconiOs from '$lib/svg/IconiOS.svelte';
 	myCategoryMap.set(data);
 
 	function setCategorySelection(id: string) {
@@ -165,8 +168,32 @@
 										bind:group={localCategories}
 										name="medium"
 										value={values.id}
-										active={buttonSelectedColor}>{values.name}</ListBoxItem
-									>
+										active={buttonSelectedColor}
+										><div class="flex w-full justify-between">
+											<div class="flex-grow">
+												{values.name}
+											</div>
+
+											{#if Number(values.android) > 0}
+												<div class="justify-end mr-5">
+													<IconGoogle />
+												</div>
+											{:else}
+												<div class="opacity-20 justify-end mr-5">
+													<IconGoogle />
+												</div>
+											{/if}
+											{#if Number(values.ios) > 0}
+												<div class="justify-end mr-5">
+													<IconiOS />
+												</div>
+											{:else}
+												<div class="opacity-20 justify-end mr-5">
+													<IconiOS />
+												</div>
+											{/if}
+										</div>
+									</ListBoxItem>
 								{/if}
 							{/each}
 						{/if}
