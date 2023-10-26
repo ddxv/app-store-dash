@@ -420,7 +420,7 @@ def query_single_developer(developer_id: str):
     logger.info(f"Developers: {developer_id=}")
     sel_query = """SELECT
                         d.name AS developer_name,
-                        pd.url as developer_url
+                        pd.url as developer_url,
                         sa.*
                     FROM
                         app_urls_map aum
