@@ -12,7 +12,7 @@ from config import get_logger
 from dbcon.queries import (
     get_single_app,
     query_recent_apps,
-    get_app_history,
+    query_app_history,
     search_apps,
 )
 from litestar import Controller, get
@@ -33,6 +33,43 @@ def get_search_results(search_term: str) -> AppGroup:
     apps_dict = df.to_dict(orient="records")
     app_group = AppGroup(title=search_term, apps=apps_dict)
     return app_group
+
+
+def get_app_history(app_dict: dict) -> pd.DataFrame:
+    store_app = app_dict["id"]
+    app_name = app_dict["name"]
+    app_hist = query_app_history(store_app)
+    app_dict["histogram"] = app_hist.sort_values(["id"]).tail(1)["histogram"].values[0]
+    app_dict["history_table"] = (
+        app_hist.drop(["id", "store_app"], axis=1)
+        .style.format(precision=0, thousands=",", decimal=".")
+        .to_html(index=None, classes="pretty-table")
+    )
+    app_hist["group"] = app_name
+    app_hist = app_hist[
+        ~((app_hist["installs"].isnull()) & (app_hist["rating_count"].isnull()))
+    ]
+    metrics = ["installs", "rating", "review_count", "rating_count"]
+    group_col = "group"
+    xaxis_col = "crawled_date"
+    app_hist = app_hist.sort_values(xaxis_col)
+    app_hist["date_change"] = app_hist[xaxis_col] - app_hist[xaxis_col].shift(1)
+    app_hist["days_changed"] = app_hist["date_change"].apply(
+        lambda x: np.nan if pd.isnull(x) else x.days
+    )
+    change_metrics = []
+    for metric in metrics:
+        app_hist[f"{metric}_change"] = app_hist[metric] - app_hist.shift(1)[metric]
+        app_hist[f"{metric}_avg_per_day"] = (
+            app_hist[f"{metric}_change"] / app_hist["days_changed"]
+        )
+        change_metrics.append(metric + "_avg_per_day")
+    app_hist = app_hist[[group_col, xaxis_col] + change_metrics].drop(app_hist.index[0])
+    # This is an odd step as it makes each group a metric
+    # not for when more than 1 dimension
+    app_hist = app_hist.melt(id_vars=xaxis_col).rename(columns={"variable": "group"})
+
+    return app_hist
 
 
 def get_string_date_from_days_ago(days: int) -> str:
@@ -103,54 +140,17 @@ class AppController(Controller):
             json
         """
         logger.info(f"{self.path} start")
-
         app_df = get_single_app(store_id)
         if app_df.empty:
             raise NotFoundException(
                 f"Store ID not found: {store_id!r}", status_code=404
             )
         app_dict = app_df.to_dict(orient="records")[0]
-        store_app = app_dict["id"]
-        app_name = app_dict["name"]
-        app_hist = get_app_history(store_app)
-        app_dict["histogram"] = (
-            app_hist.sort_values(["id"]).tail(1)["histogram"].values[0]
-        )
-        app_dict["history_table"] = (
-            app_hist.drop(["id", "store_app"], axis=1)
-            .style.format(precision=0, thousands=",", decimal=".")
-            .to_html(index=None, classes="pretty-table")
-        )
-        app_hist["group"] = app_name
-        app_hist = app_hist[
-            ~((app_hist["installs"].isnull()) & (app_hist["rating_count"].isnull()))
-        ]
-        metrics = ["installs", "rating", "review_count", "rating_count"]
-
-        app_hist = app_hist.sort_values("crawled_date")
-        app_hist["date_change"] = app_hist["crawled_date"] - app_hist[
-            "crawled_date"
-        ].shift(1)
-        app_hist["days_changed"] = app_hist["date_change"].apply(
-            lambda x: np.nan if pd.isnull(x) else x.days
-        )
-
-        change_metrics = []
-        for metric in metrics:
-            app_hist[f"{metric}_change"] = app_hist[metric] - app_hist.shift(1)[metric]
-            app_hist[f"{metric}_avg_per_day"] = (
-                app_hist[f"{metric}_change"] / app_hist["days_changed"]
-            )
-            change_metrics.append(metric + "_avg_per_day")
-
-        app_hist = app_hist.melt(
-            id_vars=["crawled_date"], value_vars=change_metrics
-        ).rename(columns={"variable": "group"})
-
-        xaxis_col = "crawled_date"
-        data = app_hist[["group", xaxis_col] + change_metrics].to_dict(orient="records")
-        app_dict["historyData"] = data
-        app_dict["historyGroups"] = change_metrics
+        app_hist = get_app_history(app_dict)
+        app_hist_dict = app_hist.to_dict(orient="records")
+        group_list = app_hist.group.unique().tolist()
+        app_dict["historyData"] = app_hist_dict
+        app_dict["historyGroups"] = group_list
         return app_dict
 
     @get(path="/search/{search_term:str}", cache=3600)

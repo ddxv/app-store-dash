@@ -402,7 +402,7 @@ def clean_app_df(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
-def get_app_history(store_app: int) -> pd.DataFrame:
+def query_app_history(store_app: int) -> pd.DataFrame:
     logger.info(f"Query for history single app_id={store_app}")
     where_str = f"WHERE store_app = '{store_app}'"
     where_stmt: TextClause = text(where_str)
