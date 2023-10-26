@@ -1,7 +1,7 @@
 <script lang="ts">
-	import type { AppGroup } from '../../../types';
+	import type { DeveloperResponse } from '../../../types';
 	/** @type {import('../[developer]/$types').PageData} */
-	export let data: AppGroup;
+	export let data: DeveloperResponse;
 	import AppsCard from '$lib/AppGroupCard.svelte';
 </script>
 
@@ -13,9 +13,9 @@
 			<span>Loading...</span>
 		</div>
 	{:then data}
-		{#if data.apps}
-			<h1 class="h1 p-2">Apps: {data.title}</h1>
-			<AppsCard apps={data} />
+		{#if data.results}
+			<h1 class="h1 p-2">Apps: {data.results.title}</h1>
+			<AppsCard apps={data.results} />
 			<p class="p-2" />
 		{/if}
 	{:catch error}
