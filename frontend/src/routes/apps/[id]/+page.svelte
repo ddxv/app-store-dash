@@ -4,6 +4,7 @@
 	/** @type {import('../[id]/$types').PageData} */
 	export let data: AppFullDetails;
 	import AppDetails from '$lib/RatingInstallsLarge.svelte';
+	import AppPlot from '$lib/AppPlot.svelte';
 </script>
 
 {#if data.myapp}
@@ -129,6 +130,12 @@
 				{/each}
 			</section>
 		</div>
+	</section>
+	<section>
+		{#if data.myapp.historyData}
+			<h1 class="h1">Plot</h1>
+			<AppPlot plotdata={data.myapp.historyData} />
+		{/if}
 	</section>
 	<a href="/">Back to Home</a>
 {:else}

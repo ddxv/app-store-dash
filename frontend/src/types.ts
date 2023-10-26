@@ -1,3 +1,5 @@
+import type { ChartTabularData } from '@carbon/charts-svelte';
+
 export interface AppGroup {
 	apps: AppFullDetail[];
 	title: string;
@@ -93,4 +95,5 @@ export interface AppFullDetail {
 	tablet_image_url_1?: string;
 	tablet_image_url_2?: string;
 	tablet_image_url_3?: string;
+	historyData?: ChartTabularData;
 }
