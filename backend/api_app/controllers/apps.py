@@ -112,7 +112,7 @@ class AppController(Controller):
         )
         app_dict["history_table"] = (
             app_hist.drop(["id", "store_app"], axis=1)
-            .style.format(precision=3, thousands=".", decimal=",")
+            .style.format(precision=0, thousands=",", decimal=".")
             .to_html(index=None, classes="pretty-table")
         )
 
