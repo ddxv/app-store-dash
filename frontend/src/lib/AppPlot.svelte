@@ -6,7 +6,7 @@
 	export let plotdata: ChartTabularData;
 
 	export let lineOptions: LineChartOptions = {
-		title: 'Installs',
+		title: 'My Plot Title',
 		axes: {
 			bottom: {
 				title: 'Date',
@@ -14,8 +14,8 @@
 				scaleType: ScaleTypes.TIME
 			},
 			left: {
-				mapsTo: 'installs',
-				title: 'Installs',
+				mapsTo: 'value',
+				// title: 'Installs',
 				scaleType: ScaleTypes.LINEAR
 			}
 		},
@@ -32,8 +32,7 @@
 					scaleType: ScaleTypes.TIME
 				},
 				left: {
-					mapsTo: myType,
-					title: myType,
+					mapsTo: 'value',
 					scaleType: ScaleTypes.LINEAR
 				}
 			},
@@ -45,7 +44,4 @@
 
 <div class="card grid grid-cols-1 md:grid-cols-2 gap-4 p-2">
 	<LineChart data={plotdata} options={lineOptions} />
-	<LineChart data={plotdata} options={getPlotOptions('rating')} />
-	<LineChart data={plotdata} options={getPlotOptions('review_count')} />
-	<LineChart data={plotdata} options={getPlotOptions('rating_count')} />
 </div>

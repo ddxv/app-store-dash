@@ -1,5 +1,5 @@
 <script lang="ts">
-	import ExternalLinkSvg from '$lib/ExternalLinkSVG.svelte';
+	import ExternalLinkSvg from '$lib/svg/ExternalLinkSVG.svelte';
 	import type { AppFullDetails } from '../../../types';
 	/** @type {import('../[id]/$types').PageData} */
 	export let data: AppFullDetails;
