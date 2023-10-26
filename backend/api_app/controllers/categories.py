@@ -1,6 +1,6 @@
 import numpy as np
 
-from api_app.models import CategoriesOverview, Category
+from api_app.models import CategoriesOverview, Category, AppGroup
 from config import get_logger
 
 
@@ -76,7 +76,13 @@ class CategoryController(Controller):
         """
         logger.info(f"{self.path} start")
         df = get_category_top_apps_by_installs(category_id, limit=20)
-        google = df[df["store"].str.contains("oogle")].to_dict(orient="records")
-        ios = df[~df["store"].str.contains("oogle")].to_dict(orient="records")
+        google = AppGroup(
+            apps=(df[df["store"].str.contains("oogle")].to_dict(orient="records")),
+            title="Google",
+        )
+        ios = AppGroup(
+            apps=df[~df["store"].str.contains("oogle")].to_dict(orient="records"),
+            title="iOS",
+        )
         category = Category(key=category_id, ios=ios, google=google)
         return category
