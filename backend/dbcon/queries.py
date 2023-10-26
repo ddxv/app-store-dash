@@ -402,7 +402,7 @@ def clean_app_df(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
-def get_app_history(store_app: int) -> pd.DataFrame:
+def query_app_history(store_app: int) -> pd.DataFrame:
     logger.info(f"Query for history single app_id={store_app}")
     where_str = f"WHERE store_app = '{store_app}'"
     where_stmt: TextClause = text(where_str)
@@ -416,28 +416,32 @@ def get_app_history(store_app: int) -> pd.DataFrame:
     return df
 
 
-# def search_apps(search_input: str, limit: int = 100):
-#     logger.info(f"App search: {search_input=}")
-#     search_input = f"%%{search_input}%%"
-#     sel_query = f"""SELECT
-#                     sa.*,
-#                     d.name as developer_name
-#                     FROM
-#                         store_apps sa
-#                     LEFT JOIN developers d ON
-#                         d.id = sa.developer
-#                     WHERE
-#                         sa.name ILIKE '{search_input}'
-#                         OR sa.store_id ILIKE '{search_input}'
-#                         OR d.name ILIKE '{search_input}'
-#                     ORDER BY installs DESC NULLS LAST, rating_count DESC NULLS LAST
-#                     LIMIT {limit}
-#                     ;
-#                     """
-#     df = pd.read_sql(sel_query, DBCON.engine)
-#     if not df.empty:
-#         df = clean_app_df(df)
-#     return df
+def query_single_developer(developer_id: str):
+    logger.info(f"Developers: {developer_id=}")
+    sel_query = """SELECT
+                        d.*,
+                        pd.*,
+                        sa.*
+                    FROM
+                        app_urls_map aum
+                    LEFT JOIN pub_domains pd ON
+                        pd.id = aum.pub_domain
+                    LEFT JOIN store_apps sa ON
+                        sa.id = aum.store_app
+                    LEFT JOIN developers d ON
+                        d.id = sa.developer
+                    WHERE
+                        d.developer_id = %s
+                    ;
+                    """
+    df = pd.read_sql(
+        sel_query,
+        DBCON.engine,
+        params=(developer_id,),
+    )
+    if df.empty:
+        df = clean_app_df(df)
+    return df
 
 
 def search_apps(search_input: str, limit: int = 100):

@@ -23,6 +23,13 @@ class Category:
 
 
 @dataclass
+class DeveloperApps:
+    developer_id: str  # mapped id like game_puzzle
+    title: str  # mapped id like game_puzzle
+    apps: list[AppDetail]
+
+
+@dataclass
 class Collection:
     title: str  # Title like "Weekly by Downloads"
     categories: list[Category]  # Dict of category_id to Category
