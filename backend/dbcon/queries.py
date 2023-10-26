@@ -443,7 +443,6 @@ def get_app_history(store_app: int) -> pd.DataFrame:
 def search_apps(search_input: str, limit: int = 100):
     logger.info(f"App search: {search_input=}")
     search_pattern = f"%{search_input}%"
-
     sel_query = """
                 SELECT
                     sa.*,
@@ -466,7 +465,6 @@ def search_apps(search_input: str, limit: int = 100):
     )
     if not df.empty:
         df = clean_app_df(df)
-
     return df
 
 
