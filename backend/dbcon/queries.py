@@ -459,13 +459,11 @@ def search_apps(search_input: str, limit: int = 100):
                 ORDER BY installs DESC NULLS LAST, rating_count DESC NULLS LAST
                 LIMIT %s;
                 """
-
     df = pd.read_sql(
         sel_query,
         DBCON.engine,
         params=(search_pattern, search_pattern, search_pattern, limit),
     )
-
     if not df.empty:
         df = clean_app_df(df)
 

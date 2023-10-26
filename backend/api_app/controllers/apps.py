@@ -15,6 +15,7 @@ from dbcon.queries import (
 )
 from litestar import Controller, get
 from litestar.exceptions import NotFoundException
+import urllib.parse
 
 logger = get_logger(__name__)
 
@@ -24,7 +25,8 @@ logger = get_logger(__name__)
 
 
 def get_search_results(search_term: str) -> AppGroup:
-    df = search_apps(search_input=search_term, limit=20)
+    decoded_input = urllib.parse.unquote_plus(search_term)
+    df = search_apps(search_input=decoded_input, limit=20)
     apps_dict = df.to_dict(orient="records")
     app_group = AppGroup(title=search_term, apps=apps_dict)
     return app_group
@@ -121,6 +123,7 @@ class AppController(Controller):
     @get(path="/search/{search_term:str}", cache=3600)
     async def search(self, search_term: str) -> AppGroup:
         logger.info(f"{self.path} term={search_term}")
+
         apps_dict = get_search_results(search_term)
         return apps_dict
 
