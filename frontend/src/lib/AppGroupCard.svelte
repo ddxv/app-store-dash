@@ -14,7 +14,7 @@
 </script>
 
 <div class="card p-2">
-	<section class="grid grid-cols-1 md:grid-cols-4 gap-4">
+	<section class="grid grid-cols-1 md:grid-cols-4 gap-8">
 		{#each apps.apps as app}
 			<a
 				href={`/apps/${app.store_id}`}

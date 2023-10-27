@@ -1,39 +1,17 @@
 <script lang="ts">
 	import '../app.postcss';
-	import { AppShell, AppBar, TabGroup, TabAnchor } from '@skeletonlabs/skeleton';
+	import {
+		AppShell,
+		AppBar,
+		TabGroup,
+		TabAnchor,
+		initializeStores,
+		Drawer,
+		getDrawerStore,
+		type DrawerSettings
+	} from '@skeletonlabs/skeleton';
 	import { page } from '$app/stores';
 	import IconSearch from '$lib/svg/IconSearch.svelte';
-	import { ListBox, ListBoxItem } from '@skeletonlabs/skeleton';
-
-	import { myCollectionStore } from '../stores';
-	let localMyList = $myCollectionStore;
-	// Reactive statement to update the store when localValue changes
-	$: myCollectionStore.set(localMyList);
-
-	import { myStoreSelection } from '../stores';
-	let localMyStore = $myStoreSelection;
-	$: myStoreSelection.set(localMyStore);
-
-	import { myCategorySelection } from '../stores';
-	let localCategories = $myCategorySelection;
-	const buttonSelectedColor = 'bg-gradient-to-tl variant-gradient-primary-secondary text-white';
-	$: myCategorySelection.set(localCategories);
-
-	$: classesActive = (href: string) => (href === $page.url.pathname ? buttonSelectedColor : '');
-
-	export let data: CategoriesInfo;
-
-	import { myCategoryMap } from '../stores';
-	import type { CategoriesInfo } from '../types';
-	import IconGoogle from '$lib/svg/IconGoogle.svelte';
-	import IconiOS from '$lib/svg/IconiOS.svelte';
-	import IconiOs from '$lib/svg/IconiOS.svelte';
-	myCategoryMap.set(data);
-
-	function setCategorySelection(id: string) {
-		localCategories = id;
-		window.location.href = `/categories/${id}`;
-	}
 
 	let searchTerm: string;
 
@@ -46,38 +24,104 @@
 			window.location.href = `/search/${encodedSearchTerm}`;
 		}
 	}
+
+	import { myCategoryMap } from '../stores';
+	import type { CategoriesInfo } from '../types';
+	export let data: CategoriesInfo;
+	myCategoryMap.set(data);
+
+	import SideBar from '$lib/SideBar.svelte';
+	initializeStores();
+	const drawerStore = getDrawerStore();
+
+	const drawerSettings: DrawerSettings = {
+		id: 'example-3',
+		// Provide your property overrides:
+		// bgDrawer: 'bg-purple-900 text-white',
+		bgDrawer: 'bg-gradient-to-tr from-indigo-100/50 via-purple-500/75 to-pink-100',
+		bgBackdrop: 'bg-gradient-to-tr from-indigo-500/10 via-purple-500/10 to-pink-500/10',
+		width: 'w-[280px] md:w-[480px] h-[580px]',
+		padding: 'p-0',
+		rounded: 'rounded-xl',
+		position: 'bottom'
+	};
+
+	const drawerOpen = () => {
+		console.log('OPEN!');
+		drawerStore.open(drawerSettings);
+	};
+
+	console.log('hi');
 </script>
 
+<Drawer>
+	<SideBar {data} />
+</Drawer>
+
 <!-- App Shell -->
-<AppShell regionPage="p-8">
+<AppShell
+	regionPage="p-2 md:p-8"
+	slotSidebarLeft="w-0 lg:w-64"
+	slotPageHeader="hidden md:inline-flex"
+>
 	<svelte:fragment slot="header">
 		<!-- App Bar -->
-		<AppBar>
+		<AppBar
+			gridColumns="grid-cols-[1fr_1fr_1fr]"
+			slotLead="p-2"
+			slotTrail="p-2"
+			spacing="space-y-0"
+			padding="p-0"
+			class="bg-gradient-to-tr from-indigo-500/50 via-purple-500/50 to-pink-500/50"
+		>
 			<svelte:fragment slot="lead">
-				<a href="/" class="text-xl uppercase"><strong>App Store Data</strong></a>
+				<div class="flex items-center">
+					<a class="flex" href="/">
+						<!-- <img class="h-8 m w-8 md:h-12 md:w-12" src="/cute_eyes_250.png" alt="Goblin Icon" /> -->
+						<img
+							class="ml-2 h-8 m w-8 md:h-12 md:w-12"
+							src="/goblin_purple_hat_250.png"
+							alt="Goblin Icon"
+						/>
+						<strong class="tex-xl ml-2 md:text-2xl uppercase">AppGoblin</strong>
+					</a>
+				</div>
 			</svelte:fragment>
+
 			<TabGroup
-				justify="justify-start"
+				active="variant-filled-primary"
+				hover="hover:variant-soft-primary"
+				flex="flex-1"
+				rounded=""
+				border=""
+				class=" w-full p-0 hidden md:inline-flex"
+			>
+				<TabAnchor class="p-0 px-0" href="/" selected={$page.url.pathname === '/'}>HOME</TabAnchor>
+				<TabAnchor href="/categories" selected={$page.url.pathname === '/categories'}
+					>CATEGORIES
+				</TabAnchor>
+				<TabAnchor href="/about" selected={$page.url.pathname === '/about'}>ABOUT</TabAnchor>
+			</TabGroup>
+
+			<TabGroup
+				justify="justify-end"
 				active="variant-filled-primary"
 				hover="hover:variant-soft-primary"
 				flex="flex-1 lg:flex-none"
 				rounded=""
 				border=""
-				class="bg-surface-100-800-token w-full"
+				class="w-full hidden md:inline-flex"
 			>
-				<TabAnchor href="/" selected={$page.url.pathname === '/'}>
-					<span>HOME</span>
+				<TabAnchor href="https://ads.jamesoclaire.com/dash/ads">
+					<span>Ads.txt Dash</span>
 				</TabAnchor>
-				<TabAnchor href="/categories" selected={$page.url.pathname === '/categories'}>
-					<span>CATEGORIES</span>
-				</TabAnchor>
-				<TabAnchor href="/about" selected={$page.url.pathname === '/about'}>
-					<span>ABOUT</span>
+				<TabAnchor href="https://jamesoclaire.com">
+					<span>Blog</span>
 				</TabAnchor>
 			</TabGroup>
 			<svelte:fragment slot="trail">
-				<div class="input-group grid-cols-[auto_1fr_auto]">
-					<div class="input-group-shim">
+				<div class="input-group grid-cols-[auto_auto]">
+					<div class="input-group-shim md:p-2">
 						<IconSearch />
 					</div>
 					<input
@@ -87,158 +131,36 @@
 						placeholder=" Apps..."
 					/>
 				</div>
-
-				<TabGroup
-					justify="justify-end"
-					active="variant-filled-primary"
-					hover="hover:variant-soft-primary"
-					flex="flex-1 lg:flex-none"
-					rounded=""
-					border=""
-					class="bg-surface-100-800-token w-full"
-				>
-					<TabAnchor href="https://ads.jamesoclaire.com/dash/ads">
-						<span>Ads.txt Dash</span>
-					</TabAnchor>
-					<TabAnchor href="https://jamesoclaire.com">
-						<span>Blog</span>
-					</TabAnchor>
-				</TabGroup>
 			</svelte:fragment>
 		</AppBar>
 	</svelte:fragment>
 	<svelte:fragment slot="sidebarLeft">
-		{#if $page.url.pathname == '/' || $page.url.pathname.startsWith('/collections')}
-			<br />
-			<div class="p-2">
-				<h4 class="h4">List</h4>
-				<div class="card variant-glass-surface p-4 text-token">
-					<nav class="list-nav">
-						<ul>
-							<li>
-								<a href="/collections/top" class={classesActive('/collections/top')}>Alltime Top</a>
-							</li>
-							<li>
-								<a href="/collections/new_yearly" class={classesActive('/collections/new_yearly')}
-									>New this Year by Downloads</a
-								>
-							</li>
-							<li>
-								<a href="/collections/new_monthly" class={classesActive('/collections/new_monthly')}
-									>New this Month by Downloads</a
-								>
-							</li>
-
-							<li>
-								<a href="/collections/new_weekly" class={classesActive('/collections/new_weekly')}
-									>New this Week by Downloads</a
-								>
-							</li>
-						</ul>
-					</nav>
-				</div>
-
-				<br />
-				<h4 class="h4">Stores</h4>
-				<div class=" card variant-glass-surface p-4 text-token">
-					<ListBox>
-						<ListBoxItem
-							bind:group={localMyStore}
-							name="medium"
-							value="google"
-							active={buttonSelectedColor}>Google</ListBoxItem
-						>
-						<ListBoxItem
-							bind:group={localMyStore}
-							name="medium"
-							value="ios"
-							active={buttonSelectedColor}>Apple</ListBoxItem
-						>
-					</ListBox>
-				</div>
-				<br />
-
-				<h4 class="h4">Categories</h4>
-				<div class=" card variant-glass-surface p-4 text-token">
-					<ListBox>
-						{#if data}
-							{#each Object.entries(data.mycats.categories) as [_prop, values]}
-								{#if values.id}
-									<ListBoxItem
-										bind:group={localCategories}
-										name="medium"
-										value={values.id}
-										active={buttonSelectedColor}
-										><div class="flex w-full justify-between">
-											<div class="flex-grow">
-												{values.name}
-											</div>
-
-											{#if Number(values.android) > 0}
-												<div class="justify-end mr-5">
-													<IconGoogle />
-												</div>
-											{:else}
-												<div class="opacity-20 justify-end mr-5">
-													<IconGoogle />
-												</div>
-											{/if}
-											{#if Number(values.ios) > 0}
-												<div class="justify-end mr-5">
-													<IconiOS />
-												</div>
-											{:else}
-												<div class="opacity-20 justify-end mr-5">
-													<IconiOS />
-												</div>
-											{/if}
-										</div>
-									</ListBoxItem>
-								{/if}
-							{/each}
-						{/if}
-					</ListBox>
-				</div>
-			</div>
-		{/if}
-
-		{#if $page.url.pathname == '/categories' || $page.url.pathname.startsWith('/categories')}
-			<h4 class="h4">Categories TABLE</h4>
-			{#if $myCategoryMap}
-				<!-- Responsive Container (recommended) -->
-				<div class="table-container">
-					<!-- Native Table Element -->
-					<table class="table table-hover table-interactive table-compact">
-						<thead>
-							<tr>
-								<th>Category</th>
-								<th>Android</th>
-								<th>iOS</th>
-							</tr>
-						</thead>
-						<tbody>
-							{#each Object.entries($myCategoryMap.mycats.categories) as [_i, row]}
-								{#if row.id == localCategories}
-									<tr class="table-row-checked" on:click={() => setCategorySelection(row.id)}>
-										<td>{row.name}</td>
-										<td>{row.android}</td>
-										<td>{row.ios}</td>
-									</tr>
-								{:else}
-									<tr on:click={() => setCategorySelection(row.id)}>
-										<td>{row.name}</td>
-										<td>{row.android}</td>
-										<td>{row.ios}</td>
-									</tr>
-								{/if}
-							{/each}
-						</tbody>
-					</table>
-				</div>
-			{/if}
-		{/if}
-		<!-- --- -->
+		<SideBar {data} />
 	</svelte:fragment>
+
+	<svelte:fragment slot="footer">
+		<!-- App Bar -->
+		<AppBar
+			slotLead="p-2"
+			slotTrail="p-2"
+			spacing="space-y-0"
+			padding="p-0"
+			class="bg-gradient-to-tr from-indigo-500/50 via-purple-500/50 to-pink-500/50 lg:hidden"
+		>
+			<svelte:fragment slot="trail">
+				<button class="lg:hidden btn btn-md ml-auto mr-2" on:click={drawerOpen}>
+					<span>
+						<svg viewBox="0 0 100 80" class="fill-token w-4 h-4">
+							<rect width="100" height="20" />
+							<rect y="30" width="100" height="20" />
+							<rect y="60" width="100" height="20" />
+						</svg>
+					</span>
+				</button>
+			</svelte:fragment>
+		</AppBar>
+	</svelte:fragment>
+
 	<slot />
 	<!-- Page Route Content -->
 </AppShell>

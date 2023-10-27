@@ -1,5 +1,5 @@
 export const ssr = true;
-export const csr = false;
+export const csr = true;
 
 import type { CategoriesInfo, MyCats } from '../types';
 
