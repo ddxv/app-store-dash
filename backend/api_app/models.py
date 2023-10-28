@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 
 @dataclass
@@ -55,3 +55,35 @@ class CategoryDetail:
 @dataclass
 class CategoriesOverview:
     categories: list[CategoryDetail]
+
+
+# @dataclass
+# class StoreCategoryDetail:
+#     category_id: int
+#     category_name: str
+
+
+# @dataclass
+# class StoreCollections:
+#     int: list[StoreCategoryDetail]
+
+
+# @dataclass
+# class RankingOverview:
+#     int: StoreCollections
+
+
+@dataclass
+class StoreCategoryDetail:
+    category_id: int
+    category_name: str
+
+
+@dataclass
+class StoreCollections:
+    categories: list[StoreCategoryDetail] = field(default_factory=list)
+
+
+@dataclass
+class RankingOverview:
+    store_collections: dict[int, StoreCollections] = field(default_factory=dict)

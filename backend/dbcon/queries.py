@@ -325,6 +325,57 @@ def get_appstore_categories() -> pd.DataFrame:
     return df
 
 
+def get_ranks(
+    store: int, collection_id: int, category_id: int, limit: int = 25
+) -> pd.DataFrame:
+    sel_query = """SELECT
+            FROM
+                app_rankings ar
+            LEFT JOIN
+                stores s
+                    ON s.id = ar.store
+            LEFT JOIN 
+                store_apps sa
+            WHERE
+                crawled_date = CURRENT_DATE - INTERVAL '1 day'
+                AND ar.store = {store}
+                AND ar.store_colleciton = {collection_id}
+                AND ar.store_category = {categor_id}
+            LIMIT {limit}
+            ;
+        """
+    df = pd.read_sql(sel_query, con=DBCON.engine)
+    return df
+
+
+def get_store_collection_category_map() -> pd.DataFrame:
+    sel_query = """SELECT
+                DISTINCT 
+                ar.store as store_id,
+                s.name as store_name,
+                store_collection as collection_id,
+                collection as collection_name,
+                store_category as category_id,
+                category as category_name
+            FROM
+                app_rankings ar
+            LEFT JOIN
+                stores s
+                    ON s.id = ar.store
+            LEFT JOIN 
+                store_collections scol
+                    ON scol.id = ar.store_collection AND ar.store = scol.store
+            LEFT JOIN
+                store_categories scat
+                    ON scat.id = ar.store_category AND ar.store = scat.store
+            WHERE
+                crawled_date = CURRENT_DATE - INTERVAL '1 day'
+            ;
+        """
+    df = pd.read_sql(sel_query, con=DBCON.engine)
+    return df
+
+
 def get_category_top_apps_by_installs(category: str, limit: int = 10) -> pd.DataFrame:
     logger.info(f"Query {category=} for top installs")
     sel_query = """SELECT * 
