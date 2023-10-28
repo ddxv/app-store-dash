@@ -14,7 +14,7 @@
 </script>
 
 <div class="card p-2">
-	<section class="grid grid-cols-1 md:grid-cols-4 gap-8">
+	<section class="grid grid-col grid-flow-row md:grid-cols-4 gap-4 md:gap-8">
 		{#each apps.apps as app}
 			<a
 				href={`/apps/${app.store_id}`}
@@ -64,15 +64,23 @@
 								<!-- Show Phone Screenshot -->
 							{:else if app.phone_image_url_1 && app.phone_image_url_1 != 'null'}
 								<div>
-									<img
-										class="object-top object-cover h-48 w-full rounded-lg"
-										src={app.phone_image_url_1}
-										alt={app.name}
-										referrerpolicy="no-referrer"
-									/>
+									<div class="inline-flex mx-auto">
+										<img
+											class="h-48 w-48 p-3 rounded-lg"
+											src={app.icon_url_512}
+											alt={app.name}
+											referrerpolicy="no-referrer"
+										/>
+										<img
+											class="object-top object-cover h-48 w-48 rounded-lg"
+											src={app.phone_image_url_1}
+											alt={app.name}
+											referrerpolicy="no-referrer"
+										/>
+									</div>
 									<div class="inline-flex text-left">
 										<img
-											class="h-24 w-24 p-3 rounded-lg"
+											class="hidden md:inline-flex md:h-24 w-24 p-3 rounded-lg"
 											src={app.icon_url_512}
 											alt={app.name}
 											referrerpolicy="no-referrer"
@@ -84,7 +92,7 @@
 							{:else}
 								<div class="mx-auto block text-center">
 									<img
-										class="h-48 max-w-full rounded-lg mx-auto"
+										class="h-48 w-48 rounded-lg mx-auto"
 										src={app.icon_url_512}
 										alt={app.name}
 										referrerpolicy="no-referrer"
