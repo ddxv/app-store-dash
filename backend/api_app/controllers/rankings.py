@@ -2,6 +2,7 @@ from api_app.models import (
     RankingOverview,
     StoreCollections,
     StoreCategoryDetail,
+    StoreRankings,
 )
 from config import get_logger
 
@@ -14,26 +15,38 @@ from litestar import Controller, get
 logger = get_logger(__name__)
 
 """
-/categories/{category_id} a specific app
+/rankings/ of all apps as pulled from stores 
 """
 
 
 def ranking_map() -> RankingOverview:
     df = get_store_collection_category_map()
     overview = RankingOverview()
-
-    groups = df.groupby("store_id")
-    for store, group in groups:
-        store_collections = StoreCollections()
-        cgroups = group.groupby("collection_id")
-        for col_id, cgroup in cgroups:
+    groups = df.groupby(["store_id", "store_name"])
+    for store_idx, group in groups:
+        store_id = int(store_idx[0])
+        store_name = store_idx[1]
+        cgroups = group.groupby(["collection_id", "collection_name"])
+        rankings = StoreRankings(store_id=store_id, store_name=store_name)
+        for col_idx, cgroup in cgroups:
+            collection_id = int(col_idx[0])
+            collection_name = col_idx[1]
             category_details = [
-                StoreCategoryDetail(row["category_id"], row["category_name"])
+                StoreCategoryDetail(
+                    category_id=int(row["category_id"]),
+                    category_name=row["category_name"],
+                )
                 for _, row in cgroup.iterrows()
+                if row["category_id"]
             ]
-            store_collections.categories.extend(category_details)
-        overview.store_collections[store] = store_collections
-
+            rankings.collections.append(
+                StoreCollections(
+                    collection_id=collection_id,
+                    collection_name=collection_name,
+                    categories=category_details,
+                )
+            )
+        overview.stores_rankings.append(rankings)
     return overview
 
 

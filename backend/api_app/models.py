@@ -81,9 +81,18 @@ class StoreCategoryDetail:
 
 @dataclass
 class StoreCollections:
+    collection_id: int
+    collection_name: str
     categories: list[StoreCategoryDetail] = field(default_factory=list)
 
 
 @dataclass
+class StoreRankings:
+    store_id: int
+    store_name: str
+    collections: list[StoreCollections] = field(default_factory=list)
+
+
+@dataclass
 class RankingOverview:
-    store_collections: dict[int, StoreCollections] = field(default_factory=dict)
+    stores_rankings: list[StoreRankings] = field(default_factory=list)

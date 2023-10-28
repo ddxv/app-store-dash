@@ -25,10 +25,10 @@
 		}
 	}
 
-	import { myCategoryMap } from '../stores';
+	import { homeCategoryMap } from '../stores';
 	import type { CategoriesInfo } from '../types';
 	export let data: CategoriesInfo;
-	myCategoryMap.set(data);
+	homeCategoryMap.set(data);
 
 	import SideBar from '$lib/SideBar.svelte';
 	initializeStores();

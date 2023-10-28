@@ -103,3 +103,25 @@ export interface AppFullDetail {
 	tablet_image_url_3?: string;
 	historyData?: ChartTabularData;
 }
+
+export type CategoryRanks = {
+	category_id: number;
+	category_name: string;
+	// ... any other fields
+};
+
+export type CollectionRanks = {
+	collection_id: number;
+	collection_name: string;
+	categories: CategoryRanks[];
+};
+
+export type Store = {
+	store_id: number;
+	store_name: string;
+	collections: CollectionRanks[];
+};
+
+export type StoreRankingsMap = {
+	stores_rankings: Store[];
+};

@@ -6,28 +6,24 @@
 	import IconGoogle from '$lib/svg/IconGoogle.svelte';
 	import IconiOS from '$lib/svg/IconiOS.svelte';
 
-	import { myCollectionStore } from '../stores';
-	let localMyList = $myCollectionStore;
+	import { homeCollectionSelection } from '../stores';
+	let localHomeCollectionSelect = $homeCollectionSelection;
 	// Reactive statement to update the store when localValue changes
-	$: myCollectionStore.set(localMyList);
+	$: homeCollectionSelection.set(localHomeCollectionSelect);
 
-	import { myStoreSelection } from '../stores';
-	let localMyStore = $myStoreSelection;
-	$: myStoreSelection.set(localMyStore);
+	import { homeStoreSelection } from '../stores';
+	let localHomeStoreSelect = $homeStoreSelection;
+	$: homeStoreSelection.set(localHomeStoreSelect);
 
-	import { myCategorySelection } from '../stores';
-	let localCategories = $myCategorySelection;
+	import { homeCategorySelection } from '../stores';
+	let localHomeCategorySelect = $homeCategorySelection;
 	const buttonSelectedColor = 'bg-gradient-to-tl variant-gradient-primary-secondary text-white';
-	$: myCategorySelection.set(localCategories);
+	$: homeCategorySelection.set(localHomeCategorySelect);
 
-	function setCategorySelection(id: string) {
-		localCategories = id;
-		window.location.href = `/categories/${id}`;
-	}
 	import type { CategoriesInfo } from '../types';
 	export let data: CategoriesInfo;
-	import { myCategoryMap } from '../stores';
 
+	import { RadioGroup, RadioItem } from '@skeletonlabs/skeleton';
 	// import { getDrawerStore } from '@skeletonlabs/skeleton';
 
 	// const drawerStore = getDrawerStore();
@@ -35,6 +31,33 @@
 	// function drawerClose(): void {
 	// 	drawerStore.close();
 	// }
+
+	// FOLOWING IS FOR RANKINGS
+	// import { myStoreRankingsMap } from '../stores';
+
+	import { storeIDLookup, collectionIDLookup, categoryIDLookup } from '../stores';
+	import type { CollectionRanks } from '../types';
+
+	import { idCollectionSelection } from '../stores';
+	let localIDCollectionSelect = $idCollectionSelection;
+	// Reactive statement to update the store when localValue changes
+	$: idCollectionSelection.set(localIDCollectionSelect);
+
+	import { idStoreSelection } from '../stores';
+	let localIDStoreSelect = $idStoreSelection;
+	$: idStoreSelection.set(localIDStoreSelect);
+
+	import { idCategorySelection } from '../stores';
+	let localIDCategorySelect = $idCategorySelection;
+
+	$: idCategorySelection.set(localIDCategorySelect);
+	// Reactive statement to reset localIDCategorySelect if localIDCollectionSelect is not in collectionIDLookup[localIDStoreSelect]
+	$: if (!(localIDCollectionSelect in collectionIDLookup[localIDStoreSelect])) {
+		// Get the first key (collection ID) and parse it to a number
+		console.log(`HIIII ${localIDCollectionSelect}`);
+		localIDCollectionSelect = parseInt(Object.keys(collectionIDLookup[localIDStoreSelect])[0]);
+		console.log(`HIIII ${localIDCollectionSelect}`);
+	}
 </script>
 
 {#if $page.url.pathname == '/' || $page.url.pathname.startsWith('/collections')}
@@ -71,14 +94,14 @@
 			<h4 class="h4">Stores</h4>
 			<ListBox>
 				<ListBoxItem
-					bind:group={localMyStore}
+					bind:group={localHomeStoreSelect}
 					name="medium"
 					value="google"
 					padding="p-2 md:p-2"
 					active={buttonSelectedColor}>Google</ListBoxItem
 				>
 				<ListBoxItem
-					bind:group={localMyStore}
+					bind:group={localHomeStoreSelect}
 					name="medium"
 					value="ios"
 					padding="p-2 md:p-2"
@@ -95,7 +118,7 @@
 					{#each Object.entries(data.mycats.categories) as [_prop, values]}
 						{#if values.id}
 							<ListBoxItem
-								bind:group={localCategories}
+								bind:group={localHomeCategorySelect}
 								name="medium"
 								value={values.id}
 								active={buttonSelectedColor}
@@ -133,38 +156,45 @@
 	</div>
 {/if}
 
-{#if $page.url.pathname == '/categories' || $page.url.pathname.startsWith('/categories')}
-	<h4 class="h4">Categories TABLE</h4>
-	{#if $myCategoryMap}
-		<!-- Responsive Container (recommended) -->
-		<div class="table-container">
-			<!-- Native Table Element -->
-			<table class="table table-hover table-interactive table-compact">
-				<thead>
-					<tr>
-						<th>Category</th>
-						<th>Android</th>
-						<th>iOS</th>
-					</tr>
-				</thead>
-				<tbody>
-					{#each Object.entries($myCategoryMap.mycats.categories) as [_i, row]}
-						{#if row.id == localCategories}
-							<tr class="table-row-checked" on:click={() => setCategorySelection(row.id)}>
-								<td>{row.name}</td>
-								<td>{row.android}</td>
-								<td>{row.ios}</td>
-							</tr>
-						{:else}
-							<tr on:click={() => setCategorySelection(row.id)}>
-								<td>{row.name}</td>
-								<td>{row.android}</td>
-								<td>{row.ios}</td>
-							</tr>
-						{/if}
-					{/each}
-				</tbody>
-			</table>
+{#if $page.url.pathname == '/rankings' || $page.url.pathname.startsWith('/rankings')}
+	<div class="p-1 md:p-2">
+		<div class="card variant-glass-surface p-4">
+			<h4 class="h4">Stores</h4>
+			<RadioGroup rounded="rounded-container-token" display="flex-col">
+				{#each Object.entries(storeIDLookup) as [_prop, values]}
+					<RadioItem bind:group={localIDStoreSelect} name="justify" value={values.store_id}
+						>{values.store_name}</RadioItem
+					>
+				{/each}
+			</RadioGroup>
 		</div>
-	{/if}
+	</div>
+
+	<div class="p-1 md:p-2">
+		<div class="card variant-glass-surface p-4">
+			<h4 class="h4">Collections</h4>
+			<RadioGroup rounded="rounded-container-token" display="flex-col">
+				{#each Object.entries(collectionIDLookup[localIDStoreSelect]) as [id, values]}
+					<RadioItem
+						bind:group={localIDCollectionSelect}
+						name="justify"
+						value={values.collection_id}>{values.collection_name}</RadioItem
+					>
+				{/each}
+			</RadioGroup>
+		</div>
+	</div>
+
+	<div class="p-1 md:p-2">
+		<div class="card variant-glass-surface p-4">
+			<h4 class="h4">Categories</h4>
+			<RadioGroup rounded="rounded-container-token" display="flex-col">
+				{#each Object.entries(categoryIDLookup[localIDCollectionSelect]) as [id, values]}
+					<RadioItem bind:group={localIDCategorySelect} name="justify" value={values.category_id}
+						>{values.category_name}</RadioItem
+					>
+				{/each}
+			</RadioGroup>
+		</div>
+	</div>
 {/if}
