@@ -88,7 +88,7 @@
 		</div>
 		<br />
 
-		<div class=" card variant-glass-surface p-2 md:p-4 text-token">
+		<div class="card variant-glass-surface p-2 md:p-4 text-token">
 			<h4 class="h4">Categories</h4>
 			<ListBox>
 				{#if data}
