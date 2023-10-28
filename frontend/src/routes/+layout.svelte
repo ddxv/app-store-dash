@@ -120,15 +120,16 @@
 				</TabAnchor>
 			</TabGroup>
 			<svelte:fragment slot="trail">
-				<div class="input-group grid-cols-[auto_auto]">
-					<div class="input-group-shim md:p-2">
+				<div class="input-group grid-cols-2 sm:grid-cols-[50px_auto]">
+					<div class="input-group-shim p-1 md:p-3">
 						<IconSearch />
 					</div>
 					<input
 						type="search"
 						bind:value={searchTerm}
 						on:keydown={navigateToSearch}
-						placeholder=" Apps..."
+						placeholder="Search"
+						class="p-1 md:p-3"
 					/>
 				</div>
 			</svelte:fragment>
