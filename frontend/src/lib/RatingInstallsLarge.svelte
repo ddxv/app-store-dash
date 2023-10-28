@@ -6,10 +6,10 @@
 </script>
 
 <div class="inline-block">
-	<h5 class="h2 p-2">{app.name}</h5>
+	<h5 class="h3 md:h2 p-0 md:p-2">{app.name}</h5>
 	<!-- Installs DownloadIcon 123-->
 	{#if app.installs != '0' && app.installs != 'N/A'}
-		<div class="block p-2 h3">
+		<div class="block p-0 md:p-2 h3">
 			<div class="inline-flex">
 				<IconDownload />
 				{app.installs}
@@ -18,7 +18,12 @@
 	{/if}
 
 	<!-- Ratings: STARS (123) -->
-	<Rating total={5} size={50} rating={app.rating} />
+	<div class="md:hidden">
+		<Rating total={5} size={25} rating={app.rating} />
+	</div>
+	<div class="hidden md:inline-flex">
+		<Rating total={5} size={50} rating={app.rating} />
+	</div>
 	{#if app.rating_count != '0' && app.rating_count != 'N/A'}
 		<div>
 			Ratings: {app.rating_count}

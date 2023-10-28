@@ -11,9 +11,9 @@
 
 {#if data.myapp}
 	<!-- App Icon Title & Info -->
-	<section class="grid grid-flow-cols-1 md:grid-cols-2 gap-4">
-		<div class="card variant-glass-surface p-8">
-			<div class="card-header p-4">
+	<section class="grid grid-flow-cols-1 md:grid-cols-2 md:gap-4">
+		<div class="card variant-glass-surface p-0 lg:p-8">
+			<div class="card-header p-2 md:p-4">
 				<div class="inline-flex">
 					{#if data.myapp.icon_url_512}
 						<img
@@ -30,17 +30,18 @@
 					</div>
 				</div>
 
+				<div class="block md:hidden" />
 				{#if data.myapp.developer_id}
 					<a href="/developers/{data.myapp.developer_id}" class="btn variant-filled"
-						><span>{data.myapp.developer_name}</span></a
+						><span>Developer: {data.myapp.developer_name}</span></a
 					>
 				{/if}
 				<a href="/categories/{data.myapp.category}" class="btn variant-filled"
-					><span>{data.myapp.category}</span></a
+					><span>Category: {data.myapp.category}</span></a
 				>
 			</div>
 
-			<div class="card-footer flex">
+			<div class="card-footer md:flex">
 				<div class="block">
 					<p>Store ID: {data.myapp.store_id}</p>
 					{#if data.myapp.developer_id}
@@ -74,7 +75,7 @@
 				<div class="ml-auto">
 					<a class="anchor inline-flex items-baseline" href={data.myapp.store_link} target="_blank">
 						{#if data.myapp.store_link.includes('google')}
-							<img class="w-60" src="/gp_en_badge_web_generic.png" alt={data.myapp.name} />
+							<img class="w-40 md:w-60" src="/gp_en_badge_web_generic.png" alt={data.myapp.name} />
 						{:else}
 							<AvailableOniOs />
 						{/if}
@@ -82,16 +83,16 @@
 				</div>
 			</div>
 			<br />
-			<div class="w-max-full flex">
-				<div class="self-center">
-					<h1 class="h1 p-2">{data.myapp.rating}</h1>
+			<div class="p-2 md:flex">
+				<div class="self-center text-center">
+					<h1 class="h1 p-2">{data.myapp.rating}★</h1>
 					Ratings: {sum(data.myapp.histogram)}
 				</div>
 				<div class="flex-1">
 					{#each [...data.myapp.histogram].reverse() as count, index}
 						<div class="flex bar-spacer">
 							<span class="label">{data.myapp.histogram.length - index}★</span>
-							<div class="bar-container">
+							<div class="bar-container flex-1">
 								<div
 									class="bar"
 									style="width: {(count / sum(data.myapp.histogram)) * 100}%"
@@ -164,12 +165,10 @@
 	}
 
 	.bar-container {
-		display: flex;
 		align-self: center;
 		align-items: center;
 		background-color: gainsboro;
-		flex-grow: 1; /*Allow the bar to grow and take available space */
-		border-radius: 10px; /* Rounded corners */
+		border-radius: 5px; /* Rounded corners */
 		margin-left: 5px;
 		padding: 0px;
 	}
@@ -177,8 +176,7 @@
 	.bar {
 		height: 20px; /* Fixed height for each bar */
 		background-color: #3498db;
-		transition: width 0.3s ease;
-		border-radius: 10px; /* Rounded corners */
+		border-radius: 5px; /* Rounded corners */
 		/* flex-grow: 1; Allow the bar to grow and take available space */
 	}
 </style>

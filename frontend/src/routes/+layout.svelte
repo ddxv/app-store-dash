@@ -61,7 +61,7 @@
 <!-- App Shell -->
 <AppShell
 	regionPage="p-2 md:p-8"
-	slotSidebarLeft="w-0 lg:w-64"
+	slotSidebarLeft="w-0 lg:w-auto"
 	slotPageHeader="hidden md:inline-flex"
 >
 	<svelte:fragment slot="header">
@@ -103,32 +103,17 @@
 				<TabAnchor href="/about" selected={$page.url.pathname === '/about'}>ABOUT</TabAnchor>
 			</TabGroup>
 
-			<TabGroup
-				justify="justify-end"
-				active="variant-filled-primary"
-				hover="hover:variant-soft-primary"
-				flex="flex-1 lg:flex-none"
-				rounded=""
-				border=""
-				class="w-full hidden md:inline-flex"
-			>
-				<TabAnchor href="https://ads.jamesoclaire.com/dash/ads">
-					<span>Ads.txt Dash</span>
-				</TabAnchor>
-				<TabAnchor href="https://jamesoclaire.com">
-					<span>Blog</span>
-				</TabAnchor>
-			</TabGroup>
 			<svelte:fragment slot="trail">
-				<div class="input-group grid-cols-[auto_auto]">
-					<div class="input-group-shim md:p-2">
+				<div class="input-group grid-cols-2 sm:grid-cols-[50px_auto]">
+					<div class="input-group-shim p-1 md:p-3">
 						<IconSearch />
 					</div>
 					<input
 						type="search"
 						bind:value={searchTerm}
 						on:keydown={navigateToSearch}
-						placeholder=" Apps..."
+						placeholder="Search"
+						class="p-1 md:p-3"
 					/>
 				</div>
 			</svelte:fragment>
@@ -139,26 +124,27 @@
 	</svelte:fragment>
 
 	<svelte:fragment slot="footer">
-		<!-- App Bar -->
-		<AppBar
-			slotLead="p-2"
-			slotTrail="p-2"
-			spacing="space-y-0"
-			padding="p-0"
-			class="bg-gradient-to-tr from-indigo-500/50 via-purple-500/50 to-pink-500/50 lg:hidden"
-		>
-			<svelte:fragment slot="trail">
-				<button class="lg:hidden btn btn-md ml-auto mr-2" on:click={drawerOpen}>
-					<span>
-						<svg viewBox="0 0 100 80" class="fill-token w-4 h-4">
-							<rect width="100" height="20" />
-							<rect y="30" width="100" height="20" />
-							<rect y="60" width="100" height="20" />
-						</svg>
-					</span>
-				</button>
-			</svelte:fragment>
-		</AppBar>
+		{#if $page.url.pathname == '/' || $page.url.pathname.startsWith('/collections')}
+			<AppBar
+				slotLead="p-2"
+				slotTrail="p-2"
+				spacing="space-y-0"
+				padding="p-0"
+				class="bg-gradient-to-tr from-indigo-500/50 via-purple-500/50 to-pink-500/50 lg:hidden"
+			>
+				<svelte:fragment slot="trail">
+					<button class="lg:hidden btn btn-md ml-auto mr-2" on:click={drawerOpen}>
+						<span>
+							<svg viewBox="0 0 100 80" class="fill-token w-4 h-4">
+								<rect width="100" height="20" />
+								<rect y="30" width="100" height="20" />
+								<rect y="60" width="100" height="20" />
+							</svg>
+						</span>
+					</button>
+				</svelte:fragment>
+			</AppBar>
+		{/if}
 	</svelte:fragment>
 
 	<slot />

@@ -22,7 +22,6 @@
 	// console.log(fullStars, grayStars, rateDiffence, percentRating)
 </script>
 
-<!-- <div class={twMerge(divClass, $$props.class)}> -->
 <div class="my-rating flex items-center">
 	{#if count}
 		<svelte:component this={icon} fillPercent={100} {size} />
