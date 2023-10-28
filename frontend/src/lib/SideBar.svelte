@@ -40,7 +40,7 @@
 {#if $page.url.pathname == '/' || $page.url.pathname.startsWith('/collections')}
 	<div class="p-1 md:p-2">
 		<div class="card variant-glass-surface p-4">
-			<h4 class="h4">List</h4>
+			<h4 class="h4">Collections</h4>
 			<nav class="list-nav">
 				<ul>
 					<li>

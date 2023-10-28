@@ -61,7 +61,7 @@
 <!-- App Shell -->
 <AppShell
 	regionPage="p-2 md:p-8"
-	slotSidebarLeft="w-0 lg:w-64"
+	slotSidebarLeft="w-0 lg:w-auto"
 	slotPageHeader="hidden md:inline-flex"
 >
 	<svelte:fragment slot="header">
@@ -103,22 +103,6 @@
 				<TabAnchor href="/about" selected={$page.url.pathname === '/about'}>ABOUT</TabAnchor>
 			</TabGroup>
 
-			<TabGroup
-				justify="justify-end"
-				active="variant-filled-primary"
-				hover="hover:variant-soft-primary"
-				flex="flex-1 lg:flex-none"
-				rounded=""
-				border=""
-				class="w-full hidden md:inline-flex"
-			>
-				<TabAnchor href="https://ads.jamesoclaire.com/dash/ads">
-					<span>Ads.txt Dash</span>
-				</TabAnchor>
-				<TabAnchor href="https://jamesoclaire.com">
-					<span>Blog</span>
-				</TabAnchor>
-			</TabGroup>
 			<svelte:fragment slot="trail">
 				<div class="input-group grid-cols-2 sm:grid-cols-[50px_auto]">
 					<div class="input-group-shim p-1 md:p-3">
