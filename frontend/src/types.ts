@@ -75,6 +75,7 @@ export interface RankedApps {
 export interface AppRankDetail {
 	crawled_date: string;
 	rank: number;
+	store: number;
 	store_collection: number;
 	store_category: number;
 }

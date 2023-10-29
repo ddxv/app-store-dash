@@ -6,7 +6,7 @@
 	import AppDetails from '$lib/RatingInstallsLarge.svelte';
 	import AppPlot from '$lib/AppPlot.svelte';
 	import AvailableOniOs from '$lib/svg/AvailableOniOS.svelte';
-	import { categoryIDLookup } from '../../../stores';
+	import { categoryIDLookup, collectionIDLookup } from '../../../stores';
 	let sum = (arr: number[]) => arr.reduce((acc, curr) => acc + curr, 0);
 </script>
 
@@ -131,7 +131,8 @@
 				{#each data.myranks as myrow}
 					<h5 class="h5">
 						#{myrow.rank}
-						in: {categoryIDLookup[myrow.store_collection][myrow.store_category].category_name}
+						in: {collectionIDLookup[myrow.store][myrow.store_collection].collection_name}
+						{categoryIDLookup[myrow.store_collection][myrow.store_category].category_name}
 						({myrow.crawled_date})
 					</h5>
 				{/each}

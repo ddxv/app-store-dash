@@ -34,7 +34,6 @@
 	// }
 
 	// FOLOWING IS FOR RANKINGS
-	// import { myStoreRankingsMap } from '../stores';
 
 	import { storeIDLookup, collectionIDLookup, categoryIDLookup } from '../stores';
 

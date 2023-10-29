@@ -1,12 +1,16 @@
 <script lang="ts">
-	import { ScaleTypes, type LineChartOptions, type ChartTabularData } from '@carbon/charts-svelte';
-	import { LineChart } from '@carbon/charts-svelte';
+	import {
+		ScaleTypes,
+		ComboChart,
+		type ComboChartOptions,
+		type ChartTabularData
+	} from '@carbon/charts-svelte';
 	import '@carbon/charts-svelte/styles.css';
 
 	export let plotdata: ChartTabularData;
 
-	export let lineOptions: LineChartOptions = {
-		title: 'My Plot Title',
+	export let lineOptions: ComboChartOptions = {
+		title: 'My Title',
 		axes: {
 			bottom: {
 				title: 'Date',
@@ -14,13 +18,35 @@
 				scaleType: ScaleTypes.TIME
 			},
 			left: {
-				mapsTo: 'value',
-				// title: 'Installs',
-				scaleType: ScaleTypes.LINEAR
+				mapsTo: 'installs_avg_per_day',
+				title: 'Avg Installs per Day',
+				scaleType: ScaleTypes.LINEAR,
+				correspondingDatasets: ['installs_avg_per_day']
+			},
+			right: {
+				mapsTo: 'rating_count_avg_per_day',
+				title: 'Rating Avg',
+				scaleType: ScaleTypes.LINEAR,
+				correspondingDatasets: ['rating_count_avg_per_day']
 			}
 		},
-		curve: 'curveMonotoneX',
-		height: '400px'
+		// curve: 'curveMonotoneX',
+		height: '400px',
+		comboChartTypes: [
+			{
+				type: 'simple-bar',
+				correspondingDatasets: ['installs_avg_per_day']
+			},
+			{
+				type: 'line',
+				options: {
+					points: {
+						radius: 5
+					}
+				},
+				correspondingDatasets: ['rating_count_avg_per_day']
+			}
+		]
 	};
 	function getPlotOptions(myType: string) {
 		return {
@@ -43,5 +69,5 @@
 </script>
 
 <div class="card grid grid-cols-1 md:grid-cols-2 gap-4 p-2">
-	<LineChart data={plotdata} options={lineOptions} />
+	<ComboChart data={plotdata} options={lineOptions} />
 </div>
