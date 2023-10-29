@@ -44,20 +44,24 @@
 		idStoreSelection.set(localIDStoreSelect);
 		if (localIDStoreSelect == 1) {
 			localIDCollectionSelect = 1;
+			localIDCategorySelect = 1;
 		} else {
 			localIDCollectionSelect = 4;
+			localIDCategorySelect = 55;
 		}
 	}
 
 	import { idCollectionSelection } from '../stores';
 	let localIDCollectionSelect = $idCollectionSelection;
-	$: idCollectionSelection.set(localIDCollectionSelect);
+	// $: idCollectionSelection.set(localIDCollectionSelect);
 	$: {
 		idCollectionSelection.set(localIDCollectionSelect);
-		if (localIDCategorySelect < 55) {
-			if (localIDCollectionSelect >= 4) {
+		if (localIDCollectionSelect >= 4) {
+			if (!(localIDCategorySelect in categoryIDLookup[localIDCollectionSelect])) {
 				localIDCategorySelect = 55;
-			} else {
+			}
+		} else {
+			if (!(localIDCategorySelect in categoryIDLookup[localIDCollectionSelect])) {
 				localIDCategorySelect = 1;
 			}
 		}
