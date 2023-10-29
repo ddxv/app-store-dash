@@ -68,6 +68,7 @@ export interface AppFullDetail {
 	name: string;
 	installs?: string;
 	store_id: string;
+	id: number;
 	developer_id?: string;
 	developer_name: string;
 	store_link: string;

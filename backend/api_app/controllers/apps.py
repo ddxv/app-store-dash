@@ -10,6 +10,7 @@ from dbcon.queries import (
     query_app_history,
     search_apps,
     query_single_developer,
+    query_ranks_for_app,
 )
 from litestar import Controller, get
 from litestar.exceptions import NotFoundException
@@ -147,6 +148,30 @@ class AppController(Controller):
         group_list = app_hist.group.unique().tolist()
         app_dict["historyData"] = app_hist_dict
         app_dict["historyGroups"] = group_list
+        return app_dict
+
+    @get(path="/{store:int}/ranks/{store_app:int}", cache=3600)
+    async def app_ranks(self, store: int, store_app: int) -> AppDetail:
+        """
+        Handles a GET request for a specific app ranks.
+
+        Args:
+            store (int): The id of the store to retrieve.
+            store_app (int): The database id of the app to retrieve.
+
+        Returns:
+            json
+        """
+        logger.info(f"{self.path} start")
+
+        df = query_ranks_for_app(store=store, store_app=store_app)
+        if df.empty:
+            raise NotFoundException(
+                f"Store app ID not found: {store_app!r}", status_code=404
+            )
+        app_dict = df[
+            ["crawled_date", "store_collection", "store_category", "rank"]
+        ].to_dict(orient="records")
         return app_dict
 
     @get(path="/developers/{developer_id:str}", cache=3600)

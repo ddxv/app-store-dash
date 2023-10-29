@@ -36,28 +36,37 @@
 	// import { myStoreRankingsMap } from '../stores';
 
 	import { storeIDLookup, collectionIDLookup, categoryIDLookup } from '../stores';
-	import type { CollectionRanks } from '../types';
-
-	import { idCollectionSelection } from '../stores';
-	let localIDCollectionSelect = $idCollectionSelection;
-	// Reactive statement to update the store when localValue changes
-	$: idCollectionSelection.set(localIDCollectionSelect);
 
 	import { idStoreSelection } from '../stores';
 	let localIDStoreSelect = $idStoreSelection;
 	$: idStoreSelection.set(localIDStoreSelect);
+	$: {
+		idStoreSelection.set(localIDStoreSelect);
+		if (localIDStoreSelect == 1) {
+			localIDCollectionSelect = 1;
+		} else {
+			localIDCollectionSelect = 4;
+		}
+	}
+
+	import { idCollectionSelection } from '../stores';
+	let localIDCollectionSelect = $idCollectionSelection;
+	$: idCollectionSelection.set(localIDCollectionSelect);
+	$: {
+		idCollectionSelection.set(localIDCollectionSelect);
+		if (localIDCategorySelect < 55) {
+			if (localIDCollectionSelect >= 4) {
+				localIDCategorySelect = 55;
+			} else {
+				localIDCategorySelect = 1;
+			}
+		}
+	}
 
 	import { idCategorySelection } from '../stores';
 	let localIDCategorySelect = $idCategorySelection;
 
 	$: idCategorySelection.set(localIDCategorySelect);
-	// Reactive statement to reset localIDCategorySelect if localIDCollectionSelect is not in collectionIDLookup[localIDStoreSelect]
-	$: if (!(localIDCollectionSelect in collectionIDLookup[localIDStoreSelect])) {
-		// Get the first key (collection ID) and parse it to a number
-		console.log(`HIIII ${localIDCollectionSelect}`);
-		localIDCollectionSelect = parseInt(Object.keys(collectionIDLookup[localIDStoreSelect])[0]);
-		console.log(`HIIII ${localIDCollectionSelect}`);
-	}
 </script>
 
 {#if $page.url.pathname == '/' || $page.url.pathname.startsWith('/collections')}
@@ -173,6 +182,10 @@
 	<div class="p-1 md:p-2">
 		<div class="card variant-glass-surface p-4">
 			<h4 class="h4">Collections</h4>
+			{#if !(localIDCollectionSelect in collectionIDLookup[localIDStoreSelect])}
+				setFromTS={localIDCollectionSelect}
+				setFromHTML={parseInt(Object.keys(collectionIDLookup[localIDStoreSelect])[0])}
+			{/if}
 			<RadioGroup rounded="rounded-container-token" display="flex-col">
 				{#each Object.entries(collectionIDLookup[localIDStoreSelect]) as [id, values]}
 					<RadioItem
@@ -191,7 +204,7 @@
 			<RadioGroup rounded="rounded-container-token" display="flex-col">
 				{#each Object.entries(categoryIDLookup[localIDCollectionSelect]) as [id, values]}
 					<RadioItem bind:group={localIDCategorySelect} name="justify" value={values.category_id}
-						>{values.category_name}</RadioItem
+						>{values.category_name}, {values.category_id}</RadioItem
 					>
 				{/each}
 			</RadioGroup>

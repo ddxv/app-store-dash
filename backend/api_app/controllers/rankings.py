@@ -7,9 +7,8 @@ from api_app.models import (
 from config import get_logger
 
 from dbcon.queries import (
-    get_ranks,
     get_store_collection_category_map,
-    get_ranks_for_app,
+    query_ranks_for_app,
 )
 from litestar import Controller, get
 
@@ -112,7 +111,7 @@ class RankingsController(Controller):
             with ios and google apps
         """
         logger.info(f"{self.path} start")
-        df = get_ranks_for_app(store=store, store_app=store_app)
+        df = query_ranks_for_app(store=store, store_app=store_app)
         ranks_dict = df.to_dict(orient="records")
 
         return ranks_dict

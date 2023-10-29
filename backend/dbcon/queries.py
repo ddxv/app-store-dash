@@ -325,46 +325,44 @@ def get_appstore_categories() -> pd.DataFrame:
     return df
 
 
-def get_ranks_for_app(store: int, store_app: int) -> pd.DataFrame:
+def query_ranks_for_app(store: int, store_app: int) -> pd.DataFrame:
     sel_query = f"""SELECT
-            FROM
-                app_rankings ar
-            LEFT JOIN
-                stores s
-                    ON s.id = ar.store
-            LEFT JOIN 
-                store_apps sa
-            WHERE
-                crawled_date = CURRENT_DATE - INTERVAL '1 day'
-                AND ar.store = {store}
-                AND ar.store_app = {store_app}
-            ;
+                    *
+                FROM
+                    app_rankings ar
+                WHERE
+                    AND ar.store = {store}
+                    AND ar.store_app = {store_app}
+                    AND
+                        crawled_date = 
+                        (SELECT max(crawled_date) FROM app_rankings WHERE store={store})
+                ;
         """
     df = pd.read_sql(sel_query, con=DBCON.engine)
     return df
 
 
-def get_ranks(
-    store: int, collection_id: int, category_id: int, limit: int = 25
-) -> pd.DataFrame:
-    sel_query = """SELECT
-            FROM
-                app_rankings ar
-            LEFT JOIN
-                stores s
-                    ON s.id = ar.store
-            LEFT JOIN 
-                store_apps sa
-            WHERE
-                crawled_date = CURRENT_DATE - INTERVAL '1 day'
-                AND ar.store = {store}
-                AND ar.store_colleciton = {collection_id}
-                AND ar.store_category = {categor_id}
-            LIMIT {limit}
-            ;
-        """
-    df = pd.read_sql(sel_query, con=DBCON.engine)
-    return df
+# def get_ranks(
+#     store: int, collection_id: int, category_id: int, limit: int = 25
+# ) -> pd.DataFrame:
+#     sel_query = """SELECT
+#             FROM
+#                 app_rankings ar
+#             LEFT JOIN
+#                 stores s
+#                     ON s.id = ar.store
+#             LEFT JOIN
+#                 store_apps sa
+#             WHERE
+#                 crawled_date = CURRENT_DATE - INTERVAL '1 day'
+#                 AND ar.store = {store}
+#                 AND ar.store_colleciton = {collection_id}
+#                 AND ar.store_category = {categor_id}
+#             LIMIT {limit}
+#             ;
+#         """
+#     df = pd.read_sql(sel_query, con=DBCON.engine)
+#     return df
 
 
 def get_store_collection_category_map() -> pd.DataFrame:

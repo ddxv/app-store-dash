@@ -107,6 +107,7 @@
 			<h4 class="h4">Additional Information</h4>
 			<div class="p-4">
 				<p>Free: {data.myapp.free}</p>
+				<p>db_id: {data.myapp.id}</p>
 				<p>Price: {data.myapp.price}</p>
 				<p>Size: {data.myapp.size || 'N/A'}</p>
 				<p>Minimum Android Version: {data.myapp.minimum_android || 'N/A'}</p>
