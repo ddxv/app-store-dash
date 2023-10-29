@@ -69,7 +69,6 @@
 
 	import { idCategorySelection } from '../stores';
 	let localIDCategorySelect = $idCategorySelection;
-
 	$: idCategorySelection.set(localIDCategorySelect);
 </script>
 
