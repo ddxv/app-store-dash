@@ -1,11 +1,12 @@
 <script lang="ts">
 	import ExternalLinkSvg from '$lib/svg/ExternalLinkSVG.svelte';
-	import type { AppFullDetails } from '../../../types';
+	import type { AppFullDetails, AppRankResponse } from '../../../types';
 	/** @type {import('../[id]/$types').PageData} */
 	export let data: AppFullDetails;
 	import AppDetails from '$lib/RatingInstallsLarge.svelte';
 	import AppPlot from '$lib/AppPlot.svelte';
 	import AvailableOniOs from '$lib/svg/AvailableOniOS.svelte';
+	import { categoryIDLookup } from '../../../stores';
 	let sum = (arr: number[]) => arr.reduce((acc, curr) => acc + curr, 0);
 </script>
 
@@ -104,8 +105,8 @@
 				</div>
 			</div>
 
-			<h4 class="h4">Additional Information</h4>
-			<div class="p-4">
+			<h4 class="h4 p-2">Additional Information</h4>
+			<div>
 				<p>Free: {data.myapp.free}</p>
 				<p>Price: {data.myapp.price}</p>
 				<p>Size: {data.myapp.size || 'N/A'}</p>
@@ -121,10 +122,20 @@
 				<p>First Crawled: {data.myapp.created_at}</p>
 			</div>
 
-			<h4 class="h4">Historical Information</h4>
+			<h4 class="h4 p-2">Historical Information</h4>
 			<div>
 				{@html data.myapp.history_table}
 			</div>
+			{#if data.myranks}
+				<h4 class="h4 p-2">Lastest Store Ranks</h4>
+				{#each data.myranks as myrow}
+					<h5 class="h5">
+						#{myrow.rank}
+						in: {categoryIDLookup[myrow.store_collection][myrow.store_category].category_name}
+						({myrow.crawled_date})
+					</h5>
+				{/each}
+			{/if}
 		</div>
 		<!-- App Pictures -->
 		<div class="card variant-glass-surface p-8">

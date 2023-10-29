@@ -1,32 +1,29 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { ListBox, ListBoxItem } from '@skeletonlabs/skeleton';
-	$: classesActive = (href: string) => (href === $page.url.pathname ? buttonSelectedColor : '');
+	// $: classesActive = (href: string) => (href === $page.url.pathname ? buttonSelectedColor : '');
+	$: classesActive = (href: string) =>
+		$page.url.pathname.startsWith(href) ? buttonSelectedColor : '';
 
 	import IconGoogle from '$lib/svg/IconGoogle.svelte';
 	import IconiOS from '$lib/svg/IconiOS.svelte';
 
-	import { myCollectionStore } from '../stores';
-	let localMyList = $myCollectionStore;
+	import { homeCollectionSelection } from '../stores';
+	let localHomeCollectionSelect = $homeCollectionSelection;
 	// Reactive statement to update the store when localValue changes
-	$: myCollectionStore.set(localMyList);
+	$: homeCollectionSelection.set(localHomeCollectionSelect);
 
-	import { myStoreSelection } from '../stores';
-	let localMyStore = $myStoreSelection;
-	$: myStoreSelection.set(localMyStore);
+	import { homeStoreSelection } from '../stores';
+	let localHomeStoreSelect = $homeStoreSelection;
+	$: homeStoreSelection.set(localHomeStoreSelect);
 
-	import { myCategorySelection } from '../stores';
-	let localCategories = $myCategorySelection;
+	import { homeCategorySelection } from '../stores';
+	let localHomeCategorySelect = $homeCategorySelection;
 	const buttonSelectedColor = 'bg-gradient-to-tl variant-gradient-primary-secondary text-white';
-	$: myCategorySelection.set(localCategories);
+	$: homeCategorySelection.set(localHomeCategorySelect);
 
-	function setCategorySelection(id: string) {
-		localCategories = id;
-		window.location.href = `/categories/${id}`;
-	}
 	import type { CategoriesInfo } from '../types';
 	export let data: CategoriesInfo;
-	import { myCategoryMap } from '../stores';
 
 	// import { getDrawerStore } from '@skeletonlabs/skeleton';
 
@@ -35,6 +32,26 @@
 	// function drawerClose(): void {
 	// 	drawerStore.close();
 	// }
+
+	// FOLOWING IS FOR RANKINGS
+	// import { myStoreRankingsMap } from '../stores';
+
+	import { storeIDLookup, collectionIDLookup, categoryIDLookup } from '../stores';
+
+	$: store = +$page.params.store;
+	$: collection = +$page.params.collection;
+	$: category = +$page.params.category;
+
+	$: {
+		if (store == 2) {
+			collection = 4;
+			category = 55;
+		}
+		if (store == 1) {
+			collection = 1;
+			category = 1;
+		}
+	}
 </script>
 
 {#if $page.url.pathname == '/' || $page.url.pathname.startsWith('/collections')}
@@ -71,14 +88,14 @@
 			<h4 class="h4">Stores</h4>
 			<ListBox>
 				<ListBoxItem
-					bind:group={localMyStore}
+					bind:group={localHomeStoreSelect}
 					name="medium"
 					value="google"
 					padding="p-2 md:p-2"
 					active={buttonSelectedColor}>Google</ListBoxItem
 				>
 				<ListBoxItem
-					bind:group={localMyStore}
+					bind:group={localHomeStoreSelect}
 					name="medium"
 					value="ios"
 					padding="p-2 md:p-2"
@@ -95,7 +112,7 @@
 					{#each Object.entries(data.mycats.categories) as [_prop, values]}
 						{#if values.id}
 							<ListBoxItem
-								bind:group={localCategories}
+								bind:group={localHomeCategorySelect}
 								name="medium"
 								value={values.id}
 								active={buttonSelectedColor}
@@ -133,38 +150,61 @@
 	</div>
 {/if}
 
-{#if $page.url.pathname == '/categories' || $page.url.pathname.startsWith('/categories')}
-	<h4 class="h4">Categories TABLE</h4>
-	{#if $myCategoryMap}
-		<!-- Responsive Container (recommended) -->
-		<div class="table-container">
-			<!-- Native Table Element -->
-			<table class="table table-hover table-interactive table-compact">
-				<thead>
-					<tr>
-						<th>Category</th>
-						<th>Android</th>
-						<th>iOS</th>
-					</tr>
-				</thead>
-				<tbody>
-					{#each Object.entries($myCategoryMap.mycats.categories) as [_i, row]}
-						{#if row.id == localCategories}
-							<tr class="table-row-checked" on:click={() => setCategorySelection(row.id)}>
-								<td>{row.name}</td>
-								<td>{row.android}</td>
-								<td>{row.ios}</td>
-							</tr>
-						{:else}
-							<tr on:click={() => setCategorySelection(row.id)}>
-								<td>{row.name}</td>
-								<td>{row.android}</td>
-								<td>{row.ios}</td>
-							</tr>
-						{/if}
-					{/each}
-				</tbody>
-			</table>
-		</div>
-	{/if}
+{#if $page.url.pathname == '/rankings' || $page.url.pathname.startsWith('/rankings')}
+	<div class="card variant-glass-surface p-4">
+		<h4 class="h4">Stores</h4>
+		<nav class="list-nav">
+			<ul>
+				{#each Object.entries(storeIDLookup) as [_prop, values]}
+					<li>
+						<a
+							href={`/rankings/store/${values.store_id}${
+								values.store_id == 1
+									? '/collection/1/category/1'
+									: values.store_id == 2
+									? '/collection/4/category/55'
+									: '' // default value or path for other store_ids if needed
+							}`}
+							class={classesActive(`/rankings/store/${values.store_id}/`)}
+						>
+							{values.store_name}
+						</a>
+					</li>
+				{/each}
+			</ul>
+		</nav>
+	</div>
+	<div class="card variant-glass-surface p-4">
+		<h4 class="h4">Collections</h4>
+		<nav class="list-nav">
+			<ul>
+				{#each Object.entries(collectionIDLookup[store]) as [id, values]}
+					<li>
+						<a
+							href={`/rankings/store/${store}/collection/${values.collection_id}/category/${category}`}
+							class={classesActive(`/rankings/store/${store}/collection/${values.collection_id}/`)}
+							>{values.collection_name}</a
+						>
+					</li>
+				{/each}
+			</ul>
+		</nav>
+	</div>
+	<div class="card variant-glass-surface p-4">
+		<h4 class="h4">Categories</h4>
+		<nav class="list-nav">
+			<ul>
+				{#each Object.entries(categoryIDLookup[collection]) as [id, values]}
+					<li>
+						<a
+							href={`/rankings/store/${store}/collection/${collection}/category/${values.category_id}`}
+							class={classesActive(
+								`/rankings/store/${store}/collection/${collection}/category/${values.category_id}`
+							)}>{values.category_name}</a
+						>
+					</li>
+				{/each}
+			</ul>
+		</nav>
+	</div>
 {/if}
