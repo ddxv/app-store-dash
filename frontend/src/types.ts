@@ -62,6 +62,16 @@ export interface AppRankResponse {
 	error?: string;
 }
 
+export interface StoreCategoryRanks {
+	ranks: RankedApps[];
+}
+
+export interface RankedApps {
+	rank: number;
+	name: string;
+	store_id: string;
+	icon_url_512: string;
+}
 export interface AppRankDetail {
 	crawled_date: string;
 	rank: number;

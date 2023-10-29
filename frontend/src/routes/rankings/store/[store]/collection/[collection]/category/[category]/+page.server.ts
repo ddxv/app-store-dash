@@ -2,10 +2,10 @@ export const ssr: boolean = true;
 export const csr: boolean = true;
 
 console.log('Script executed');
+import type { StoreCategoryRanks } from '../../../../../../../../types.js';
 import type { PageServerLoad } from './$types.js';
 
-// export async function load({ params, url }) {
-export const load: PageServerLoad = async ({ params, url }) => {
+export const load: PageServerLoad = async ({ params, url }): Promise<StoreCategoryRanks> => {
 	const storeVal = params.store;
 	const collectionValue = params.collection;
 	const categoryValue = params.category;

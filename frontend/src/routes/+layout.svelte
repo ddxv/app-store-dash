@@ -96,9 +96,18 @@
 				border=""
 				class=" w-full p-0 hidden md:inline-flex"
 			>
-				<TabAnchor class="p-0 px-0" href="/" selected={$page.url.pathname === '/'}>HOME</TabAnchor>
+				<TabAnchor
+					class="p-0 px-0"
+					href="/"
+					selected={$page.url.pathname.startsWith('/collections')}>HOME</TabAnchor
+				>
 				<TabAnchor href="/categories" selected={$page.url.pathname === '/categories'}
 					>CATEGORIES
+				</TabAnchor>
+				<TabAnchor
+					href="/rankings/store/1/collection/1/category/1"
+					selected={$page.url.pathname.startsWith('/rankings')}
+					>APP RANKS
 				</TabAnchor>
 				<TabAnchor href="/about" selected={$page.url.pathname === '/about'}>ABOUT</TabAnchor>
 			</TabGroup>

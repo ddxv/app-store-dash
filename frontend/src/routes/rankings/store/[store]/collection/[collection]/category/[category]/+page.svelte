@@ -5,7 +5,9 @@
 		categoryIDLookup
 	} from '../../../../../../../../stores.js';
 
-	export let data;
+	import type { StoreCategoryRanks } from '../../../../../../../../types.js';
+
+	export let data: StoreCategoryRanks;
 
 	import { page } from '$app/stores';
 

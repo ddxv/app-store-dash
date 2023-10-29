@@ -1,12 +1,9 @@
 export const ssr = true;
 export const csr = true;
 
-import type { AppFullDetails } from '../../../types.js';
-
 import type { PageServerLoad } from './$types.js';
 
 export const load: PageServerLoad = async ({ params, locals }) => {
-	// export async function load({ params }): Promise<PageServerData> {
 	console.log('load app started');
 	try {
 		const id = params.id;
