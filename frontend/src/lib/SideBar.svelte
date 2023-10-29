@@ -1,7 +1,9 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { ListBox, ListBoxItem } from '@skeletonlabs/skeleton';
-	$: classesActive = (href: string) => (href === $page.url.pathname ? buttonSelectedColor : '');
+	// $: classesActive = (href: string) => (href === $page.url.pathname ? buttonSelectedColor : '');
+	$: classesActive = (href: string) =>
+		$page.url.pathname.startsWith(href) ? buttonSelectedColor : '';
 
 	import IconGoogle from '$lib/svg/IconGoogle.svelte';
 	import IconiOS from '$lib/svg/IconiOS.svelte';
@@ -23,7 +25,6 @@
 	import type { CategoriesInfo } from '../types';
 	export let data: CategoriesInfo;
 
-	import { RadioGroup, RadioItem } from '@skeletonlabs/skeleton';
 	// import { getDrawerStore } from '@skeletonlabs/skeleton';
 
 	// const drawerStore = getDrawerStore();
@@ -37,39 +38,70 @@
 
 	import { storeIDLookup, collectionIDLookup, categoryIDLookup } from '../stores';
 
-	import { idStoreSelection } from '../stores';
-	let localIDStoreSelect = $idStoreSelection;
-	$: idStoreSelection.set(localIDStoreSelect);
+	$: store = +$page.params.store;
+	$: collection = +$page.params.collection;
+	$: category = +$page.params.category;
+
+	console.log($page.params);
+
 	$: {
-		idStoreSelection.set(localIDStoreSelect);
-		if (localIDStoreSelect == 1) {
-			localIDCollectionSelect = 1;
-			localIDCategorySelect = 1;
-		} else {
-			localIDCollectionSelect = 4;
-			localIDCategorySelect = 55;
+		console.log('store changed start');
+		if (store == 2) {
+			console.log('store changed ios');
+			collection = 4;
+			category = 55;
+		}
+		if (store == 1) {
+			console.log('store changed google');
+			collection = 1;
+			category = 1;
 		}
 	}
 
-	import { idCollectionSelection } from '../stores';
-	let localIDCollectionSelect = $idCollectionSelection;
-	// $: idCollectionSelection.set(localIDCollectionSelect);
-	$: {
-		idCollectionSelection.set(localIDCollectionSelect);
-		if (localIDCollectionSelect >= 4) {
-			if (!(localIDCategorySelect in categoryIDLookup[localIDCollectionSelect])) {
-				localIDCategorySelect = 55;
-			}
-		} else {
-			if (!(localIDCategorySelect in categoryIDLookup[localIDCollectionSelect])) {
-				localIDCategorySelect = 1;
-			}
-		}
-	}
+	console.log(`s=${store} col=${collection}`);
+	// $: {
+	// 	if (localIDStoreSelect == 1) {
+	// 		localIDCollectionSelect = 1;
+	// 		localIDCategorySelect = 1;
+	// 	} else {
+	// 		localIDCollectionSelect = 4;
+	// 		localIDCategorySelect = 55;
+	// 	}
+	// }
 
-	import { idCategorySelection } from '../stores';
-	let localIDCategorySelect = $idCategorySelection;
-	$: idCategorySelection.set(localIDCategorySelect);
+	// import { idStoreSelection } from '../stores';
+	// let localIDStoreSelect = $idStoreSelection;
+	// $: idStoreSelection.set(localIDStoreSelect);
+	// $: {
+	// 	idStoreSelection.set(localIDStoreSelect);
+	// 	if (localIDStoreSelect == 1) {
+	// 		localIDCollectionSelect = 1;
+	// 		localIDCategorySelect = 1;
+	// 	} else {
+	// 		localIDCollectionSelect = 4;
+	// 		localIDCategorySelect = 55;
+	// 	}
+	// }
+
+	// import { idCollectionSelection } from '../stores';
+	// let localIDCollectionSelect = $idCollectionSelection;
+	// // $: idCollectionSelection.set(localIDCollectionSelect);
+	// $: {
+	// 	idCollectionSelection.set(localIDCollectionSelect);
+	// 	if (localIDCollectionSelect >= 4) {
+	// 		if (!(localIDCategorySelect in categoryIDLookup[localIDCollectionSelect])) {
+	// 			localIDCategorySelect = 55;
+	// 		}
+	// 	} else {
+	// 		if (!(localIDCategorySelect in categoryIDLookup[localIDCollectionSelect])) {
+	// 			localIDCategorySelect = 1;
+	// 		}
+	// 	}
+	// }
+
+	// import { idCategorySelection } from '../stores';
+	// let localIDCategorySelect = $idCategorySelection;
+	// $: idCategorySelection.set(localIDCategorySelect);
 </script>
 
 {#if $page.url.pathname == '/' || $page.url.pathname.startsWith('/collections')}
@@ -169,48 +201,60 @@
 {/if}
 
 {#if $page.url.pathname == '/rankings' || $page.url.pathname.startsWith('/rankings')}
-	<div class="p-1 md:p-2">
-		<div class="card variant-glass-surface p-4">
-			<h4 class="h4">Stores</h4>
-			<RadioGroup rounded="rounded-container-token" display="flex-col">
+	<div class="card variant-glass-surface p-4">
+		<h4 class="h4">Stores</h4>
+		<nav class="list-nav">
+			<ul>
 				{#each Object.entries(storeIDLookup) as [_prop, values]}
-					<RadioItem bind:group={localIDStoreSelect} name="justify" value={values.store_id}
-						>{values.store_name}</RadioItem
-					>
+					<li>
+						<a
+							href={`/rankings/store/${values.store_id}${
+								values.store_id == 1
+									? '/collection/1/category/1'
+									: values.store_id == 2
+									? '/collection/4/category/55'
+									: '' // default value or path for other store_ids if needed
+							}`}
+							class={classesActive(`/rankings/store/${values.store_id}/`)}
+						>
+							{values.store_name}
+						</a>
+					</li>
 				{/each}
-			</RadioGroup>
-		</div>
+			</ul>
+		</nav>
 	</div>
-
-	<div class="p-1 md:p-2">
-		<div class="card variant-glass-surface p-4">
-			<h4 class="h4">Collections</h4>
-			{#if !(localIDCollectionSelect in collectionIDLookup[localIDStoreSelect])}
-				setFromTS={localIDCollectionSelect}
-				setFromHTML={parseInt(Object.keys(collectionIDLookup[localIDStoreSelect])[0])}
-			{/if}
-			<RadioGroup rounded="rounded-container-token" display="flex-col">
-				{#each Object.entries(collectionIDLookup[localIDStoreSelect]) as [id, values]}
-					<RadioItem
-						bind:group={localIDCollectionSelect}
-						name="justify"
-						value={values.collection_id}>{values.collection_name}</RadioItem
-					>
+	<div class="card variant-glass-surface p-4">
+		<h4 class="h4">Collections</h4>
+		<nav class="list-nav">
+			<ul>
+				{#each Object.entries(collectionIDLookup[store]) as [id, values]}
+					<li>
+						<a
+							href={`/rankings/store/${store}/collection/${values.collection_id}/category/${category}`}
+							class={classesActive(`/rankings/store/${store}/collection/${values.collection_id}/`)}
+							>{values.collection_name}</a
+						>
+					</li>
 				{/each}
-			</RadioGroup>
-		</div>
+			</ul>
+		</nav>
 	</div>
-
-	<div class="p-1 md:p-2">
-		<div class="card variant-glass-surface p-4">
-			<h4 class="h4">Categories</h4>
-			<RadioGroup rounded="rounded-container-token" display="flex-col">
-				{#each Object.entries(categoryIDLookup[localIDCollectionSelect]) as [id, values]}
-					<RadioItem bind:group={localIDCategorySelect} name="justify" value={values.category_id}
-						>{values.category_name}, {values.category_id}</RadioItem
-					>
+	<div class="card variant-glass-surface p-4">
+		<h4 class="h4">Categories</h4>
+		<nav class="list-nav">
+			<ul>
+				{#each Object.entries(categoryIDLookup[collection]) as [id, values]}
+					<li>
+						<a
+							href={`/rankings/store/${store}/collection/${collection}/category/${values.category_id}`}
+							class={classesActive(
+								`/rankings/store/${store}/collection/${collection}/category/${values.category_id}`
+							)}>{values.category_name}</a
+						>
+					</li>
 				{/each}
-			</RadioGroup>
-		</div>
+			</ul>
+		</nav>
 	</div>
 {/if}
