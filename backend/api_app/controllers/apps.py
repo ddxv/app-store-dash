@@ -169,7 +169,7 @@ class AppController(Controller):
                 f"Store ID not found: {store_id!r}", status_code=404
             )
         app_dict = df[
-            ["crawled_date", "store_collection", "store_category", "rank"]
+            ["crawled_date", "store", "store_collection", "store_category", "rank"]
         ].to_dict(orient="records")
         return app_dict
 
