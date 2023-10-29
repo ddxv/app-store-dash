@@ -334,7 +334,7 @@ def query_ranks_for_app(store_id: str) -> pd.DataFrame:
                     store_apps sa
                     ON sa.id = ar.store_app
                 WHERE
-                    sa.store_id = {store_id}
+                    sa.store_id = '{store_id}'
                     AND
                         crawled_date = 
                         (SELECT max(crawled_date) FROM app_rankings)

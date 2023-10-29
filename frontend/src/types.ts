@@ -56,12 +56,26 @@ export interface CategoriesInfo {
 	status?: number;
 	error?: string;
 }
-
-export interface AppFullDetails {
-	myapp?: AppFullDetail;
+export interface AppRankResponse {
+	myranks?: AppRankDetail;
 	status?: number;
 	error?: string;
 }
+
+export interface AppRankDetail {
+	crawled_date: string;
+	rank: number;
+	store_collection: number;
+	store_category: number;
+}
+export interface AppFullDetails {
+	myapp?: AppFullDetail;
+	myranks?: AppRankDetail[];
+	status?: number;
+	error?: string;
+}
+
+
 
 export interface AppFullDetail {
 	icon_url_512?: string;
