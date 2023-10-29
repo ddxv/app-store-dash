@@ -75,8 +75,6 @@ export interface AppFullDetails {
 	error?: string;
 }
 
-
-
 export interface AppFullDetail {
 	icon_url_512?: string;
 	name: string;
