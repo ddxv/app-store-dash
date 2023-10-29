@@ -24,7 +24,7 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 		return {
 			myapp: app_detail,
 			myranks: rank_details
-		}
+		};
 	} catch (error) {
 		console.error('Failed to load app data:', error);
 		return {
@@ -32,4 +32,4 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 			error: 'Failed to load trending apps'
 		};
 	}
-}
+};
