@@ -344,27 +344,28 @@ def query_ranks_for_app(store_id: str) -> pd.DataFrame:
     return df
 
 
-# def get_ranks(
-#     store: int, collection_id: int, category_id: int, limit: int = 25
-# ) -> pd.DataFrame:
-#     sel_query = """SELECT
-#             FROM
-#                 app_rankings ar
-#             LEFT JOIN
-#                 stores s
-#                     ON s.id = ar.store
-#             LEFT JOIN
-#                 store_apps sa
-#             WHERE
-#                 crawled_date = CURRENT_DATE - INTERVAL '1 day'
-#                 AND ar.store = {store}
-#                 AND ar.store_colleciton = {collection_id}
-#                 AND ar.store_category = {categor_id}
-#             LIMIT {limit}
-#             ;
-#         """
-#     df = pd.read_sql(sel_query, con=DBCON.engine)
-#     return df
+def get_ranks(
+    store: int, collection_id: int, category_id: int, limit: int = 25
+) -> pd.DataFrame:
+    sel_query = f"""SELECT
+                *
+            FROM
+                app_rankings ar
+            LEFT JOIN
+                stores s
+                    ON s.id = ar.store
+            LEFT JOIN
+                store_apps sa ON sa.id = ar.store_app
+            WHERE
+                crawled_date = (SELECT max(crawled_date) FROM app_rankings WHERE store={store})
+                AND ar.store = {store}
+                AND ar.store_collection = {collection_id}
+                AND ar.store_category = {category_id}
+            LIMIT {limit}
+            ;
+        """
+    df = pd.read_sql(sel_query, con=DBCON.engine)
+    return df
 
 
 def get_store_collection_category_map() -> pd.DataFrame:

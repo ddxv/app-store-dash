@@ -8,7 +8,7 @@ from config import get_logger
 
 from dbcon.queries import (
     get_store_collection_category_map,
-    query_ranks_for_app,
+    get_ranks,
 )
 from litestar import Controller, get
 
@@ -101,17 +101,21 @@ class RankingsController(Controller):
 
     #     return ranks_dict
 
-    @get(path="/{store:int}/{store_app:int}", cache=3600)
-    async def get_ranking(self, store: int, store_app: int) -> dict:
+    @get(path="/{store:int}/{collection:int}/{category:int}", cache=3600)
+    async def get_ranks_for_category(
+        self, store: int, collection: int, category: int
+    ) -> dict:
         """
-        Handles a GET request for a collection+category rank
+        Handles a GET request for a store/collection/category rank
 
         Returns:
             A dictionary representation of a category
             with ios and google apps
         """
-        logger.info(f"{self.path} start")
-        df = query_ranks_for_app(store=store, store_app=store_app)
+        logger.info(f"{self.path} start for store/collection/category")
+        df = get_ranks(
+            store=store, collection_id=collection, category_id=category, limit=20
+        )
         ranks_dict = df.to_dict(orient="records")
 
         return ranks_dict
