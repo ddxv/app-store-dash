@@ -20,5 +20,5 @@ export const load: PageServerLoad = async ({ params, url }) => {
 	}
 
 	const ranks = await res.json();
-	return { ranks };
+	return ranks;
 };

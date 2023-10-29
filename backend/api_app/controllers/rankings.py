@@ -117,5 +117,8 @@ class RankingsController(Controller):
             store=store, collection_id=collection, category_id=category, limit=20
         )
         ranks_dict = df.to_dict(orient="records")
+        ranks_html = df.drop(["icon_url_512"], axis=1).to_html(
+            index=None, justify="unset"
+        )
 
-        return ranks_dict
+        return {"html": ranks_html, "ranks": ranks_dict}

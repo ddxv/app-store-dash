@@ -348,7 +348,10 @@ def get_ranks(
     store: int, collection_id: int, category_id: int, limit: int = 25
 ) -> pd.DataFrame:
     sel_query = f"""SELECT
-                *
+                ar.rank,
+                sa.name,
+                sa.store_id,
+                sa.icon_url_512
             FROM
                 app_rankings ar
             LEFT JOIN
