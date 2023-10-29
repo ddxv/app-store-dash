@@ -64,9 +64,16 @@ def get_app_history(app_dict: dict) -> pd.DataFrame:
     app_hist = app_hist[[group_col, xaxis_col] + change_metrics].drop(app_hist.index[0])
     # This is an odd step as it makes each group a metric
     # not for when more than 1 dimension
-    app_hist = app_hist.melt(id_vars=xaxis_col).rename(columns={"variable": "group"})
-
-    return app_hist
+    mymelt = app_hist.melt(id_vars=xaxis_col).rename(columns={"variable": "group"})
+    my_dicts = []
+    for metric in change_metrics:
+        melteddicts = (
+            mymelt.loc[mymelt.group == metric]
+            .rename(columns={"value": metric})
+            .to_dict(orient="records")
+        )
+        my_dicts += melteddicts
+    return my_dicts
 
 
 def get_string_date_from_days_ago(days: int) -> str:
@@ -143,11 +150,13 @@ class AppController(Controller):
                 f"Store ID not found: {store_id!r}", status_code=404
             )
         app_dict = app_df.to_dict(orient="records")[0]
-        app_hist = get_app_history(app_dict)
-        app_hist_dict = app_hist.to_dict(orient="records")
-        group_list = app_hist.group.unique().tolist()
+        app_hist_dict = get_app_history(app_dict)
         app_dict["historyData"] = app_hist_dict
-        app_dict["historyGroups"] = group_list
+        # TODO: I think this actually isn't used
+        # drop_from_chart_groups = ["group"]
+        # group_list = app_hist.group.unique().tolist()
+        # group_list = [x for x in group_list if x not in drop_from_chart_groups]
+        # app_dict["historyGroups"] = group_list
         return app_dict
 
     @get(path="/{store_id:str}/ranks", cache=3600)
