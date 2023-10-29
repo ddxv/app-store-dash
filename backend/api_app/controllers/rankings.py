@@ -9,6 +9,7 @@ from config import get_logger
 from dbcon.queries import (
     get_ranks,
     get_store_collection_category_map,
+    get_ranks_for_app,
 )
 from litestar import Controller, get
 
@@ -82,10 +83,27 @@ class RankingsController(Controller):
 
         return overview
 
-    @get(path="/{store:int}/{collection_id:int}/{category_id:int}", cache=3600)
-    async def get_ranking(
-        self, store: int, collection_id: int, category_id: int, category: int
-    ) -> dict:
+    # @get(path="/{store:int}/{collection_id:int}/{category_id:int}", cache=3600)
+    # async def get_ranking(
+    #     self, store: int, collection_id: int, category_id: int, category: int
+    # ) -> dict:
+    #     """
+    #     Handles a GET request for a collection+category rank
+
+    #     Returns:
+    #         A dictionary representation of a category
+    #         with ios and google apps
+    #     """
+    #     logger.info(f"{self.path} start")
+    #     df = get_ranks(
+    #         store=store, collection_id=collection_id, category_id=category_id, limit=50
+    #     )
+    #     ranks_dict = df.to_dict(orient="records")
+
+    #     return ranks_dict
+
+    @get(path="/{store:int}/{store_app:int}", cache=3600)
+    async def get_ranking(self, store: int, store_app: int) -> dict:
         """
         Handles a GET request for a collection+category rank
 
@@ -94,9 +112,7 @@ class RankingsController(Controller):
             with ios and google apps
         """
         logger.info(f"{self.path} start")
-        df = get_ranks(
-            store=store, collection_id=collection_id, category_id=category_id, limit=50
-        )
+        df = get_ranks_for_app(store=store, store_app=store_app)
         ranks_dict = df.to_dict(orient="records")
 
         return ranks_dict

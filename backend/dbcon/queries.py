@@ -325,6 +325,25 @@ def get_appstore_categories() -> pd.DataFrame:
     return df
 
 
+def get_ranks_for_app(store: int, store_app: int) -> pd.DataFrame:
+    sel_query = f"""SELECT
+            FROM
+                app_rankings ar
+            LEFT JOIN
+                stores s
+                    ON s.id = ar.store
+            LEFT JOIN 
+                store_apps sa
+            WHERE
+                crawled_date = CURRENT_DATE - INTERVAL '1 day'
+                AND ar.store = {store}
+                AND ar.store_app = {store_app}
+            ;
+        """
+    df = pd.read_sql(sel_query, con=DBCON.engine)
+    return df
+
+
 def get_ranks(
     store: int, collection_id: int, category_id: int, limit: int = 25
 ) -> pd.DataFrame:
