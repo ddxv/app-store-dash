@@ -42,66 +42,16 @@
 	$: collection = +$page.params.collection;
 	$: category = +$page.params.category;
 
-	console.log($page.params);
-
 	$: {
-		console.log('store changed start');
 		if (store == 2) {
-			console.log('store changed ios');
 			collection = 4;
 			category = 55;
 		}
 		if (store == 1) {
-			console.log('store changed google');
 			collection = 1;
 			category = 1;
 		}
 	}
-
-	console.log(`s=${store} col=${collection}`);
-	// $: {
-	// 	if (localIDStoreSelect == 1) {
-	// 		localIDCollectionSelect = 1;
-	// 		localIDCategorySelect = 1;
-	// 	} else {
-	// 		localIDCollectionSelect = 4;
-	// 		localIDCategorySelect = 55;
-	// 	}
-	// }
-
-	// import { idStoreSelection } from '../stores';
-	// let localIDStoreSelect = $idStoreSelection;
-	// $: idStoreSelection.set(localIDStoreSelect);
-	// $: {
-	// 	idStoreSelection.set(localIDStoreSelect);
-	// 	if (localIDStoreSelect == 1) {
-	// 		localIDCollectionSelect = 1;
-	// 		localIDCategorySelect = 1;
-	// 	} else {
-	// 		localIDCollectionSelect = 4;
-	// 		localIDCategorySelect = 55;
-	// 	}
-	// }
-
-	// import { idCollectionSelection } from '../stores';
-	// let localIDCollectionSelect = $idCollectionSelection;
-	// // $: idCollectionSelection.set(localIDCollectionSelect);
-	// $: {
-	// 	idCollectionSelection.set(localIDCollectionSelect);
-	// 	if (localIDCollectionSelect >= 4) {
-	// 		if (!(localIDCategorySelect in categoryIDLookup[localIDCollectionSelect])) {
-	// 			localIDCategorySelect = 55;
-	// 		}
-	// 	} else {
-	// 		if (!(localIDCategorySelect in categoryIDLookup[localIDCollectionSelect])) {
-	// 			localIDCategorySelect = 1;
-	// 		}
-	// 	}
-	// }
-
-	// import { idCategorySelection } from '../stores';
-	// let localIDCategorySelect = $idCategorySelection;
-	// $: idCategorySelection.set(localIDCategorySelect);
 </script>
 
 {#if $page.url.pathname == '/' || $page.url.pathname.startsWith('/collections')}
