@@ -150,24 +150,23 @@ class AppController(Controller):
         app_dict["historyGroups"] = group_list
         return app_dict
 
-    @get(path="/{store:int}/ranks/{store_app:int}", cache=3600)
-    async def app_ranks(self, store: int, store_app: int) -> AppDetail:
+    @get(path="/{store_id:str}/ranks", cache=3600)
+    async def app_ranks(self, store_id: str) -> AppDetail:
         """
         Handles a GET request for a specific app ranks.
 
         Args:
-            store (int): The id of the store to retrieve.
-            store_app (int): The database id of the app to retrieve.
+            store_id (str): The id of the store to retrieve.
 
         Returns:
             json
         """
         logger.info(f"{self.path} start")
 
-        df = query_ranks_for_app(store=store, store_app=store_app)
+        df = query_ranks_for_app(store_id=store_id)
         if df.empty:
             raise NotFoundException(
-                f"Store app ID not found: {store_app!r}", status_code=404
+                f"Store ID not found: {store_id!r}", status_code=404
             )
         app_dict = df[
             ["crawled_date", "store_collection", "store_category", "rank"]

@@ -325,17 +325,19 @@ def get_appstore_categories() -> pd.DataFrame:
     return df
 
 
-def query_ranks_for_app(store: int, store_app: int) -> pd.DataFrame:
+def query_ranks_for_app(store_id: str) -> pd.DataFrame:
     sel_query = f"""SELECT
-                    *
+                    ar.*
                 FROM
                     app_rankings ar
+                LEFT JOIN
+                    store_apps sa
+                    ON sa.id = ar.store_app
                 WHERE
-                    AND ar.store = {store}
-                    AND ar.store_app = {store_app}
+                    sa.store_id = {store_id}
                     AND
                         crawled_date = 
-                        (SELECT max(crawled_date) FROM app_rankings WHERE store={store})
+                        (SELECT max(crawled_date) FROM app_rankings)
                 ;
         """
     df = pd.read_sql(sel_query, con=DBCON.engine)
