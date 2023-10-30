@@ -126,8 +126,8 @@
 			<div>
 				{@html data.myapp.history_table}
 			</div>
-			{#if data.myranks}
-				<h4 class="h4 p-2">Lastest Store Ranks</h4>
+			<h4 class="h4 p-2">Lastest Store Ranks</h4>
+			{#if data.myranks && data.myranks.length > 0}
 				{#each data.myranks as myrow}
 					<h5 class="h5">
 						#{myrow.rank}
@@ -136,6 +136,8 @@
 						({myrow.crawled_date})
 					</h5>
 				{/each}
+			{:else}
+				<p>No ranks available for this app.</p>
 			{/if}
 		</div>
 		<!-- App Pictures -->
