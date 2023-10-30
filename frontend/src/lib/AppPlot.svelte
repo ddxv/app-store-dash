@@ -10,7 +10,7 @@
 	export let plotdata: ChartTabularData;
 
 	export let lineOptions: ComboChartOptions = {
-		title: 'My Title',
+		title: 'Recent Ratings, Installs and Review Counts',
 		axes: {
 			bottom: {
 				title: 'Date',
@@ -48,26 +48,6 @@
 			}
 		]
 	};
-	function getPlotOptions(myType: string) {
-		return {
-			title: myType,
-			axes: {
-				bottom: {
-					title: 'Date',
-					mapsTo: 'crawled_date',
-					scaleType: ScaleTypes.TIME
-				},
-				left: {
-					mapsTo: 'value',
-					scaleType: ScaleTypes.LINEAR
-				}
-			},
-			curve: 'curveMonotoneX',
-			height: '400px'
-		};
-	}
 </script>
 
-<div class="card grid grid-cols-1 md:grid-cols-2 gap-4 p-2">
-	<ComboChart data={plotdata} options={lineOptions} />
-</div>
+<ComboChart data={plotdata} options={lineOptions} />

@@ -47,11 +47,8 @@
 	};
 
 	const drawerOpen = () => {
-		console.log('OPEN!');
 		drawerStore.open(drawerSettings);
 	};
-
-	console.log('hi');
 </script>
 
 <Drawer>
@@ -61,13 +58,13 @@
 <!-- App Shell -->
 <AppShell
 	regionPage="p-2 md:p-8"
-	slotSidebarLeft="w-0 lg:w-auto"
+	slotSidebarLeft="w-0 md:w-auto"
 	slotPageHeader="hidden md:inline-flex"
 >
 	<svelte:fragment slot="header">
 		<!-- App Bar -->
 		<AppBar
-			gridColumns="grid-cols-[1fr_1fr_1fr]"
+			gridColumns="grid-cols-[1fr_0_1fr] md:grid-cols-[0.4fr_1fr_0.3fr]"
 			slotLead="p-2"
 			slotTrail="p-2"
 			spacing="space-y-0"
@@ -101,14 +98,14 @@
 					href="/"
 					selected={$page.url.pathname.startsWith('/collections')}>HOME</TabAnchor
 				>
-				<TabAnchor href="/categories" selected={$page.url.pathname === '/categories'}
-					>CATEGORIES
-				</TabAnchor>
 				<TabAnchor
 					href="/rankings/store/1/collection/1/category/1"
 					selected={$page.url.pathname.startsWith('/rankings')}
-					>APP RANKS
+					>RANKS
 				</TabAnchor>
+				<!-- <TabAnchor href="/categories" selected={$page.url.pathname === '/categories'}
+					>CATEGORIES
+				</TabAnchor> -->
 				<TabAnchor href="/about" selected={$page.url.pathname === '/about'}>ABOUT</TabAnchor>
 			</TabGroup>
 
@@ -133,7 +130,7 @@
 	</svelte:fragment>
 
 	<svelte:fragment slot="footer">
-		{#if $page.url.pathname == '/' || $page.url.pathname.startsWith('/collections')}
+		{#if $page.url.pathname == '/' || $page.url.pathname.startsWith('/collections') || $page.url.pathname.startsWith('/rankings')}
 			<AppBar
 				slotLead="p-2"
 				slotTrail="p-2"
@@ -143,6 +140,7 @@
 			>
 				<svelte:fragment slot="trail">
 					<button class="lg:hidden btn btn-md ml-auto mr-2" on:click={drawerOpen}>
+						<h4 class="h4">FILTERS</h4>
 						<span>
 							<svg viewBox="0 0 100 80" class="fill-token w-4 h-4">
 								<rect width="100" height="20" />

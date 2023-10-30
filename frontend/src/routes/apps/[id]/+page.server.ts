@@ -8,23 +8,23 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 	try {
 		const id = params.id;
 
-		const res = await fetch(`http://localhost:8000/api/apps/${id}`);
-		const ranks = await fetch(`http://localhost:8000/api/apps/${id}/ranks`);
+		const res = fetch(`http://localhost:8000/api/apps/${id}`);
 
-		if (!res.ok) {
-			throw new Error(`Failed to fetch ${id} with status ${res.status}`);
-		}
+		const ranks = fetch(`http://localhost:8000/api/apps/${id}/ranks`);
 
-		const app_detail = await res.json();
-		const rank_details = await ranks.json();
-		console.log(`loaded app_detail with len: ${Object.keys(app_detail).length}`);
 		return {
-			myapp: app_detail,
-			myranks: rank_details
+			myapp: {
+				streamed: res.then((resp) => resp.json())
+			},
+			myranks: {
+				streamed: ranks.then((resp) => resp.json())
+			}
 		};
 	} catch (error) {
 		console.error('Failed to load app data:', error);
 		return {
+			myapp: { streamed: {} },
+			myranks: { streamed: {} },
 			status: 500,
 			error: 'Failed to load trending apps'
 		};

@@ -10,6 +10,12 @@
 
 <h1 class="h1 p-4">Welcome!</h1>
 
+<svelte:head>
+	{#if data.myapps}
+		<title>{data.myapps.title} App Stats & Info</title>
+	{/if}
+</svelte:head>
+
 <div>
 	{#await data}
 		<div>

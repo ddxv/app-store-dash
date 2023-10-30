@@ -24,7 +24,7 @@ export interface CategoryResponse {
 }
 
 export interface SearchResponse {
-	results?: AppGroup;
+	results: { streamed: AppGroup };
 	status?: number;
 	error?: string;
 }
@@ -80,10 +80,14 @@ export interface AppRankDetail {
 	store_category: number;
 }
 export interface AppFullDetails {
-	myapp?: AppFullDetail;
-	myranks?: AppRankDetail[];
+	myapp: {
+		streamed: Promise<AppFullDetail>;
+	};
 	status?: number;
 	error?: string;
+	myranks: {
+		streamed: Promise<AppRankDetail[]>;
+	};
 }
 
 export interface AppFullDetail {

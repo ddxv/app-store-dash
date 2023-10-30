@@ -1,7 +1,6 @@
 <script lang="ts">
 	import ExternalLinkSvg from '$lib/svg/ExternalLinkSVG.svelte';
 	import type { AppFullDetails, AppRankResponse } from '../../../types';
-	/** @type {import('../[id]/$types').PageData} */
 	export let data: AppFullDetails;
 	import AppDetails from '$lib/RatingInstallsLarge.svelte';
 	import AppPlot from '$lib/AppPlot.svelte';
@@ -10,73 +9,79 @@
 	let sum = (arr: number[]) => arr.reduce((acc, curr) => acc + curr, 0);
 </script>
 
-{#if data.myapp}
+<svelte:head>
+	{#await data.myapp.streamed}
+		<title>App Stats & Info</title>
+	{:then appdata}
+		<title>{appdata.name} App Stats & Info</title>
+	{/await}
+</svelte:head>
+
+{#await data.myapp.streamed}
+	Loading App...
+{:then appdata}
 	<!-- App Icon Title & Info -->
 	<section class="grid grid-flow-cols-1 md:grid-cols-2 md:gap-4">
 		<div class="card variant-glass-surface p-0 lg:p-8">
 			<div class="card-header p-2 md:p-4">
 				<div class="inline-flex">
-					{#if data.myapp.icon_url_512}
+					{#if appdata.icon_url_512}
 						<img
-							src={data.myapp.icon_url_512}
-							alt={data.myapp.name}
+							src={appdata.icon_url_512}
+							alt={appdata.name}
 							class="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 xl:w-60 xl:h-60"
 							referrerpolicy="no-referrer"
 						/>
 					{/if}
 					<div class="p-4">
-						{#if data.myapp.installs && data.myapp.installs != '0'}
-							<AppDetails app={data.myapp} />
+						{#if appdata.installs && appdata.installs != '0'}
+							<AppDetails app={appdata} />
 						{/if}
 					</div>
 				</div>
 
 				<div class="block md:hidden" />
-				{#if data.myapp.developer_id}
-					<a href="/developers/{data.myapp.developer_id}" class="btn variant-filled"
-						><span>Developer: {data.myapp.developer_name}</span></a
+				{#if appdata.developer_id}
+					<a href="/developers/{appdata.developer_id}" class="btn variant-filled"
+						><span>Developer: {appdata.developer_name}</span></a
 					>
 				{/if}
-				<a href="/categories/{data.myapp.category}" class="btn variant-filled"
-					><span>Category: {data.myapp.category}</span></a
+				<a href="/categories/{appdata.category}" class="btn variant-filled"
+					><span>Category: {appdata.category}</span></a
 				>
 			</div>
 
 			<div class="card-footer md:flex">
 				<div class="block">
-					<p>Store ID: {data.myapp.store_id}</p>
-					{#if data.myapp.developer_id}
+					<p>Store ID: {appdata.store_id}</p>
+					{#if appdata.developer_id}
 						Developer: <a
 							class="anchor inline-flex items-baseline"
-							href={data.myapp.store_developer_link}
+							href={appdata.store_developer_link}
 							target="_blank"
 						>
-							{data.myapp.developer_name}
+							{appdata.developer_name}
 							<ExternalLinkSvg />
 						</a>
 					{:else}
-						<p>Developer Name: {data.myapp.developer_name}</p>
-						<p>Developer ID: {data.myapp.developer_id}</p>
+						<p>Developer Name: {appdata.developer_name}</p>
+						<p>Developer ID: {appdata.developer_id}</p>
 					{/if}
-					{#if data.myapp.developer_url}
+					{#if appdata.developer_url}
 						<p>
 							Developer URL:
-							<a
-								class="anchor inline-flex"
-								href="https://{data.myapp.developer_url}"
-								target="_blank"
-							>
-								{data.myapp.developer_url}
+							<a class="anchor inline-flex" href="https://{appdata.developer_url}" target="_blank">
+								{appdata.developer_url}
 								<ExternalLinkSvg />
 							</a>
 						</p>
 					{/if}
-					<p>Store Last Crawled: {data.myapp.updated_at}</p>
+					<p>Store Last Crawled: {appdata.updated_at}</p>
 				</div>
 				<div class="ml-auto">
-					<a class="anchor inline-flex items-baseline" href={data.myapp.store_link} target="_blank">
-						{#if data.myapp.store_link.includes('google')}
-							<img class="w-40 md:w-60" src="/gp_en_badge_web_generic.png" alt={data.myapp.name} />
+					<a class="anchor inline-flex items-baseline" href={appdata.store_link} target="_blank">
+						{#if appdata.store_link.includes('google')}
+							<img class="w-40 md:w-60" src="/gp_en_badge_web_generic.png" alt={appdata.name} />
 						{:else}
 							<AvailableOniOs />
 						{/if}
@@ -86,17 +91,17 @@
 			<br />
 			<div class="p-2 md:flex">
 				<div class="self-center text-center">
-					<h1 class="h1 p-2">{data.myapp.rating}★</h1>
-					Ratings: {sum(data.myapp.histogram)}
+					<h1 class="h1 p-2">{appdata.rating}★</h1>
+					Ratings: {sum(appdata.histogram)}
 				</div>
 				<div class="flex-1">
-					{#each [...data.myapp.histogram].reverse() as count, index}
+					{#each [...appdata.histogram].reverse() as count, index}
 						<div class="flex bar-spacer">
-							<span class="label">{data.myapp.histogram.length - index}★</span>
+							<span class="label">{appdata.histogram.length - index}★</span>
 							<div class="bar-container flex-1">
 								<div
 									class="bar"
-									style="width: {(count / sum(data.myapp.histogram)) * 100}%"
+									style="width: {(count / sum(appdata.histogram)) * 100}%"
 									title="{index + 1} star: {count} ratings"
 								/>
 							</div>
@@ -107,50 +112,58 @@
 
 			<h4 class="h4 p-2">Additional Information</h4>
 			<div>
-				<p>Free: {data.myapp.free}</p>
-				<p>Price: {data.myapp.price}</p>
-				<p>Size: {data.myapp.size || 'N/A'}</p>
-				<p>Minimum Android Version: {data.myapp.minimum_android || 'N/A'}</p>
-				<p>Developer Email: {data.myapp.developer_email || 'N/A'}</p>
-				<p>Content Rating: {data.myapp.content_rating || 'N/A'}</p>
-				<p>Ad Supported: {data.myapp.ad_supported || 'N/A'}</p>
-				<p>In-App Purchases: {data.myapp.in_app_purchases || 'N/A'}</p>
-				<p>Editor's Choice: {data.myapp.editors_choice || 'N/A'}</p>
-				<p>Last Crawl Result: {data.myapp.crawl_result}</p>
-				<p>First Released: {data.myapp.release_date}</p>
-				<p>Store Last Updated: {data.myapp.store_last_updated}</p>
-				<p>First Crawled: {data.myapp.created_at}</p>
+				<p>Free: {appdata.free}</p>
+				<p>Price: {appdata.price}</p>
+				<p>Size: {appdata.size || 'N/A'}</p>
+				<p>Minimum Android Version: {appdata.minimum_android || 'N/A'}</p>
+				<p>Developer Email: {appdata.developer_email || 'N/A'}</p>
+				<p>Content Rating: {appdata.content_rating || 'N/A'}</p>
+				<p>Ad Supported: {appdata.ad_supported || 'N/A'}</p>
+				<p>In-App Purchases: {appdata.in_app_purchases || 'N/A'}</p>
+				<p>Editor's Choice: {appdata.editors_choice || 'N/A'}</p>
+				<p>Last Crawl Result: {appdata.crawl_result}</p>
+				<p>First Released: {appdata.release_date}</p>
+				<p>Store Last Updated: {appdata.store_last_updated}</p>
+				<p>First Crawled: {appdata.created_at}</p>
 			</div>
 
 			<h4 class="h4 p-2">Historical Information</h4>
 			<div>
-				{@html data.myapp.history_table}
+				{@html appdata.history_table}
 			</div>
-			{#if data.myranks}
-				<h4 class="h4 p-2">Lastest Store Ranks</h4>
-				{#each data.myranks as myrow}
-					<h5 class="h5">
-						#{myrow.rank}
-						in: {collectionIDLookup[myrow.store][myrow.store_collection].collection_name}
-						{categoryIDLookup[myrow.store_collection][myrow.store_category].category_name}
-						({myrow.crawled_date})
-					</h5>
-				{/each}
-			{/if}
+			<h4 class="h4 p-2">Lastest Store Rans</h4>
+			{#await data.myranks.streamed}
+				Loading ...
+			{:then ranks}
+				{#if ranks.length > 0}
+					{#each ranks as myrow}
+						<h5 class="h5">
+							#{myrow.rank}
+							in: {collectionIDLookup[myrow.store][myrow.store_collection].collection_name}
+							{categoryIDLookup[myrow.store_collection][myrow.store_category].category_name}
+							({myrow.crawled_date})
+						</h5>
+					{/each}
+				{:else}
+					<p>No ranks available for this app.</p>
+				{/if}
+			{:catch}
+				<p>No ranks available for this app.</p>
+			{/await}
 		</div>
 		<!-- App Pictures -->
 		<div class="card variant-glass-surface p-8">
-			{#if data.myapp.featured_image_url}
+			{#if appdata.featured_image_url}
 				<div>
 					<img
 						class="h-auto max-w-full rounded-lg p-4 mx-auto"
-						src={data.myapp.featured_image_url}
+						src={appdata.featured_image_url}
 						alt=""
 					/>
 				</div>
 			{/if}
 			<section class="grid grid-cols-2 md:grid-cols-3 gap-4">
-				{#each [data.myapp.phone_image_url_1, data.myapp.phone_image_url_2, data.myapp.phone_image_url_3, data.myapp.tablet_image_url_1, data.myapp.tablet_image_url_2, data.myapp.tablet_image_url_3] as imageUrl}
+				{#each [appdata.phone_image_url_1, appdata.phone_image_url_2, appdata.phone_image_url_3, appdata.tablet_image_url_1, appdata.tablet_image_url_2, appdata.tablet_image_url_3] as imageUrl}
 					{#if imageUrl && imageUrl != 'null'}
 						<div>
 							<img class="h-auto max-w-full rounded-lg" src={imageUrl} alt="" />
@@ -161,15 +174,14 @@
 		</div>
 	</section>
 	<section>
-		{#if data.myapp.historyData}
-			<h1 class="h1">Plot</h1>
-			<AppPlot plotdata={data.myapp.historyData} />
+		{#if appdata.historyData}
+			<div class="card variant-glass-surface p-2 md:p-4 mt-2 md:mt-4">
+				<AppPlot plotdata={appdata.historyData} />
+			</div>
 		{/if}
 	</section>
-	<a href="/">Back to Home</a>
-{:else}
-	<p>Loading...</p>
-{/if}
+{/await}
+<a href="/"><p>Back to Home</p></a>
 
 <style>
 	.bar-spacer {
