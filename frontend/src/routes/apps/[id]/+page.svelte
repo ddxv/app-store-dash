@@ -10,6 +10,12 @@
 	let sum = (arr: number[]) => arr.reduce((acc, curr) => acc + curr, 0);
 </script>
 
+<svelte:head>
+	{#if data.myapp}
+		<title>{data.myapp.name} App Stats & Info</title>
+	{/if}
+</svelte:head>
+
 {#if data.myapp}
 	<!-- App Icon Title & Info -->
 	<section class="grid grid-flow-cols-1 md:grid-cols-2 md:gap-4">
@@ -164,8 +170,9 @@
 	</section>
 	<section>
 		{#if data.myapp.historyData}
-			<h1 class="h1">Plot</h1>
-			<AppPlot plotdata={data.myapp.historyData} />
+			<div class="card variant-glass-surface p-2 md:p-4 mt-2 md:mt-4">
+				<AppPlot plotdata={data.myapp.historyData} />
+			</div>
 		{/if}
 	</section>
 	<a href="/">Back to Home</a>

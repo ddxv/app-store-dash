@@ -103,9 +103,9 @@
 					selected={$page.url.pathname.startsWith('/rankings')}
 					>RANKS
 				</TabAnchor>
-				<TabAnchor href="/categories" selected={$page.url.pathname === '/categories'}
+				<!-- <TabAnchor href="/categories" selected={$page.url.pathname === '/categories'}
 					>CATEGORIES
-				</TabAnchor>
+				</TabAnchor> -->
 				<TabAnchor href="/about" selected={$page.url.pathname === '/about'}>ABOUT</TabAnchor>
 			</TabGroup>
 

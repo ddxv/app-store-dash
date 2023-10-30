@@ -16,6 +16,11 @@
 	$: category = +$page.params.category;
 </script>
 
+<svelte:head>
+	App Ranks {storeIDLookup[store].store_name}, Collection: {collectionIDLookup[store][collection]
+		.collection_name}, Category: {categoryIDLookup[collection][category].category_name}
+</svelte:head>
+
 <h2 class="h2 p-4">
 	Store: {storeIDLookup[store].store_name}, Collection: {collectionIDLookup[store][collection]
 		.collection_name}, Category: {categoryIDLookup[collection][category].category_name}

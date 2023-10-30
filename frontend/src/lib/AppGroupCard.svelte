@@ -13,7 +13,7 @@
 	}
 </script>
 
-<div class="card p-2">
+<div class="card variant-glass-surface p-2">
 	<section class="grid grid-col grid-flow-row md:grid-cols-4 gap-4 md:gap-8">
 		{#each apps.apps as app}
 			<a
