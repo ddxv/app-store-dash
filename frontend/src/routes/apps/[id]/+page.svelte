@@ -131,7 +131,7 @@
 			<div>
 				{@html appdata.history_table}
 			</div>
-			<h4 class="h4 p-2">Lastest Store Rans</h4>
+			<h4 class="h4 p-2">Lastest Store Ranks</h4>
 			{#await data.myranks.streamed}
 				Loading ...
 			{:then ranks}
