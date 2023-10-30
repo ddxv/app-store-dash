@@ -9,15 +9,27 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 		const id = params.id;
 
 		const res = await fetch(`http://localhost:8000/api/apps/${id}`);
-		const ranks = await fetch(`http://localhost:8000/api/apps/${id}/ranks`);
 
 		if (!res.ok) {
-			throw new Error(`Failed to fetch ${id} with status ${res.status}`);
+			throw new Error(`Failed to fetch app ${id} with status ${res.status}`);
 		}
 
 		const app_detail = await res.json();
-		const rank_details = await ranks.json();
 		console.log(`loaded app_detail with len: ${Object.keys(app_detail).length}`);
+
+		let rank_details = {};
+
+		try {
+			const ranks = await fetch(`http://localhost:8000/api/apps/${id}/ranks`);
+			if (!ranks.ok) {
+				console.warn(`Failed to fetch ranks for app ${id} with status ${ranks.status}`);
+			} else {
+				rank_details = await ranks.json();
+			}
+		} catch (rankError) {
+			console.warn('Failed to fetch ranks:', rankError);
+		}
+
 		return {
 			myapp: app_detail,
 			myranks: rank_details
