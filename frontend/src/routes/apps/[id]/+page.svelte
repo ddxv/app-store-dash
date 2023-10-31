@@ -5,7 +5,7 @@
 	import AppDetails from '$lib/RatingInstallsLarge.svelte';
 	import AppPlot from '$lib/AppPlot.svelte';
 	import AvailableOniOs from '$lib/svg/AvailableOniOS.svelte';
-	import { categoryIDLookup, collectionIDLookup } from '../../../stores';
+	import AppCharts from '$lib/AppCharts.svelte';
 	let sum = (arr: number[]) => arr.reduce((acc, curr) => acc + curr, 0);
 </script>
 
@@ -149,6 +149,10 @@
 					{#if appdata.historyData}
 						<div class="card variant-glass-surface p-2 md:p-4 mt-2 md:mt-4">
 							<AppPlot plotdata={ranks.history} plotType="rank" />
+						</div>
+						<div class="card variant-glass-surface p-2 md:p-4 mt-2 md:mt-4">
+							NEW:
+							<AppCharts plotData={ranks.history} />
 						</div>
 					{/if}
 				{:else}
