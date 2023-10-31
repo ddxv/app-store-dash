@@ -1,6 +1,6 @@
 <script lang="ts">
 	import ExternalLinkSvg from '$lib/svg/ExternalLinkSVG.svelte';
-	import type { AppFullDetails, AppRankResponse } from '../../../types';
+	import type { AppFullDetails } from '../../../types';
 	export let data: AppFullDetails;
 	import AppDetails from '$lib/RatingInstallsLarge.svelte';
 	import AppPlot from '$lib/AppPlot.svelte';
@@ -135,15 +135,22 @@
 			{#await data.myranks.streamed}
 				Loading ...
 			{:then ranks}
-				{#if ranks.length > 0}
-					{#each ranks as myrow}
+				{#if ranks.latest.length > 0}
+					{#each ranks.latest as myrow}
 						<h5 class="h5">
 							#{myrow.rank}
-							in: {collectionIDLookup[myrow.store][myrow.store_collection].collection_name}
-							{categoryIDLookup[myrow.store_collection][myrow.store_category].category_name}
+							in: {myrow.collection}
+							{myrow.category}
 							({myrow.crawled_date})
 						</h5>
 					{/each}
+				{/if}
+				{#if ranks.history.length > 0}
+					{#if appdata.historyData}
+						<div class="card variant-glass-surface p-2 md:p-4 mt-2 md:mt-4">
+							<AppPlot plotdata={ranks.history} plotType="rank" />
+						</div>
+					{/if}
 				{:else}
 					<p>No ranks available for this app.</p>
 				{/if}
@@ -176,7 +183,7 @@
 	<section>
 		{#if appdata.historyData}
 			<div class="card variant-glass-surface p-2 md:p-4 mt-2 md:mt-4">
-				<AppPlot plotdata={appdata.historyData} />
+				<AppPlot plotdata={appdata.historyData} plotType="combo" />
 			</div>
 		{/if}
 	</section>

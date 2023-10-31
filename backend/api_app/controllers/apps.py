@@ -2,7 +2,14 @@ import datetime
 import pandas as pd
 import numpy as np
 
-from api_app.models import AppDetail, Collection, AppGroup, Category, DeveloperApps
+from api_app.models import (
+    AppDetail,
+    Collection,
+    AppGroup,
+    Category,
+    DeveloperApps,
+    AppRank,
+)
 from config import get_logger
 from dbcon.queries import (
     get_single_app,
@@ -160,7 +167,7 @@ class AppController(Controller):
         return app_dict
 
     @get(path="/{store_id:str}/ranks", cache=3600)
-    async def app_ranks(self, store_id: str) -> AppDetail:
+    async def app_ranks(self, store_id: str) -> AppRank:
         """
         Handles a GET request for a specific app ranks.
 
@@ -171,16 +178,23 @@ class AppController(Controller):
             json
         """
         logger.info(f"{self.path} start")
-
         df = query_ranks_for_app(store_id=store_id)
         if df.empty:
             raise NotFoundException(
                 f"Store ID not found: {store_id!r}", status_code=404
             )
-        app_dict = df[
-            ["crawled_date", "store", "store_collection", "store_category", "rank"]
+        df["rank_group"] = df["collection"] + ": " + df["category"]
+        latest_dict = df[df["crawled_date"].max() == df["crawled_date"]][
+            ["rank", "store", "crawled_date", "collection", "category"]
         ].to_dict(orient="records")
-        return app_dict
+        hist_dict = (
+            df[["crawled_date", "rank_group", "rank"]]
+            .sort_values("crawled_date")
+            .rename(columns={"rank_group": "group"})
+            .to_dict(orient="records")
+        )
+        rank_dict = AppRank(latest=latest_dict, history=hist_dict)
+        return rank_dict
 
     @get(path="/developers/{developer_id:str}", cache=3600)
     async def get_developer_apps(self, developer_id: str) -> DeveloperApps:

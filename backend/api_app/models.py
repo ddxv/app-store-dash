@@ -69,8 +69,6 @@ class CategoriesOverview:
 
 
 # @dataclass
-# class RankingOverview:
-#     int: StoreCollections
 
 
 @dataclass
@@ -96,3 +94,9 @@ class StoreRankings:
 @dataclass
 class RankingOverview:
     stores_rankings: list[StoreRankings] = field(default_factory=list)
+
+
+@dataclass
+class AppRank:
+    latest: dict
+    history: dict

@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import datetime
 from config import get_logger
 from dbcon.connections import get_db_connection
 from sqlalchemy import text, TextClause
@@ -325,19 +326,30 @@ def get_appstore_categories() -> pd.DataFrame:
     return df
 
 
-def query_ranks_for_app(store_id: str) -> pd.DataFrame:
+def query_ranks_for_app(store_id: str, days=30) -> pd.DataFrame:
+    start_date = (
+        datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(days=days)
+    ).strftime("%Y-%m-%d")
     sel_query = f"""SELECT
-                    ar.*
+                    ar.crawled_date,
+                    ar.country,
+                    ar.store,
+                    ar.rank,
+                    scol.collection,
+                    scat.category
                 FROM
                     app_rankings ar
                 LEFT JOIN
                     store_apps sa
                     ON sa.id = ar.store_app
+                LEFT JOIN store_collections scol
+                    ON scol.id = ar.store_collection
+                LEFT JOIN store_categories scat
+                    ON scat.id = ar.store_category
                 WHERE
                     sa.store_id = '{store_id}'
                     AND
-                        crawled_date = 
-                        (SELECT max(crawled_date) FROM app_rankings)
+                        crawled_date >= '{start_date}'
                 ;
         """
     df = pd.read_sql(sel_query, con=DBCON.engine)

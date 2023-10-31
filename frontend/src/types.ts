@@ -76,8 +76,8 @@ export interface AppRankDetail {
 	crawled_date: string;
 	rank: number;
 	store: number;
-	store_collection: number;
-	store_category: number;
+	collection: string;
+	category: string;
 }
 export interface AppFullDetails {
 	myapp: {
@@ -86,7 +86,7 @@ export interface AppFullDetails {
 	status?: number;
 	error?: string;
 	myranks: {
-		streamed: Promise<AppRankDetail[]>;
+		streamed: Promise<{ latest: AppRankDetail[]; history: AppRankDetail[] }>;
 	};
 }
 
