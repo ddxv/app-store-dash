@@ -123,6 +123,16 @@
 		// Draw the chart
 		myChart.setOption(chartoption);
 		myChart.resize();
+
+		const myfun = () => {
+			myChart.resize();
+		};
+
+		window.addEventListener('resize', myfun);
+
+		return () => {
+			window.removeEventListener('resize', myfun);
+		};
 	});
 
 	$: if (myChart) {
@@ -135,5 +145,6 @@
 	}
 </script>
 
-<!-- <svelte:window innerWidth={p} innerHeight={q} /> -->
+<!-- <svelte:window innerWidth={480} innerHeight={480} /> -->
 <div class="w-full h-96" bind:this={myChartDiv} />
+<!-- </svelte:window> -->
