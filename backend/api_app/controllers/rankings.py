@@ -8,7 +8,8 @@ from config import get_logger
 
 from dbcon.queries import (
     get_store_collection_category_map,
-    get_ranks,
+    get_most_recent_top_ranks,
+    get_history_top_ranks,
 )
 from litestar import Controller, get
 
@@ -82,25 +83,6 @@ class RankingsController(Controller):
 
         return overview
 
-    # @get(path="/{store:int}/{collection_id:int}/{category_id:int}", cache=3600)
-    # async def get_ranking(
-    #     self, store: int, collection_id: int, category_id: int, category: int
-    # ) -> dict:
-    #     """
-    #     Handles a GET request for a collection+category rank
-
-    #     Returns:
-    #         A dictionary representation of a category
-    #         with ios and google apps
-    #     """
-    #     logger.info(f"{self.path} start")
-    #     df = get_ranks(
-    #         store=store, collection_id=collection_id, category_id=category_id, limit=50
-    #     )
-    #     ranks_dict = df.to_dict(orient="records")
-
-    #     return ranks_dict
-
     @get(path="/{store:int}/{collection:int}/{category:int}", cache=3600)
     async def get_ranks_for_category(
         self, store: int, collection: int, category: int
@@ -113,12 +95,38 @@ class RankingsController(Controller):
             with ios and google apps
         """
         logger.info(f"{self.path} start for store/collection/category")
-        df = get_ranks(
-            store=store, collection_id=collection, category_id=category, limit=20
+        df = get_most_recent_top_ranks(
+            store=store,
+            collection_id=collection,
+            category_id=category,
+            limit=20,
         )
         ranks_dict = df.to_dict(orient="records")
-        ranks_html = df.drop(["icon_url_512"], axis=1).to_html(
-            index=None, justify="unset"
-        )
+        return {"ranks": ranks_dict}
 
-        return {"html": ranks_html, "ranks": ranks_dict}
+    @get(path="/{store:int}/{collection:int}/{category:int}/history", cache=3600)
+    async def get_ranks_history_for_category(
+        self, store: int, collection: int, category: int
+    ) -> dict:
+        """
+        Handles a GET request for a store/collection/category rank
+
+        Returns:
+            A list of dictionary representation of a category history
+            with ios or google apps
+        """
+        logger.info(f"{self.path} start for store/collection/category")
+
+        df = get_history_top_ranks(
+            store=store,
+            collection_id=collection,
+            category_id=category,
+            limit=10,
+            days=30,
+        )
+        hist_dict = (
+            df.pivot(columns=["name"], index=["crawled_date"], values="rank")
+            .reset_index()
+            .to_dict(orient="records")
+        )
+        return {"history": hist_dict}
