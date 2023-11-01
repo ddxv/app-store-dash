@@ -127,27 +127,28 @@
 				<p>First Crawled: {appdata.created_at}</p>
 			</div>
 
-			<h4 class="h4 p-2">Historical Information</h4>
-			<div>
+			<!-- <div>
+				<h4 class="h4 p-2">Historical Information</h4>
 				{@html appdata.history_table}
-			</div>
-			<h4 class="h4 p-2">Lastest Store Ranks</h4>
+			</div> -->
+			<h4 class="h4 p-2 mt-2">Lastest Store Ranks</h4>
 			{#await data.myranks.streamed}
 				Loading ...
 			{:then ranks}
 				{#if ranks.latest.length > 0}
 					{#each ranks.latest as myrow}
-						<h5 class="h5">
+						<h6 class="h6">
 							#{myrow.rank}
 							in: {myrow.collection}
 							{myrow.category}
 							({myrow.crawled_date})
-						</h5>
+						</h6>
 					{/each}
 				{/if}
 				{#if ranks.history.length > 0}
 					{#if appdata.historyData}
-						<div class="card variant-glass-surface p-2 mt-2 md:mt-4">
+						<h4 class="h4 p-2 mt-2">Store Ranks Historical</h4>
+						<div class="card variant-glass-surface mt-2 md:mt-4">
 							<AppCharts plotData={ranks.history} />
 						</div>
 					{/if}

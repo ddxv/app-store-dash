@@ -80,35 +80,36 @@
 		// dataset: PyData,
 		dataset: { source: plotData },
 		dimensions: dimensions,
+		grid: {
+			x: 40, //left
+			y: 20, // top
+			x2: 0,
+			y2: 30 // bottom
+			// containLabel: true
+		},
 		legend: {},
 		tooltip: {
 			trigger: 'item'
 		},
-		// grid: {
-		// 	left: 30,
-		// 	right: 110,
-		// 	bottom: 30,
-		// 	containLabel: true
-		// },
 		xAxis: {
 			type: 'category',
 			splitLine: {
 				show: true
+			},
+			axisLabel: {
+				margin: 10,
+				fontSize: 18
 			}
-			// axisLabel: {
-			// 	margin: 30,
-			// 	fontSize: 16
-			// },
 			// boundaryGap: false,
 			//data: myX
 		},
 		yAxis: {
 			type: 'value',
-			// axisLabel: {
-			// 	margin: 34,
-			// 	fontSize: 28,
-			// 	formatter: '#{value}'
-			// },
+			axisLabel: {
+				margin: 10,
+				fontSize: 22,
+				formatter: '#{value}'
+			},
 			inverse: true
 			// interval: 1,
 			// min: 1,
@@ -138,6 +139,7 @@
 	$: if (myChart) {
 		// Create the echarts instance
 		myChart.dispose();
+		// myChart = echarts.init(myChartDiv, null, { renderer: 'svg' });
 		myChart = echarts.init(myChartDiv);
 		// Draw the chart
 		myChart.setOption(chartoption);
@@ -145,6 +147,5 @@
 	}
 </script>
 
-<!-- <svelte:window innerWidth={480} innerHeight={480} /> -->
-<div class="w-full h-96" bind:this={myChartDiv} />
-<!-- </svelte:window> -->
+<!-- <div class="w-full h-56 md:h-96" bind:this={myChartDiv} /> -->
+<div class="w-full h-44 md:h-96" bind:this={myChartDiv} />
