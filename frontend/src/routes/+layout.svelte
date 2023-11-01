@@ -107,6 +107,9 @@
 					>CATEGORIES
 				</TabAnchor> -->
 				<TabAnchor href="/about" selected={$page.url.pathname === '/about'}>ABOUT</TabAnchor>
+				<TabAnchor href="/chartcheck" selected={$page.url.pathname === '/chartcheck'}
+					>CHART</TabAnchor
+				>
 			</TabGroup>
 
 			<svelte:fragment slot="trail">
