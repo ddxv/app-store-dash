@@ -13,7 +13,7 @@
 	}
 </script>
 
-<div class="card variant-glass-surface p-2">
+<div class="card variant-glass-surface p-2 md:p-8">
 	<section class="grid grid-col grid-flow-row md:grid-cols-4 gap-4 md:gap-8">
 		{#each apps.apps as app}
 			<a
@@ -27,7 +27,7 @@
 							{#if app.featured_image_url && app.featured_image_url != 'null'}
 								<div class="justify-center">
 									<img
-										class="h-48 w-full object-cover rounded-lg"
+										class="h-48 w-full object-top object-none rounded-lg"
 										src={app.featured_image_url}
 										alt={app.name}
 										referrerpolicy="no-referrer"

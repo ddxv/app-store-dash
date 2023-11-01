@@ -5,6 +5,7 @@ import type { PageServerLoad } from './$types.js';
 
 export const load: PageServerLoad = async ({ params, locals }) => {
 	console.log('load app started');
+	const emptyResponse = { streamed: {} };
 	try {
 		const id = params.id;
 
@@ -23,8 +24,8 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 	} catch (error) {
 		console.error('Failed to load app data:', error);
 		return {
-			myapp: { streamed: {} },
-			myranks: { streamed: {} },
+			myapp: emptyResponse,
+			myranks: emptyResponse,
 			status: 500,
 			error: 'Failed to load trending apps'
 		};

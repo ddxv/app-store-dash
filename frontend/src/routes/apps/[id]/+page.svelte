@@ -135,7 +135,7 @@
 			{#await data.myranks.streamed}
 				Loading ...
 			{:then ranks}
-				{#if ranks.latest.length > 0}
+				{#if ranks.latest && ranks.latest.length > 0}
 					{#each ranks.latest as myrow}
 						<h6 class="h6">
 							#{myrow.rank}
@@ -145,7 +145,7 @@
 						</h6>
 					{/each}
 				{/if}
-				{#if ranks.history.length > 0}
+				{#if ranks.history && ranks.history.length > 0}
 					{#if appdata.historyData}
 						<h4 class="h4 p-2 mt-2">Store Ranks Historical</h4>
 						<div class="card variant-glass-surface mt-2 md:mt-4">
@@ -153,7 +153,7 @@
 						</div>
 					{/if}
 				{:else}
-					<p>No ranks available for this app.</p>
+					<p>No ranking data available for this app.</p>
 				{/if}
 			{:catch}
 				<p>No ranks available for this app.</p>
