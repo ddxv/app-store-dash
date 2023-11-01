@@ -4,7 +4,6 @@ export const csr = true;
 import type { PageServerLoad } from './$types.js';
 
 export const load: PageServerLoad = async ({ params, locals }) => {
-	console.log('load app started');
 	const emptyResponse = { streamed: {} };
 	try {
 		const id = params.id;

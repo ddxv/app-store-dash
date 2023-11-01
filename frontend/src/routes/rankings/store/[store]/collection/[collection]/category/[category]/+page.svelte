@@ -10,6 +10,7 @@
 	export let data: StoreCategoryRanks;
 
 	import { page } from '$app/stores';
+	import RankChart from '$lib/RankChart.svelte';
 
 	$: store = +$page.params.store;
 	$: collection = +$page.params.collection;
@@ -17,8 +18,10 @@
 </script>
 
 <svelte:head>
-	App Ranks {storeIDLookup[store].store_name}, Collection: {collectionIDLookup[store][collection]
-		.collection_name}, Category: {categoryIDLookup[collection][category].category_name}
+	<title>
+		App Ranks {storeIDLookup[store].store_name}, Collection: {collectionIDLookup[store][collection]
+			.collection_name}, Category: {categoryIDLookup[collection][category].category_name}
+	</title>
 </svelte:head>
 
 <h2 class="h2 p-4">
@@ -26,37 +29,54 @@
 		.collection_name}, Category: {categoryIDLookup[collection][category].category_name}
 </h2>
 
-{#if data.ranks}
-	<div class="table-container p-2 md:p-8">
-		<table class="table table-hover table-auto">
-			<thead>
-				<tr>
-					<th>Rank</th>
-					<th>Name</th>
-				</tr>
-			</thead>
-			<tbody>
-				{#each Object.entries(data.ranks) as [_prop, values]}
+{#await data.ranks.streamed}
+	Loading App Ranks...
+{:then ranks}
+	<div class="card variant-glass-surface">
+		{#await data.history.streamed}
+			Loading rank history...
+		{:then history}
+			<div class="card variant-glass-surface">
+				<RankChart plotData={history.history} maxValue={10} />
+			</div>
+		{:catch}
+			Failed to load history
+		{/await}
+		<div class="table-container p-2 md:p-8">
+			<table class="table table-hover table-auto">
+				<thead>
 					<tr>
-						<td
-							><div class="inline-flex">
-								#
-								<h2 class="h2">
-									{values.rank}
-								</h2>
-							</div>
-						</td>
-						<td>
-							<a href="/apps/{values.store_id}">
-								<div class="inline-flex">
-									<img src={values.icon_url_512} alt={values.name} width="50" class="p-2" />
-									<h3 class="h3 p-2">{values.name}</h3>
-								</div>
-							</a>
-						</td>
+						<th>Rank</th>
+						<th>Name</th>
 					</tr>
-				{/each}
-			</tbody>
-		</table>
+				</thead>
+				<tbody>
+					{#each Object.entries(ranks.ranks) as [_prop, values]}
+						<tr>
+							<td
+								><div class="inline-flex">
+									#
+									<h2 class="h2">
+										{values.rank}
+									</h2>
+								</div>
+							</td>
+							<td>
+								<a href="/apps/{values.store_id}">
+									<div class="inline-flex">
+										<img src={values.icon_url_512} alt={values.name} width="50" class="p-2" />
+										<h3 class="h3 p-2">{values.name}</h3>
+									</div>
+								</a>
+							</td>
+						</tr>
+					{/each}
+				</tbody>
+			</table>
+		</div>
 	</div>
-{/if}
+{:catch}
+	Problem loading data
+{/await}
+
+<a href="/"><p>Back to Home</p></a>

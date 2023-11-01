@@ -5,6 +5,8 @@ from api_app.models import (
     StoreRankings,
 )
 from config import get_logger
+import pandas as pd
+import datetime
 
 from dbcon.queries import (
     get_store_collection_category_map,
@@ -116,7 +118,6 @@ class RankingsController(Controller):
             with ios or google apps
         """
         logger.info(f"{self.path} start for store/collection/category")
-
         df = get_history_top_ranks(
             store=store,
             collection_id=collection,
@@ -124,6 +125,25 @@ class RankingsController(Controller):
             limit=10,
             days=30,
         )
+        df["crawled_date"] = pd.to_datetime(df["crawled_date"])
+        last_crawled_date = df["crawled_date"].max()
+        # Sort by 'crawled_date' to make sure the latest dates are last
+        df = df.sort_values("crawled_date", ascending=True)
+        # NOTE: don't include 'rank' in group by as table is already unique by that
+        # Need to get each apps location on that time
+        df = (
+            df.groupby(
+                [pd.Grouper(key="crawled_date", freq="1W")] + ["name"], dropna=False
+            )
+            .last()
+            .reset_index()
+        )
+        df.loc[
+            df["crawled_date"].dt.date
+            >= datetime.datetime.now(datetime.timezone.utc).date(),
+            "crawled_date",
+        ] = last_crawled_date
+        df["crawled_date"] = pd.to_datetime(df["crawled_date"]).dt.strftime("%Y-%m-%d")
         hist_dict = (
             df.pivot(columns=["name"], index=["crawled_date"], values="rank")
             .reset_index()

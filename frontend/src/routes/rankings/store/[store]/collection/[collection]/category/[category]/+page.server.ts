@@ -1,24 +1,36 @@
 export const ssr: boolean = true;
 export const csr: boolean = true;
 
-console.log('Script executed');
-import type { StoreCategoryRanks } from '../../../../../../../../types.js';
 import type { PageServerLoad } from './$types.js';
 
-export const load: PageServerLoad = async ({ params, url }): Promise<StoreCategoryRanks> => {
-	const storeVal = params.store;
-	const collectionValue = params.collection;
-	const categoryValue = params.category;
-	const res = await fetch(
-		`http://localhost:8000/api/rankings/${storeVal}/${collectionValue}/${categoryValue}`
-	);
-	console.log(`to fetch s=${storeVal} col=${collectionValue} cat=${categoryValue}`);
-	if (!res.ok) {
-		throw new Error(
-			`Failed to fetch s=${storeVal} col=${collectionValue} cat=${categoryValue} with status ${res.status}`
+export const load: PageServerLoad = async ({ params, url }) => {
+	const emptyResponse = { streamed: {} };
+	try {
+		const storeVal = params.store;
+		const collectionValue = params.collection;
+		const categoryValue = params.category;
+		const res = fetch(
+			`http://localhost:8000/api/rankings/${storeVal}/${collectionValue}/${categoryValue}`
 		);
-	}
+		const history = fetch(
+			`http://localhost:8000/api/rankings/${storeVal}/${collectionValue}/${categoryValue}/history`
+		);
 
-	const ranks = await res.json();
-	return ranks;
+		return {
+			ranks: {
+				streamed: res.then((resp) => resp.json())
+			},
+			history: {
+				streamed: history.then((resp) => resp.json())
+			}
+		};
+	} catch (error) {
+		console.error('Failed to load app data:', error);
+		return {
+			ranks: emptyResponse,
+			history: emptyResponse,
+			status: 500,
+			error: 'Failed to load ranked apps'
+		};
+	}
 };

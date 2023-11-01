@@ -4,6 +4,8 @@
 
 	export let plotData;
 
+	export let maxValue: number | null = null;
+
 	const dimensions = ['crawled_date'];
 
 	// const PyData2 = [
@@ -44,40 +46,90 @@
 	// 	}
 	// ];
 
-	const plotSeries = [
-		{
-			type: 'line',
-			symbolSize: 20,
-			smooth: true,
-			emphasis: {
-				focus: 'series'
-			},
-			lineStyle: {
-				width: 4
-			}
-		},
-		{
-			type: 'line',
-			symbolSize: 20,
-			smooth: true,
-			emphasis: {
-				focus: 'series'
-			},
+	// const plotSeries = [
+	// 	{
+	// 		type: 'line',
+	// 		symbolSize: 20,
+	// 		smooth: true,
+	// 		emphasis: {
+	// 			focus: 'series'
+	// 		},
+	// 		lineStyle: {
+	// 			width: 4
+	// 		}
+	// 	},
+	// 	{
+	// 		type: 'line',
+	// 		symbolSize: 20,
+	// 		smooth: true,
+	// 		emphasis: {
+	// 			focus: 'series'
+	// 		},
 
+	// 		lineStyle: {
+	// 			width: 4
+	// 		}
+	// 	}
+	// ];
+
+	const plotSeries = plotData.map(() => {
+		return {
+			type: 'line',
+			symbolSize: 20,
+			smooth: true,
+			emphasis: {
+				focus: 'series'
+			},
 			lineStyle: {
 				width: 4
 			}
-		}
-	];
+		};
+	});
 
 	let myChartDiv: HTMLDivElement;
 	let myChart: echarts.ECharts;
 
-	const myDraculaColors = ['#ff79c6', '#bd93f9', '#1ef956', '#f67516'];
+	const myColors = [
+		'#636efa',
+		'#EF553B',
+		'#00cc96',
+		'#ab63fa',
+		'#FFA15A',
+		'#19d3f3',
+		'#FF6692',
+		'#B6E880',
+		'#FF97FF',
+		'#FECB52',
+		'#AA0DFE',
+		'#3283FE',
+		'#85660D',
+		'#782AB6',
+		'#565656',
+		'#1C8356',
+		'#16FF32',
+		'#F7E1A0',
+		'#E2E2E2',
+		'#1CBE4F',
+		'#C4451C',
+		'#DEA0FD',
+		'#FE00FA',
+		'#325A9B',
+		'#FEAF16',
+		'#F8A19F',
+		'#90AD1C',
+		'#F6222E',
+		'#1CFFCE',
+		'#2ED9FF',
+		'#B10DA1',
+		'#C075A6',
+		'#FC1CBF',
+		'#B00068',
+		'#FBE426',
+		'#FA0087'
+	];
 
 	let chartoption = {
-		color: myDraculaColors,
-		// dataset: PyData,
+		color: myColors,
 		dataset: { source: plotData },
 		dimensions: dimensions,
 		grid: {
@@ -110,10 +162,10 @@
 				fontSize: 22,
 				formatter: '#{value}'
 			},
-			inverse: true
+			inverse: true,
 			// interval: 1,
 			// min: 1,
-			// max: 200
+			max: maxValue
 		},
 		series: plotSeries
 	};
@@ -147,5 +199,4 @@
 	}
 </script>
 
-<!-- <div class="w-full h-56 md:h-96" bind:this={myChartDiv} /> -->
-<div class="w-full h-44 md:h-96" bind:this={myChartDiv} />
+<div class="w-full h-96" bind:this={myChartDiv} />

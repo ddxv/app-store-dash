@@ -411,14 +411,10 @@ def get_history_top_ranks(
                         AND ar.store_category = {category_id}
                     LIMIT {limit}
                     )
-            AND
-                arr.crawled_date >= '{start_date}'
-            AND
-                arr.store = {store}
-            AND
-                arr.collection = {collection_id}
-            AND
-                arr.category = {category_id}
+            AND arr.crawled_date >= '{start_date}'
+            AND arr.store = {store}
+            AND arr.store_collection = {collection_id}
+            AND arr.store_category = {category_id}
             ;
         """
     df = pd.read_sql(sel_query, con=DBCON.engine)

@@ -63,7 +63,14 @@ export interface AppRankResponse {
 }
 
 export interface StoreCategoryRanks {
-	ranks: RankedApps[];
+	ranks: {
+		streamed: Promise<{ ranks: RankedApps[] }>;
+	};
+	status?: number;
+	error?: string;
+	history: {
+		streamed: Promise<{ history: RankedApps[] }>;
+	};
 }
 
 export interface RankedApps {

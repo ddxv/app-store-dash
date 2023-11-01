@@ -5,7 +5,7 @@
 	import AppDetails from '$lib/RatingInstallsLarge.svelte';
 	import AppPlot from '$lib/AppPlot.svelte';
 	import AvailableOniOs from '$lib/svg/AvailableOniOS.svelte';
-	import AppCharts from '$lib/AppCharts.svelte';
+	import AppCharts from '$lib/RankChart.svelte';
 	let sum = (arr: number[]) => arr.reduce((acc, curr) => acc + curr, 0);
 </script>
 
