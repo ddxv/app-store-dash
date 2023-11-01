@@ -187,10 +187,11 @@ class AppController(Controller):
         latest_dict = df[df["crawled_date"].max() == df["crawled_date"]][
             ["rank", "store", "crawled_date", "collection", "category"]
         ].to_dict(orient="records")
+        df["crawled_date"] = pd.to_datetime(df["crawled_date"]).dt.strftime("%Y-%m-%d")
+        pdf = df[["crawled_date", "rank", "rank_group"]].sort_values("crawled_date")
         hist_dict = (
-            df[["crawled_date", "rank_group", "rank"]]
-            .sort_values("crawled_date")
-            .rename(columns={"rank_group": "group"})
+            pdf.pivot(columns=["rank_group"], index=["crawled_date"], values="rank")
+            .reset_index()
             .to_dict(orient="records")
         )
         rank_dict = AppRank(latest=latest_dict, history=hist_dict)

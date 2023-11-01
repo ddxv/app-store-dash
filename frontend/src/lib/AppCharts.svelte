@@ -1,96 +1,139 @@
-<script>
+<script lang="ts">
 	import { onMount } from 'svelte';
-	import Chart from 'chart.js/auto';
+	import * as echarts from 'echarts';
 
-	//WORKING FOR EXAMPLE LINE
-	let ctx;
-	let canvas;
-	const myDraculaColors = ['#ff79c6', '#bd93f9', '#1ef956', '#f67516'];
+	export let plotData;
 
-	const hoverlineoptions = {
-		type: 'line',
-		data: {
-			labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-			datasets: [
-				{
-					label: '# of Votes',
-					yAxisID: 'y1',
-					data: [1, 1, 2, 3, 6, 8],
-					backgroundColor: myDraculaColors[0],
-					borderWidth: 4,
-					borderColor: myDraculaColors[0],
-					tension: 0.5,
-					pointRadius: 5,
-					pointHitRadius: 5
-				},
-				{
-					label: '# of Points',
-					yAxisID: 'y1',
-					data: [2, 4, 4, 5, 3, 5],
-					backgroundColor: myDraculaColors[1],
-					borderWidth: 4,
-					borderColor: myDraculaColors[1],
-					tension: 0.5,
-					pointRadius: 5,
-					pointHitRadius: 5
-				},
-				{
-					label: '# of Cars',
-					yAxisID: 'y1',
-					data: [5, 6, 7, 6, 5, 4],
-					backgroundColor: myDraculaColors[2],
-					borderWidth: 4,
-					borderColor: myDraculaColors[2],
-					tension: 0.5,
-					pointRadius: 5,
-					pointHitRadius: 5
-				}
-			]
+	const dimensions = ['crawled_date'];
+
+	// const PyData2 = [
+	// 	{
+	// 		crawled_date: '2023-10-18',
+	// 		'GROSSING: GAME_ROLE_PLAYING': null,
+	// 		'TOP_FREE: GAME_ROLE_PLAYING': 48.0
+	// 	},
+	// 	{
+	// 		crawled_date: '2023-10-22',
+	// 		'GROSSING: GAME_ROLE_PLAYING': 185.0,
+	// 		'TOP_FREE: GAME_ROLE_PLAYING': null
+	// 	},
+	// 	{
+	// 		crawled_date: '2023-10-23',
+	// 		'GROSSING: GAME_ROLE_PLAYING': 170.0,
+	// 		'TOP_FREE: GAME_ROLE_PLAYING': null
+	// 	},
+	// 	{
+	// 		crawled_date: '2023-10-24',
+	// 		'GROSSING: GAME_ROLE_PLAYING': 160.0,
+	// 		'TOP_FREE: GAME_ROLE_PLAYING': null
+	// 	},
+	// 	{
+	// 		crawled_date: '2023-10-25',
+	// 		'GROSSING: GAME_ROLE_PLAYING': 160.0,
+	// 		'TOP_FREE: GAME_ROLE_PLAYING': null
+	// 	},
+	// 	{
+	// 		crawled_date: '2023-10-26',
+	// 		'GROSSING: GAME_ROLE_PLAYING': 159.0,
+	// 		'TOP_FREE: GAME_ROLE_PLAYING': null
+	// 	},
+	// 	{
+	// 		crawled_date: '2023-10-27',
+	// 		'GROSSING: GAME_ROLE_PLAYING': 159.0,
+	// 		'TOP_FREE: GAME_ROLE_PLAYING': null
+	// 	}
+	// ];
+
+	const plotSeries = [
+		{
+			type: 'line',
+			symbolSize: 20,
+			smooth: true,
+			emphasis: {
+				focus: 'series'
+			},
+			lineStyle: {
+				width: 4
+			}
 		},
-		options: {
-			scales: { y1: { reverse: true, type: 'linear', display: true, position: 'left' } },
-			responsive: true,
-			interaction: {
-				intersect: false,
-				mode: 'nearest'
+		{
+			type: 'line',
+			symbolSize: 20,
+			smooth: true,
+			emphasis: {
+				focus: 'series'
 			},
-			// events: ['mousemove', 'mouseout', 'click', 'touchstart', 'touchmove'],
-			onLeave: (event, chartElement, chart) => {
-				chart.data.datasets.forEach((dataset) => {
-					dataset.borderWidth = 4;
-				});
-			},
-			onHover: (event, chartElement, chart) => {
-				// If there are elements (i.e., the line), apply custom animation or effects
-				console.log('Hovering over the line!');
 
-				chart.data.datasets.forEach((dataset, i) => {
-					if (chartElement[0].datasetIndex === i) {
-						dataset.borderWidth = 8; // Highlight the hovered dataset
-						dataset.pointRadius = 8; // Highlight the hovered dataset
-					} else {
-						dataset.borderWidth = 4; // Reset other datasets
-						dataset.pointRadius = 5; // Highlight the hovered dataset
-					}
-				});
-				chart.update({
-					duration: 150,
-					easing: 'easeOutBounce'
-				});
+			lineStyle: {
+				width: 4
 			}
 		}
+	];
+
+	let myChartDiv: HTMLDivElement;
+	let myChart: echarts.ECharts;
+
+	const myDraculaColors = ['#ff79c6', '#bd93f9', '#1ef956', '#f67516'];
+
+	let chartoption = {
+		color: myDraculaColors,
+		// dataset: PyData,
+		dataset: { source: plotData },
+		dimensions: dimensions,
+		legend: {},
+		tooltip: {
+			trigger: 'item'
+		},
+		// grid: {
+		// 	left: 30,
+		// 	right: 110,
+		// 	bottom: 30,
+		// 	containLabel: true
+		// },
+		xAxis: {
+			type: 'category',
+			splitLine: {
+				show: true
+			}
+			// axisLabel: {
+			// 	margin: 30,
+			// 	fontSize: 16
+			// },
+			// boundaryGap: false,
+			//data: myX
+		},
+		yAxis: {
+			type: 'value',
+			// axisLabel: {
+			// 	margin: 34,
+			// 	fontSize: 28,
+			// 	formatter: '#{value}'
+			// },
+			inverse: true
+			// interval: 1,
+			// min: 1,
+			// max: 200
+		},
+		series: plotSeries
 	};
 
-	// onMount(() => {
-	// 	ctx = canvas.getContext('2d');
-	// 	var chart = new Chart(ctx, options);
-	// });
-
 	onMount(() => {
-		ctx = canvas.getContext('2d');
-		var chart = new Chart(ctx, hoverlineoptions);
-		// var chart = new Chart(ctx, hoverlineoptions);
+		// Create the echarts instance
+		myChart = echarts.init(myChartDiv);
+		// Draw the chart
+		myChart.setOption(chartoption);
+		myChart.resize();
 	});
+
+	$: if (myChart) {
+		// Create the echarts instance
+		myChart.dispose();
+		myChart = echarts.init(myChartDiv);
+		// Draw the chart
+		myChart.setOption(chartoption);
+		myChart.resize();
+	}
 </script>
 
-<canvas bind:this={canvas} />
+<!-- <svelte:window innerWidth={p} innerHeight={q} /> -->
+<div class="w-full h-96" bind:this={myChartDiv} />

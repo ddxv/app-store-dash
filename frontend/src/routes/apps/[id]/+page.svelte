@@ -147,11 +147,7 @@
 				{/if}
 				{#if ranks.history.length > 0}
 					{#if appdata.historyData}
-						<div class="card variant-glass-surface p-2 md:p-4 mt-2 md:mt-4">
-							<AppPlot plotdata={ranks.history} plotType="rank" />
-						</div>
-						<div class="card variant-glass-surface p-2 md:p-4 mt-2 md:mt-4">
-							NEW:
+						<div class="card variant-glass-surface p-2 mt-2 md:mt-4">
 							<AppCharts plotData={ranks.history} />
 						</div>
 					{/if}
