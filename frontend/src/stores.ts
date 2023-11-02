@@ -2,7 +2,7 @@ import { writable } from 'svelte/store';
 import type { CategoriesInfo, Store, CategoryRanks, CollectionRanks } from './types';
 
 export const homeCollectionSelection = writable('new_monthly');
-export const homeStoreSelection = writable('Google');
+export const homeStoreSelection = writable('google');
 export const homeCategorySelection = writable('overall');
 
 export const idStoreSelection = writable(1);
