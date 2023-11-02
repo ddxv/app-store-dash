@@ -31,7 +31,7 @@ logger = get_logger(__name__)
 
 
 def get_search_results(search_term: str) -> AppGroup:
-    decoded_input = urllib.parse.unquote_plus(search_term)
+    decoded_input = urllib.parse.unquote(search_term)
     df = search_apps(search_input=decoded_input, limit=20)
     logger.info(f"{decoded_input=} returned rows: {df.shape[0]}")
     apps_dict = df.to_dict(orient="records")
