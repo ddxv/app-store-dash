@@ -96,17 +96,22 @@
 				<TabAnchor
 					class="p-0 px-0"
 					href="/"
-					selected={$page.url.pathname.startsWith('/collections')}>HOME</TabAnchor
+					selected={$page.url.pathname.startsWith('/collections')}
 				>
+					<h2 class="h2 md:p-2">HOME</h2>
+				</TabAnchor>
 				<TabAnchor
 					href="/rankings/store/1/collection/1/category/1"
 					selected={$page.url.pathname.startsWith('/rankings')}
-					>RANKS
+				>
+					<h2 class="h2 md:p-2">RANKS</h2>
 				</TabAnchor>
 				<!-- <TabAnchor href="/categories" selected={$page.url.pathname === '/categories'}
 					>CATEGORIES
 				</TabAnchor> -->
-				<TabAnchor href="/about" selected={$page.url.pathname === '/about'}>ABOUT</TabAnchor>
+				<TabAnchor href="/about" selected={$page.url.pathname === '/about'}
+					><h2 class="h2 md:p-2">ABOUT</h2></TabAnchor
+				>
 			</TabGroup>
 
 			<svelte:fragment slot="trail">
