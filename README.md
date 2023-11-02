@@ -1,17 +1,19 @@
-# Mobile App Store Dash
-
 # API & Dashboard for App Store Dash
+
+You can visit the site at [appgoblin.info](https://appgoblin.info)
 
 [<img src="/frontend/static/appgoblin_screenshot.png" width="500"/>](/frontend/static/appgoblin_screenshot.png)
 
+This is the code I used to create AppGoblin. The goal was simply to have a good source of data for Apps on the Google Play and iOS stores. The code is provided here incase it helps anyone. As this is a project for general fun and learning, please don't hesitate to reach out if you have any questions or suggestions.
+
 This repo has two parts:
 
-1. Python Litestar API found in `backend/`
-3. Javascript SvelteKit+Tailwind UI found in `frontend/`
+   1. Python Litestar backend API found in `backend/`
+   2. Javascript SvelteKit+Tailwind UI found in `frontend/`
 
-## Database
+## Data & Database
 
-The database referred to in this repository is created by [adscrawler](https://github.com/ddxv/adscrawler)
+The database referred to in this repository is created by [adscrawler](https://github.com/ddxv/adscrawler), a crawler for scraping the Google & Apple play stores and storing that to a PostgreSQL database.
 
 ## API Service
 
@@ -22,68 +24,13 @@ Once run api documentation can be found at `api/docs`
 - Current setup is based on Python3.12
 - pip install dependencies, found in pyproject.toml: `pip install`
 
-## Running Locally
+## Running
 
 - To run locally for testing use
-  - Backend: in `backend/` run `gunicorn -k uvicorn.workers.UvicornWorker app:app`
+  - Backend: in `backend/` run `gunicorn -k uvicorn.workers.UvicornWorker app:app` or `litestar run dev`
   - Frontend: in `frontend` run `npm run dev`
-
-## Running in production
-
-myscript TODO: bash script should do:
- - system link
- - stop service python
- - stop service js
- - system link
- - start service python
- - wait(2)
- - start service js
-
-### Socket Unit File
-
-system link to location: `/etc/systemd/system/app-store-api.socket`
-
-```ini
-[Unit]
-Description=Gunicorn socket
-
-[Socket]
-ListenStream=/run/app-store-api.sock
-User=www-data
-
-[Install]
-WantedBy=sockets.target
-```
-
-### Service Unit file
-
-location: `/etc/systemd/system/app-store-api.service`
-
-```ini
-[Unit]
-Description=Gunicorn instance to serve App Store API
-After=network.target
-
-[Service]
-Type=Notify
-User=ubuntu
-Group=ubuntu
-RuntimeDirectory=gunicorn
-WorkingDirectory=/home/ubuntu/app-store-dash/backend
-Environment=/home/ubuntu/venvs/app-store-dash-env/bin
-ExecStart=/home/ubuntu/venv/app-store-dash-env/bin/gunicorn -k uvicorn.workers.UvicornWorker --workers 1 --bind unix:app-store-api.sock -m 007 app:app
-ExecReload=/bin/kill -s HUP $MAINPID
-Restart=on-failure
-KillMode=mixed
-PrivateTmp=true
-
-[Install]
-WantedBy=multi-user.target
-```
-
-### Nginx config file
-
-This is wherever you have your nginx configuration set, possibly sites-available `/etc/nginx/sites-available/app-store-api` or `/etc/nginx/conf.d/app-store-api.conf`
+- This repo includes the scripts used to run in production as well. These are located in the steps in `.github/actions` as well as `scripts` for systemd services for frontend and backend.
+- Additionally, you will need a proxy. I used Nginx. This is wherever you have your nginx configuration set, possibly sites-available `/etc/nginx/sites-available/app-store-api` or `/etc/nginx/conf.d/app-store-api.conf`
 
 
 ```Nginx
@@ -110,24 +57,3 @@ sudo ln -s /etc/nginx/sites-available/app-store-api /etc/nginx/sites-enabled/app
 sudo systemctl restart nginx.service 
 ```
 
-## Start the service and socket
-
-NOTE: If you have a socket and a service, you do not need to start the service, the socket will start the related service
-- `systemctl enable app-store-api.socket` to automatically start socket on server reboot
-- `sudo systemctl start app-store-api.socket` start
-- `sudo systemctl status app-store-api` to check status
-
-## Check your API endpoints
-
-try visiting example.com/api/docs/
-
-## Troubleshooting
-
-Checking your local API docs:
-
-`http://127.0.0.1:8000/api/docs`
-
-Restarting Unit service manually, ensure you do not start the service, let the socket start the related service.
-- `sudo systemctl stop app-store-api.socket`
-- `sudo systemctl stop app-store-api.service`
-- `sudo systemctl start app-store-api.socket`
