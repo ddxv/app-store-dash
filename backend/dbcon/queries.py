@@ -572,8 +572,7 @@ def search_apps(search_input: str, limit: int = 100):
     logger.info(f"App search: {search_input=}")
     sel_query = """
                 SELECT
-                    sa.*,
-                    d.name as developer_name
+                    sa.*
                 FROM
                     store_apps sa
                 WHERE to_tsvector('simple', name) @@ to_tsquery('simple', %s)

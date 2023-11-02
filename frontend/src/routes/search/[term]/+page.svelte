@@ -9,7 +9,12 @@
 {#await data.results.streamed}
 	Loading ...
 {:then results}
-	<AppGroupCard apps={results} />
-{:catch}
-	Loading ...
+	{#if typeof results != 'string'}
+		<AppGroupCard apps={results} />
+	{:else}
+		<p>Search failed please try again ... {results}</p>
+	{/if}
+{:catch error}
+	<!-- NOTE: This is currently not displaying -->
+	<p>Search failed please try again ... {error.message}</p>
 {/await}
