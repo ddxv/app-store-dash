@@ -2,10 +2,12 @@
 
 # API & Dashboard for App Store Dash
 
+[<img src="/frontend/static/appgoblin_screenshot.png" width="500"/>](/frontend/static/appgoblin_screenshot.png)
+
 This repo has two parts:
 
 1. Python Litestar API found in `backend/`
-3. Javascript SvelteKit UI found in `frontend`
+3. Javascript SvelteKit+Tailwind UI found in `frontend/`
 
 ## Database
 
