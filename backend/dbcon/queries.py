@@ -576,7 +576,7 @@ def search_apps(search_input: str, limit: int = 100):
                     d.name as developer_name
                 FROM
                     store_apps sa
-                WHERE to_tsvector('simple', name) @@ to_tsquery('simple', %s);
+                WHERE to_tsvector('simple', name) @@ to_tsquery('simple', %s)
                 ORDER BY installs DESC NULLS LAST, rating_count DESC NULLS LAST
                 LIMIT %s;
                 """
