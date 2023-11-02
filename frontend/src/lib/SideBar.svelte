@@ -89,7 +89,7 @@
 				<ListBoxItem
 					bind:group={localHomeStoreSelect}
 					name="medium"
-					value="google"
+					value="Google"
 					padding="p-2 md:p-2"
 					active={buttonSelectedColor}>Google</ListBoxItem
 				>

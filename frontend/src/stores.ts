@@ -2,7 +2,7 @@ import { writable } from 'svelte/store';
 import type { CategoriesInfo, Store, CategoryRanks, CollectionRanks } from './types';
 
 export const homeCollectionSelection = writable('new_monthly');
-export const homeStoreSelection = writable('google');
+export const homeStoreSelection = writable('Google');
 export const homeCategorySelection = writable('overall');
 
 export const idStoreSelection = writable(1);
@@ -15,7 +15,7 @@ const myStoreRankingsMap = {
 	stores_rankings: [
 		{
 			store_id: 1,
-			store_name: 'google',
+			store_name: 'Google',
 			collections: [
 				{
 					collection_id: 1,
@@ -199,7 +199,7 @@ const myStoreRankingsMap = {
 		},
 		{
 			store_id: 2,
-			store_name: 'itunes',
+			store_name: 'Apple',
 			collections: [
 				{
 					collection_id: 4,

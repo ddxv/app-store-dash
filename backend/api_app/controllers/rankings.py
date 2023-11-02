@@ -53,21 +53,6 @@ def ranking_map() -> RankingOverview:
     return overview
 
 
-# def ranking_map() -> RankingOverview:
-#     df = get_store_collection_category_map()
-#     my_dict: RankingOverview = {}
-#     groups = df.groupby("store_id")
-#     for store, group in groups:
-#         my_dict[store] = {}
-#         cgroups = group.groupby("collection_id")
-#         for col_id, cgroup in cgroups:
-#             my_dict[store][col_id] = {}
-#             my_dict[store][col_id]["categories"] = cgroup[
-#                 ["category_id", "category_name"]
-#             ].to_dict(orient="records")
-#     return my_dict
-
-
 class RankingsController(Controller):
     path = "/api/rankings/"
 
@@ -132,9 +117,7 @@ class RankingsController(Controller):
         # NOTE: don't include 'rank' in group by as table is already unique by that
         # Need to get each apps location on that time
         df = (
-            df.groupby(
-                [pd.Grouper(key="crawled_date", freq="1W")] + ["name"], dropna=False
-            )
+            df.groupby([pd.Grouper(key="crawled_date", freq="1W")] + ["name"])
             .last()
             .reset_index()
         )

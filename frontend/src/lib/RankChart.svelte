@@ -72,7 +72,7 @@
 	// 	}
 	// ];
 
-	const plotSeries = plotData.map(() => {
+	const plotSeries = Object.entries(plotData[plotData.length - 1]).map(([key, value]) => {
 		return {
 			type: 'line',
 			symbolSize: 20,
