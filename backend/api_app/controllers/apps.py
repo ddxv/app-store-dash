@@ -189,6 +189,7 @@ class AppController(Controller):
         ].to_dict(orient="records")
         df["crawled_date"] = pd.to_datetime(df["crawled_date"]).dt.strftime("%Y-%m-%d")
         pdf = df[["crawled_date", "rank", "rank_group"]].sort_values("crawled_date")
+        # This format is for echarts, expects data series as columns
         hist_dict = (
             pdf.pivot(columns=["rank_group"], index=["crawled_date"], values="rank")
             .reset_index()

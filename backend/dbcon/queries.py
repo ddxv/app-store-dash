@@ -570,26 +570,20 @@ def query_single_developer(developer_id: str):
 
 def search_apps(search_input: str, limit: int = 100):
     logger.info(f"App search: {search_input=}")
-    search_pattern = f"%{search_input}%"
     sel_query = """
                 SELECT
                     sa.*,
                     d.name as developer_name
                 FROM
                     store_apps sa
-                LEFT JOIN developers d ON
-                    d.id = sa.developer
-                WHERE
-                    sa.name ILIKE %s
-                    OR sa.store_id ILIKE %s
-                    OR d.name ILIKE %s
+                WHERE to_tsvector('simple', name) @@ to_tsquery('simple', %s);
                 ORDER BY installs DESC NULLS LAST, rating_count DESC NULLS LAST
                 LIMIT %s;
                 """
     df = pd.read_sql(
         sel_query,
         DBCON.engine,
-        params=(search_pattern, search_pattern, search_pattern, limit),
+        params=(search_input, limit),
     )
     if not df.empty:
         df = clean_app_df(df)
