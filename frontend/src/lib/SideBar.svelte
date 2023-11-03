@@ -25,6 +25,13 @@
 	import type { CategoriesInfo } from '../types';
 	export let data: CategoriesInfo;
 
+	const scrollTop = () => {
+		const elemPage = document.querySelector('#page');
+		if (elemPage !== null) {
+			elemPage.scrollTop = 0;
+		}
+	};
+
 	// import { getDrawerStore } from '@skeletonlabs/skeleton';
 
 	// const drawerStore = getDrawerStore();
@@ -91,11 +98,13 @@
 					name="medium"
 					value="google"
 					padding="p-2 md:p-2"
+					on:click={scrollTop}
 					active={buttonSelectedColor}>Google</ListBoxItem
 				>
 				<ListBoxItem
 					bind:group={localHomeStoreSelect}
 					name="medium"
+					on:click={scrollTop}
 					value="ios"
 					padding="p-2 md:p-2"
 					active={buttonSelectedColor}>Apple</ListBoxItem
@@ -115,6 +124,7 @@
 								name="medium"
 								value={values.id}
 								active={buttonSelectedColor}
+								on:click={scrollTop}
 								padding="p-2 md:p-2"
 								><div class="flex w-full justify-between">
 									<div class="flex-grow">

@@ -27,8 +27,8 @@
 			</div>
 		{/if}
 	</div>
-	<div class="mt-auto ml-auto">
-		<div class="anchor inline-flex items-baseline">
+	<div class="flex">
+		<div class="items-center justify-center">
 			{#if app.store_link.includes('google.com')}
 				<IconGoogle />
 			{/if}

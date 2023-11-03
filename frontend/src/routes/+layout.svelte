@@ -3,8 +3,6 @@
 	import {
 		AppShell,
 		AppBar,
-		TabGroup,
-		TabAnchor,
 		initializeStores,
 		Drawer,
 		getDrawerStore,
@@ -12,6 +10,8 @@
 	} from '@skeletonlabs/skeleton';
 	import { page } from '$app/stores';
 	import IconSearch from '$lib/svg/IconSearch.svelte';
+	import type { AfterNavigate } from '@sveltejs/kit';
+	import { afterNavigate } from '$app/navigation';
 
 	let searchTerm: string;
 
@@ -50,6 +50,15 @@
 	const drawerOpen = () => {
 		drawerStore.open(drawerSettings);
 	};
+
+	// Scroll to top after navigation
+	afterNavigate((params: AfterNavigate) => {
+		const isNewPage: boolean = params.from?.route.id !== params.to?.route.id;
+		const elemPage = document.querySelector('#page');
+		if (isNewPage && elemPage !== null) {
+			elemPage.scrollTop = 0;
+		}
+	});
 </script>
 
 <Drawer>
