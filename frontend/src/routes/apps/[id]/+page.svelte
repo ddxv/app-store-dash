@@ -13,8 +13,20 @@
 	{#await data.myapp.streamed}
 		<title>App Stats & Info</title>
 	{:then appdata}
+		<meta
+			name="keywords"
+			content=" {appdata.name}, app analytics, app market data, mobile app rankings, app reviews, download statistics, Google Play data, iTunes app data, app comparison, mobile app insights"
+		/>
 		<title>{appdata.name} App Stats & Info</title>
 	{/await}
+	<meta
+		name="description"
+		content="Explore comprehensive app analytics and market trends across Google Play and iTunes with AppGoblin. Dive into detailed app rankings and download statistics to inform your app strategy and discover top-performing apps."
+	/>
+	<meta
+		name="keywords"
+		content="app analytics, app market data, mobile app rankings, app reviews, download statistics, Google Play data, iTunes app data, app comparison, mobile app insights"
+	/>
 </svelte:head>
 
 {#await data.myapp.streamed}

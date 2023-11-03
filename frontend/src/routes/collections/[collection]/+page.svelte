@@ -13,6 +13,14 @@
 <svelte:head>
 	{#if data.myapps}
 		<title>{data.myapps.title} App Stats & Info</title>
+		<meta
+			name="description"
+			content="Explore comprehensive app analytics and market trends across Google Play and iTunes with AppGoblin. Dive into detailed app rankings and download statistics to inform your app strategy and discover top-performing apps."
+		/>
+		<meta
+			name="keywords"
+			content="app analytics, app market data, mobile app rankings, app reviews, download statistics, Google Play data, iTunes app data, app comparison, mobile app insights"
+		/>
 	{/if}
 </svelte:head>
 

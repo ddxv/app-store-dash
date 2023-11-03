@@ -22,6 +22,10 @@
 		App Ranks {storeIDLookup[store].store_name}, Collection: {collectionIDLookup[store][collection]
 			.collection_name}, Category: {categoryIDLookup[collection][category].category_name}
 	</title>
+	<meta
+		name="description"
+		content="Explore comprehensive app rankings across Google Play and iTunes with AppGoblin. Dive into detailed app rankings and download statistics to inform your app strategy and discover top-performing apps."
+	/>
 </svelte:head>
 
 <h2 class="h2 p-4">
