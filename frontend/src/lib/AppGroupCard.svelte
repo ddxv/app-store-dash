@@ -33,7 +33,7 @@
 										referrerpolicy="no-referrer"
 									/>
 								</div>
-								<div class="inline-flex text-left">
+								<div class="flex text-left">
 									<img
 										class="h-24 w-24 p-3 rounded-lg"
 										src={app.icon_url_512}

@@ -7,8 +7,8 @@
 	export let app: AppFullDetail; // Accept the app object as a prop
 </script>
 
-<div class="flex">
-	<div class="inline-block">
+<div class="flex flex-1">
+	<div>
 		<h5 class="h5 p-2">{app.name}</h5>
 		<!-- Ratings: STARS (123) -->
 		{#if app.rating_count != '0' && app.rating_count != 'N/A'}
@@ -27,14 +27,12 @@
 			</div>
 		{/if}
 	</div>
-	<div class="flex">
-		<div class="items-center justify-center">
-			{#if app.store_link.includes('google.com')}
-				<IconGoogle />
-			{/if}
-			{#if app.store_link.includes('apple.com')}
-				<IconiOs />
-			{/if}
-		</div>
+	<div class="flex flex-1 items-center justify-center">
+		{#if app.store_link.includes('google.com')}
+			<IconGoogle size="40" />
+		{/if}
+		{#if app.store_link.includes('apple.com')}
+			<IconiOs size="40" />
+		{/if}
 	</div>
 </div>
