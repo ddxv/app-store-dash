@@ -3,8 +3,11 @@ export const csr: boolean = true;
 
 import type { PageServerLoad } from './$types.js';
 
-export const load: PageServerLoad = async ({ params, url }) => {
+export const load: PageServerLoad = async ({ params, setHeaders, url }) => {
 	const emptyResponse = { streamed: {} };
+	setHeaders({
+		'cache-control': 'max-age=3600'
+	});
 	try {
 		const storeVal = params.store;
 		const collectionValue = params.collection;

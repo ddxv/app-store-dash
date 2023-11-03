@@ -3,10 +3,14 @@ export const csr = true;
 
 import type { PageServerLoad } from './$types.js';
 
-export const load: PageServerLoad = async ({ params, locals }) => {
+export const load: PageServerLoad = async ({ params, setHeaders, locals }) => {
 	const emptyResponse = { streamed: {} };
 	try {
 		const id = params.id;
+
+		setHeaders({
+			'cache-control': 'max-age=40000'
+		});
 
 		const res = fetch(`http://localhost:8000/api/apps/${id}`);
 

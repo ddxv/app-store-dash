@@ -5,11 +5,10 @@ import type { PageServerLoad } from './$types.js';
 
 import type { Collection, Collections } from '../../../types.js';
 
-console.log('Script executed');
-
-export const load: PageServerLoad = async ({ params, locals }) => {
+export const load: PageServerLoad = async ({ params, setHeaders, locals }) => {
 	const collectionValue = params.collection;
 	console.log(`load started collection=${collectionValue}`);
+	setHeaders({ 'cache-control': 'max-age=40000' });
 	const res = fetch(`http://localhost:8000/api/apps/collections/${collectionValue}`);
 	return {
 		AppCollections: {
