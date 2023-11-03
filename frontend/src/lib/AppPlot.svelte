@@ -12,8 +12,8 @@
 	export let plotdata: ChartTabularData;
 	export let plotType: string;
 
-	export let lineOptions: ComboChartOptions = {
-		title: 'Recent Ratings, Installs and Review Counts',
+	export let changeOptions: ComboChartOptions = {
+		toolbar: { enabled: false },
 		axes: {
 			bottom: {
 				title: 'Date',
@@ -21,33 +21,66 @@
 				scaleType: ScaleTypes.TIME
 			},
 			left: {
-				mapsTo: 'installs_avg_per_day',
-				title: 'Avg Installs per Day',
+				title: 'Rate of Change from Previous Week',
+				mapsTo: 'value',
+				// percentage: true,
+				ticks: {
+					formatter: (x) => `${x}%`
+				},
 				scaleType: ScaleTypes.LINEAR,
-				correspondingDatasets: ['installs_avg_per_day']
-			},
-			right: {
-				mapsTo: 'rating_count_avg_per_day',
-				title: 'Rating Avg',
-				scaleType: ScaleTypes.LINEAR,
-				correspondingDatasets: ['rating_count_avg_per_day']
+				correspondingDatasets: ['Rating Rate of Change']
 			}
 		},
 		// curve: 'curveMonotoneX',
 		height: '400px',
 		comboChartTypes: [
 			{
-				type: 'simple-bar',
-				correspondingDatasets: ['installs_avg_per_day']
+				type: 'grouped-bar',
+				correspondingDatasets: [
+					'Rating Rate of Change',
+					'Installs Rate of Change',
+					'Rating Count Rate of Change',
+					'Review Count Rate of Change'
+				]
+				// 	options: {
+				// 		points: {
+				// 			radius: 5
+				// 		}
+				// 	}
+			}
+		]
+	};
+
+	export let numberOptions: ComboChartOptions = {
+		toolbar: { enabled: false },
+		axes: {
+			bottom: {
+				title: 'Date',
+				mapsTo: 'crawled_date',
+				scaleType: ScaleTypes.TIME
 			},
+			left: {
+				mapsTo: 'value',
+				title: 'Number',
+				scaleType: ScaleTypes.LINEAR,
+				correspondingDatasets: ['Installs Daily Average', 'Rating Count Daily Average']
+			}
+		},
+		// curve: 'curveMonotoneX',
+		height: '400px',
+		comboChartTypes: [
 			{
-				type: 'line',
+				type: 'grouped-bar',
+				correspondingDatasets: [
+					'Installs Daily Average',
+					'Rating Count Daily Average',
+					'Review Count Daily Average'
+				],
 				options: {
 					points: {
 						radius: 5
 					}
-				},
-				correspondingDatasets: ['rating_count_avg_per_day']
+				}
 			}
 		]
 	};
@@ -73,6 +106,8 @@
 
 {#if plotType == 'rank'}
 	<LineChart data={plotdata} options={appRankOptions} />
-{:else}
-	<ComboChart data={plotdata} options={lineOptions} />
+{:else if plotType == 'change'}
+	<ComboChart data={plotdata} options={changeOptions} />
+{:else if plotType == 'number'}
+	<ComboChart data={plotdata} options={numberOptions} />
 {/if}

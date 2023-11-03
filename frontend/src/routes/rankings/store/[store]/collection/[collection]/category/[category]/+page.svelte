@@ -28,10 +28,10 @@
 	/>
 </svelte:head>
 
-<h2 class="h2 p-4">
+<h3 class="h4 md:h3 p-4">
 	Store: {storeIDLookup[store].store_name}, Collection: {collectionIDLookup[store][collection]
 		.collection_name}, Category: {categoryIDLookup[collection][category].category_name}
-</h2>
+</h3>
 
 {#await data.ranks.streamed}
 	Loading App Ranks...
@@ -60,16 +60,21 @@
 							<td
 								><div class="inline-flex">
 									#
-									<h2 class="h2">
+									<h3 class="h4 md:h3">
 										{values.rank}
-									</h2>
+									</h3>
 								</div>
 							</td>
 							<td>
 								<a href="/apps/{values.store_id}">
 									<div class="inline-flex">
-										<img src={values.icon_url_512} alt={values.name} width="50" class="p-2" />
-										<h3 class="h3 p-2">{values.name}</h3>
+										<img
+											src={values.icon_url_512}
+											alt={values.name}
+											width="100 md:200"
+											class="p-2"
+										/>
+										<h3 class="h4 md:h3 p-2">{values.name}</h3>
 									</div>
 								</a>
 							</td>

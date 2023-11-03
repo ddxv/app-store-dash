@@ -136,7 +136,7 @@ export interface AppFullDetail {
 	tablet_image_url_1?: string;
 	tablet_image_url_2?: string;
 	tablet_image_url_3?: string;
-	historyData?: ChartTabularData;
+	historyData?: { numbers: ChartTabularData; changes: ChartTabularData };
 }
 
 export type CategoryRanks = {

@@ -122,8 +122,8 @@
 				</div>
 			</div>
 
-			<h4 class="h4 p-2">Additional Information</h4>
-			<div>
+			<h4 class="h4 md:h3 p-2">Additional Information</h4>
+			<div class="px-4 md:px-8">
 				<p>Free: {appdata.free}</p>
 				<p>Price: {appdata.price}</p>
 				<p>Size: {appdata.size || 'N/A'}</p>
@@ -143,13 +143,13 @@
 				<h4 class="h4 p-2">Historical Information</h4>
 				{@html appdata.history_table}
 			</div> -->
-			<h4 class="h4 p-2 mt-2">Lastest Store Ranks</h4>
+			<h4 class="h4 md:h3 p-2 mt-2">Lastest Store Ranks</h4>
 			{#await data.myranks.streamed}
 				Loading ...
 			{:then ranks}
 				{#if ranks.latest && ranks.latest.length > 0}
 					{#each ranks.latest as myrow}
-						<h6 class="h6">
+						<h6 class="h6 px-4">
 							#{myrow.rank}
 							in: {myrow.collection}
 							{myrow.category}
@@ -159,13 +159,23 @@
 				{/if}
 				{#if ranks.history && ranks.history.length > 0}
 					{#if appdata.historyData}
-						<h4 class="h4 p-2 mt-2">Store Ranks Historical</h4>
 						<div class="card variant-glass-surface mt-2 md:mt-4">
+							<h4 class="h4 md:h3 p-2 mt-2">Store Ranks Historical</h4>
 							<RankChart plotData={ranks.history} />
 						</div>
 					{/if}
 				{:else}
 					<p>No ranking data available for this app.</p>
+				{/if}
+				{#if appdata.historyData && appdata.historyData.numbers.length > 1}
+					<div class="card variant-glass-surface p-2 md:p-8 mt-2 md:mt-4">
+						<h3 class="h4 md:h3 p-2">Avg Daily Counts</h3>
+						<AppPlot plotdata={appdata.historyData.numbers} plotType="number" />
+					</div>
+					<div class="card variant-glass-surface p-2 md:p-8 mt-2 md:mt-4">
+						<h3 class="h4 md:h3 p-2">Rate of Change Week on Week</h3>
+						<AppPlot plotdata={appdata.historyData.changes} plotType="change" />
+					</div>
 				{/if}
 			{:catch}
 				<p>No ranks available for this app.</p>
@@ -192,13 +202,6 @@
 				{/each}
 			</section>
 		</div>
-	</section>
-	<section>
-		{#if appdata.historyData}
-			<div class="card variant-glass-surface p-2 md:p-4 mt-2 md:mt-4">
-				<AppPlot plotdata={appdata.historyData} plotType="combo" />
-			</div>
-		{/if}
 	</section>
 {/await}
 <a href="/"><p>Back to Home</p></a>

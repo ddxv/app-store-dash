@@ -39,9 +39,10 @@ def get_search_results(search_term: str) -> AppGroup:
     return app_group
 
 
-def get_app_history(app_dict: dict) -> pd.DataFrame:
+def get_app_history(app_dict: dict) -> dict:
     store_app = app_dict["id"]
     app_name = app_dict["name"]
+
     app_hist = query_app_history(store_app)
     app_dict["histogram"] = app_hist.sort_values(["id"]).tail(1)["histogram"].values[0]
     app_dict["history_table"] = (
@@ -64,22 +65,53 @@ def get_app_history(app_dict: dict) -> pd.DataFrame:
     change_metrics = []
     for metric in metrics:
         app_hist[f"{metric}_change"] = app_hist[metric] - app_hist.shift(1)[metric]
+        # Rate of Change
+        app_hist[f"{metric}_rate_of_change"] = (
+            app_hist[metric] - app_hist.shift(1)[metric]
+        ) / app_hist.shift(1)[metric]
+        # Treated as whole percentage by frontend
+        app_hist[f"{metric}_rate_of_change"] = (
+            app_hist[f"{metric}_rate_of_change"] * 100
+        )
+        # Avg Per Day
         app_hist[f"{metric}_avg_per_day"] = (
             app_hist[f"{metric}_change"] / app_hist["days_changed"]
         )
+        change_metrics.append(metric + "_rate_of_change")
         change_metrics.append(metric + "_avg_per_day")
-    app_hist = app_hist[[group_col, xaxis_col] + change_metrics].drop(app_hist.index[0])
+
+    app_hist = (
+        app_hist[[group_col, xaxis_col] + change_metrics]
+        .drop(app_hist.index[0])
+        .rename(
+            columns={
+                "installs_avg_per_day": "Installs Daily Average",
+                "rating_count_avg_per_day": "Rating Count Daily Average",
+                "review_count_avg_per_day": "Review Count Daily Average",
+                "rating_rate_of_change": "Rating Rate of Change",
+                "installs_rate_of_change": "Installs Rate of Change",
+                "rating_count_rate_of_change": "Rating Count Rate of Change",
+                "review_count_rate_of_change": "Review Count Rate of Change",
+            }
+        )
+    )
+    # Not useful columns
+    app_hist = app_hist.drop(["rating_avg_per_day"], axis=1)
     # This is an odd step as it makes each group a metric
     # not for when more than 1 dimension
     mymelt = app_hist.melt(id_vars=xaxis_col).rename(columns={"variable": "group"})
-    my_dicts = []
-    for metric in change_metrics:
-        melteddicts = (
-            mymelt.loc[mymelt.group == metric]
-            .rename(columns={"value": metric})
-            .to_dict(orient="records")
-        )
-        my_dicts += melteddicts
+    final_metrics = [x for x in app_hist.columns if x not in ["group", "crawled_date"]]
+    number_dicts = []
+    change_dicts = []
+    for metric in final_metrics:
+        meltdf = mymelt.loc[mymelt.group == metric]
+        # meltdf = meltdf.rename(columns={"value": "percentage_value"})
+        melteddicts = meltdf.to_dict(orient="records")
+        if "Rate of Change" in metric:
+            change_dicts += melteddicts
+        else:
+            number_dicts += melteddicts
+    my_dicts = {"numbers": number_dicts, "changes": change_dicts}
     return my_dicts
 
 
@@ -144,8 +176,7 @@ class AppController(Controller):
         """
         Handles a GET request for a specific app.
 
-        Args:
-            store_id (str): The id of the app to retrieve.
+         store_id (str): The id of the app to retrieve.
 
         Returns:
             json
@@ -159,11 +190,6 @@ class AppController(Controller):
         app_dict = app_df.to_dict(orient="records")[0]
         app_hist_dict = get_app_history(app_dict)
         app_dict["historyData"] = app_hist_dict
-        # TODO: I think this actually isn't used
-        # drop_from_chart_groups = ["group"]
-        # group_list = app_hist.group.unique().tolist()
-        # group_list = [x for x in group_list if x not in drop_from_chart_groups]
-        # app_dict["historyGroups"] = group_list
         return app_dict
 
     @get(path="/{store_id:str}/ranks", cache=3600)

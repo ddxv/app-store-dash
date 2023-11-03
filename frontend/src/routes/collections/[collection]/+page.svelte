@@ -8,7 +8,7 @@
 	import { homeCategorySelection } from '../../../stores';
 </script>
 
-<h1 class="h1 p-4">Welcome!</h1>
+<h3 class="h3 md:h2 p-4">Welcome!</h3>
 
 <svelte:head>
 	{#await data.AppCollections.streamed}
@@ -36,7 +36,7 @@
 	</div>
 {:then myapps}
 	{#if typeof myapps != 'string'}
-		<h1 class="h1 p-2">Apps: {myapps.title}</h1>
+		<h2 class="h3 md:h2 p-2">Apps: {myapps.title}</h2>
 		{#each Object.entries(myapps.categories) as [_key, cat]}
 			{#if cat.key == $homeCategorySelection}
 				<AppsCard apps={cat[$homeStoreSelection]} />

@@ -12,18 +12,18 @@
 	class="w-full p-0"
 >
 	<TabAnchor class="p-0 px-0" href="/" selected={$page.url.pathname.startsWith('/collections')}>
-		<h2 class="h5 md:h2 md:p-2">HOME</h2>
+		<h3 class="h4 md:h3 md:p-2">HOME</h3>
 	</TabAnchor>
 	<TabAnchor
 		href="/rankings/store/1/collection/1/category/1"
 		selected={$page.url.pathname.startsWith('/rankings')}
 	>
-		<h2 class="h5 md:h2 md:p-2">RANKS</h2>
+		<h3 class="h4 md:h3 md:p-2">RANKS</h3>
 	</TabAnchor>
 	<!-- <TabAnchor href="/categories" selected={$page.url.pathname === '/categories'}
 					>CATEGORIES
 				</TabAnchor> -->
 	<TabAnchor href="/about" selected={$page.url.pathname === '/about'}
-		><h2 class="h5 md:h2 md:p-2">ABOUT</h2></TabAnchor
+		><h3 class="h4 md:h3 md:p-2">ABOUT</h3></TabAnchor
 	>
 </TabGroup>

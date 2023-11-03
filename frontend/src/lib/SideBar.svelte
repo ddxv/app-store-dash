@@ -63,7 +63,7 @@
 {#if $page.url.pathname == '/' || $page.url.pathname.startsWith('/collections')}
 	<div class="p-1 md:p-2">
 		<div class="card variant-glass-surface p-4">
-			<h4 class="h4">Collections</h4>
+			<h3 class="h3">Collections</h3>
 			<nav class="list-nav">
 				<ul>
 					<li>
@@ -91,7 +91,7 @@
 
 		<br />
 		<div class=" card variant-glass-surface p-2 md:p-4 text-token">
-			<h4 class="h4">Stores</h4>
+			<h3 class="h4 md:h3">Stores</h3>
 			<ListBox>
 				<ListBoxItem
 					bind:group={localHomeStoreSelect}
@@ -114,7 +114,7 @@
 		<br />
 
 		<div class="card variant-glass-surface p-2 md:p-4 text-token">
-			<h4 class="h4">Categories</h4>
+			<h3 class="h4 md:h3">Categories</h3>
 			<ListBox>
 				{#if data}
 					{#each Object.entries(data.mycats.categories) as [_prop, values]}
@@ -161,7 +161,7 @@
 
 {#if $page.url.pathname == '/rankings' || $page.url.pathname.startsWith('/rankings')}
 	<div class="card variant-glass-surface p-4">
-		<h4 class="h4">Stores</h4>
+		<h4 class="h4 md:h3">Stores</h4>
 		<nav class="list-nav">
 			<ul>
 				{#each Object.entries(storeIDLookup) as [_prop, values]}
@@ -184,7 +184,7 @@
 		</nav>
 	</div>
 	<div class="card variant-glass-surface p-4">
-		<h4 class="h4">Collections</h4>
+		<h4 class="md:h3 h4">Collections</h4>
 		<nav class="list-nav">
 			<ul>
 				{#each Object.entries(collectionIDLookup[store]) as [id, values]}
@@ -200,7 +200,7 @@
 		</nav>
 	</div>
 	<div class="card variant-glass-surface p-4">
-		<h4 class="h4">Categories</h4>
+		<h4 class="h4 md:h3">Categories</h4>
 		<nav class="list-nav">
 			<ul>
 				{#each Object.entries(categoryIDLookup[collection]) as [id, values]}
