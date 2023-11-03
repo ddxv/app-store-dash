@@ -72,19 +72,28 @@
 	// 	}
 	// ];
 
-	const plotSeries = Object.entries(plotData[plotData.length - 1]).map(([key, value]) => {
-		return {
-			type: 'line',
-			symbolSize: 20,
-			smooth: true,
-			emphasis: {
-				focus: 'series'
-			},
-			lineStyle: {
-				width: 4
-			}
-		};
-	});
+	const defaultSeries = {
+		type: 'line',
+		symbolSize: 20,
+		smooth: true,
+		emphasis: {
+			focus: 'series'
+		},
+		lineStyle: {
+			width: 4
+		}
+	};
+
+	function makeSeries(plotData: Object[]) {
+		const numberOfSeries = Object.keys(plotData[plotData.length - 1]).length - 1;
+		const myArray = [];
+		for (let i = 0; i < numberOfSeries; i++) {
+			myArray.push(defaultSeries);
+		}
+		return myArray;
+	}
+
+	const plotSeries = makeSeries(plotData);
 
 	let myChartDiv: HTMLDivElement;
 	let myChart: echarts.ECharts;
