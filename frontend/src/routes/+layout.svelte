@@ -31,6 +31,7 @@
 	homeCategoryMap.set(data);
 
 	import SideBar from '$lib/SideBar.svelte';
+	import NavTabs from '$lib/NavTabs.svelte';
 	initializeStores();
 	const drawerStore = getDrawerStore();
 
@@ -58,8 +59,8 @@
 <!-- App Shell -->
 <AppShell
 	regionPage="p-2 md:p-8"
-	slotSidebarLeft="w-0 md:w-auto"
-	slotPageHeader="hidden md:inline-flex"
+	slotSidebarLeft="w-0 lg:w-auto"
+	slotPageHeader="hidden lg:inline-flex"
 >
 	<svelte:fragment slot="header">
 		<!-- App Bar -->
@@ -85,34 +86,9 @@
 				</div>
 			</svelte:fragment>
 
-			<TabGroup
-				active="variant-filled-primary"
-				hover="hover:variant-soft-primary"
-				flex="flex-1"
-				rounded=""
-				border=""
-				class=" w-full p-0 hidden md:inline-flex"
-			>
-				<TabAnchor
-					class="p-0 px-0"
-					href="/"
-					selected={$page.url.pathname.startsWith('/collections')}
-				>
-					<h2 class="h2 md:p-2">HOME</h2>
-				</TabAnchor>
-				<TabAnchor
-					href="/rankings/store/1/collection/1/category/1"
-					selected={$page.url.pathname.startsWith('/rankings')}
-				>
-					<h2 class="h2 md:p-2">RANKS</h2>
-				</TabAnchor>
-				<!-- <TabAnchor href="/categories" selected={$page.url.pathname === '/categories'}
-					>CATEGORIES
-				</TabAnchor> -->
-				<TabAnchor href="/about" selected={$page.url.pathname === '/about'}
-					><h2 class="h2 md:p-2">ABOUT</h2></TabAnchor
-				>
-			</TabGroup>
+			<div class="hidden lg:inline-flex">
+				<NavTabs />
+			</div>
 
 			<svelte:fragment slot="trail">
 				<div class="input-group grid-cols-2 sm:grid-cols-[50px_auto]">
@@ -137,14 +113,22 @@
 	<svelte:fragment slot="footer">
 		{#if $page.url.pathname == '/' || $page.url.pathname.startsWith('/collections') || $page.url.pathname.startsWith('/rankings')}
 			<AppBar
-				slotLead="p-2"
+				slotLead="p-0"
 				slotTrail="p-2"
 				spacing="space-y-0"
 				padding="p-0"
-				class="bg-gradient-to-tr from-indigo-500/50 via-purple-500/50 to-pink-500/50 lg:hidden"
+				gap="gap-0"
+				class=" bg-gradient-to-tr from-indigo-500/50 via-purple-500/50 to-pink-500/50 lg:hidden"
+				gridColumns="grid-cols-[auto_1fr_auto]"
 			>
+				<svelte:fragment slot="lead">
+					<div class="inline-flex">
+						<NavTabs />
+					</div>
+				</svelte:fragment>
+
 				<svelte:fragment slot="trail">
-					<button class="lg:hidden btn btn-md ml-auto mr-2" on:click={drawerOpen}>
+					<button class="lg:hidden btn flex mr-2 pl-0" on:click={drawerOpen}>
 						<h4 class="h4">FILTERS</h4>
 						<span>
 							<svg viewBox="0 0 100 80" class="fill-token w-4 h-4">
