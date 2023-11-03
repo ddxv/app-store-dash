@@ -36,7 +36,7 @@
 {#await data.ranks.streamed}
 	Loading App Ranks...
 {:then ranks}
-	<div class="card variant-glass-surface p-2">
+	<div class="card variant-glass-surface p-2 md:p-8">
 		{#await data.history.streamed}
 			Loading rank history...
 		{:then history}
@@ -46,7 +46,7 @@
 		{:catch}
 			Failed to load history
 		{/await}
-		<div class="table-container p-2 md:p-8">
+		<div class="table-container">
 			<table class="table table-hover table-auto">
 				<thead>
 					<tr>
