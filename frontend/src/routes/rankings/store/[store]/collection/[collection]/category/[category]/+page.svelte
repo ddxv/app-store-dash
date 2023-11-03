@@ -36,11 +36,11 @@
 {#await data.ranks.streamed}
 	Loading App Ranks...
 {:then ranks}
-	<div class="card variant-glass-surface">
+	<div class="card variant-glass-surface p-2">
 		{#await data.history.streamed}
 			Loading rank history...
 		{:then history}
-			<div class="card variant-glass-surface">
+			<div class="card">
 				<RankChart plotData={history.history} maxValue={10} />
 			</div>
 		{:catch}
