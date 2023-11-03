@@ -35,7 +35,7 @@ export interface Collection {
 }
 
 export interface Collections {
-	myapps?: Collection;
+	AppCollections: { streamed: Collection };
 	status?: number;
 	error?: string;
 }

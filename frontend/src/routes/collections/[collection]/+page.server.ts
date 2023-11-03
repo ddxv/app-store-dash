@@ -1,30 +1,37 @@
 export const ssr: boolean = true;
 export const csr: boolean = true;
 
+import type { PageServerLoad } from './$types.js';
+
 import type { Collection, Collections } from '../../../types.js';
 
 console.log('Script executed');
 
-/** @type {import('../[collection]/$types').PageServerLoad} */
-export async function load({ params }): Promise<Collections> {
+export const load: PageServerLoad = async ({ params, locals }) => {
 	const collectionValue = params.collection;
 	console.log(`load started collection=${collectionValue}`);
-	try {
-		const res = await fetch(`http://localhost:8000/api/apps/collections/${collectionValue}`);
-
-		if (!res.ok) {
-			const text = await res.text();
-			throw new Error(`Failed to fetch collections status ${res.status} ${text}`);
+	const res = fetch(`http://localhost:8000/api/apps/collections/${collectionValue}`);
+	return {
+		AppCollections: {
+			streamed: res
+				.then((resp) => {
+					if (resp.status === 200) {
+						return resp.json();
+					} else if (resp.status === 404) {
+						console.log('App Not found');
+						return 'App Not Found';
+					} else if (resp.status === 500) {
+						console.log('API Server error');
+						return 'Backend Error';
+					}
+				})
+				.then(
+					(json) => json,
+					(error) => {
+						console.log('Uncaught error', error);
+						return 'Uncaught Error';
+					}
+				)
 		}
-
-		const app_collections: Collection = await res.json();
-		console.log(`loaded collections with len: ${Object.keys(app_collections).length}`);
-		return { myapps: app_collections };
-	} catch (error) {
-		console.error('Failed to load data:', error);
-		return {
-			status: 500,
-			error: 'Failed to load trending apps'
-		};
-	}
-}
+	};
+};
