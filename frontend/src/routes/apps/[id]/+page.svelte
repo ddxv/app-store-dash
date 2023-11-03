@@ -122,27 +122,6 @@
 				</div>
 			</div>
 
-			<h4 class="h4 md:h3 p-2">Additional Information</h4>
-			<div class="px-4 md:px-8">
-				<p>Free: {appdata.free}</p>
-				<p>Price: {appdata.price}</p>
-				<p>Size: {appdata.size || 'N/A'}</p>
-				<p>Minimum Android Version: {appdata.minimum_android || 'N/A'}</p>
-				<p>Developer Email: {appdata.developer_email || 'N/A'}</p>
-				<p>Content Rating: {appdata.content_rating || 'N/A'}</p>
-				<p>Ad Supported: {appdata.ad_supported || 'N/A'}</p>
-				<p>In-App Purchases: {appdata.in_app_purchases || 'N/A'}</p>
-				<p>Editor's Choice: {appdata.editors_choice || 'N/A'}</p>
-				<p>Last Crawl Result: {appdata.crawl_result}</p>
-				<p>First Released: {appdata.release_date}</p>
-				<p>Store Last Updated: {appdata.store_last_updated}</p>
-				<p>First Crawled: {appdata.created_at}</p>
-			</div>
-
-			<!-- <div>
-				<h4 class="h4 p-2">Historical Information</h4>
-				{@html appdata.history_table}
-			</div> -->
 			<h4 class="h4 md:h3 p-2 mt-2">Lastest Store Ranks</h4>
 			{#await data.myranks.streamed}
 				Loading ...
@@ -158,14 +137,56 @@
 					{/each}
 				{/if}
 				{#if ranks.history && ranks.history.length > 0}
-					{#if appdata.historyData}
-						<div class="card variant-glass-surface mt-2 md:mt-4">
-							<h4 class="h4 md:h3 p-2 mt-2">Store Ranks Historical</h4>
-							<RankChart plotData={ranks.history} />
-						</div>
-					{/if}
+					<div class="card variant-glass-surface mt-2 md:mt-4">
+						<h4 class="h4 md:h3 p-2 mt-2">Store Ranks Historical</h4>
+						<RankChart plotData={ranks.history} />
+					</div>
 				{:else}
 					<p>No ranking data available for this app.</p>
+				{/if}
+				{#if appdata.history_table}
+					<div class="card variant-glass-surface mt-2 md:mt-4">
+						<h4 class="h4 md:h3 p-2 mt-2">Recent Raw Data</h4>
+						<div class="table-container">
+							<table class="table table-hover table-auto">
+								<thead>
+									<tr>
+										<th>Date</th>
+										<th>Country</th>
+										<th>Installs</th>
+										<th>Rating</th>
+										<th>Rating Count</th>
+										<th>Review Count</th>
+									</tr>
+								</thead>
+								<tbody>
+									{#each Object.entries(appdata.history_table) as [_prop, values]}
+										<tr>
+											<td>
+												{values.crawled_date}
+											</td>
+											<td>
+												{values.country}
+											</td>
+
+											<td>
+												{values.installs}
+											</td>
+											<td>
+												{values.rating}
+											</td>
+											<td>
+												{values.rating_count}
+											</td>
+											<td>
+												{values.review_count}
+											</td>
+										</tr>
+									{/each}
+								</tbody>
+							</table>
+						</div>
+					</div>
 				{/if}
 				{#if appdata.historyData && appdata.historyData.numbers.length > 1}
 					<div class="card variant-glass-surface p-2 md:p-8 mt-2 md:mt-4">
@@ -183,24 +204,44 @@
 		</div>
 		<!-- App Pictures -->
 		<div class="card variant-glass-surface p-8">
-			{#if appdata.featured_image_url}
-				<div>
-					<img
-						class="h-auto max-w-full rounded-lg p-4 mx-auto"
-						src={appdata.featured_image_url}
-						alt=""
-					/>
+			<div class="card variant-glass-surface p-8">
+				{#if appdata.featured_image_url}
+					<div>
+						<img
+							class="h-auto max-w-full rounded-lg p-4 mx-auto"
+							src={appdata.featured_image_url}
+							alt=""
+						/>
+					</div>
+				{/if}
+				<section class="grid grid-cols-2 md:grid-cols-3 gap-4">
+					{#each [appdata.phone_image_url_1, appdata.phone_image_url_2, appdata.phone_image_url_3, appdata.tablet_image_url_1, appdata.tablet_image_url_2, appdata.tablet_image_url_3] as imageUrl}
+						{#if imageUrl && imageUrl != 'null'}
+							<div>
+								<img class="h-auto max-w-full rounded-lg" src={imageUrl} alt="" />
+							</div>
+						{/if}
+					{/each}
+				</section>
+			</div>
+			<div class="card variant-glass-surface p-8">
+				<h4 class="h4 md:h3 p-2">Additional Information</h4>
+				<div class="px-4 md:px-8">
+					<p>Free: {appdata.free}</p>
+					<p>Price: {appdata.price}</p>
+					<p>Size: {appdata.size || 'N/A'}</p>
+					<p>Minimum Android Version: {appdata.minimum_android || 'N/A'}</p>
+					<p>Developer Email: {appdata.developer_email || 'N/A'}</p>
+					<p>Content Rating: {appdata.content_rating || 'N/A'}</p>
+					<p>Ad Supported: {appdata.ad_supported || 'N/A'}</p>
+					<p>In-App Purchases: {appdata.in_app_purchases || 'N/A'}</p>
+					<p>Editor's Choice: {appdata.editors_choice || 'N/A'}</p>
+					<p>Last Crawl Result: {appdata.crawl_result}</p>
+					<p>First Released: {appdata.release_date}</p>
+					<p>Store Last Updated: {appdata.store_last_updated}</p>
+					<p>First Crawled: {appdata.created_at}</p>
 				</div>
-			{/if}
-			<section class="grid grid-cols-2 md:grid-cols-3 gap-4">
-				{#each [appdata.phone_image_url_1, appdata.phone_image_url_2, appdata.phone_image_url_3, appdata.tablet_image_url_1, appdata.tablet_image_url_2, appdata.tablet_image_url_3] as imageUrl}
-					{#if imageUrl && imageUrl != 'null'}
-						<div>
-							<img class="h-auto max-w-full rounded-lg" src={imageUrl} alt="" />
-						</div>
-					{/if}
-				{/each}
-			</section>
+			</div>
 		</div>
 	</section>
 {/await}

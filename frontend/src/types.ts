@@ -128,7 +128,16 @@ export interface AppFullDetail {
 	release_date: string;
 	store_last_updated: string;
 	created_at: string;
-	history_table: string;
+	history_table: [
+		{
+			crawled_date: string;
+			review_count: number;
+			rating: number;
+			installs: number;
+			country: string;
+			rating_count: number;
+		}
+	];
 	featured_image_url?: string;
 	phone_image_url_1?: string;
 	phone_image_url_2?: string;

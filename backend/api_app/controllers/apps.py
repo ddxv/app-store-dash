@@ -45,10 +45,8 @@ def get_app_history(app_dict: dict) -> dict:
 
     app_hist = query_app_history(store_app)
     app_dict["histogram"] = app_hist.sort_values(["id"]).tail(1)["histogram"].values[0]
-    app_dict["history_table"] = (
-        app_hist.drop(["id", "store_app"], axis=1)
-        .style.format(precision=0, thousands=",", decimal=".")
-        .to_html(index=None, classes="pretty-table")
+    app_dict["history_table"] = app_hist.drop(["id", "store_app"], axis=1).to_dict(
+        orient="records"
     )
     app_hist["group"] = app_name
     app_hist = app_hist[
@@ -95,6 +93,9 @@ def get_app_history(app_dict: dict) -> dict:
             }
         )
     )
+    # TODO: KEEP?
+    app_hist = app_hist.replace([np.inf, -np.inf], np.nan)
+    app_hist = app_hist.dropna(axis="columns", how="all")
     # Not useful columns
     app_hist = app_hist.drop(["rating_avg_per_day"], axis=1)
     # This is an odd step as it makes each group a metric
