@@ -1,28 +1,33 @@
+import type { PageServerLoad } from './$types';
+
 export const ssr = true;
 export const csr = true;
 
-import type { CategoriesInfo, MyCats } from '../types';
-
-/** @type {import('./$types').PageServerLoad} */
-export async function load({ params }): Promise<CategoriesInfo> {
+export const load: PageServerLoad = async () => {
 	console.log(`load categories start`);
-	try {
-		const res = await fetch(`http://localhost:8000/api/categories`);
+	const res = fetch(`http://localhost:8000/api/categories`);
 
-		if (!res.ok) {
-			throw new Error(`Failed to fetch categories with status ${res.status}`);
+	return {
+		mycats: {
+			streamed: res
+				.then((resp) => {
+					if (resp.status === 200) {
+						return resp.json();
+					} else if (resp.status === 404) {
+						console.log('App Not found');
+						return 'App Not Found';
+					} else if (resp.status === 500) {
+						console.log('App API Server error');
+						return 'Backend Error';
+					}
+				})
+				.then(
+					(json) => json,
+					(error) => {
+						console.log('Uncaught error', error);
+						return 'Uncaught Error';
+					}
+				)
 		}
-
-		const categories: MyCats = await res.json();
-
-		console.log(`load categories len: ${Object.keys(categories).length}`);
-		return { mycats: categories };
-	} catch (error) {
-		console.error('Failed to load layout categories data:', error);
-		return {
-			mycats: { categories: {} },
-			status: 500,
-			error: 'Failed to load categories'
-		};
-	}
-}
+	};
+};

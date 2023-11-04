@@ -47,12 +47,12 @@ export interface CategoryInfo {
 	ios: string;
 }
 
-export interface MyCats {
+export interface CatData {
 	categories: Record<string, CategoryInfo>;
 }
 
 export interface CategoriesInfo {
-	mycats: MyCats;
+	mycats: { streamed: Promise<CatData> };
 	status?: number;
 	error?: string;
 }

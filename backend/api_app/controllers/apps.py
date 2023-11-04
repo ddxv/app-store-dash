@@ -96,6 +96,8 @@ def get_app_history(app_dict: dict) -> dict:
     # TODO: KEEP?
     app_hist = app_hist.replace([np.inf, -np.inf], np.nan)
     app_hist = app_hist.dropna(axis="columns", how="all")
+    if app_hist.empty:
+        return app_hist.to_dict(orient="records")
     # Not useful columns
     app_hist = app_hist.drop(["rating_avg_per_day"], axis=1)
     # This is an odd step as it makes each group a metric
@@ -208,7 +210,7 @@ class AppController(Controller):
         df = query_ranks_for_app(store_id=store_id)
         if df.empty:
             raise NotFoundException(
-                f"Store ID not found: {store_id!r}", status_code=404
+                f"Ranks not found for {store_id!r}", status_code=404
             )
         df["rank_group"] = df["collection"] + ": " + df["category"]
         latest_dict = df[df["crawled_date"].max() == df["crawled_date"]][

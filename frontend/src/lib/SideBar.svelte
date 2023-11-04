@@ -22,7 +22,7 @@
 	const buttonSelectedColor = 'bg-gradient-to-tl variant-gradient-primary-secondary text-white';
 	$: homeCategorySelection.set(localHomeCategorySelect);
 
-	import type { CategoriesInfo } from '../types';
+	import type { CatData, CategoriesInfo } from '../types';
 	export let data: CategoriesInfo;
 
 	const scrollTop = () => {
@@ -116,8 +116,8 @@
 		<div class="card variant-glass-surface p-2 md:p-4 text-token">
 			<h3 class="h4 md:h3">Categories</h3>
 			<ListBox>
-				{#if data}
-					{#each Object.entries(data.mycats.categories) as [_prop, values]}
+				{#if data.mycats.streamed}
+					{#each Object.entries(data.mycats.streamed) as [_prop, values]}
 						{#if values.id}
 							<ListBoxItem
 								bind:group={localHomeCategorySelect}

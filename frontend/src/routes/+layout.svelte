@@ -62,7 +62,9 @@
 </script>
 
 <Drawer>
-	<SideBar {data} />
+	{#await data.mycats.streamed}
+		<SideBar {data} />
+	{/await}
 </Drawer>
 
 <!-- App Shell -->
@@ -116,7 +118,9 @@
 		</AppBar>
 	</svelte:fragment>
 	<svelte:fragment slot="sidebarLeft">
-		<SideBar {data} />
+		{#await data.mycats.streamed}
+			<SideBar {data} />
+		{/await}
 	</svelte:fragment>
 
 	<svelte:fragment slot="footer">
