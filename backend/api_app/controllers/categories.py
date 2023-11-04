@@ -9,6 +9,7 @@ from litestar import Controller, get
 
 logger = get_logger(__name__)
 
+
 """
 /categories/{category_id} a specific app
 """

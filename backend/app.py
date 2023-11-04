@@ -5,7 +5,8 @@ from litestar import Litestar
 from litestar.config.cors import CORSConfig
 from litestar.logging import LoggingConfig
 
-# from litestar.logging import LoggingConfig
+import logging
+
 from litestar.openapi import OpenAPIConfig, OpenAPIController
 
 cors_config = CORSConfig(
@@ -20,13 +21,12 @@ class MyOpenAPIController(OpenAPIController):
 
 
 logging_config = LoggingConfig(
-    loggers={
-        "my_app": {
-            "level": "DEBUG",
-            "handlers": ["queue_listener"],
-        }
-    }
+    root={"level": logging.getLevelName(logging.INFO), "handlers": ["console"]},
+    formatters={
+        "standard": {"format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s"}
+    },
 )
+
 
 app = Litestar(
     route_handlers=[AppController, CategoryController, RankingsController],
