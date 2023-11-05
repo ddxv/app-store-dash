@@ -11,6 +11,7 @@
 
 	export let plotdata: ChartTabularData;
 	export let plotType: string;
+	export let plotHeightPx: string = '300px';
 
 	export let changeOptions: ComboChartOptions = {
 		toolbar: { enabled: false },
@@ -100,7 +101,7 @@
 			}
 		},
 		curve: 'curveStepAfter',
-		height: '400px'
+		height: plotHeightPx
 	};
 </script>
 

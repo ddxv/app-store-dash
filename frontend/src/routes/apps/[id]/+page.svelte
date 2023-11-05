@@ -168,16 +168,15 @@
 				{#if appdata.history_table}
 					<div class="card variant-glass-surface mt-2 md:mt-4">
 						<h4 class="h4 md:h3 p-2 mt-2">Recent Raw Data</h4>
-						<div class="table-container">
+						<div class="table-container overflow-x-auto">
 							<table class="table table-hover table-auto">
 								<thead>
 									<tr>
 										<th>Date</th>
-										<th>Country</th>
 										<th>Installs</th>
 										<th>Rating</th>
-										<th>Rating Count</th>
-										<th>Review Count</th>
+										<th>Ratings</th>
+										<th>Reviews</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -187,14 +186,10 @@
 												{values.crawled_date}
 											</td>
 											<td>
-												{values.country}
-											</td>
-
-											<td>
 												{values.installs}
 											</td>
 											<td>
-												{values.rating}
+												{values.rating.toFixed(2)}
 											</td>
 											<td>
 												{values.rating_count}
