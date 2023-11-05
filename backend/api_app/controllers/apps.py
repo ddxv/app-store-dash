@@ -98,8 +98,8 @@ def get_app_history(app_dict: dict) -> dict:
     app_hist = app_hist.dropna(axis="columns", how="all")
     if app_hist.empty:
         return app_hist.to_dict(orient="records")
-    # Not useful columns
-    app_hist = app_hist.drop(["rating_avg_per_day"], axis=1)
+    # Not useful column
+    app_hist = app_hist.drop(["rating_avg_per_day"], axis=1, errors="ignore")
     # This is an odd step as it makes each group a metric
     # not for when more than 1 dimension
     mymelt = app_hist.melt(id_vars=xaxis_col).rename(columns={"variable": "group"})
