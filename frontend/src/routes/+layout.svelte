@@ -62,8 +62,8 @@
 </script>
 
 <Drawer>
-	{#await data.mycats.streamed}
-		<SideBar {data} />
+	{#await data.mycats.streamed then data}
+		<SideBar myCatData={data} />
 	{/await}
 </Drawer>
 
@@ -118,8 +118,8 @@
 		</AppBar>
 	</svelte:fragment>
 	<svelte:fragment slot="sidebarLeft">
-		{#await data.mycats.streamed}
-			<SideBar {data} />
+		{#await data.mycats.streamed then myCatData}
+			<SideBar {myCatData} />
 		{/await}
 	</svelte:fragment>
 

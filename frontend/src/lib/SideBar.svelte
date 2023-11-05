@@ -23,7 +23,7 @@
 	$: homeCategorySelection.set(localHomeCategorySelect);
 
 	import type { CatData, CategoriesInfo } from '../types';
-	export let data: CategoriesInfo;
+	export let myCatData: CatData;
 
 	const scrollTop = () => {
 		const elemPage = document.querySelector('#page');
@@ -116,8 +116,8 @@
 		<div class="card variant-glass-surface p-2 md:p-4 text-token">
 			<h3 class="h4 md:h3">Categories</h3>
 			<ListBox>
-				{#if data.mycats.streamed}
-					{#each Object.entries(data.mycats.streamed) as [_prop, values]}
+				{#if myCatData}
+					{#each Object.entries(myCatData.categories) as [_prop, values]}
 						{#if values.id}
 							<ListBoxItem
 								bind:group={localHomeCategorySelect}
