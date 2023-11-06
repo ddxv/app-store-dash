@@ -189,7 +189,11 @@
 												{values.installs}
 											</td>
 											<td>
-												{values.rating.toFixed(2)}
+												{#if values.rating}
+													{values.rating.toFixed(2)}
+												{:else}
+													null
+												{/if}
 											</td>
 											<td>
 												{values.rating_count}

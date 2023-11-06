@@ -109,7 +109,7 @@ export interface AppFullDetail {
 	store_developer_link?: string;
 	developer_url?: string;
 	updated_at: string;
-	rating: number;
+	rating?: number;
 	rating_count: string;
 	review_count: string;
 	histogram: number[];
