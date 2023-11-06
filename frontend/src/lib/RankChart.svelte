@@ -143,10 +143,10 @@
 		dataset: { source: plotData },
 		dimensions: dimensions,
 		grid: {
-			x: 40, //left
-			y: 10, // top
+			x: 50, //left
+			y: 20, // top
 			x2: 55, // right
-			y2: 30 // bottom
+			y2: 40 // bottom
 			// containLabel: true
 		},
 		// legend: {},
@@ -173,8 +173,8 @@
 				formatter: '#{value}'
 			},
 			inverse: true,
-			// interval: 1,
-			// min: 1,
+			min: 1,
+			interval: 1,
 			max: maxValue
 		},
 		series: plotSeries
