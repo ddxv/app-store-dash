@@ -81,7 +81,8 @@
 		},
 		lineStyle: {
 			width: 4
-		}
+		},
+		endLabel: { show: true, formatter: '{a}', distance: 20, valueAnimation: true }
 	};
 
 	function makeSeries(plotData: Object[]) {
@@ -143,12 +144,12 @@
 		dimensions: dimensions,
 		grid: {
 			x: 40, //left
-			y: 20, // top
-			x2: 0,
+			y: 10, // top
+			x2: 55, // right
 			y2: 30 // bottom
 			// containLabel: true
 		},
-		legend: {},
+		// legend: {},
 		tooltip: {
 			trigger: 'item'
 		},
