@@ -31,6 +31,7 @@
 
 	import SideBar from '$lib/SideBar.svelte';
 	import NavTabs from '$lib/NavTabs.svelte';
+	import { page } from '$app/stores';
 	initializeStores();
 	const drawerStore = getDrawerStore();
 
@@ -140,8 +141,8 @@
 		</AppBar>
 	</svelte:fragment>
 
-	<div class="xxxx">
-		<slot />
+	<slot />
+	{#if $page.url.pathname.startsWith('/collections') || $page.url.pathname.startsWith('/rankings')}
 		<button
 			class="lg:hidden btn variant-filled-primary absolute right-[20px] bottom-[50px]"
 			on:click={drawerOpen}
@@ -155,7 +156,7 @@
 				</svg>
 			</span>
 		</button>
-	</div>
+	{/if}
 
 	<!-- Page Route Content -->
 </AppShell>
