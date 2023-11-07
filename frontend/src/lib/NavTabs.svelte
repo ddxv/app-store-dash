@@ -11,8 +11,15 @@
 	border=""
 	class="w-full p-0"
 >
-	<TabAnchor class="p-0 px-0" href="/" selected={$page.url.pathname.startsWith('/collections')}>
+	<TabAnchor class="p-0 px-0" href="/" selected={$page.url.pathname == '/'}>
 		<h3 class="h4 md:h3 md:p-2">HOME</h3>
+	</TabAnchor>
+	<TabAnchor
+		class="p-0 px-0"
+		href="/collections/new_monthly"
+		selected={$page.url.pathname.startsWith('/collections')}
+	>
+		<h3 class="h4 md:h3 md:p-2">NEW</h3>
 	</TabAnchor>
 	<TabAnchor
 		href="/rankings/store/1/collection/1/category/1"

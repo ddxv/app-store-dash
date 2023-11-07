@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { ListBox, ListBoxItem } from '@skeletonlabs/skeleton';
-	// $: classesActive = (href: string) => (href === $page.url.pathname ? buttonSelectedColor : '');
+
 	$: classesActive = (href: string) =>
 		$page.url.pathname.startsWith(href) ? buttonSelectedColor : '';
 
@@ -60,7 +60,7 @@
 	}
 </script>
 
-{#if $page.url.pathname == '/' || $page.url.pathname.startsWith('/collections')}
+{#if $page.url.pathname.startsWith('/collections')}
 	<div class="p-1 md:p-2">
 		<div class="card variant-glass-surface p-4">
 			<h3 class="h3">Top New Apps</h3>

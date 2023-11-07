@@ -70,6 +70,27 @@ class RankingsController(Controller):
 
         return overview
 
+    @get(path="/{store:int}/{collection:int}/{category:int}/short", cache=40000)
+    async def get_short_ranks_for_category(
+        self, store: int, collection: int, category: int
+    ) -> dict:
+        """
+        Handles a GET request for a store/collection/category rank
+
+        Returns:
+            A dictionary representation of a category
+            with ios and google apps
+        """
+        logger.info(f"{self.path} start for store/collection/category")
+        df = get_most_recent_top_ranks(
+            store=store,
+            collection_id=collection,
+            category_id=category,
+            limit=5,
+        )
+        ranks_dict = df.to_dict(orient="records")
+        return {"ranks": ranks_dict}
+
     @get(path="/{store:int}/{collection:int}/{category:int}", cache=3600)
     async def get_ranks_for_category(
         self, store: int, collection: int, category: int

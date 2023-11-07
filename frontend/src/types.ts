@@ -62,6 +62,30 @@ export interface AppRankResponse {
 	error?: string;
 }
 
+export interface HomeData {
+	androidAppRanks: {
+		streamed: Promise<{ ranks: RankedApps[] }>;
+	};
+	iOSAppRanks: {
+		streamed: Promise<{ ranks: RankedApps[] }>;
+	};
+	androidGameRanks: {
+		streamed: Promise<{ ranks: RankedApps[] }>;
+	};
+	iOSGameRanks: {
+		streamed: Promise<{ ranks: RankedApps[] }>;
+	};
+	status?: number;
+	error?: string;
+	// history: {
+	// 	streamed: Promise<{ history: RankedApps[] }>;
+	// };
+}
+
+export interface RankedAppList {
+	ranks: RankedApps[];
+}
+
 export interface StoreCategoryRanks {
 	ranks: {
 		streamed: Promise<{ ranks: RankedApps[] }>;
