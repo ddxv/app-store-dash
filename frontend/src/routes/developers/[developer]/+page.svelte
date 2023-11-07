@@ -5,8 +5,6 @@
 	import AppsCard from '$lib/AppGroupCard.svelte';
 </script>
 
-<h1 class="h1 p-4">Welcome!</h1>
-
 <div>
 	{#await data}
 		<div>

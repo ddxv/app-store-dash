@@ -8,8 +8,6 @@
 	import { homeCategorySelection } from '../../../stores';
 </script>
 
-<h3 class="h3 md:h2 p-4">Welcome!</h3>
-
 <svelte:head>
 	{#await data.AppCollections.streamed}
 		<title>App Stats & Info</title>
