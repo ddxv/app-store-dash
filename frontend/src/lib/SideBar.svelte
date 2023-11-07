@@ -76,7 +76,6 @@
 							>New this Month</a
 						>
 					</li>
-
 					<li>
 						<a href="/collections/new_weekly" class={classesActive('/collections/new_weekly')}
 							>New this Week</a

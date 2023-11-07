@@ -6,6 +6,7 @@
 	import AppPlot from '$lib/AppPlot.svelte';
 	import AvailableOniOs from '$lib/svg/AvailableOniOS.svelte';
 	import RankChart from '$lib/RankChart.svelte';
+	import AppHistoryTable from '$lib/AppHistoryTable.svelte';
 	let sum = (arr: number[]) => arr.reduce((acc, curr) => acc + curr, 0);
 </script>
 
@@ -166,47 +167,7 @@
 					<!-- <p>Serverside: No ranking data available for this app.</p> -->
 				{/await}
 				{#if appdata.history_table}
-					<div class="card variant-glass-surface mt-2 md:mt-4">
-						<h4 class="h4 md:h3 p-2 mt-2">Recent Raw Data</h4>
-						<div class="table-container overflow-x-auto">
-							<table class="table table-hover table-auto">
-								<thead>
-									<tr>
-										<th>Date</th>
-										<th>Installs</th>
-										<th>Rating</th>
-										<th>Ratings</th>
-										<th>Reviews</th>
-									</tr>
-								</thead>
-								<tbody>
-									{#each Object.entries(appdata.history_table) as [_prop, values]}
-										<tr>
-											<td>
-												{values.crawled_date}
-											</td>
-											<td>
-												{values.installs}
-											</td>
-											<td>
-												{#if values.rating}
-													{values.rating.toFixed(2)}
-												{:else}
-													null
-												{/if}
-											</td>
-											<td>
-												{values.rating_count}
-											</td>
-											<td>
-												{values.review_count}
-											</td>
-										</tr>
-									{/each}
-								</tbody>
-							</table>
-						</div>
-					</div>
+					<AppHistoryTable os={appdata.store_link} history_table={appdata.history_table} />
 				{/if}
 				{#if appdata.historyData && appdata.historyData.numbers && appdata.historyData.numbers.length > 1}
 					<div class="card variant-glass-surface p-2 md:p-8 mt-2 md:mt-4">

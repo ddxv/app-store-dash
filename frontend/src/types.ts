@@ -97,6 +97,15 @@ export interface AppFullDetails {
 	};
 }
 
+export interface AppHistoryInfo {
+	crawled_date: string;
+	review_count: number;
+	rating: number;
+	installs: number;
+	country: string;
+	rating_count: number;
+}
+
 export interface AppFullDetail {
 	icon_url_512?: string;
 	name: string;
@@ -128,16 +137,7 @@ export interface AppFullDetail {
 	release_date: string;
 	store_last_updated: string;
 	created_at: string;
-	history_table: [
-		{
-			crawled_date: string;
-			review_count: number;
-			rating: number;
-			installs: number;
-			country: string;
-			rating_count: number;
-		}
-	];
+	history_table: AppHistoryInfo[];
 	featured_image_url?: string;
 	phone_image_url_1?: string;
 	phone_image_url_2?: string;
