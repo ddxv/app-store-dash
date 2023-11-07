@@ -73,6 +73,7 @@
 											alt={values.name}
 											width="100 md:200"
 											class="p-2"
+											referrerpolicy="no-referrer"
 										/>
 										<h3 class="h4 md:h3 p-2">{values.name}</h3>
 									</div>
