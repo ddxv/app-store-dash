@@ -7,6 +7,10 @@ export const load: PageServerLoad = async () => {
 	console.log(`load categories start`);
 	const res = fetch(`http://localhost:8000/api/categories`);
 
+	// setHeaders({
+	// 	'cache-control': 'max-age=40000'
+	// });
+
 	return {
 		mycats: {
 			streamed: res

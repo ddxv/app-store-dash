@@ -63,27 +63,27 @@
 {#if $page.url.pathname == '/' || $page.url.pathname.startsWith('/collections')}
 	<div class="p-1 md:p-2">
 		<div class="card variant-glass-surface p-4">
-			<h3 class="h3">Collections</h3>
+			<h3 class="h3">Top New Apps</h3>
 			<nav class="list-nav">
 				<ul>
 					<li>
-						<a href="/collections/top" class={classesActive('/collections/top')}>Alltime Top</a>
-					</li>
-					<li>
 						<a href="/collections/new_yearly" class={classesActive('/collections/new_yearly')}
-							>New this Year by Downloads</a
+							>New this Year</a
 						>
 					</li>
 					<li>
 						<a href="/collections/new_monthly" class={classesActive('/collections/new_monthly')}
-							>New this Month by Downloads</a
+							>New this Month</a
 						>
 					</li>
 
 					<li>
 						<a href="/collections/new_weekly" class={classesActive('/collections/new_weekly')}
-							>New this Week by Downloads</a
+							>New this Week</a
 						>
+					</li>
+					<li>
+						<a href="/collections/top" class={classesActive('/collections/top')}>Alltime Top</a>
 					</li>
 				</ul>
 			</nav>
