@@ -8,7 +8,6 @@
 		getDrawerStore,
 		type DrawerSettings
 	} from '@skeletonlabs/skeleton';
-	import { page } from '$app/stores';
 	import IconSearch from '$lib/svg/IconSearch.svelte';
 	import type { AfterNavigate } from '@sveltejs/kit';
 	import { afterNavigate } from '$app/navigation';

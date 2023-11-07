@@ -570,19 +570,55 @@ def query_single_developer(developer_id: str):
 
 def search_apps(search_input: str, limit: int = 100):
     logger.info(f"App search: {search_input=}")
-    sel_query = """
+    sel_query = """WITH devs AS (
+                    SELECT
+                        d.id AS developer_id
+                    FROM
+                        developers d
+                    WHERE
+                        to_tsvector(
+                            'simple',
+                            d.name
+                        ) @@ to_tsquery(
+                            'simple',
+                            %s
+                        )
+                ),
+                apps AS (
+                    SELECT
+                        ssa.id AS app_id
+                    FROM
+                        store_apps ssa
+                    WHERE
+                        to_tsvector(
+                            'simple',
+                            ssa.name
+                        ) @@ to_tsquery(
+                            'simple',
+                            %s
+                        )
+                )
                 SELECT
-                    sa.*
+                    *
                 FROM
                     store_apps sa
-                WHERE to_tsvector('simple', name) @@ to_tsquery('simple', %s)
-                ORDER BY installs DESC NULLS LAST, rating_count DESC NULLS LAST
-                LIMIT %s;
+                INNER JOIN devs ON
+                    sa.developer = devs.developer_id
+                INNER JOIN apps ON
+                    sa.id = apps.app_id
+                WHERE
+                    apps.app_id IS NOT NULL
+                    OR devs.developer_id IS NOT NULL
+                ORDER BY
+                    installs DESC NULLS LAST,
+                    rating_count DESC NULLS LAST
+                LIMIT %s
+                ;
                 """
     df = pd.read_sql(
         sel_query,
         DBCON.engine,
-        params=(search_input, limit),
+        params=(search_input, search_input, limit),
     )
     if not df.empty:
         df = clean_app_df(df)

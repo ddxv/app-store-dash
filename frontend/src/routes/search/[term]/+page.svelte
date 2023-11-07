@@ -10,7 +10,11 @@
 	Loading ...
 {:then results}
 	{#if typeof results != 'string'}
-		<AppGroupCard apps={results} />
+		{#if results.apps.length > 0}
+			<AppGroupCard apps={results} />
+		{:else}
+			<h3 class="h3">No apps found, please try your search again.</h3>
+		{/if}
 	{:else}
 		<p>Search failed please try again ... {results}</p>
 	{/if}
