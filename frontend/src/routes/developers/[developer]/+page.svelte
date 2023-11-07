@@ -1,19 +1,20 @@
 <script lang="ts">
 	import type { DeveloperResponse } from '../../../types';
-	/** @type {import('../[developer]/$types').PageData} */
 	export let data: DeveloperResponse;
 	import AppsCard from '$lib/AppGroupCard.svelte';
 </script>
 
 <div>
-	{#await data}
+	{#await data.results.streamed}
 		<div>
 			<span>Loading...</span>
 		</div>
-	{:then data}
-		{#if data.results}
-			<h1 class="h1 p-2">Apps: {data.results.title}</h1>
-			<AppsCard apps={data.results} />
+	{:then devs}
+		{#if typeof devs == 'string'}
+			Failed to load developer
+		{:else}
+			<h1 class="h1 p-2">Apps: {devs.title}</h1>
+			<AppsCard apps={devs} />
 			<p class="p-2" />
 		{/if}
 	{:catch error}

@@ -64,13 +64,21 @@
 
 					<div class="block md:hidden" />
 					{#if appdata.developer_id}
-						<a href="/developers/{appdata.developer_id}" class="btn btn-hover variant-ghost-primary"
-							><span>Developer: {appdata.developer_name}</span></a
-						>
+						<div class="p-2 md:py-2">
+							<a
+								href="/developers/{appdata.developer_id}"
+								class="btn hover:bg-primary-hover-token variant-ghost-primary"
+								><span>Developer: {appdata.developer_name}</span></a
+							>
+						</div>
 					{/if}
-					<a href="/categories/{appdata.category}" class="btn variant-ghost-primary"
-						><span>Category: {appdata.category}</span></a
-					>
+					<div class="p-2 md:py-2">
+						<a
+							href="/categories/{appdata.category}"
+							class="btn hover:bg-primary-hover-token variant-ghost-primary"
+							><span>Category: {appdata.category}</span></a
+						>
+					</div>
 				</div>
 
 				<div class="card-footer md:flex">
