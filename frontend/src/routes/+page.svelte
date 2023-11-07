@@ -16,7 +16,7 @@
 
 <br />
 
-<a href="/ranking/store/1/collection/1/category/1">
+<a href="/rankings/store/1/collection/1/category/1">
 	<h1 class="h1">Track Latest Ranks</h1>
 	<p>Click through for full app store categories and rankings.</p>
 </a>
@@ -25,12 +25,14 @@
 	{#await data.androidAppRanks.streamed}
 		Loading Android App Ranks...
 	{:then androidApps}
-		<div class="snap-center shrink-0 card w-48 md:w-56">
-			<div class="table-container card-header">
-				<h3 class="h3">Android Apps</h3>
-				<AppRankTableShort myTable={androidApps} />
+		<a href="/rankings/store/1/collection/1/category/1">
+			<div class="snap-center shrink-0 card w-48 md:w-56">
+				<div class="table-container card-header">
+					<h3 class="h3">Android Apps</h3>
+					<AppRankTableShort myTable={androidApps} />
+				</div>
 			</div>
-		</div>
+		</a>
 	{:catch}
 		Trouble Loading Android App Ranks.
 	{/await}
@@ -38,12 +40,14 @@
 	{#await data.iOSAppRanks.streamed}
 		Loading iOS App Ranks...
 	{:then iOSApps}
-		<div class="snap-center shrink-0 card w-48 md:w-56">
-			<div class="table-container card-header">
-				<h3 class="h3">iOS Apps</h3>
-				<AppRankTableShort myTable={iOSApps} />
+		<a href="/rankings/store/2/collection/4/category/55">
+			<div class="snap-center shrink-0 card w-48 md:w-56">
+				<div class="table-container card-header">
+					<h3 class="h3">iOS Apps</h3>
+					<AppRankTableShort myTable={iOSApps} />
+				</div>
 			</div>
-		</div>
+		</a>
 	{:catch}
 		Trouble Loading iOS App Ranks.
 	{/await}
@@ -51,12 +55,14 @@
 	{#await data.androidGameRanks.streamed}
 		Loading Android Game Ranks...
 	{:then androidGames}
-		<div class="snap-center shrink-0 card w-48 md:w-56">
-			<div class="table-container card-header">
-				<h3 class="h3">Android Games</h3>
-				<AppRankTableShort myTable={androidGames} />
+		<a href="/rankings/store/1/collection/1/category/36">
+			<div class="snap-center shrink-0 card w-48 md:w-56">
+				<div class="table-container card-header">
+					<h3 class="h3">Android Games</h3>
+					<AppRankTableShort myTable={androidGames} />
+				</div>
 			</div>
-		</div>
+		</a>
 	{:catch}
 		Trouble loading android games
 	{/await}
@@ -64,12 +70,14 @@
 	{#await data.iOSGameRanks.streamed}
 		Loading iOS Game Ranks...
 	{:then iOSGames}
-		<div class="snap-center shrink-0 card w-48 md:w-56">
-			<div class="table-container card-header">
-				<h3 class="h3">iOS Games</h3>
-				<AppRankTableShort myTable={iOSGames} />
+		<a href="/rankings/store/2/collection/4/category/62">
+			<div class="snap-center shrink-0 card w-48 md:w-56">
+				<div class="table-container card-header">
+					<h3 class="h3">iOS Games</h3>
+					<AppRankTableShort myTable={iOSGames} />
+				</div>
 			</div>
-		</div>
+		</a>
 	{:catch}
 		Trouble Loading iOS Game Ranks.
 	{/await}
