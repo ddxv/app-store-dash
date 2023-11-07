@@ -44,7 +44,7 @@
 	{:else}
 		<!-- App Icon Title & Info -->
 		<section class="grid grid-flow-cols-1 md:grid-cols-2 md:gap-4">
-			<div class="card variant-glass-surface p-0 lg:p-8">
+			<div class="card p-0 lg:p-8">
 				<div class="card-header p-2 md:p-4">
 					<div class="inline-flex">
 						{#if appdata.icon_url_512}
@@ -64,11 +64,11 @@
 
 					<div class="block md:hidden" />
 					{#if appdata.developer_id}
-						<a href="/developers/{appdata.developer_id}" class="btn variant-filled"
+						<a href="/developers/{appdata.developer_id}" class="btn btn-hover variant-ghost-primary"
 							><span>Developer: {appdata.developer_name}</span></a
 						>
 					{/if}
-					<a href="/categories/{appdata.category}" class="btn variant-filled"
+					<a href="/categories/{appdata.category}" class="btn variant-ghost-primary"
 						><span>Category: {appdata.category}</span></a
 					>
 				</div>
@@ -178,8 +178,8 @@
 				{/if}
 			</div>
 			<!-- App Pictures -->
-			<div class="card variant-glass-surface p-8">
-				<div class="card variant-glass-surface p-8">
+			<div class="card p-8">
+				<div class="card">
 					{#if appdata.featured_image_url}
 						<div>
 							<img
@@ -199,7 +199,7 @@
 						{/each}
 					</section>
 				</div>
-				<div class="card variant-glass-surface p-8">
+				<div class="p-2 md:p-8">
 					<h4 class="h4 md:h3 p-2">Additional Information</h4>
 					<div class="px-4 md:px-8">
 						<p>Free: {appdata.free}</p>

@@ -34,7 +34,7 @@
 	</div>
 {:then myapps}
 	{#if typeof myapps != 'string'}
-		<h2 class="h3 md:h2 p-2">Apps: {myapps.title}</h2>
+		<!-- <h2 class="h3 md:h2 p-2">Apps: {myapps.title}</h2> -->
 		{#each Object.entries(myapps.categories) as [_key, cat]}
 			{#if cat.key == $homeCategorySelection}
 				<AppsCard apps={cat[$homeStoreSelection]} />

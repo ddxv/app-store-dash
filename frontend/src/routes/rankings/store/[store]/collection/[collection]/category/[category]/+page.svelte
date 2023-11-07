@@ -28,15 +28,15 @@
 	/>
 </svelte:head>
 
-<h3 class="h4 md:h3 p-4">
-	Store: {storeIDLookup[store].store_name}, Collection: {collectionIDLookup[store][collection]
-		.collection_name}, Category: {categoryIDLookup[collection][category].category_name}
-</h3>
+<div class="card p-2 md:p-8">
+	<h3 class="h4 md:h3 p-4">
+		Store: {storeIDLookup[store].store_name}, Collection: {collectionIDLookup[store][collection]
+			.collection_name}, Category: {categoryIDLookup[collection][category].category_name}
+	</h3>
 
-{#await data.ranks.streamed}
-	Loading App Ranks...
-{:then ranks}
-	<div class="card variant-glass-surface p-2 md:p-8">
+	{#await data.ranks.streamed}
+		Loading App Ranks...
+	{:then ranks}
 		{#await data.history.streamed}
 			Loading rank history...
 		{:then history}
@@ -46,6 +46,7 @@
 		{:catch}
 			Failed to load history
 		{/await}
+		<div class="p-2 md:p-4" />
 		<div class="table-container">
 			<table class="table table-hover table-auto">
 				<thead>
@@ -84,9 +85,9 @@
 				</tbody>
 			</table>
 		</div>
-	</div>
-{:catch}
-	Problem loading data
-{/await}
+	{:catch}
+		Problem loading data
+	{/await}
+</div>
 
 <a href="/"><p>Back to Home</p></a>

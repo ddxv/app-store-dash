@@ -22,7 +22,7 @@
 	const buttonSelectedColor = 'bg-gradient-to-tl variant-gradient-primary-secondary text-white';
 	$: homeCategorySelection.set(localHomeCategorySelect);
 
-	import type { CatData, CategoriesInfo } from '../types';
+	import type { CatData } from '../types';
 	export let myCatData: CatData;
 
 	const scrollTop = () => {
@@ -31,14 +31,6 @@
 			elemPage.scrollTop = 0;
 		}
 	};
-
-	// import { getDrawerStore } from '@skeletonlabs/skeleton';
-
-	// const drawerStore = getDrawerStore();
-
-	// function drawerClose(): void {
-	// 	drawerStore.close();
-	// }
 
 	// FOLOWING IS FOR RANKINGS
 
@@ -62,7 +54,31 @@
 
 {#if $page.url.pathname.startsWith('/collections')}
 	<div class="p-1 md:p-2">
-		<div class="card variant-glass-surface p-4">
+		<div class=" card p-4 text-token">
+			<h3 class="h4 md:h3">Stores</h3>
+			<ListBox>
+				<ListBoxItem
+					bind:group={localHomeStoreSelect}
+					name="medium"
+					value="google"
+					padding="p-2 md:p-2"
+					on:click={scrollTop}
+					active={buttonSelectedColor}>Google</ListBoxItem
+				>
+				<ListBoxItem
+					bind:group={localHomeStoreSelect}
+					name="medium"
+					on:click={scrollTop}
+					value="ios"
+					padding="p-2 md:p-2"
+					active={buttonSelectedColor}>Apple</ListBoxItem
+				>
+			</ListBox>
+		</div>
+	</div>
+
+	<div class="p-1 md:p-2">
+		<div class="card p-4">
 			<h3 class="h3">Top New Apps</h3>
 			<nav class="list-nav">
 				<ul>
@@ -87,33 +103,11 @@
 				</ul>
 			</nav>
 		</div>
+	</div>
 
-		<br />
-		<div class=" card variant-glass-surface p-2 md:p-4 text-token">
-			<h3 class="h4 md:h3">Stores</h3>
-			<ListBox>
-				<ListBoxItem
-					bind:group={localHomeStoreSelect}
-					name="medium"
-					value="google"
-					padding="p-2 md:p-2"
-					on:click={scrollTop}
-					active={buttonSelectedColor}>Google</ListBoxItem
-				>
-				<ListBoxItem
-					bind:group={localHomeStoreSelect}
-					name="medium"
-					on:click={scrollTop}
-					value="ios"
-					padding="p-2 md:p-2"
-					active={buttonSelectedColor}>Apple</ListBoxItem
-				>
-			</ListBox>
-		</div>
-		<br />
-
-		<div class="card variant-glass-surface p-2 md:p-4 text-token">
-			<h3 class="h4 md:h3">Categories</h3>
+	<div class="p-1 md:p-2">
+		<div class="card p-4">
+			<h3 class="h3">Categories</h3>
 			<ListBox>
 				{#if myCatData}
 					{#each Object.entries(myCatData.categories) as [_prop, values]}
@@ -159,60 +153,67 @@
 {/if}
 
 {#if $page.url.pathname == '/rankings' || $page.url.pathname.startsWith('/rankings')}
-	<div class="card variant-glass-surface p-4">
-		<h4 class="h4 md:h3">Stores</h4>
-		<nav class="list-nav">
-			<ul>
-				{#each Object.entries(storeIDLookup) as [_prop, values]}
-					<li>
-						<a
-							href={`/rankings/store/${values.store_id}${
-								values.store_id == 1
-									? '/collection/1/category/1'
-									: values.store_id == 2
-									? '/collection/4/category/55'
-									: '' // default value or path for other store_ids if needed
-							}`}
-							class={classesActive(`/rankings/store/${values.store_id}/`)}
-						>
-							{values.store_name}
-						</a>
-					</li>
-				{/each}
-			</ul>
-		</nav>
+	<div class="p-1 md:p-2">
+		<div class="card p-4">
+			<h4 class="h4 md:h3">Stores</h4>
+			<nav class="list-nav">
+				<ul>
+					{#each Object.entries(storeIDLookup) as [_prop, values]}
+						<li>
+							<a
+								href={`/rankings/store/${values.store_id}${
+									values.store_id == 1
+										? '/collection/1/category/1'
+										: values.store_id == 2
+										? '/collection/4/category/55'
+										: '' // default value or path for other store_ids if needed
+								}`}
+								class={classesActive(`/rankings/store/${values.store_id}/`)}
+							>
+								{values.store_name}
+							</a>
+						</li>
+					{/each}
+				</ul>
+			</nav>
+		</div>
 	</div>
-	<div class="card variant-glass-surface p-4">
-		<h4 class="md:h3 h4">Collections</h4>
-		<nav class="list-nav">
-			<ul>
-				{#each Object.entries(collectionIDLookup[store]) as [id, values]}
-					<li>
-						<a
-							href={`/rankings/store/${store}/collection/${values.collection_id}/category/${category}`}
-							class={classesActive(`/rankings/store/${store}/collection/${values.collection_id}/`)}
-							>{values.collection_name}</a
-						>
-					</li>
-				{/each}
-			</ul>
-		</nav>
+	<div class="p-1 md:p-2">
+		<div class="card p-4">
+			<h4 class="md:h3 h4">Collections</h4>
+			<nav class="list-nav">
+				<ul>
+					{#each Object.entries(collectionIDLookup[store]) as [id, values]}
+						<li>
+							<a
+								href={`/rankings/store/${store}/collection/${values.collection_id}/category/${category}`}
+								class={classesActive(
+									`/rankings/store/${store}/collection/${values.collection_id}/`
+								)}>{values.collection_name}</a
+							>
+						</li>
+					{/each}
+				</ul>
+			</nav>
+		</div>
 	</div>
-	<div class="card variant-glass-surface p-4">
-		<h4 class="h4 md:h3">Categories</h4>
-		<nav class="list-nav">
-			<ul>
-				{#each Object.entries(categoryIDLookup[collection]) as [id, values]}
-					<li>
-						<a
-							href={`/rankings/store/${store}/collection/${collection}/category/${values.category_id}`}
-							class={classesActive(
-								`/rankings/store/${store}/collection/${collection}/category/${values.category_id}`
-							)}>{values.category_name}</a
-						>
-					</li>
-				{/each}
-			</ul>
-		</nav>
+	<div class="p-1 md:p-2">
+		<div class="card p-4">
+			<h4 class="h4 md:h3">Categories</h4>
+			<nav class="list-nav">
+				<ul>
+					{#each Object.entries(categoryIDLookup[collection]) as [id, values]}
+						<li>
+							<a
+								href={`/rankings/store/${store}/collection/${collection}/category/${values.category_id}`}
+								class={classesActive(
+									`/rankings/store/${store}/collection/${collection}/category/${values.category_id}`
+								)}>{values.category_name}</a
+							>
+						</li>
+					{/each}
+				</ul>
+			</nav>
+		</div>
 	</div>
 {/if}
