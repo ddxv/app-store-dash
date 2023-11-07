@@ -31,6 +31,8 @@
 				<AppRankTableShort myTable={androidApps} />
 			</div>
 		</div>
+	{:catch}
+		Trouble Loading Android App Ranks.
 	{/await}
 
 	{#await data.iOSAppRanks.streamed}
@@ -42,6 +44,8 @@
 				<AppRankTableShort myTable={iOSApps} />
 			</div>
 		</div>
+	{:catch}
+		Trouble Loading iOS App Ranks.
 	{/await}
 
 	{#await data.androidGameRanks.streamed}
@@ -53,6 +57,8 @@
 				<AppRankTableShort myTable={androidGames} />
 			</div>
 		</div>
+	{:catch}
+		Trouble loading android games
 	{/await}
 
 	{#await data.iOSGameRanks.streamed}
@@ -64,6 +70,8 @@
 				<AppRankTableShort myTable={iOSGames} />
 			</div>
 		</div>
+	{:catch}
+		Trouble Loading iOS Game Ranks.
 	{/await}
 </div>
 
