@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { ListBox, ListBoxItem } from '@skeletonlabs/skeleton';
-	// $: classesActive = (href: string) => (href === $page.url.pathname ? buttonSelectedColor : '');
+
 	$: classesActive = (href: string) =>
 		$page.url.pathname.startsWith(href) ? buttonSelectedColor : '';
 

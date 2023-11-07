@@ -124,36 +124,34 @@
 	</svelte:fragment>
 
 	<svelte:fragment slot="footer">
-		{#if $page.url.pathname == '/' || $page.url.pathname.startsWith('/collections') || $page.url.pathname.startsWith('/rankings')}
-			<AppBar
-				slotLead="p-0"
-				slotTrail="p-2"
-				spacing="space-y-0"
-				padding="p-0"
-				gap="gap-0"
-				class=" bg-gradient-to-tr from-indigo-500/50 via-purple-500/50 to-pink-500/50 lg:hidden"
-				gridColumns="grid-cols-[auto_1fr_auto]"
-			>
-				<svelte:fragment slot="lead">
-					<div class="inline-flex">
-						<NavTabs />
-					</div>
-				</svelte:fragment>
+		<AppBar
+			slotLead="p-0"
+			slotTrail="p-2"
+			spacing="space-y-0"
+			padding="p-0"
+			gap="gap-0"
+			class=" bg-gradient-to-tr from-indigo-500/50 via-purple-500/50 to-pink-500/50 lg:hidden"
+			gridColumns="grid-cols-[auto_1fr_auto]"
+		>
+			<svelte:fragment slot="lead">
+				<div class="inline-flex">
+					<NavTabs />
+				</div>
+			</svelte:fragment>
 
-				<svelte:fragment slot="trail">
-					<button class="lg:hidden btn flex mr-2 pl-0" on:click={drawerOpen}>
-						<h4 class="h4">FILTERS</h4>
-						<span>
-							<svg viewBox="0 0 100 80" class="fill-token w-4 h-4">
-								<rect width="100" height="20" />
-								<rect y="30" width="100" height="20" />
-								<rect y="60" width="100" height="20" />
-							</svg>
-						</span>
-					</button>
-				</svelte:fragment>
-			</AppBar>
-		{/if}
+			<svelte:fragment slot="trail">
+				<button class="lg:hidden btn flex mr-2 pl-0" on:click={drawerOpen}>
+					<h4 class="h4">FILTERS</h4>
+					<span>
+						<svg viewBox="0 0 100 80" class="fill-token w-4 h-4">
+							<rect width="100" height="20" />
+							<rect y="30" width="100" height="20" />
+							<rect y="60" width="100" height="20" />
+						</svg>
+					</span>
+				</button>
+			</svelte:fragment>
+		</AppBar>
 	</svelte:fragment>
 
 	<slot />
