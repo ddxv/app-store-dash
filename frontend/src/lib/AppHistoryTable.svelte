@@ -13,7 +13,7 @@
 <div class="card variant-glass-surface mt-2 md:mt-4 md:p-4">
 	<h4 class="h4 md:h3 p-2 mt-2">Recent Raw Data</h4>
 	<div class="overflow-x-auto pl-0">
-		<table class="table md:table-hover table-compact pl-0">
+		<table class="table md:table-hover table-compact">
 			<thead>
 				<tr>
 					<th class="table-cell-fit !pl-1 !pr-0">Date</th>

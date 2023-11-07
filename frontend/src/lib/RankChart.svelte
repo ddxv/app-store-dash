@@ -2,77 +2,27 @@
 	import { onMount } from 'svelte';
 	import * as echarts from 'echarts';
 
+	import { plotColors } from '../stores';
+
 	export let plotData;
 
-	export let maxValue: number | null = null;
+	export let maxValue: number | undefined = undefined;
+
+	let myInterval;
+	let topPadding;
+	let rightPadding;
+
+	export let narrowBool: boolean = false;
 
 	const dimensions = ['crawled_date'];
 
-	// const PyData2 = [
-	// 	{
-	// 		crawled_date: '2023-10-18',
-	// 		'GROSSING: GAME_ROLE_PLAYING': null,
-	// 		'TOP_FREE: GAME_ROLE_PLAYING': 48.0
-	// 	},
-	// 	{
-	// 		crawled_date: '2023-10-22',
-	// 		'GROSSING: GAME_ROLE_PLAYING': 185.0,
-	// 		'TOP_FREE: GAME_ROLE_PLAYING': null
-	// 	},
-	// 	{
-	// 		crawled_date: '2023-10-23',
-	// 		'GROSSING: GAME_ROLE_PLAYING': 170.0,
-	// 		'TOP_FREE: GAME_ROLE_PLAYING': null
-	// 	},
-	// 	{
-	// 		crawled_date: '2023-10-24',
-	// 		'GROSSING: GAME_ROLE_PLAYING': 160.0,
-	// 		'TOP_FREE: GAME_ROLE_PLAYING': null
-	// 	},
-	// 	{
-	// 		crawled_date: '2023-10-25',
-	// 		'GROSSING: GAME_ROLE_PLAYING': 160.0,
-	// 		'TOP_FREE: GAME_ROLE_PLAYING': null
-	// 	},
-	// 	{
-	// 		crawled_date: '2023-10-26',
-	// 		'GROSSING: GAME_ROLE_PLAYING': 159.0,
-	// 		'TOP_FREE: GAME_ROLE_PLAYING': null
-	// 	},
-	// 	{
-	// 		crawled_date: '2023-10-27',
-	// 		'GROSSING: GAME_ROLE_PLAYING': 159.0,
-	// 		'TOP_FREE: GAME_ROLE_PLAYING': null
-	// 	}
-	// ];
+	if (maxValue && maxValue <= 10) {
+		myInterval = 1;
+	} else {
+		myInterval = undefined;
+	}
 
-	// const plotSeries = [
-	// 	{
-	// 		type: 'line',
-	// 		symbolSize: 20,
-	// 		smooth: true,
-	// 		emphasis: {
-	// 			focus: 'series'
-	// 		},
-	// 		lineStyle: {
-	// 			width: 4
-	// 		}
-	// 	},
-	// 	{
-	// 		type: 'line',
-	// 		symbolSize: 20,
-	// 		smooth: true,
-	// 		emphasis: {
-	// 			focus: 'series'
-	// 		},
-
-	// 		lineStyle: {
-	// 			width: 4
-	// 		}
-	// 	}
-	// ];
-
-	const defaultSeries = {
+	const defaultSeries: echarts.SeriesOption = {
 		type: 'line',
 		symbolSize: 20,
 		smooth: true,
@@ -81,8 +31,7 @@
 		},
 		lineStyle: {
 			width: 4
-		},
-		endLabel: { show: true, formatter: '{a}', distance: 20, valueAnimation: true }
+		}
 	};
 
 	function makeSeries(plotData: Object[]) {
@@ -98,58 +47,29 @@
 
 	let myChartDiv: HTMLDivElement;
 	let myChart: echarts.ECharts;
+	if (narrowBool) {
+		// Legend at top!
+		topPadding = 40;
+		rightPadding = 20;
+	} else {
+		// No Legend at top, at right
+		topPadding = 20;
+		rightPadding = 55;
+	}
 
-	const myColors = [
-		'#636efa',
-		'#EF553B',
-		'#00cc96',
-		'#ab63fa',
-		'#FFA15A',
-		'#19d3f3',
-		'#FF6692',
-		'#B6E880',
-		'#FF97FF',
-		'#FECB52',
-		'#AA0DFE',
-		'#3283FE',
-		'#85660D',
-		'#782AB6',
-		'#565656',
-		'#1C8356',
-		'#16FF32',
-		'#F7E1A0',
-		'#E2E2E2',
-		'#1CBE4F',
-		'#C4451C',
-		'#DEA0FD',
-		'#FE00FA',
-		'#325A9B',
-		'#FEAF16',
-		'#F8A19F',
-		'#90AD1C',
-		'#F6222E',
-		'#1CFFCE',
-		'#2ED9FF',
-		'#B10DA1',
-		'#C075A6',
-		'#FC1CBF',
-		'#B00068',
-		'#FBE426',
-		'#FA0087'
-	];
+	let gridoption: echarts.GridComponentOption = {
+		left: 50,
+		top: topPadding,
+		right: rightPadding,
+		bottom: 40
+		// containLabel: true
+	};
 
-	let chartoption = {
-		color: myColors,
+	let chartoption: echarts.EChartsOption = {
+		color: plotColors,
 		dataset: { source: plotData },
 		dimensions: dimensions,
-		grid: {
-			x: 50, //left
-			y: 20, // top
-			x2: 55, // right
-			y2: 40 // bottom
-			// containLabel: true
-		},
-		// legend: {},
+		grid: gridoption,
 		tooltip: {
 			trigger: 'item'
 		},
@@ -174,11 +94,24 @@
 			},
 			inverse: true,
 			min: 1,
-			interval: 1,
+			interval: myInterval,
 			max: maxValue
 		},
 		series: plotSeries
 	};
+
+	if (narrowBool) {
+		// Legend at top!
+		chartoption['legend'] = {};
+	} else {
+		// No Legend at top, at right
+		defaultSeries['endLabel'] = {
+			show: true,
+			formatter: '{a}',
+			distance: 20,
+			valueAnimation: true
+		};
+	}
 
 	onMount(() => {
 		// Create the echarts instance

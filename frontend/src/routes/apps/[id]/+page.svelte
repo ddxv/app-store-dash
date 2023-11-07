@@ -156,15 +156,12 @@
 						{#if ranks.history && ranks.history.length > 0}
 							<div class="card variant-glass-surface mt-2 md:mt-4">
 								<h4 class="h4 md:h3 p-2 mt-2">Store Ranks Historical</h4>
-								<RankChart plotData={ranks.history} />
+								<RankChart plotData={ranks.history} narrowBool={true} />
 							</div>
 						{:else}
 							<p>No ranking data available for this app.</p>
 						{/if}
-						<p>No ranking data available for this app.</p>
 					{/if}
-					<!-- {:catch} -->
-					<!-- <p>Serverside: No ranking data available for this app.</p> -->
 				{/await}
 				{#if appdata.history_table}
 					<AppHistoryTable os={appdata.store_link} history_table={appdata.history_table} />
