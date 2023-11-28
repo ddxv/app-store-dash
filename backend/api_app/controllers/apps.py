@@ -240,14 +240,16 @@ class AppController(Controller):
         """
         logger.info(f"{self.path} start")
         apps_df = query_single_developer(developer_id)
+
         if apps_df.empty:
             raise NotFoundException(
                 f"Store ID not found: {developer_id!r}", status_code=404
             )
-        app_dict = apps_df.to_dict(orient="records")[0]
+        developer_name = apps_df.to_dict(orient="records")[0]["developer_name"]
+        apps_dict = apps_df.to_dict(orient="records")
 
         developer_apps = DeveloperApps(
-            developer_id=developer_id, title=app_dict["developer_name"], apps=app_dict
+            developer_id=developer_id, title=developer_name, apps=apps_dict
         )
         return developer_apps
 

@@ -255,32 +255,6 @@ def query_updated_timestamps(
     return df
 
 
-def query_search_developers(search_input: str, limit: int = 1000):
-    logger.info(f"Developer search: {search_input=}")
-    search_input = f"%%{search_input}%%"
-    sel_query = f"""SELECT
-                        d.*,
-                        pd.*,
-                        sa.*
-                    FROM
-                        app_urls_map aum
-                    LEFT JOIN pub_domains pd ON
-                        pd.id = aum.pub_domain
-                    LEFT JOIN store_apps sa ON
-                        sa.id = aum.store_app
-                    LEFT JOIN developers d ON
-                        d.id = sa.developer
-                    WHERE
-                        d.name ILIKE '{search_input}'
-                        OR d.developer_id ILIKE '{search_input}'
-                        OR pd.url ILIKE '{search_input}'
-                    LIMIT {limit}
-                    ;
-                    """
-    df = pd.read_sql(sel_query, DBCON.engine)
-    return df
-
-
 def get_all_tables_in_schema(schema_name: str):
     logger.info("Get checks tables")
     sel_schema = f"""SELECT table_name
@@ -507,16 +481,14 @@ def clean_app_df(df: pd.DataFrame) -> pd.DataFrame:
     play_link = "https://play.google.com/store/apps/details?id="
     play_dev_link = "https://play.google.com/store/apps/dev?id="
     ios_dev_link = "https://apps.apple.com/us/developer/-/id"
-
     df["store_link"] = (
         np.where(df["store"].str.contains("Google"), play_link, ios_link)
         + df["store_id"]
     )
     if "developer_id" in df.columns:
-        df["store_developer_link"] = (
-            np.where(df["store"].str.contains("Google"), play_dev_link, ios_dev_link)
-            + df["developer_id"]
-        )
+        df["store_developer_link"] = np.where(
+            df["store"].str.contains("Google"), play_dev_link, ios_dev_link
+        ) + df["developer_id"].astype(str)
 
     date_cols = ["created_at", "store_last_updated", "updated_at"]
     for x in date_cols:
@@ -545,6 +517,7 @@ def query_single_developer(developer_id: str):
     sel_query = """SELECT
                         d.name AS developer_name,
                         pd.url as developer_url,
+                        d.store as developer_store,
                         sa.*
                     FROM
                         app_urls_map aum
@@ -563,7 +536,7 @@ def query_single_developer(developer_id: str):
         DBCON.engine,
         params=(developer_id,),
     )
-    if df.empty:
+    if not df.empty:
         df = clean_app_df(df)
     return df
 

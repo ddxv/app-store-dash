@@ -5,12 +5,6 @@ export interface AppGroup {
 	title: string;
 }
 
-export interface DeveloperResponse {
-	results?: AppGroup;
-	status?: number;
-	error?: string;
-}
-
 export interface Category {
 	key: string;
 	google: AppGroup;
@@ -23,6 +17,11 @@ export interface CategoryResponse {
 	error?: string;
 }
 
+export interface DeveloperResponse {
+	results: { streamed: AppGroup };
+	status?: number;
+	error?: string;
+}
 export interface SearchResponse {
 	results: { streamed: AppGroup };
 	status?: number;
