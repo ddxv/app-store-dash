@@ -240,6 +240,7 @@ class AppController(Controller):
         """
         logger.info(f"{self.path} start")
         apps_df = query_single_developer(developer_id)
+
         if apps_df.empty:
             raise NotFoundException(
                 f"Store ID not found: {developer_id!r}", status_code=404

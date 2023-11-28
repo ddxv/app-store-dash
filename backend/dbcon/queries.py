@@ -481,16 +481,14 @@ def clean_app_df(df: pd.DataFrame) -> pd.DataFrame:
     play_link = "https://play.google.com/store/apps/details?id="
     play_dev_link = "https://play.google.com/store/apps/dev?id="
     ios_dev_link = "https://apps.apple.com/us/developer/-/id"
-
     df["store_link"] = (
         np.where(df["store"].str.contains("Google"), play_link, ios_link)
         + df["store_id"]
     )
     if "developer_id" in df.columns:
-        df["store_developer_link"] = (
-            np.where(df["store"].str.contains("Google"), play_dev_link, ios_dev_link)
-            + df["developer_id"]
-        )
+        df["store_developer_link"] = np.where(
+            df["store"].str.contains("Google"), play_dev_link, ios_dev_link
+        ) + df["developer_id"].astype(str)
 
     date_cols = ["created_at", "store_last_updated", "updated_at"]
     for x in date_cols:
