@@ -1,6 +1,6 @@
 # API & Dashboard for App Store Dash
 
-You can visit the site at [appgoblin.info](https://appgoblin.info)
+You can a production version of the site at [appgoblin.info](https://appgoblin.info)
 
 [<img src="/frontend/static/appgoblin_screenshot.png" width="500"/>](/frontend/static/appgoblin_screenshot.png)
 
