@@ -1,23 +1,23 @@
 repos:
   # Black
   - repo: https://github.com/psf/black
-    rev: 23.10.1
+    rev: 23.12.1
     hooks:
       - id: black
   # Ruff
   - repo: https://github.com/charliermarsh/ruff-pre-commit
-    rev: v0.1.2
+    rev: v0.1.11
     hooks:
       - id: ruff
   # Mypy
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.6.1
+    rev: v1.8.0
     hooks:
       - id: mypy
         additional_dependencies: ["types-requests", "types-PyYAML"]
   ## JS ##
   - repo: https://github.com/pre-commit/mirrors-prettier
-    rev: v3.0.3
+    rev: v4.0.0-alpha.8
     hooks:
       - id: prettier
         args: ['--config', 'frontend/.prettierrc', '--ignore-unknown', '--write', '--check']
@@ -29,7 +29,7 @@ repos:
           - prettier@2.8.8
           - prettier-plugin-svelte@2.10.1
   - repo: https://github.com/pre-commit/mirrors-eslint
-    rev: v8.52.0
+    rev: v9.0.0-alpha.0
     hooks:
       - id: eslint
         name: eslint
