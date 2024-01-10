@@ -12,7 +12,9 @@
 			<h1 class="h1 p-2 md:p-4">AppGoblin for App Store Data and Stats</h1>
 			<p class="p-2 md:p-4">
 				App Goblin is an open source project for collecting Google & Apple App Store data and
-				presenting it for marketers and users. <strong> Click here to learn more.</strong>
+				presenting it for developers and marketers to see how their app rankings. <strong>
+					Click here to learn more.</strong
+				>
 			</p>
 		</a>
 	</div>
