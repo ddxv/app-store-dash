@@ -42,7 +42,9 @@ def get_logger(mod_name: str, log_name: str = "dash"):
     filename = f"{log_dir}/{log_name}.log"
     # Writes to file
     rotate_handler = RotatingFileHandler(
-        filename=filename, maxBytes=50000000, backupCount=5
+        filename=filename,
+        maxBytes=50000000,
+        backupCount=5,
     )
     logging.basicConfig(
         format=format,
@@ -64,7 +66,7 @@ def get_logger(mod_name: str, log_name: str = "dash"):
 
     # create formatter
     formatter = logging.Formatter(
-        "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+        "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     )
 
     # add formatter to ch

@@ -1,14 +1,16 @@
+import datetime
+
 import numpy as np
 import pandas as pd
-import datetime
+from sqlalchemy import TextClause, text
+
 from config import get_logger
 from dbcon.connections import get_db_connection
-from sqlalchemy import text, TextClause
 
 logger = get_logger(__name__)
 
 
-def query_recent_apps(collection: str, limit=20):
+def query_recent_apps(collection: str, limit: int = 20) -> pd.DataFrame:
     logger.info(f"Query app_store for recent apps {collection=}")
     if collection == "new_weekly":
         table_name = "apps_new_weekly"
@@ -34,7 +36,7 @@ def query_recent_apps(collection: str, limit=20):
             "featured_image_url",
             "phone_image_url_1",
             "tablet_image_url_1",
-        ]
+        ],
     )
     sel_query = f"""
                 (
@@ -72,7 +74,7 @@ def query_recent_apps(collection: str, limit=20):
     groups = df.groupby("store")
     for _store, group in groups:
         overall = group.sort_values(["installs", "rating_count"], ascending=False).head(
-            limit
+            limit,
         )
         overall["mapped_category"] = "overall"
         df = pd.concat([df, overall], axis=0)
@@ -141,7 +143,8 @@ def query_developer_updated_timestamps(start_date: str = "2021-01-01") -> pd.Dat
 
 
 def query_app_updated_timestamps(
-    table_name: str, start_date: str = "2021-01-01"
+    table_name: str,
+    start_date: str = "2021-01-01",
 ) -> pd.DataFrame:
     logger.info(f"Query updated times: {table_name=} {start_date=}")
     audit_join, audit_select = "", ""
@@ -209,7 +212,8 @@ def query_app_updated_timestamps(
 
 
 def query_updated_timestamps(
-    table_name: str, start_date: str = "2021-01-01"
+    table_name: str,
+    start_date: str = "2021-01-01",
 ) -> pd.DataFrame:
     logger.info(f"Query updated times: {table_name=}")
     sel_query = f"""WITH my_dates AS (
@@ -255,7 +259,7 @@ def query_updated_timestamps(
     return df
 
 
-def get_all_tables_in_schema(schema_name: str):
+def get_all_tables_in_schema(schema_name: str) -> list[str]:
     logger.info("Get checks tables")
     sel_schema = f"""SELECT table_name
     FROM information_schema.tables
@@ -292,7 +296,11 @@ def get_appstore_categories() -> pd.DataFrame:
     df = pd.read_sql(sel_query, DBCON.engine)
     df["store"] = df["store"].replace({1: "android", 2: "ios"})
     df = pd.pivot_table(
-        data=df, index="category", values="app_count", columns="store", fill_value=0
+        data=df,
+        index="category",
+        values="app_count",
+        columns="store",
+        fill_value=0,
     ).reset_index()
     df["total_apps"] = df["android"] + df["ios"]
     df = df.sort_values("total_apps", ascending=False)
@@ -302,7 +310,7 @@ def get_appstore_categories() -> pd.DataFrame:
 
 def query_ranks_for_app(store_id: str, days=30) -> pd.DataFrame:
     start_date = (
-        datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(days=days)
+        datetime.datetime.now(datetime.UTC) - datetime.timedelta(days=days)
     ).strftime("%Y-%m-%d")
     sel_query = f"""SELECT
                     ar.crawled_date,
@@ -331,7 +339,10 @@ def query_ranks_for_app(store_id: str, days=30) -> pd.DataFrame:
 
 
 def get_most_recent_top_ranks(
-    store: int, collection_id: int, category_id: int, limit: int = 25
+    store: int,
+    collection_id: int,
+    category_id: int,
+    limit: int = 25,
 ) -> pd.DataFrame:
     sel_query = f"""SELECT
                 ar.rank,
@@ -358,10 +369,14 @@ def get_most_recent_top_ranks(
 
 
 def get_history_top_ranks(
-    store: int, collection_id: int, category_id: int, limit: int = 25, days=30
+    store: int,
+    collection_id: int,
+    category_id: int,
+    limit: int = 25,
+    days=30,
 ) -> pd.DataFrame:
     start_date = (
-        datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(days=days)
+        datetime.datetime.now(datetime.UTC) - datetime.timedelta(days=days)
     ).strftime("%Y-%m-%d")
     sel_query = f"""SELECT
             arr.crawled_date,
@@ -474,7 +489,7 @@ def clean_app_df(df: pd.DataFrame) -> pd.DataFrame:
     for col in string_nums:
         df[f"{col}_num"] = df[col]
         df[col] = df[col].apply(
-            lambda x: "N/A" if (x is None or np.isnan(x)) else "{:,.0f}".format(x)
+            lambda x: "N/A" if (x is None or np.isnan(x)) else f"{x:,.0f}",
         )
     df["rating"] = df["rating"].apply(lambda x: round(x, 2) if x else 0)
     ios_link = "https://apps.apple.com/us/app/-/id"
@@ -487,7 +502,9 @@ def clean_app_df(df: pd.DataFrame) -> pd.DataFrame:
     )
     if "developer_id" in df.columns:
         df["store_developer_link"] = np.where(
-            df["store"].str.contains("Google"), play_dev_link, ios_dev_link
+            df["store"].str.contains("Google"),
+            play_dev_link,
+            ios_dev_link,
         ) + df["developer_id"].astype(str)
 
     date_cols = ["created_at", "store_last_updated", "updated_at"]

@@ -1,27 +1,28 @@
 import datetime
-import pandas as pd
+import urllib.parse
+
 import numpy as np
+import pandas as pd
+from litestar import Controller, get
+from litestar.exceptions import NotFoundException
 
 from api_app.models import (
     AppDetail,
-    Collection,
     AppGroup,
-    Category,
-    DeveloperApps,
     AppRank,
+    Category,
+    Collection,
+    DeveloperApps,
 )
 from config import get_logger
 from dbcon.queries import (
     get_single_app,
-    query_recent_apps,
     query_app_history,
-    search_apps,
-    query_single_developer,
     query_ranks_for_app,
+    query_recent_apps,
+    query_single_developer,
+    search_apps,
 )
-from litestar import Controller, get
-from litestar.exceptions import NotFoundException
-import urllib.parse
 
 logger = get_logger(__name__)
 
@@ -46,7 +47,7 @@ def get_app_history(app_dict: dict) -> dict:
     app_hist = query_app_history(store_app)
     app_dict["histogram"] = app_hist.sort_values(["id"]).tail(1)["histogram"].values[0]
     app_dict["history_table"] = app_hist.drop(["id", "store_app"], axis=1).to_dict(
-        orient="records"
+        orient="records",
     )
     app_hist["group"] = app_name
     app_hist = app_hist[
@@ -58,7 +59,7 @@ def get_app_history(app_dict: dict) -> dict:
     app_hist = app_hist.sort_values(xaxis_col)
     app_hist["date_change"] = app_hist[xaxis_col] - app_hist[xaxis_col].shift(1)
     app_hist["days_changed"] = app_hist["date_change"].apply(
-        lambda x: np.nan if pd.isnull(x) else x.days
+        lambda x: np.nan if pd.isnull(x) else x.days,
     )
     change_metrics = []
     for metric in metrics:
@@ -90,7 +91,7 @@ def get_app_history(app_dict: dict) -> dict:
                 "installs_rate_of_change": "Installs Rate of Change",
                 "rating_count_rate_of_change": "Rating Count Rate of Change",
                 "review_count_rate_of_change": "Review Count Rate of Change",
-            }
+            },
         )
     )
     # TODO: KEEP?
@@ -145,10 +146,11 @@ def get_app_overview_dict(collection: str) -> Collection:
                 key=category_key,
                 google=AppGroup(title="Google", apps=google_dicts),
                 ios=AppGroup(title="iOS", apps=ios_dicts),
-            )
+            ),
         )
     response_collection = Collection(
-        title=COLLECTIONS[collection]["title"], categories=categories_dicts
+        title=COLLECTIONS[collection]["title"],
+        categories=categories_dicts,
     )
     return response_collection
 
@@ -158,13 +160,14 @@ class AppController(Controller):
 
     @get(path="/collections/{collection:str}", cache=3600)
     async def get_apps_overview(self, collection: str) -> Collection:
-        """
-        Handles a GET request for a list of apps
+        """Handles a GET request for a list of apps
 
         Args:
+        ----
             collection:collection
 
         Returns:
+        -------
             A dictionary representation of the list of apps for homepasge
         """
         logger.info(f"{self.path} start")
@@ -176,19 +179,20 @@ class AppController(Controller):
 
     @get(path="/{store_id:str}", cache=3600)
     async def get_app_detail(self, store_id: str) -> AppDetail:
-        """
-        Handles a GET request for a specific app.
+        """Handles a GET request for a specific app.
 
          store_id (str): The id of the app to retrieve.
 
-        Returns:
+        Returns
+        -------
             json
         """
         logger.info(f"{self.path} start")
         app_df = get_single_app(store_id)
         if app_df.empty:
             raise NotFoundException(
-                f"Store ID not found: {store_id!r}", status_code=404
+                f"Store ID not found: {store_id!r}",
+                status_code=404,
             )
         app_dict = app_df.to_dict(orient="records")[0]
         app_hist_dict = get_app_history(app_dict)
@@ -197,20 +201,22 @@ class AppController(Controller):
 
     @get(path="/{store_id:str}/ranks", cache=3600)
     async def app_ranks(self, store_id: str) -> AppRank:
-        """
-        Handles a GET request for a specific app ranks.
+        """Handles a GET request for a specific app ranks.
 
         Args:
+        ----
             store_id (str): The id of the store to retrieve.
 
         Returns:
+        -------
             json
         """
         logger.info(f"{self.path} start")
         df = query_ranks_for_app(store_id=store_id)
         if df.empty:
             raise NotFoundException(
-                f"Ranks not found for {store_id!r}", status_code=404
+                f"Ranks not found for {store_id!r}",
+                status_code=404,
             )
         df["rank_group"] = df["collection"] + ": " + df["category"]
         latest_dict = df[df["crawled_date"].max() == df["crawled_date"]][
@@ -229,13 +235,14 @@ class AppController(Controller):
 
     @get(path="/developers/{developer_id:str}", cache=3600)
     async def get_developer_apps(self, developer_id: str) -> DeveloperApps:
-        """
-        Handles a GET request for a specific developer.
+        """Handles a GET request for a specific developer.
 
         Args:
+        ----
             developer_id (str): The id of the developer to retrieve.
 
         Returns:
+        -------
             json
         """
         logger.info(f"{self.path} start")
@@ -243,13 +250,16 @@ class AppController(Controller):
 
         if apps_df.empty:
             raise NotFoundException(
-                f"Store ID not found: {developer_id!r}", status_code=404
+                f"Store ID not found: {developer_id!r}",
+                status_code=404,
             )
         developer_name = apps_df.to_dict(orient="records")[0]["developer_name"]
         apps_dict = apps_df.to_dict(orient="records")
 
         developer_apps = DeveloperApps(
-            developer_id=developer_id, title=developer_name, apps=apps_dict
+            developer_id=developer_id,
+            title=developer_name,
+            apps=apps_dict,
         )
         return developer_apps
 

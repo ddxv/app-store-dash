@@ -1,19 +1,20 @@
+import datetime
+
+import pandas as pd
+from litestar import Controller, get
+
 from api_app.models import (
     RankingOverview,
-    StoreCollections,
     StoreCategoryDetail,
+    StoreCollections,
     StoreRankings,
 )
 from config import get_logger
-import pandas as pd
-import datetime
-
 from dbcon.queries import (
-    get_store_collection_category_map,
-    get_most_recent_top_ranks,
     get_history_top_ranks,
+    get_most_recent_top_ranks,
+    get_store_collection_category_map,
 )
-from litestar import Controller, get
 
 logger = get_logger(__name__)
 
@@ -47,7 +48,7 @@ def ranking_map() -> RankingOverview:
                     collection_id=collection_id,
                     collection_name=collection_name,
                     categories=category_details,
-                )
+                ),
             )
         overview.stores_rankings.append(rankings)
     return overview
@@ -58,10 +59,10 @@ class RankingsController(Controller):
 
     @get(path="/", cache=True)
     async def get_ranking_overview(self) -> RankingOverview:
-        """
-        Handles a GET request for a list of ranking collecitons and categories
+        """Handles a GET request for a list of ranking collecitons and categories
 
-        Returns:
+        Returns
+        -------
             A dictionary representation of the list of categories
             each with an id, name, type and total of apps
         """
@@ -72,12 +73,15 @@ class RankingsController(Controller):
 
     @get(path="/{store:int}/{collection:int}/{category:int}/short", cache=40000)
     async def get_short_ranks_for_category(
-        self, store: int, collection: int, category: int
+        self,
+        store: int,
+        collection: int,
+        category: int,
     ) -> dict:
-        """
-        Handles a GET request for a store/collection/category rank
+        """Handles a GET request for a store/collection/category rank
 
-        Returns:
+        Returns
+        -------
             A dictionary representation of a category
             with ios and google apps
         """
@@ -93,12 +97,15 @@ class RankingsController(Controller):
 
     @get(path="/{store:int}/{collection:int}/{category:int}", cache=3600)
     async def get_ranks_for_category(
-        self, store: int, collection: int, category: int
+        self,
+        store: int,
+        collection: int,
+        category: int,
     ) -> dict:
-        """
-        Handles a GET request for a store/collection/category rank
+        """Handles a GET request for a store/collection/category rank
 
-        Returns:
+        Returns
+        -------
             A dictionary representation of a category
             with ios and google apps
         """
@@ -114,12 +121,15 @@ class RankingsController(Controller):
 
     @get(path="/{store:int}/{collection:int}/{category:int}/history", cache=3600)
     async def get_ranks_history_for_category(
-        self, store: int, collection: int, category: int
+        self,
+        store: int,
+        collection: int,
+        category: int,
     ) -> dict:
-        """
-        Handles a GET request for a store/collection/category rank
+        """Handles a GET request for a store/collection/category rank
 
-        Returns:
+        Returns
+        -------
             A list of dictionary representation of a category history
             with ios or google apps
         """
@@ -143,8 +153,7 @@ class RankingsController(Controller):
             .reset_index()
         )
         df.loc[
-            df["crawled_date"].dt.date
-            >= datetime.datetime.now(datetime.timezone.utc).date(),
+            df["crawled_date"].dt.date >= datetime.datetime.now(datetime.UTC).date(),
             "crawled_date",
         ] = last_crawled_date
         df["crawled_date"] = pd.to_datetime(df["crawled_date"]).dt.strftime("%Y-%m-%d")

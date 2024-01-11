@@ -1,11 +1,9 @@
 import numpy as np
-
-from api_app.models import CategoriesOverview, Category, AppGroup
-from config import get_logger
-
-
-from dbcon.queries import get_appstore_categories, get_category_top_apps_by_installs
 from litestar import Controller, get
+
+from api_app.models import AppGroup, CategoriesOverview, Category
+from config import get_logger
+from dbcon.queries import get_appstore_categories, get_category_top_apps_by_installs
 
 logger = get_logger(__name__)
 
@@ -54,10 +52,10 @@ class CategoryController(Controller):
 
     @get(path="/", cache=True)
     async def get_categories_overview(self) -> CategoriesOverview:
-        """
-        Handles a GET request for a list of categories
+        """Handles a GET request for a list of categories
 
-        Returns:
+        Returns
+        -------
             A dictionary representation of the list of categories
             each with an id, name, type and total of apps
         """
@@ -68,10 +66,10 @@ class CategoryController(Controller):
 
     @get(path="/{category_id:str}", cache=3600)
     async def get_category(self, category_id: str) -> Category:
-        """
-        Handles a GET request for a single category
+        """Handles a GET request for a single category
 
-        Returns:
+        Returns
+        -------
             A dictionary representation of a category
             with ios and google apps
         """

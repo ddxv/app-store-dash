@@ -9,6 +9,7 @@ repos:
     rev: v0.1.11
     hooks:
       - id: ruff
+        args: [--fix]
   # Mypy
   - repo: https://github.com/pre-commit/mirrors-mypy
     rev: v1.8.0
@@ -20,7 +21,14 @@ repos:
     rev: v4.0.0-alpha.8
     hooks:
       - id: prettier
-        args: ['--config', 'frontend/.prettierrc', '--ignore-unknown', '--write', '--check']
+        args:
+          [
+            "--config",
+            "frontend/.prettierrc",
+            "--ignore-unknown",
+            "--write",
+            "--check",
+          ]
         language: node
         entry: frontend/node_modules/.bin/prettier
         require_serial: true

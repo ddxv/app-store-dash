@@ -1,6 +1,7 @@
-from config import CONFIG, get_logger
 from sqlalchemy import create_engine
 from sshtunnel import SSHTunnelForwarder
+
+from config import CONFIG, get_logger
 
 logger = get_logger(__name__)
 
@@ -46,8 +47,9 @@ def get_postgres_server_ips(server_name: str) -> tuple[str, str]:
 
 class PostgresCon:
     """Class for managing the connection to postgres
-    Parameters:
-    ----------------
+
+    Parameters
+    ----------
         my_db: String, passed on init, string name of db
         my_env: String, passed on init, string name of env, 'staging' or 'prod'
     """
@@ -83,6 +85,6 @@ class PostgresCon:
             logger.info(f"Created PostgreSQL Engine {self.db_name}")
         except Exception as error:
             logger.exception(
-                f"PostgresCon failed to connect to {self.db_name}@{self.db_ip} {error=}"
+                f"PostgresCon failed to connect to {self.db_name}@{self.db_ip} {error=}",
             )
             self.db_name = None
