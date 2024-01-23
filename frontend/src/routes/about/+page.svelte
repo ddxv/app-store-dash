@@ -12,7 +12,7 @@
 		<div class="p-4">
 			<p>
 				Originally this came out of a curiosity I had about the IAB app-ads.txt standard in 2022. In
-				order to scrape app-ads.txt files I had to first get all the iOS and Android apps + their
+				order to scrape app-ads.txt files I had to first get 4,000,000+ iOS and Android apps + their
 				respective publisher URLs. While that project, like app-ads.txt itself, went unused, I
 				remained interested in letting the database of apps keep growing. Then in the fall of 2023
 				while on haitus from real work, I started working on an API and UI.
