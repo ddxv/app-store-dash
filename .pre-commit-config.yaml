@@ -1,12 +1,12 @@
 repos:
   # Black
   - repo: https://github.com/psf/black
-    rev: 23.12.1
+    rev: 24.1.1
     hooks:
       - id: black
   # Ruff
   - repo: https://github.com/charliermarsh/ruff-pre-commit
-    rev: v0.1.11
+    rev: v0.1.15
     hooks:
       - id: ruff
         args: [--fix]
@@ -34,10 +34,10 @@ repos:
         require_serial: true
         files: ^frontend/.*\.(js|jsx|ts|tsx|css|svelte)$
         additional_dependencies:
-          - prettier@2.8.8
-          - prettier-plugin-svelte@2.10.1
+          - prettier
+          - prettier-plugin-svelte
   - repo: https://github.com/pre-commit/mirrors-eslint
-    rev: v9.0.0-alpha.0
+    rev: v9.0.0-alpha.2
     hooks:
       - id: eslint
         name: eslint
