@@ -65,6 +65,7 @@ class RankingsController(Controller):
         -------
             A dictionary representation of the list of categories
             each with an id, name, type and total of apps
+
         """
         logger.info(f"{self.path} start")
         overview = ranking_map()
@@ -84,6 +85,7 @@ class RankingsController(Controller):
         -------
             A dictionary representation of a category
             with ios and google apps
+
         """
         logger.info(f"{self.path} start for store/collection/category")
         df = get_most_recent_top_ranks(
@@ -108,6 +110,7 @@ class RankingsController(Controller):
         -------
             A dictionary representation of a category
             with ios and google apps
+
         """
         logger.info(f"{self.path} start for store/collection/category")
         df = get_most_recent_top_ranks(
@@ -132,6 +135,7 @@ class RankingsController(Controller):
         -------
             A list of dictionary representation of a category history
             with ios or google apps
+
         """
         logger.info(f"{self.path} start for store/collection/category")
         df = get_history_top_ranks(

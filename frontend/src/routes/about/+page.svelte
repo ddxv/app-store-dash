@@ -37,6 +37,24 @@
 	</div>
 	<br />
 
+	<div class="card p-2 md:p-8">
+		<h3 class="h3 p-2 md:p-4">Request New Features:</h3>
+		<div class="p-4">
+			<p>
+				I'd love to keep working on features for Android and iOS app marketers. Please feel free to
+				contact via GitHub or LinkedIn if you have any feature requests.
+			</p>
+			<a href="https://jamesoclaire.com">
+				<h2>
+					<span>jamesoclaire.com</span>
+				</h2>
+				or
+			</a>
+			<a href="https://github.com/ddxv/app-store-dash">github.com/ddxv/app-store-dash</a>
+		</div>
+	</div>
+	<br />
+
 	<div class="card p-2 md:p-4">
 		<h3 class="h3 p-2 md:p-4">Open Source Tech Stack:</h3>
 		<div class="p-2 md:p-4">

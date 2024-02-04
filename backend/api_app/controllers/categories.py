@@ -58,6 +58,7 @@ class CategoryController(Controller):
         -------
             A dictionary representation of the list of categories
             each with an id, name, type and total of apps
+
         """
         logger.info(f"{self.path} start")
         overview = category_overview()
@@ -72,6 +73,7 @@ class CategoryController(Controller):
         -------
             A dictionary representation of a category
             with ios and google apps
+
         """
         logger.info(f"{self.path} start")
         df = get_category_top_apps_by_installs(category_id, limit=20)

@@ -169,6 +169,7 @@ class AppController(Controller):
         Returns:
         -------
             A dictionary representation of the list of apps for homepasge
+
         """
         logger.info(f"{self.path} start")
         print(f"collection={collection}")
@@ -186,6 +187,7 @@ class AppController(Controller):
         Returns
         -------
             json
+
         """
         logger.info(f"{self.path} start")
         app_df = get_single_app(store_id)
@@ -210,6 +212,7 @@ class AppController(Controller):
         Returns:
         -------
             json
+
         """
         logger.info(f"{self.path} start")
         df = query_ranks_for_app(store_id=store_id)
@@ -244,6 +247,7 @@ class AppController(Controller):
         Returns:
         -------
             json
+
         """
         logger.info(f"{self.path} start")
         apps_df = query_single_developer(developer_id)

@@ -13,7 +13,7 @@
 			<p class="p-2 md:p-4">
 				App Goblin is an open source project for collecting Google & Apple App Store data and
 				presenting it for developers and marketers to see how their app rankings. <strong>
-					Click here to learn more.</strong
+					Click here to learn more or request new features.</strong
 				>
 			</p>
 		</a>

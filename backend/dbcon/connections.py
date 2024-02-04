@@ -52,6 +52,7 @@ class PostgresCon:
     ----------
         my_db: String, passed on init, string name of db
         my_env: String, passed on init, string name of env, 'staging' or 'prod'
+
     """
 
     engine = None
