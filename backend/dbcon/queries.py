@@ -558,7 +558,7 @@ def query_single_developer(developer_id: str) -> pd.DataFrame:
     return df
 
 
-def search_apps(search_input: str, limit: int = 100) -> pd.Dataframe:
+def search_apps(search_input: str, limit: int = 100) -> pd.DataFrame:
     """Search apps by term in database."""
     logger.info(f"App search: {search_input=}")
     sel_query = """WITH devs AS (
