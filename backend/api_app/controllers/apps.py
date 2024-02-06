@@ -32,6 +32,7 @@ logger = get_logger(__name__)
 
 
 def get_search_results(search_term: str) -> AppGroup:
+    """Parse search term and return resulting APpGroup."""
     decoded_input = urllib.parse.unquote(search_term)
     df = search_apps(search_input=decoded_input, limit=20)
     logger.info(f"{decoded_input=} returned rows: {df.shape[0]}")
@@ -160,7 +161,7 @@ class AppController(Controller):
 
     @get(path="/collections/{collection:str}", cache=3600)
     async def get_apps_overview(self, collection: str) -> Collection:
-        """Handles a GET request for a list of apps
+        """Handle GET request for a list of apps.
 
         Args:
         ----
@@ -171,8 +172,8 @@ class AppController(Controller):
             A dictionary representation of the list of apps for homepasge
 
         """
-        logger.info(f"{self.path} start")
-        print(f"collection={collection}")
+        logger.info(f"{self.path} start {collection=}")
+        # print(f"collection={collection}")
         home_dict = get_app_overview_dict(collection=collection)
 
         logger.info(f"{self.path} return")
@@ -180,7 +181,7 @@ class AppController(Controller):
 
     @get(path="/{store_id:str}", cache=3600)
     async def get_app_detail(self, store_id: str) -> AppDetail:
-        """Handles a GET request for a specific app.
+        """Handle GET request for a specific app.
 
          store_id (str): The id of the app to retrieve.
 

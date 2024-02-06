@@ -529,7 +529,7 @@ def query_app_history(store_app: int) -> pd.DataFrame:
     return df
 
 
-def query_single_developer(developer_id: str):
+def query_single_developer(developer_id: str) -> pd.DataFrame:
     logger.info(f"Developers: {developer_id=}")
     sel_query = """SELECT
                         d.name AS developer_name,
@@ -558,7 +558,8 @@ def query_single_developer(developer_id: str):
     return df
 
 
-def search_apps(search_input: str, limit: int = 100):
+def search_apps(search_input: str, limit: int = 100) -> pd.Dataframe:
+    """Search apps by term in database."""
     logger.info(f"App search: {search_input=}")
     sel_query = """WITH devs AS (
                     SELECT
@@ -592,9 +593,9 @@ def search_apps(search_input: str, limit: int = 100):
                     *
                 FROM
                     store_apps sa
-                INNER JOIN devs ON
+                FULL OUTER JOIN devs ON
                     sa.developer = devs.developer_id
-                INNER JOIN apps ON
+                FULL OUTER JOIN apps ON
                     sa.id = apps.app_id
                 WHERE
                     apps.app_id IS NOT NULL
