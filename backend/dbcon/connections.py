@@ -47,6 +47,7 @@ def get_postgres_server_ips(server_name: str) -> tuple[str, str]:
 
 
 class PostgresCon:
+
     """Class for managing the connection to postgres
 
     Parameters

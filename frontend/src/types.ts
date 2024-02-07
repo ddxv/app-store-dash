@@ -118,6 +118,15 @@ export interface AppFullDetails {
 	myranks: {
 		streamed: Promise<{ latest: AppRankDetail[]; history: AppRankDetail[] }>;
 	};
+	myPackageInfo: {
+		streamed: Promise<{
+			permissions: string[];
+			trackers: string[];
+			ads: string[];
+			android: string[];
+			leftover: string[];
+		}>;
+	};
 }
 
 export interface AppHistoryInfo {

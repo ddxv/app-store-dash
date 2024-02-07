@@ -14,6 +14,9 @@ export const load: PageServerLoad = async ({ params, setHeaders, locals }) => {
 	const res = fetch(`http://localhost:8000/api/apps/${id}`);
 
 	const ranks = fetch(`http://localhost:8000/api/apps/${id}/ranks`);
+
+	const packageInfo = fetch(`http://localhost:8000/api/apps/${id}/packageinfo`);
+
 	try {
 		return {
 			myapp: {
@@ -39,6 +42,27 @@ export const load: PageServerLoad = async ({ params, setHeaders, locals }) => {
 			},
 			myranks: {
 				streamed: ranks
+					.then((resp) => {
+						if (resp.status === 200) {
+							return resp.json();
+						} else if (resp.status === 404) {
+							console.log('App Ranks Not found');
+							return 'App Not Found';
+						} else if (resp.status === 500) {
+							console.log('Ranks API Server error');
+							return 'Backend Error';
+						}
+					})
+					.then(
+						(json) => json,
+						(error) => {
+							console.log('Uncaught error', error);
+							return 'Uncaught Error';
+						}
+					)
+			},
+			myPackageInfo: {
+				streamed: packageInfo
 					.then((resp) => {
 						if (resp.status === 200) {
 							return resp.json();

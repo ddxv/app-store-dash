@@ -163,6 +163,7 @@ def get_app_overview_dict(collection: str) -> Collection:
 
 
 class AppController(Controller):
+
     """Controller holding all API endpoints for an app."""
 
     path = "/api/apps"
@@ -223,8 +224,6 @@ class AppController(Controller):
         """
         logger.info(f"{self.path} start")
 
-        # store_id='com.zhiliaoapp.musically'
-
         df = get_app_package_details(store_id)
 
         if df.empty:
@@ -242,13 +241,16 @@ class AppController(Controller):
         is_android_activity = df["android_name"].str.contains(
             r"^(com.android)|(android)",
         )
-
+        trackers = ")|(".join(TRACKER_PACKAGE_IDS)
+        trackers = f"^({trackers})"
         is_tracker = df["android_name"].str.contains(
-            f"^({")|(".join(TRACKER_PACKAGE_IDS)})",
+            trackers,
         )
 
+        ads = ")|(".join(AD_NETWORK_PACKAGE_IDS)
+        ads = f"({ads})"
         is_ads = df["android_name"].str.contains(
-            f"({")|(".join(AD_NETWORK_PACKAGE_IDS)})",
+            ads,
         )
 
         permissions_df = df[is_permission]
@@ -263,15 +265,17 @@ class AppController(Controller):
             & ~is_tracker
             & ~is_ads
         ]
-
-        trackers_dict = {
-            "trackers": tracker_df.android_name.tolist(),
-            "permissions": permissions_df.android_name.tolist(),
-            "ads": ads_df.android_name.tolist(),
-            "android": android_services_df.android_name.tolist(),
-            "leftovers": left_overs_df.android_name.tolist(),
-        }
-
+        permissions_list = permissions_df.android_name.tolist()
+        permissions_list = [
+            x.replace("android.permission.", "") for x in permissions_list
+        ]
+        trackers_dict = PackageDetails(
+            trackers=tracker_df.android_name.tolist(),
+            permissions=permissions_list,
+            ads=ads_df.android_name.tolist(),
+            android=android_services_df.android_name.tolist(),
+            leftovers=left_overs_df.android_name.tolist(),
+        )
         return trackers_dict
 
     @get(path="/{store_id:str}/ranks", cache=3600)

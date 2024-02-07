@@ -308,7 +308,7 @@ def get_appstore_categories() -> pd.DataFrame:
     return df
 
 
-def query_ranks_for_app(store_id: str, days=30) -> pd.DataFrame:
+def query_ranks_for_app(store_id: str, days: int = 30) -> pd.DataFrame:
     start_date = (
         datetime.datetime.now(datetime.UTC) - datetime.timedelta(days=days)
     ).strftime("%Y-%m-%d")
@@ -529,6 +529,7 @@ def get_app_package_details(store_id: str) -> pd.DataFrame:
 
 def clean_app_df(df: pd.DataFrame) -> pd.DataFrame:
     """Apply generic cleaning for a DF with app data from store_apps table."""
+    df["store"] = df["store"].replace({1: "Google Play", 2: "Apple App Store"})
     string_nums = ["installs", "review_count", "rating_count"]
     for col in string_nums:
         df[f"{col}_num"] = df[col]
