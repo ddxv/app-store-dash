@@ -1,5 +1,4 @@
 from sqlalchemy import create_engine
-from sshtunnel import SSHTunnelForwarder
 
 from config import CONFIG, get_logger
 
@@ -7,6 +6,8 @@ logger = get_logger(__name__)
 
 
 def open_ssh_tunnel(server_name: str):
+    from sshtunnel import SSHTunnelForwarder
+
     with SSHTunnelForwarder(
         (CONFIG[server_name]["host"], 22),  # Remote server IP and SSH port
         ssh_username=CONFIG[server_name]["os_user"],

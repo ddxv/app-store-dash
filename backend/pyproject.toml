@@ -5,9 +5,9 @@ description = "Backend server for app store dashboard"
 version = "0.0.1"
 
 [project.optional-dependencies]
-dev = ["pre-commit", "psycopg2-binary"]
+dev = ["pre-commit", "psycopg2-binary", "sshtunnel"]
 
-dependencies = ["uvicorn", "litestar[standard]"]
+dependencies = ["litestar[standard]", "pandas", "numpy", "sqlalchemy"]
 
 [build-system]
 requires = ["setuptools", "wheel"]

@@ -10,6 +10,17 @@ class AppDetail:
 
 
 @dataclass
+class PackageDetails:
+    """Lists of android_name from Manifest."""
+
+    permissions: list[str]
+    trackers: list[str]
+    ads: list[str]
+    leftovers: list[str]
+    android: list[str]
+
+
+@dataclass
 class AppGroup:
     title: str  # iOS or Google
     apps: list[AppDetail]

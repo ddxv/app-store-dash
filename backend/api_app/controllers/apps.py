@@ -19,9 +19,11 @@ from api_app.models import (
     Category,
     Collection,
     DeveloperApps,
+    PackageDetails,
 )
-from config import get_logger
+from config import AD_NETWORK_PACKAGE_IDS, TRACKER_PACKAGE_IDS, get_logger
 from dbcon.queries import (
+    get_app_package_details,
     get_single_app,
     query_app_history,
     query_ranks_for_app,
@@ -208,6 +210,70 @@ class AppController(Controller):
         app_dict["historyData"] = app_hist_dict
         return app_dict
 
+    @get(path="/{store_id:str}/packageinfo", cache=3600)
+    async def get_package_info(self: Self, store_id: str) -> PackageDetails:
+        """Handle GET request for a specific app.
+
+         store_id (str): The id of the app to retrieve.
+
+        Returns
+        -------
+            json
+
+        """
+        logger.info(f"{self.path} start")
+
+        # store_id='com.zhiliaoapp.musically'
+
+        df = get_app_package_details(store_id)
+
+        if df.empty:
+            msg = f"Store ID not found: {store_id!r}"
+            raise NotFoundException(
+                msg,
+                status_code=404,
+            )
+
+        is_permission = df["xml_path"] == "uses-permission"
+        is_matching_packages = df["android_name"].str.startswith(
+            ".".join(store_id.split(".")[:2]),
+        )
+
+        is_android_activity = df["android_name"].str.contains(
+            r"^(com.android)|(android)",
+        )
+
+        is_tracker = df["android_name"].str.contains(
+            f"^({")|(".join(TRACKER_PACKAGE_IDS)})",
+        )
+
+        is_ads = df["android_name"].str.contains(
+            f"({")|(".join(AD_NETWORK_PACKAGE_IDS)})",
+        )
+
+        permissions_df = df[is_permission]
+        android_services_df = df[is_android_activity]
+        tracker_df = df[is_tracker]
+        ads_df = df[is_ads]
+
+        left_overs_df = df[
+            ~is_permission
+            & ~is_matching_packages
+            & ~is_android_activity
+            & ~is_tracker
+            & ~is_ads
+        ]
+
+        trackers_dict = {
+            "trackers": tracker_df.android_name.tolist(),
+            "permissions": permissions_df.android_name.tolist(),
+            "ads": ads_df.android_name.tolist(),
+            "android": android_services_df.android_name.tolist(),
+            "leftovers": left_overs_df.android_name.tolist(),
+        }
+
+        return trackers_dict
+
     @get(path="/{store_id:str}/ranks", cache=3600)
     async def app_ranks(self: Self, store_id: str) -> AppRank:
         """Handle GET requests for a specific app ranks.
@@ -278,6 +344,13 @@ class AppController(Controller):
 
     @get(path="/search/{search_term:str}", cache=3600)
     async def search(self: Self, search_term: str) -> AppGroup:
+        """Search apps and developers.
+
+        Args:
+        ----
+            search_term: str the search term to search for. Can search packages, developers and app names.
+
+        """
         logger.info(f"{self.path} term={search_term}")
 
         apps_dict = get_search_results(search_term)
