@@ -308,7 +308,7 @@ def get_appstore_categories() -> pd.DataFrame:
     return df
 
 
-def query_ranks_for_app(store_id: str, days=30) -> pd.DataFrame:
+def query_ranks_for_app(store_id: str, days: int = 30) -> pd.DataFrame:
     start_date = (
         datetime.datetime.now(datetime.UTC) - datetime.timedelta(days=days)
     ).strftime("%Y-%m-%d")
@@ -459,6 +459,7 @@ def get_category_top_apps_by_installs(category: str, limit: int = 10) -> pd.Data
 
 
 def get_single_app(store_id: str) -> pd.DataFrame:
+    """Get basic app details for a single store_id."""
     logger.info(f"Query for single app_id={store_id}")
     where_str = f"WHERE store_id = '{store_id}'"
     where_stmt: TextClause = text(where_str)
@@ -483,7 +484,51 @@ def get_single_app(store_id: str) -> pd.DataFrame:
     return df
 
 
+def get_app_package_details(store_id: str) -> pd.DataFrame:
+    """Get basic app details for a single store_id."""
+    logger.info(f"Query for single app_id={store_id}")
+    where_str = f"store_id = '{store_id}'"
+    app_where_stmt: TextClause = text(where_str)
+    sel_query = f"""WITH latest_version_codes AS (
+                    SELECT
+                        vc.store_app,
+                        MAX(vc.version_code) AS max_version_code
+                    FROM
+                        version_codes AS vc
+                    GROUP BY
+                        vc.store_app
+                )
+                SELECT
+                    vc.store_app,
+                    sa.store_id,
+                    vd.*
+                FROM
+                    version_details AS vd
+                LEFT JOIN
+                    version_codes AS vc ON
+                    vd.version_code = vc.id
+                INNER JOIN
+                    latest_version_codes AS lvc ON
+                        vc.store_app = lvc.store_app
+                    AND vc.version_code = lvc.max_version_code
+                LEFT JOIN store_apps sa ON
+                    sa.id = vc.store_app
+                WHERE
+                    vd.android_name != ''
+                    AND
+                    {app_where_stmt}
+                ORDER BY
+                    store_app,
+                    xml_path,
+                    android_name
+                ;
+    """
+    df = pd.read_sql(sel_query, DBCON.engine)
+    return df
+
+
 def clean_app_df(df: pd.DataFrame) -> pd.DataFrame:
+    """Apply generic cleaning for a DF with app data from store_apps table."""
     df["store"] = df["store"].replace({1: "Google Play", 2: "Apple App Store"})
     string_nums = ["installs", "review_count", "rating_count"]
     for col in string_nums:
@@ -613,6 +658,47 @@ def search_apps(search_input: str, limit: int = 100) -> pd.DataFrame:
     )
     if not df.empty:
         df = clean_app_df(df)
+    return df
+
+
+def get_manifest_names() -> pd.DataFrame:
+    """Get manifest data.
+
+    Data is pulled for some apks and extracted from the AndroidManifest.xml
+    """
+    sel_query = """WITH latest_version_codes AS (
+                    SELECT
+                        vc.store_app,
+                        MAX(vc.version_code) AS max_version_code
+                    FROM
+                        version_codes AS vc
+                    GROUP BY
+                        vc.store_app
+                )
+                SELECT
+                    vc.store_app,
+                    sa.store_id,
+                    vd.*
+                FROM
+                    version_details AS vd
+                LEFT JOIN
+                    version_codes AS vc ON
+                    vd.version_code = vc.id
+                INNER JOIN
+                    latest_version_codes AS lvc ON
+                        vc.store_app = lvc.store_app
+                    AND vc.version_code = lvc.max_version_code
+                LEFT JOIN store_apps sa ON
+                    sa.id = vc.store_app
+                WHERE
+                    vd.android_name != ''
+                ORDER BY
+                    store_app,
+                    xml_path,
+                    android_name
+                ;
+    """
+    df = pd.read_sql(sel_query, DBCON.engine)
     return df
 
 

@@ -3,10 +3,23 @@ from dataclasses import dataclass, field
 
 @dataclass
 class AppDetail:
+
     """TODO: Fill out all details."""
 
     store_id: str
     name: str
+
+
+@dataclass
+class PackageDetails:
+
+    """Lists of android_name from Manifest."""
+
+    permissions: list[str]
+    trackers: list[str]
+    ads: list[str]
+    leftovers: list[str]
+    android: list[str]
 
 
 @dataclass

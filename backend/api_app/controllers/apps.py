@@ -1,5 +1,11 @@
+"""API for app data.
+
+/apps/{store_id} a specific app
+"""
+
 import datetime
 import urllib.parse
+from typing import Self
 
 import numpy as np
 import pandas as pd
@@ -13,9 +19,11 @@ from api_app.models import (
     Category,
     Collection,
     DeveloperApps,
+    PackageDetails,
 )
-from config import get_logger
+from config import AD_NETWORK_PACKAGE_IDS, TRACKER_PACKAGE_IDS, get_logger
 from dbcon.queries import (
+    get_app_package_details,
     get_single_app,
     query_app_history,
     query_ranks_for_app,
@@ -25,10 +33,6 @@ from dbcon.queries import (
 )
 
 logger = get_logger(__name__)
-
-"""
-/apps/{store_id} a specific app
-"""
 
 
 def get_search_results(search_term: str) -> AppGroup:
@@ -42,17 +46,20 @@ def get_search_results(search_term: str) -> AppGroup:
 
 
 def get_app_history(app_dict: dict) -> dict:
+    """Get the history of app scraping."""
     store_app = app_dict["id"]
     app_name = app_dict["name"]
 
     app_hist = query_app_history(store_app)
-    app_dict["histogram"] = app_hist.sort_values(["id"]).tail(1)["histogram"].values[0]
+    app_dict["histogram"] = (
+        app_hist.sort_values(["id"]).tail(1)["histogram"].to_numpy()[0]
+    )
     app_dict["history_table"] = app_hist.drop(["id", "store_app"], axis=1).to_dict(
         orient="records",
     )
     app_hist["group"] = app_name
     app_hist = app_hist[
-        ~((app_hist["installs"].isnull()) & (app_hist["rating_count"].isnull()))
+        ~((app_hist["installs"].isna()) & (app_hist["rating_count"].isna()))
     ]
     metrics = ["installs", "rating", "review_count", "rating_count"]
     group_col = "group"
@@ -60,7 +67,7 @@ def get_app_history(app_dict: dict) -> dict:
     app_hist = app_hist.sort_values(xaxis_col)
     app_hist["date_change"] = app_hist[xaxis_col] - app_hist[xaxis_col].shift(1)
     app_hist["days_changed"] = app_hist["date_change"].apply(
-        lambda x: np.nan if pd.isnull(x) else x.days,
+        lambda x: np.nan if pd.isna(x) else x.days,
     )
     change_metrics = []
     for metric in metrics:
@@ -95,7 +102,6 @@ def get_app_history(app_dict: dict) -> dict:
             },
         )
     )
-    # TODO: KEEP?
     app_hist = app_hist.replace([np.inf, -np.inf], np.nan)
     app_hist = app_hist.dropna(axis="columns", how="all")
     if app_hist.empty:
@@ -110,7 +116,6 @@ def get_app_history(app_dict: dict) -> dict:
     change_dicts = []
     for metric in final_metrics:
         meltdf = mymelt.loc[mymelt.group == metric]
-        # meltdf = meltdf.rename(columns={"value": "percentage_value"})
         melteddicts = meltdf.to_dict(orient="records")
         if "Rate of Change" in metric:
             change_dicts += melteddicts
@@ -121,7 +126,8 @@ def get_app_history(app_dict: dict) -> dict:
 
 
 def get_string_date_from_days_ago(days: int) -> str:
-    mydate = datetime.datetime.utcnow() - datetime.timedelta(days=days)
+    """Get the stringified date from x days ago."""
+    mydate = datetime.datetime.now(datetime.UTC) - datetime.timedelta(days=days)
     mydate_str = mydate.strftime("%Y-%m-%d")
     return mydate_str
 
@@ -157,10 +163,13 @@ def get_app_overview_dict(collection: str) -> Collection:
 
 
 class AppController(Controller):
+
+    """Controller holding all API endpoints for an app."""
+
     path = "/api/apps"
 
     @get(path="/collections/{collection:str}", cache=3600)
-    async def get_apps_overview(self, collection: str) -> Collection:
+    async def get_apps_overview(self: Self, collection: str) -> Collection:
         """Handle GET request for a list of apps.
 
         Args:
@@ -173,14 +182,13 @@ class AppController(Controller):
 
         """
         logger.info(f"{self.path} start {collection=}")
-        # print(f"collection={collection}")
         home_dict = get_app_overview_dict(collection=collection)
 
         logger.info(f"{self.path} return")
         return home_dict
 
     @get(path="/{store_id:str}", cache=3600)
-    async def get_app_detail(self, store_id: str) -> AppDetail:
+    async def get_app_detail(self: Self, store_id: str) -> AppDetail:
         """Handle GET request for a specific app.
 
          store_id (str): The id of the app to retrieve.
@@ -193,8 +201,9 @@ class AppController(Controller):
         logger.info(f"{self.path} start")
         app_df = get_single_app(store_id)
         if app_df.empty:
+            msg = f"Store ID not found: {store_id!r}"
             raise NotFoundException(
-                f"Store ID not found: {store_id!r}",
+                msg,
                 status_code=404,
             )
         app_dict = app_df.to_dict(orient="records")[0]
@@ -202,9 +211,76 @@ class AppController(Controller):
         app_dict["historyData"] = app_hist_dict
         return app_dict
 
+    @get(path="/{store_id:str}/packageinfo", cache=3600)
+    async def get_package_info(self: Self, store_id: str) -> PackageDetails:
+        """Handle GET request for a specific app.
+
+         store_id (str): The id of the app to retrieve.
+
+        Returns
+        -------
+            json
+
+        """
+        logger.info(f"{self.path} start")
+
+        df = get_app_package_details(store_id)
+
+        if df.empty:
+            msg = f"Store ID not found: {store_id!r}"
+            raise NotFoundException(
+                msg,
+                status_code=404,
+            )
+
+        is_permission = df["xml_path"] == "uses-permission"
+        is_matching_packages = df["android_name"].str.startswith(
+            ".".join(store_id.split(".")[:2]),
+        )
+
+        is_android_activity = df["android_name"].str.contains(
+            r"^(com.android)|(android)",
+        )
+        trackers = ")|(".join(TRACKER_PACKAGE_IDS)
+        trackers = f"^({trackers})"
+        is_tracker = df["android_name"].str.contains(
+            trackers,
+        )
+
+        ads = ")|(".join(AD_NETWORK_PACKAGE_IDS)
+        ads = f"({ads})"
+        is_ads = df["android_name"].str.contains(
+            ads,
+        )
+
+        permissions_df = df[is_permission]
+        android_services_df = df[is_android_activity]
+        tracker_df = df[is_tracker]
+        ads_df = df[is_ads]
+
+        left_overs_df = df[
+            ~is_permission
+            & ~is_matching_packages
+            & ~is_android_activity
+            & ~is_tracker
+            & ~is_ads
+        ]
+        permissions_list = permissions_df.android_name.tolist()
+        permissions_list = [
+            x.replace("android.permission.", "") for x in permissions_list
+        ]
+        trackers_dict = PackageDetails(
+            trackers=tracker_df.android_name.tolist(),
+            permissions=permissions_list,
+            ads=ads_df.android_name.tolist(),
+            android=android_services_df.android_name.tolist(),
+            leftovers=left_overs_df.android_name.tolist(),
+        )
+        return trackers_dict
+
     @get(path="/{store_id:str}/ranks", cache=3600)
-    async def app_ranks(self, store_id: str) -> AppRank:
-        """Handles a GET request for a specific app ranks.
+    async def app_ranks(self: Self, store_id: str) -> AppRank:
+        """Handle GET requests for a specific app ranks.
 
         Args:
         ----
@@ -218,8 +294,9 @@ class AppController(Controller):
         logger.info(f"{self.path} start")
         df = query_ranks_for_app(store_id=store_id)
         if df.empty:
+            msg = f"Ranks not found for {store_id!r}"
             raise NotFoundException(
-                f"Ranks not found for {store_id!r}",
+                msg,
                 status_code=404,
             )
         df["rank_group"] = df["collection"] + ": " + df["category"]
@@ -238,8 +315,8 @@ class AppController(Controller):
         return rank_dict
 
     @get(path="/developers/{developer_id:str}", cache=3600)
-    async def get_developer_apps(self, developer_id: str) -> DeveloperApps:
-        """Handles a GET request for a specific developer.
+    async def get_developer_apps(self: Self, developer_id: str) -> DeveloperApps:
+        """Handle GET request for a specific developer.
 
         Args:
         ----
@@ -254,8 +331,9 @@ class AppController(Controller):
         apps_df = query_single_developer(developer_id)
 
         if apps_df.empty:
+            msg = f"Store ID not found: {developer_id!r}"
             raise NotFoundException(
-                f"Store ID not found: {developer_id!r}",
+                msg,
                 status_code=404,
             )
         developer_name = apps_df.to_dict(orient="records")[0]["developer_name"]
@@ -269,7 +347,14 @@ class AppController(Controller):
         return developer_apps
 
     @get(path="/search/{search_term:str}", cache=3600)
-    async def search(self, search_term: str) -> AppGroup:
+    async def search(self: Self, search_term: str) -> AppGroup:
+        """Search apps and developers.
+
+        Args:
+        ----
+            search_term: str the search term to search for. Can search packages, developers and app names.
+
+        """
         logger.info(f"{self.path} term={search_term}")
 
         apps_dict = get_search_results(search_term)

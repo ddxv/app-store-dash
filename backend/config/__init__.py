@@ -94,3 +94,11 @@ with open(CONFIG_FILE_PATH, "rb") as f:
     CONFIG = tomllib.load(f)
 
 DATE_FORMAT = "%Y-%m-%d"
+
+AD_NETWORK_PACKAGE_IDS = [
+    "com.ironsource",
+    "com.unity3d.services",
+    "com.unity3d.ads",
+    "com.applovin",
+]
+TRACKER_PACKAGE_IDS = ["com.appsflyer", "com.facebook", "com.adjust", "com.kochava"]

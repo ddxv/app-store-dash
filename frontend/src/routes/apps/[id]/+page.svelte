@@ -225,12 +225,46 @@
 						<p>First Crawled: {appdata.created_at}</p>
 					</div>
 				</div>
+
+				{#await data.myPackageInfo.streamed}
+					Loading ...
+				{:then packageInfo}
+					{#if typeof packageInfo == 'string'}
+						<p>Permissions info not yet available for this app.</p>
+					{:else}
+						{#if packageInfo.permissions && packageInfo.permissions.length > 0}
+							<h4 class="h4 md:h3 p-2">Permissions</h4>
+							<div class="px-4 md:px-8">
+								{#each packageInfo.permissions as permission}
+									<p>{permission}</p>
+								{/each}
+							</div>
+						{/if}
+						{#if packageInfo.trackers && packageInfo.trackers.length > 0}
+							<h4 class="h4 md:h3 p-2">Trackers</h4>
+							<div class="px-4 md:px-8">
+								{#each packageInfo.trackers as tracker}
+									<p>{tracker}</p>
+								{/each}
+							</div>
+						{/if}
+						{#if packageInfo.ads && packageInfo.ads.length > 0}
+							<h4 class="h4 md:h3 p-2">Ad Networks</h4>
+							<div class="px-4 md:px-8">
+								{#each packageInfo.ads as ad}
+									<p>{ad}</p>
+								{/each}
+							</div>
+						{/if}
+					{/if}
+				{/await}
 			</div>
 		</section>
 	{/if}
 {:catch}
 	<p>The server caught an error. Please try again or try another app.</p>
 {/await}
+
 <a href="/"><p>Back to Home</p></a>
 
 <style>
