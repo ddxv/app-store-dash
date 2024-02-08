@@ -232,14 +232,6 @@
 					{#if typeof packageInfo == 'string'}
 						<p>Permissions info not yet available for this app.</p>
 					{:else}
-						{#if packageInfo.permissions && packageInfo.permissions.length > 0}
-							<h4 class="h4 md:h3 p-2">Permissions</h4>
-							<div class="px-4 md:px-8">
-								{#each packageInfo.permissions as permission}
-									<p>{permission}</p>
-								{/each}
-							</div>
-						{/if}
 						{#if packageInfo.trackers && packageInfo.trackers.length > 0}
 							<h4 class="h4 md:h3 p-2">Trackers</h4>
 							<div class="px-4 md:px-8">
@@ -253,6 +245,22 @@
 							<div class="px-4 md:px-8">
 								{#each packageInfo.ads as ad}
 									<p>{ad}</p>
+								{/each}
+							</div>
+						{/if}
+						{#if packageInfo.permissions && packageInfo.permissions.length > 0}
+							<h4 class="h4 md:h3 p-2">Permissions</h4>
+							<div class="px-4 md:px-8">
+								{#each packageInfo.permissions as permission}
+									<p>{permission}</p>
+								{/each}
+							</div>
+						{/if}
+						{#if packageInfo.leftover && packageInfo.leftover.length > 0}
+							<h4 class="h4 md:h3 p-2">Other Services</h4>
+							<div class="px-4 md:px-8">
+								{#each packageInfo.leftover as leftover}
+									<p>{leftover}</p>
 								{/each}
 							</div>
 						{/if}
