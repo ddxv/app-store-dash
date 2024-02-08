@@ -1,3 +1,4 @@
+"""Query database for backend API."""
 import datetime
 import pathlib
 
@@ -41,6 +42,7 @@ QUERY_STORE_COLLECTION_CATEGORY_MAP = load_sql_file(
 
 
 def get_recent_apps(collection: str, limit: int = 20) -> pd.DataFrame:
+    """Get app collections by time."""
     logger.info(f"Query app_store for recent apps {collection=}")
     if collection == "new_weekly":
         table_name = "apps_new_weekly"
@@ -67,7 +69,7 @@ def get_recent_apps(collection: str, limit: int = 20) -> pd.DataFrame:
         "tablet_image_url_1",
     ]
     my_cols = ", ".join(cols)
-    # ruff:noqa
+    # ruff:noqa:S608
     sel_query = f"""WITH NumberedRows AS (
                     SELECT 
                         {my_cols},
@@ -96,6 +98,7 @@ def get_recent_apps(collection: str, limit: int = 20) -> pd.DataFrame:
 
 
 def get_appstore_categories() -> pd.DataFrame:
+    """Get categories for both appstores."""
     df = pd.read_sql(QUERY_APPSTORE_CATEGORIES, DBCON.engine)
     df["store"] = df["store"].replace({1: "android", 2: "ios"})
     df = pd.pivot_table(
@@ -111,6 +114,7 @@ def get_appstore_categories() -> pd.DataFrame:
 
 
 def get_ranks_for_app(store_id: str, days: int = 30) -> pd.DataFrame:
+    """Get appstore ranks for a specific app."""
     start_date = (
         datetime.datetime.now(datetime.UTC) - datetime.timedelta(days=days)
     ).strftime("%Y-%m-%d")
@@ -128,6 +132,7 @@ def get_most_recent_top_ranks(
     category_id: int,
     limit: int = 25,
 ) -> pd.DataFrame:
+    """Get the latest top ranks for a category."""
     df = pd.read_sql(
         QUERY_MOST_RECENT_TOP_RANKS,
         con=DBCON.engine,
@@ -148,6 +153,7 @@ def get_history_top_ranks(
     limit: int = 25,
     days: int = 30,
 ) -> pd.DataFrame:
+    """Get appstore rank history for plotting."""
     start_date = (
         datetime.datetime.now(datetime.UTC) - datetime.timedelta(days=days)
     ).strftime("%Y-%m-%d")
@@ -166,11 +172,13 @@ def get_history_top_ranks(
 
 
 def get_store_collection_category_map() -> pd.DataFrame:
+    """Get store collection and category map."""
     df = pd.read_sql(QUERY_STORE_COLLECTION_CATEGORY_MAP, con=DBCON.engine)
     return df
 
 
 def get_category_top_apps_by_installs(category: str, limit: int = 10) -> pd.DataFrame:
+    """Get category top apps sorted by installs."""
     logger.info(f"Query {category=} for top installs")
     df = pd.read_sql(
         QUERY_CATEGORY_TOP_APPS_BY_INSTALLS,
@@ -235,13 +243,14 @@ def clean_app_df(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def get_app_history(store_app: int) -> pd.DataFrame:
+    """Get scraping history for an app."""
     logger.info(f"Query for history single app_id={store_app}")
-    # TODO: Previously the store_app was single quoted, despite being an int?
     df = pd.read_sql(QUERY_APP_HISTORY, DBCON.engine, params={"store_app": store_app})
     return df
 
 
 def get_single_developer(developer_id: str) -> pd.DataFrame:
+    """Get single developer details."""
     logger.info(f"Developers: {developer_id=}")
     df = pd.read_sql(
         QUERY_SINGLE_DEVELOPER,
