@@ -69,7 +69,6 @@ def get_recent_apps(collection: str, limit: int = 20) -> pd.DataFrame:
         "tablet_image_url_1",
     ]
     my_cols = ", ".join(cols)
-    # ruff:noqa:S608
     sel_query = f"""WITH NumberedRows AS (
                     SELECT 
                         {my_cols},
