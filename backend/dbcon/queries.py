@@ -25,7 +25,6 @@ QUERY_CATEGORY_TOP_APPS_BY_INSTALLS = load_sql_file(
     "query_category_top_apps_by_installs.sql",
 )
 QUERY_RANKS_FOR_APP = load_sql_file("query_ranks_for_app.sql")
-QUERY_RECENT_APPS = load_sql_file("query_recent_apps.sql")
 QUERY_MOST_RECENT_TOP_RANKS = load_sql_file("query_most_recent_top_ranks.sql")
 QUERY_HISTORY_TOP_RANKS = load_sql_file("query_history_top_ranks.sql")
 QUERY_APPSTORE_CATEGORIES = load_sql_file("query_appstore_categories.sql")
@@ -68,11 +67,23 @@ def get_recent_apps(collection: str, limit: int = 20) -> pd.DataFrame:
         "tablet_image_url_1",
     ]
     my_cols = ", ".join(cols)
-    df = pd.read_sql(
-        QUERY_RECENT_APPS,
-        con=DBCON.engine,
-        params={"table_name": table_name, "my_cols": my_cols, "limit": limit},
-    )
+    # ruff:noqa
+    sel_query = f"""WITH NumberedRows AS (
+                    SELECT 
+                        {my_cols},
+                        ROW_NUMBER() OVER (PARTITION BY store, mapped_category
+                    ORDER BY 
+                        CASE WHEN store = 1 THEN installs ELSE rating_count END DESC NULLS LAST
+                ) AS rn
+                FROM {table_name}
+            )
+            SELECT 
+                {my_cols}
+            FROM NumberedRows
+            WHERE rn <= {limit}
+            ;
+            """
+    df = pd.read_sql(sel_query, con=DBCON.engine)
     groups = df.groupby("store")
     for _store, group in groups:
         overall = group.sort_values(["installs", "rating_count"], ascending=False).head(
