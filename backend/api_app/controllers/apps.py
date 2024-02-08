@@ -86,9 +86,8 @@ def app_history(app_dict: dict) -> dict:
         )
         change_metrics.append(metric + "_rate_of_change")
         change_metrics.append(metric + "_avg_per_day")
-
     app_hist = (
-        app_hist[[group_col, xaxis_col] + change_metrics]
+        app_hist[[group_col, xaxis_col, *change_metrics]]
         .drop(app_hist.index[0])
         .rename(
             columns={
@@ -133,6 +132,7 @@ def get_string_date_from_days_ago(days: int) -> str:
 
 
 def get_app_overview_dict(collection: str) -> Collection:
+    """Get collection overview."""
     category_limit = 20
     df = get_recent_apps(collection=collection, limit=category_limit)
     categories_dicts = []
@@ -241,13 +241,22 @@ class AppController(Controller):
         is_android_activity = df["android_name"].str.contains(
             r"^(com.android)|(android)",
         )
-        trackers = ")|(".join(TRACKER_PACKAGE_IDS)
+
+        all_trackers_ids = [
+            tracker for trackers in TRACKER_PACKAGE_IDS.values() for tracker in trackers
+        ]
+
+        trackers = ")|(".join(all_trackers_ids)
         trackers = f"^({trackers})"
         is_tracker = df["android_name"].str.contains(
             trackers,
         )
-
-        ads = ")|(".join(AD_NETWORK_PACKAGE_IDS)
+        all_network_ids = [
+            network
+            for networks in AD_NETWORK_PACKAGE_IDS.values()
+            for network in networks
+        ]
+        ads = ")|(".join(all_network_ids)
         ads = f"({ads})"
         is_ads = df["android_name"].str.contains(
             ads,
@@ -307,7 +316,9 @@ class AppController(Controller):
         pdf = df[["crawled_date", "rank", "rank_group"]].sort_values("crawled_date")
         # This format is for echarts, expects data series as columns
         hist_dict = (
-            pdf.pivot(columns=["rank_group"], index=["crawled_date"], values="rank")
+            pdf.pivot_table(
+                columns=["rank_group"], index=["crawled_date"], values="rank",
+            )
             .reset_index()
             .to_dict(orient="records")
         )

@@ -1,3 +1,4 @@
+"""Init functions for whole app."""
 import logging
 import pathlib
 import sys
@@ -18,7 +19,8 @@ LOG_DIR = pathlib.Path(CONFIG_DIR, pathlib.Path("logs"))
 MODULE_DIR = pathlib.Path(__file__).resolve().parent.parent
 
 
-def handle_exception(exc_type, exc_value, exc_traceback):
+def handle_exception(exc_type, exc_value, exc_traceback) -> None:  # noqa: ANN001
+    """Handle uncaught exceptions for whole app."""
     if issubclass(exc_type, KeyboardInterrupt):
         sys.__excepthook__(exc_type, exc_value, exc_traceback)
         return
@@ -26,6 +28,7 @@ def handle_exception(exc_type, exc_value, exc_traceback):
 
 
 def check_config_dirs() -> None:
+    """Check if config dirs exist and if not create."""
     dirs = [TOP_CONFIGDIR, CONFIG_DIR, LOG_DIR]
     for _dir in dirs:
         if not pathlib.Path.exists(_dir):
@@ -39,7 +42,7 @@ def get_logger(mod_name: str, log_name: str = "dash") -> logging.Logger:
     log_dir = pathlib.Path(HOME, pathlib.Path(f".config/{PROJECT_NAME}/logs"))
     if not pathlib.Path.exists(log_dir):
         pathlib.Path.mkdir(log_dir, exist_ok=True)
-        print(f"Couldn't find {log_dir=} so it was created.")
+        print(f"Couldn't find {log_dir=} so it was created.")  # noqa: T201
     filename = f"{log_dir}/{log_name}.log"
     # Writes to file
     rotate_handler = RotatingFileHandler(
@@ -94,10 +97,59 @@ with CONFIG_FILE_PATH.open("rb") as f:
 
 DATE_FORMAT = "%Y-%m-%d"
 
-AD_NETWORK_PACKAGE_IDS = [
-    "com.ironsource",
-    "com.unity3d.services",
-    "com.unity3d.ads",
-    "com.applovin",
-]
-TRACKER_PACKAGE_IDS = ["com.appsflyer", "com.facebook", "com.adjust", "com.kochava"]
+AD_NETWORK_PACKAGE_IDS = {
+    "Google AdMob": [
+        "com.google.ads",
+        "com.google.android.gms.ads.AdView",
+        "com.google.android.gms.ads.AdActivity",
+        "com.google.android.gms.ads.AdRequest",
+        "com.google.android.gms.ads.mediation",
+        "com.google.android.gms.ads.doubleclick",
+        "com.google.android.ads",
+        "com.google.unity.ads",
+        "com.google.android.gms.admob",
+        "com.google.firebase.firebase_ads",
+    ],
+    "ironSource": ["com.ironsource"],
+    "Unity Ads": ["com.unity3d.services", "com.unity3d.ads"],
+    "AppLovin": ["com.applovin"],
+    "Facebook Ads": ["com.facebook.ads"],
+    "InMobi": ["com.inmobi", "in.inmobi"],
+    "AdColony": ["com.adcolony", "com.jirbo.adcolony"],
+    "Vungle": ["com.vungle.publisher", "com.vungle.warren"],
+    "Amazon Advertisement": ["com.amazon.device.ads"],
+    "One Signal": ["com.onesignal"],
+    "Flurr": ["com.flurry"],
+    "ByteDance: Pangle": ["com.bytedance", "com.pgl", "com.pangle.global"],
+    "Mintegral": ["com.mintegral", "com.mbridge.msdk"],
+    "ChartBoost": ["com.chartboost.sdk"],
+    "TapJoy": ["com.tapjoy"],
+    "Fyber": ["com.fyber"],
+}
+TRACKER_PACKAGE_IDS = {
+    "Firebase": [
+        "com.google.firebase.analytics",
+        "com.google.android.gms.measurement",
+        "com.google.firebase.firebase_analytics",
+    ],
+    "AppsFlyer": ["com.appsflyer"],
+    "Kochava": ["com.kochava"],
+    "Adjust": ["com.adjust.sdk", "com.adjust.android.sdk"],
+    "Facebook Analytics": [
+        "com.facebook.appevents",
+        "com.facebook.marketing",
+        "com.facebook.CampaignTrackingReceiver",
+    ],
+    "Google Analytics": [
+        "com.google.android.apps.analytics",
+        "com.google.android.gms.analytics",
+        "com.google.analytics",
+    ],
+    "IAB Open Measurement": [
+        "com.iab.omid.library",
+        "com.prime31.util.IabHelperImpl",
+        "com.prime31.IAB.",
+    ],
+    "Tenjin": ["com.tenjin.android"],
+    "AirBridge": ["io.airbridge"],
+}
