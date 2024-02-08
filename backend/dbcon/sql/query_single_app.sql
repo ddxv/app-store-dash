@@ -1,14 +1,13 @@
 SELECT
-                        sa.*,
-                        d.developer_id,
-                        d.name as developer_name,
-                        pd.url as developer_url
-                    FROM store_apps sa
-                    LEFT JOIN developers d
-                        ON d.id = sa.developer
-                    LEFT JOIN app_urls_map aum
-                        ON aum.store_app = sa.id
-                    LEFT JOIN pub_domains pd
-                        ON pd.id = aum.pub_domain
-		WHERE store_id = :store_id
-                    ;
+    sa.*,
+    d.developer_id,
+    d.name AS developer_name,
+    pd.url AS developer_url
+FROM store_apps AS sa
+LEFT JOIN developers AS d
+    ON sa.developer = d.id
+LEFT JOIN app_urls_map AS aum
+    ON sa.id = aum.store_app
+LEFT JOIN pub_domains AS pd
+    ON aum.pub_domain = pd.id
+WHERE sa.store_id = :store_id;

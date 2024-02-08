@@ -29,7 +29,6 @@ QUERY_RANKS_FOR_APP = load_sql_file("query_ranks_for_app.sql")
 QUERY_MOST_RECENT_TOP_RANKS = load_sql_file("query_most_recent_top_ranks.sql")
 QUERY_HISTORY_TOP_RANKS = load_sql_file("query_history_top_ranks.sql")
 QUERY_APPSTORE_CATEGORIES = load_sql_file("query_appstore_categories.sql")
-QUERY_ALL_TABLES_IN_SCHEMA = load_sql_file("query_all_tables_in_schema.sql")
 QUERY_MANIFEST_NAMES = load_sql_file("query_manifest_names.sql")
 QUERY_SEARCH_APPS = load_sql_file("query_search_apps.sql")
 QUERY_SINGLE_DEVELOPER = load_sql_file("query_single_developer.sql")
@@ -139,7 +138,7 @@ def get_most_recent_top_ranks(
             "store": store,
             "collection_id": collection_id,
             "category_id": category_id,
-            "limit": limit,
+            "mylimit": limit,
         },
     )
     return df
@@ -164,7 +163,7 @@ def get_history_top_ranks(
             "collection_id": collection_id,
             "category_id": category_id,
             "start_date": start_date,
-            "limit": limit,
+            "mylimit": limit,
         },
     )
     return df
@@ -182,7 +181,7 @@ def get_category_top_apps_by_installs(category: str, limit: int = 10) -> pd.Data
     df = pd.read_sql(
         QUERY_CATEGORY_TOP_APPS_BY_INSTALLS,
         DBCON.engine,
-        params={"category": category, "limit": limit},
+        params={"category": category, "mylimit": limit},
     )
     if not df.empty:
         df = clean_app_df(df)
@@ -267,7 +266,7 @@ def search_apps(search_input: str, limit: int = 100) -> pd.DataFrame:
     df = pd.read_sql(
         QUERY_SEARCH_APPS,
         DBCON.engine,
-        params={"searchinput": search_input, "limit": limit},
+        params={"searchinput": search_input, "mylimit": limit},
     )
     if not df.empty:
         df = clean_app_df(df)
