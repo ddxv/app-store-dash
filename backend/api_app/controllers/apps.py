@@ -23,12 +23,12 @@ from api_app.models import (
 )
 from config import AD_NETWORK_PACKAGE_IDS, TRACKER_PACKAGE_IDS, get_logger
 from dbcon.queries import (
+    get_app_history,
     get_app_package_details,
+    get_ranks_for_app,
+    get_recent_apps,
     get_single_app,
-    query_app_history,
-    query_ranks_for_app,
-    query_recent_apps,
-    query_single_developer,
+    get_single_developer,
     search_apps,
 )
 
@@ -45,12 +45,12 @@ def get_search_results(search_term: str) -> AppGroup:
     return app_group
 
 
-def get_app_history(app_dict: dict) -> dict:
+def app_history(app_dict: dict) -> dict:
     """Get the history of app scraping."""
     store_app = app_dict["id"]
     app_name = app_dict["name"]
 
-    app_hist = query_app_history(store_app)
+    app_hist = get_app_history(store_app)
     app_dict["histogram"] = (
         app_hist.sort_values(["id"]).tail(1)["histogram"].to_numpy()[0]
     )
@@ -134,7 +134,7 @@ def get_string_date_from_days_ago(days: int) -> str:
 
 def get_app_overview_dict(collection: str) -> Collection:
     category_limit = 20
-    df = query_recent_apps(collection=collection, limit=category_limit)
+    df = get_recent_apps(collection=collection, limit=category_limit)
     categories_dicts = []
     groups = df.groupby(["mapped_category"])
     for category_key, apps in groups:
@@ -207,7 +207,7 @@ class AppController(Controller):
                 status_code=404,
             )
         app_dict = app_df.to_dict(orient="records")[0]
-        app_hist_dict = get_app_history(app_dict)
+        app_hist_dict = app_history(app_dict)
         app_dict["historyData"] = app_hist_dict
         return app_dict
 
@@ -292,7 +292,7 @@ class AppController(Controller):
 
         """
         logger.info(f"{self.path} start")
-        df = query_ranks_for_app(store_id=store_id)
+        df = get_ranks_for_app(store_id=store_id)
         if df.empty:
             msg = f"Ranks not found for {store_id!r}"
             raise NotFoundException(
@@ -328,7 +328,7 @@ class AppController(Controller):
 
         """
         logger.info(f"{self.path} start")
-        apps_df = query_single_developer(developer_id)
+        apps_df = get_single_developer(developer_id)
 
         if apps_df.empty:
             msg = f"Store ID not found: {developer_id!r}"

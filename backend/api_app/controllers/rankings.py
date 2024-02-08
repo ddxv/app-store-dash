@@ -1,4 +1,10 @@
+"""API endoipoints for app store rankings.
+
+/rankings/ of all apps as pulled from stores 
+"""
+
 import datetime
+from typing import Self
 
 import pandas as pd
 from litestar import Controller, get
@@ -17,10 +23,6 @@ from dbcon.queries import (
 )
 
 logger = get_logger(__name__)
-
-"""
-/rankings/ of all apps as pulled from stores 
-"""
 
 
 def ranking_map() -> RankingOverview:
@@ -59,7 +61,7 @@ class RankingsController(Controller):
 
     @get(path="/", cache=True)
     async def get_ranking_overview(self) -> RankingOverview:
-        """Handles a GET request for a list of ranking collecitons and categories
+        """Handle GET request for a list of ranking collecitons and categories.
 
         Returns
         -------
@@ -74,12 +76,12 @@ class RankingsController(Controller):
 
     @get(path="/{store:int}/{collection:int}/{category:int}/short", cache=40000)
     async def get_short_ranks_for_category(
-        self,
+        self: Self,
         store: int,
         collection: int,
         category: int,
     ) -> dict:
-        """Handles a GET request for a store/collection/category rank
+        """Handle GET request for a store/collection/category rank.
 
         Returns
         -------
@@ -99,12 +101,12 @@ class RankingsController(Controller):
 
     @get(path="/{store:int}/{collection:int}/{category:int}", cache=3600)
     async def get_ranks_for_category(
-        self,
+        self: Self,
         store: int,
         collection: int,
         category: int,
     ) -> dict:
-        """Handles a GET request for a store/collection/category rank
+        """Handle GET request for store/collection/category rank.
 
         Returns
         -------
@@ -124,12 +126,12 @@ class RankingsController(Controller):
 
     @get(path="/{store:int}/{collection:int}/{category:int}/history", cache=3600)
     async def get_ranks_history_for_category(
-        self,
+        self: Self,
         store: int,
         collection: int,
         category: int,
     ) -> dict:
-        """Handles a GET request for a store/collection/category rank
+        """Handle GET request for a store/collection/category rank.
 
         Returns
         -------

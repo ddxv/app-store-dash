@@ -25,15 +25,16 @@ def handle_exception(exc_type, exc_value, exc_traceback):
     logger.critical("Uncaught exception", exc_info=(exc_type, exc_value, exc_traceback))
 
 
-def check_config_dirs():
+def check_config_dirs() -> None:
     dirs = [TOP_CONFIGDIR, CONFIG_DIR, LOG_DIR]
-    for dir in dirs:
-        if not pathlib.Path.exists(dir):
-            pathlib.Path.mkdir(dir, exist_ok=True)
+    for _dir in dirs:
+        if not pathlib.Path.exists(_dir):
+            pathlib.Path.mkdir(_dir, exist_ok=True)
 
 
-def get_logger(mod_name: str, log_name: str = "dash"):
-    format = "%(asctime)s: %(name)s: %(levelname)s: %(message)s"
+def get_logger(mod_name: str, log_name: str = "dash") -> logging.Logger:
+    """Get a python logger."""
+    logformat = "%(asctime)s: %(name)s: %(levelname)s: %(message)s"
     check_config_dirs()
     log_dir = pathlib.Path(HOME, pathlib.Path(f".config/{PROJECT_NAME}/logs"))
     if not pathlib.Path.exists(log_dir):
@@ -47,14 +48,12 @@ def get_logger(mod_name: str, log_name: str = "dash"):
         backupCount=5,
     )
     logging.basicConfig(
-        format=format,
+        format=logformat,
         level=logging.INFO,
         handlers=[
             rotate_handler,
-            # logging.StreamHandler(), # handle via logger instead
         ],
     )
-    logger = logging.getLogger(mod_name)
     """Retun logger object."""
     # create logger
     logger = logging.getLogger(mod_name)
@@ -90,7 +89,7 @@ if not pathlib.Path.exists(CONFIG_FILE_PATH):
     raise FileNotFoundError(error)
 
 
-with open(CONFIG_FILE_PATH, "rb") as f:
+with CONFIG_FILE_PATH.open("rb") as f:
     CONFIG = tomllib.load(f)
 
 DATE_FORMAT = "%Y-%m-%d"

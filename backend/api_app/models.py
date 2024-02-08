@@ -70,20 +70,6 @@ class CategoriesOverview:
     categories: list[CategoryDetail]
 
 
-# @dataclass
-# class StoreCategoryDetail:
-#     category_id: int
-#     category_name: str
-
-
-# @dataclass
-# class StoreCollections:
-#     int: list[StoreCategoryDetail]
-
-
-# @dataclass
-
-
 @dataclass
 class StoreCategoryDetail:
     category_id: int

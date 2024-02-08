@@ -1,3 +1,9 @@
+"""Return API endpoint for categories.
+
+/categories/{category_id} a specific app
+"""
+
+
 import numpy as np
 from litestar import Controller, get
 
@@ -6,11 +12,6 @@ from config import get_logger
 from dbcon.queries import get_appstore_categories, get_category_top_apps_by_installs
 
 logger = get_logger(__name__)
-
-
-"""
-/categories/{category_id} a specific app
-"""
 
 
 def category_overview() -> CategoriesOverview:
@@ -52,7 +53,7 @@ class CategoryController(Controller):
 
     @get(path="/", cache=True)
     async def get_categories_overview(self) -> CategoriesOverview:
-        """Handles a GET request for a list of categories
+        """Handle GET request for a list of categories.
 
         Returns
         -------
@@ -67,7 +68,7 @@ class CategoryController(Controller):
 
     @get(path="/{category_id:str}", cache=3600)
     async def get_category(self, category_id: str) -> Category:
-        """Handles a GET request for a single category
+        """Handle GET request for a single category.
 
         Returns
         -------
