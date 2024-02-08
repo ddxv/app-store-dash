@@ -165,8 +165,8 @@
 									values.store_id == 1
 										? '/collection/1/category/1'
 										: values.store_id == 2
-										? '/collection/4/category/55'
-										: '' // default value or path for other store_ids if needed
+											? '/collection/4/category/55'
+											: '' // default value or path for other store_ids if needed
 								}`}
 								class={classesActive(`/rankings/store/${values.store_id}/`)}
 							>
