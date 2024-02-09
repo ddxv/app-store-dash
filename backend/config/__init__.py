@@ -100,11 +100,7 @@ DATE_FORMAT = "%Y-%m-%d"
 AD_NETWORK_PACKAGE_IDS = {
     "Google AdMob": [
         "com.google.ads",
-        "com.google.android.gms.ads.AdView",
-        "com.google.android.gms.ads.AdActivity",
-        "com.google.android.gms.ads.AdRequest",
-        "com.google.android.gms.ads.mediation",
-        "com.google.android.gms.ads.doubleclick",
+        "com.google.android.gms.ads",
         "com.google.android.ads",
         "com.google.unity.ads",
         "com.google.android.gms.admob",
@@ -148,7 +144,7 @@ TRACKER_PACKAGE_IDS = {
     "IAB Open Measurement": [
         "com.iab.omid.library",
         "com.prime31.util.IabHelperImpl",
-        "com.prime31.IAB.",
+        "com.prime31.IAB",
     ],
     "Tenjin": ["com.tenjin.android"],
     "AirBridge": ["io.airbridge"],
