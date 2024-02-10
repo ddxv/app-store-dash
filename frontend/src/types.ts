@@ -22,6 +22,12 @@ export interface DeveloperResponse {
 	status?: number;
 	error?: string;
 }
+
+export interface TrackerApps {
+	results: { streamed: AppGroup };
+	status?: number;
+	error?: string;
+}
 export interface SearchResponse {
 	results: { streamed: AppGroup };
 	status?: number;
@@ -109,6 +115,7 @@ export interface AppRankDetail {
 	collection: string;
 	category: string;
 }
+
 export interface AppFullDetails {
 	myapp: {
 		streamed: Promise<AppFullDetail>;
@@ -126,6 +133,19 @@ export interface AppFullDetails {
 			android: string[];
 			leftover: string[];
 		}>;
+	};
+}
+
+export interface TrackerDetail {
+	tracker_name: string;
+	app_count: number;
+	percent: number;
+}
+export interface TopTrackersInfo {
+	status?: number;
+	error?: string;
+	trackers: {
+		streamed: Promise<{ trackers: TrackerDetail[] }>;
 	};
 }
 
@@ -183,7 +203,6 @@ export interface AppFullDetail {
 export type CategoryRanks = {
 	category_id: number;
 	category_name: string;
-	// ... any other fields
 };
 
 export type CollectionRanks = {

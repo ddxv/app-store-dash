@@ -1,6 +1,9 @@
 -- noqa: disable=LT02
 -- noqa: disable=LT08
 -- noqa: disable=RF02
+-- noqa: disable=PRS
+-- SQLFluff currently unable to parse the double @ below
+-- https://github.com/sqlfluff/sqlfluff/issues/4837
 WITH devs AS (
     SELECT d.id AS developer_id
     FROM

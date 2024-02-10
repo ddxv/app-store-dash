@@ -27,9 +27,9 @@
 	>
 		<h3 class="h4 md:h3 md:p-2">RANKS</h3>
 	</TabAnchor>
-	<!-- <TabAnchor href="/categories" selected={$page.url.pathname === '/categories'}
-					>CATEGORIES
-				</TabAnchor> -->
+	<TabAnchor href="/trackers" selected={$page.url.pathname === '/trackers'}
+		><h3 class="h4 md:h3 md:p-2">TRACKERS</h3></TabAnchor
+	>
 	<TabAnchor href="/about" selected={$page.url.pathname === '/about'}
 		><h3 class="h4 md:h3 md:p-2">ABOUT</h3></TabAnchor
 	>

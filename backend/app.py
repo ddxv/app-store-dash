@@ -1,3 +1,4 @@
+"""Main start point for LiteStar API."""
 import logging
 
 from litestar import Litestar
@@ -8,6 +9,7 @@ from litestar.openapi import OpenAPIConfig, OpenAPIController
 from api_app.controllers.apps import AppController
 from api_app.controllers.categories import CategoryController
 from api_app.controllers.rankings import RankingsController
+from api_app.controllers.trackers import TrackersController
 
 cors_config = CORSConfig(
     allow_origins=[
@@ -17,6 +19,9 @@ cors_config = CORSConfig(
 
 
 class MyOpenAPIController(OpenAPIController):
+
+    """Set Path for API docs."""
+
     path = "/api/docs"
 
 
@@ -29,7 +34,12 @@ logging_config = LoggingConfig(
 
 
 app = Litestar(
-    route_handlers=[AppController, CategoryController, RankingsController],
+    route_handlers=[
+        AppController,
+        CategoryController,
+        RankingsController,
+        TrackersController,
+    ],
     cors_config=cors_config,
     openapi_config=OpenAPIConfig(
         title="App Store API",
