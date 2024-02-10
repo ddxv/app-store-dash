@@ -26,6 +26,7 @@ logger = get_logger(__name__)
 
 
 def ranking_map() -> RankingOverview:
+    """Get Ranking data and translate to RankingOverview class."""
     df = get_store_collection_category_map()
     overview = RankingOverview()
     groups = df.groupby(["store_id", "store_name"])
@@ -57,10 +58,13 @@ def ranking_map() -> RankingOverview:
 
 
 class RankingsController(Controller):
+
+    """Controller returns all ranking related API endpoints."""
+
     path = "/api/rankings/"
 
     @get(path="/", cache=True)
-    async def get_ranking_overview(self) -> RankingOverview:
+    async def get_ranking_overview(self: Self) -> RankingOverview:
         """Handle GET request for a list of ranking collecitons and categories.
 
         Returns
@@ -114,7 +118,7 @@ class RankingsController(Controller):
             with ios and google apps
 
         """
-        logger.info(f"{self.path} start for store/collection/category")
+        logger.info(f"{self.path} start")
         df = get_most_recent_top_ranks(
             store=store,
             collection_id=collection,
@@ -154,7 +158,7 @@ class RankingsController(Controller):
         # NOTE: don't include 'rank' in group by as table is already unique by that
         # Need to get each apps location on that time
         df = (
-            df.groupby([pd.Grouper(key="crawled_date", freq="1W")] + ["name"])
+            df.groupby([pd.Grouper(key="crawled_date", freq="1W"), "name"])
             .last()
             .reset_index()
         )
@@ -164,7 +168,7 @@ class RankingsController(Controller):
         ] = last_crawled_date
         df["crawled_date"] = pd.to_datetime(df["crawled_date"]).dt.strftime("%Y-%m-%d")
         hist_dict = (
-            df.pivot(columns=["name"], index=["crawled_date"], values="rank")
+            df.pivot_table(columns=["name"], index=["crawled_date"], values="rank")
             .reset_index()
             .to_dict(orient="records")
         )

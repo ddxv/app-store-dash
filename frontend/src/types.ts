@@ -132,12 +132,13 @@ export interface AppFullDetails {
 
 export interface TrackerDetail {
 	tracker_name: string;
-	count: number;
+	app_count: number;
+	percent: number;
 }
 export interface TopTrackersInfo {
 	status?: number;
 	error?: string;
-	mytrackers: {
+	trackers: {
 		streamed: Promise<{ trackers: TrackerDetail[] }>;
 	};
 }
@@ -196,7 +197,6 @@ export interface AppFullDetail {
 export type CategoryRanks = {
 	category_id: number;
 	category_name: string;
-	// ... any other fields
 };
 
 export type CollectionRanks = {

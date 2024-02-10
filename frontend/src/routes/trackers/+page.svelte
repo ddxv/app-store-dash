@@ -11,19 +11,27 @@
 	/>
 </svelte:head>
 
-<div class="card p-2 md:p-8">
+<div class="card p-2 md:p-16">
 	<h3 class="h4 md:h3 p-4">Trackers</h3>
 
-	{#await data.mytrackers.streamed}
+	<p class="p-8">
+		Tracking users in apps for marketing purposes is much harder in apps than on the regular web.
+		Therefor most apps use other services embedded in their APKs to track users. AppGoblin is
+		scanning apps to get an idea of which apps use which trackers. Currently this list is for
+		Android APKs only.
+	</p>
+
+	{#await data.trackers.streamed}
 		Loading App Trackers...
 	{:then trackers}
-		<div class="p-2 md:p-4" />
+		<div class="p-2 md:p-8" />
 		<div class="table-container">
 			<table class="table table-hover table-auto">
 				<thead>
 					<tr>
-						<th>Rank</th>
 						<th>Name</th>
+						<th>Count</th>
+						<th>Percentage</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -38,7 +46,12 @@
 							</td>
 							<td>
 								<div class="inline-flex">
-									<h3 class="h4 md:h3 p-2">{values.count}</h3>
+									<h3 class="h4 md:h3 p-2">{values.app_count}</h3>
+								</div>
+							</td>
+							<td>
+								<div class="inline-flex">
+									<h3 class="h4 md:h3 p-2">{`${(values.percent * 100).toFixed(1)}%`}</h3>
 								</div>
 							</td>
 						</tr>

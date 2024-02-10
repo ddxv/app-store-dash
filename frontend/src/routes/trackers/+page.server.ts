@@ -3,8 +3,6 @@ export const csr: boolean = true;
 
 import type { PageServerLoad } from './$types.js';
 
-import type { StoreCategoryRanks } from '/types.js';
-
 export const load: PageServerLoad = async ({ setHeaders }) => {
 	const emptyResponse = { streamed: {} };
 	setHeaders({
