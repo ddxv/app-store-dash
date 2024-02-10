@@ -22,6 +22,12 @@ export interface DeveloperResponse {
 	status?: number;
 	error?: string;
 }
+
+export interface TrackerApps {
+	results: { streamed: AppGroup };
+	status?: number;
+	error?: string;
+}
 export interface SearchResponse {
 	results: { streamed: AppGroup };
 	status?: number;

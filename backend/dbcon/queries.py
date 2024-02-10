@@ -38,9 +38,8 @@ QUERY_APP_PACKAGE_DETAILS = load_sql_file("query_app_package_details.sql")
 QUERY_STORE_COLLECTION_CATEGORY_MAP = load_sql_file(
     "query_store_collection_category_map.sql",
 )
-QUERY_TOP_TRACKERS = load_sql_file(
-    "query_top_trackers.sql",
-)
+QUERY_TOP_TRACKERS = load_sql_file("query_top_trackers.sql")
+QUERY_TRACKER_APPS = load_sql_file("query_tracker_apps.sql")
 
 
 def get_recent_apps(collection: str, limit: int = 20) -> pd.DataFrame:
@@ -257,6 +256,19 @@ def get_single_developer(developer_id: str) -> pd.DataFrame:
         QUERY_SINGLE_DEVELOPER,
         con=DBCON.engine,
         params={"developer_id": developer_id},
+    )
+    if not df.empty:
+        df = clean_app_df(df)
+    return df
+
+
+def get_apps_for_tracker(tracker_name: str) -> pd.DataFrame:
+    """Get apps for for a tracker."""
+    logger.info(f"Tracker: {tracker_name=}")
+    df = pd.read_sql(
+        QUERY_TRACKER_APPS,
+        con=DBCON.engine,
+        params={"tracker_name": tracker_name, "mylimit": 20},
     )
     if not df.empty:
         df = clean_app_df(df)

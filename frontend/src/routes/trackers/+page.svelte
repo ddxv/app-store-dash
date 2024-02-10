@@ -1,6 +1,10 @@
 <script lang="ts">
 	import type { TopTrackersInfo } from '../../types';
 	export let data: TopTrackersInfo;
+
+	function navigate(tracker_name: string) {
+		window.location.href = `/trackers/${tracker_name}`;
+	}
 </script>
 
 <svelte:head>
@@ -29,14 +33,14 @@
 			<table class="table table-hover table-auto">
 				<thead>
 					<tr>
-						<th>Name</th>
-						<th>Count</th>
-						<th>Percentage</th>
+						<th><h3 class="h3">Name</h3></th>
+						<th><h3 class="h3">Count</h3></th>
+						<th><h3 class="h3">Percentage</h3></th>
 					</tr>
 				</thead>
 				<tbody>
 					{#each Object.entries(trackers.trackers) as [_prop, values]}
-						<tr>
+						<tr on:click={() => navigate(values.tracker_name)} style="cursor: pointer;">
 							<td
 								><div class="inline-flex">
 									<h3 class="h4 md:h3">

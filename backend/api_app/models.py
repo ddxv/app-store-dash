@@ -54,8 +54,17 @@ class DeveloperApps:
     Note: This is platform specific.
     """
 
-    developer_id: str  # mapped id like game_puzzle
-    title: str  # mapped id like game_puzzle
+    developer_id: str
+    title: str
+    apps: list[AppDetail]
+
+
+@dataclass
+class TrackerApps:
+
+    """A tracker's list of apps."""
+
+    title: str
     apps: list[AppDetail]
 
 
