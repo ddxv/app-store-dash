@@ -63,9 +63,9 @@ repos:
     rev: 3.0.0a5
     hooks:
       - id: sqlfluff-lint
-        args: [--dialect=postgres]
+        args: ["--config", "backend/pyproject.toml"] # Specify the config file location here
       - id: sqlfluff-fix
-        args: [--dialect=postgres]
+        args: ["--config", "backend/pyproject.toml"] # Specify the config file location here
         # Arbitrary arguments to show an example
         # args: [--rules, "LT02,CP02"]
         # additional_dependencies: ['<dbt-adapter>', 'sqlfluff-templater-dbt']

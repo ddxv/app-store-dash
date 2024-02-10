@@ -109,6 +109,7 @@ export interface AppRankDetail {
 	collection: string;
 	category: string;
 }
+
 export interface AppFullDetails {
 	myapp: {
 		streamed: Promise<AppFullDetail>;
@@ -126,6 +127,18 @@ export interface AppFullDetails {
 			android: string[];
 			leftover: string[];
 		}>;
+	};
+}
+
+export interface TrackerDetail {
+	tracker_name: string;
+	count: number;
+}
+export interface TopTrackersInfo {
+	status?: number;
+	error?: string;
+	mytrackers: {
+		streamed: Promise<{ trackers: TrackerDetail[] }>;
 	};
 }
 

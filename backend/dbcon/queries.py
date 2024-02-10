@@ -38,6 +38,9 @@ QUERY_APP_PACKAGE_DETAILS = load_sql_file("query_app_package_details.sql")
 QUERY_STORE_COLLECTION_CATEGORY_MAP = load_sql_file(
     "query_store_collection_category_map.sql",
 )
+QUERY_TOP_TRACKERS = load_sql_file(
+    "query_top_trackers.sql",
+)
 
 
 def get_recent_apps(collection: str, limit: int = 20) -> pd.DataFrame:
@@ -82,7 +85,7 @@ def get_recent_apps(collection: str, limit: int = 20) -> pd.DataFrame:
             FROM NumberedRows
             WHERE rn <= {limit}
             ;
-            """
+            """  # noqa: S608 worried about SQL injection but all data is set internal
     df = pd.read_sql(sel_query, con=DBCON.engine)
     groups = df.groupby("store")
     for _store, group in groups:
@@ -279,6 +282,16 @@ def get_manifest_names() -> pd.DataFrame:
     Data is pulled for some apks and extracted from the AndroidManifest.xml
     """
     df = pd.read_sql(QUERY_MANIFEST_NAMES, DBCON.engine)
+    return df
+
+
+def get_top_trackers() -> pd.DataFrame:
+    """Get top trackers.
+
+    Data is pre-processed by materialized views.
+
+    """
+    df = pd.read_sql(QUERY_TOP_TRACKERS, DBCON.engine)
     return df
 
 

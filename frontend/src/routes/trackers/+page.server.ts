@@ -3,28 +3,19 @@ export const csr: boolean = true;
 
 import type { PageServerLoad } from './$types.js';
 
-export const load: PageServerLoad = async ({ params, setHeaders, url }) => {
+import type { StoreCategoryRanks } from '/types.js';
+
+export const load: PageServerLoad = async ({ setHeaders }) => {
 	const emptyResponse = { streamed: {} };
 	setHeaders({
 		'cache-control': 'max-age=3600'
 	});
 	try {
-		const storeVal = params.store;
-		const collectionValue = params.collection;
-		const categoryValue = params.category;
-		const res = fetch(
-			`http://localhost:8000/api/rankings/${storeVal}/${collectionValue}/${categoryValue}`
-		);
-		const history = fetch(
-			`http://localhost:8000/api/rankings/${storeVal}/${collectionValue}/${categoryValue}/history`
-		);
+		const res = fetch(`http://localhost:8000/api/trackers`);
 
 		return {
-			ranks: {
+			trackers: {
 				streamed: res.then((resp) => resp.json())
-			},
-			history: {
-				streamed: history.then((resp) => resp.json())
 			}
 		};
 	} catch (error) {
