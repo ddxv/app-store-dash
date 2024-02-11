@@ -69,6 +69,15 @@ class TrackerApps:
 
 
 @dataclass
+class NetworkApps:
+
+    """A network's list of apps."""
+
+    title: str
+    apps: list[AppDetail]
+
+
+@dataclass
 class Collection:
 
     """A single Collection as defined by us to combine ios and Google collections."""
@@ -125,11 +134,32 @@ class TrackerDetail:
 
 
 @dataclass
+class NetworkDetail:
+
+    """Describes details of a network.
+
+    Includes its db identifier, name, and the count of its occurrences.
+    """
+
+    network: int
+    network_name: str
+    count: int
+
+
+@dataclass
 class TopTrackers:
 
     """Contains a list of TrackerDetail objects representing the top trackers identified."""
 
     trackers: list[TrackerDetail]
+
+
+@dataclass
+class TopNetworks:
+
+    """Contains a list of NetworkDetail objects representing the top networks identified."""
+
+    networks: list[NetworkDetail]
 
 
 @dataclass

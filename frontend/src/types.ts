@@ -149,6 +149,19 @@ export interface TopTrackersInfo {
 	};
 }
 
+export interface NetworkDetail {
+	network_name: string;
+	app_count: number;
+	percent: number;
+}
+
+export interface TopNetworksInfo {
+	status?: number;
+	error?: string;
+	networks: {
+		streamed: Promise<{ networks: NetworkDetail[] }>;
+	};
+}
 export interface AppHistoryInfo {
 	crawled_date: string;
 	review_count: number;
