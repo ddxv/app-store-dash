@@ -30,6 +30,9 @@
 	<TabAnchor href="/trackers" selected={$page.url.pathname === '/trackers'}
 		><h3 class="h4 md:h3 md:p-2">TRACKERS</h3></TabAnchor
 	>
+	<TabAnchor href="/networks" selected={$page.url.pathname === '/networks'}
+		><h3 class="h4 md:h3 md:p-2">NETWORKS</h3></TabAnchor
+	>
 	<TabAnchor href="/about" selected={$page.url.pathname === '/about'}
 		><h3 class="h4 md:h3 md:p-2">ABOUT</h3></TabAnchor
 	>

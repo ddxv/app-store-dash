@@ -8,6 +8,7 @@ from litestar.openapi import OpenAPIConfig, OpenAPIController
 
 from api_app.controllers.apps import AppController
 from api_app.controllers.categories import CategoryController
+from api_app.controllers.networks import NetworksController
 from api_app.controllers.rankings import RankingsController
 from api_app.controllers.trackers import TrackersController
 
@@ -39,6 +40,7 @@ app = Litestar(
         CategoryController,
         RankingsController,
         TrackersController,
+        NetworksController,
     ],
     cors_config=cors_config,
     openapi_config=OpenAPIConfig(

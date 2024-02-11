@@ -40,6 +40,8 @@ QUERY_STORE_COLLECTION_CATEGORY_MAP = load_sql_file(
 )
 QUERY_TOP_TRACKERS = load_sql_file("query_top_trackers.sql")
 QUERY_TRACKER_APPS = load_sql_file("query_tracker_apps.sql")
+QUERY_TOP_NETWORKS = load_sql_file("query_top_networks.sql")
+QUERY_NETWORK_APPS = load_sql_file("query_network_apps.sql")
 
 
 def get_recent_apps(collection: str, limit: int = 20) -> pd.DataFrame:
@@ -275,6 +277,19 @@ def get_apps_for_tracker(tracker_name: str) -> pd.DataFrame:
     return df
 
 
+def get_apps_for_network(network_name: str) -> pd.DataFrame:
+    """Get apps for for a network."""
+    logger.info(f"Tracker: {network_name=}")
+    df = pd.read_sql(
+        QUERY_NETWORK_APPS,
+        con=DBCON.engine,
+        params={"network_name": network_name, "mylimit": 20},
+    )
+    if not df.empty:
+        df = clean_app_df(df)
+    return df
+
+
 def search_apps(search_input: str, limit: int = 100) -> pd.DataFrame:
     """Search apps by term in database."""
     logger.info(f"App search: {search_input=}")
@@ -304,6 +319,16 @@ def get_top_trackers() -> pd.DataFrame:
 
     """
     df = pd.read_sql(QUERY_TOP_TRACKERS, DBCON.engine)
+    return df
+
+
+def get_top_networks() -> pd.DataFrame:
+    """Get top networks.
+
+    Data is pre-processed by materialized views.
+
+    """
+    df = pd.read_sql(QUERY_TOP_NETWORKS, DBCON.engine)
     return df
 
 
