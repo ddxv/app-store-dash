@@ -256,12 +256,14 @@
 								{/each}
 							</div>
 						{/if}
-						{#if packageInfo.leftover && packageInfo.leftover.length > 0}
+						{#if packageInfo.leftovers && packageInfo.leftovers.length > 0}
 							<h4 class="h4 md:h3 p-2">Other Services</h4>
 							<div class="px-4 md:px-8">
-								{#each packageInfo.leftover as leftover}
-									<p>{leftover}</p>
-								{/each}
+								<div class="h-[500px] w-full overflow-y-auto">
+									{#each packageInfo.leftovers as leftovers}
+										<p>{leftovers}</p>
+									{/each}
+								</div>
 							</div>
 						{/if}
 					{/if}
