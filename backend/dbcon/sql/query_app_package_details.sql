@@ -11,9 +11,7 @@ WITH latest_version_codes AS (
 SELECT
     vd.*,
     vc.store_app,
-    sa.store_id,
-    nw.name AS network_name,
-    tr.name AS tracker_name
+    sa.store_id
 FROM
     version_details AS vd
 LEFT JOIN
@@ -28,12 +26,6 @@ INNER JOIN
 LEFT JOIN store_apps AS sa
     ON
         vc.store_app = sa.id
-LEFT JOIN networks AS nw
-    ON
-        vd.network = nw.id
-LEFT JOIN trackers AS tr
-    ON
-        vd.tracker = tr.id
 WHERE
     vd.android_name != ''
     AND
