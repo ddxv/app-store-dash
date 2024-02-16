@@ -207,7 +207,7 @@
 						{/each}
 					</section>
 				</div>
-				<div class="p-2 md:p-8">
+				<div class="p-2 md:p-4">
 					<h4 class="h4 md:h3 p-2">Additional Information</h4>
 					<div class="px-4 md:px-8">
 						<p>Free: {appdata.free}</p>
@@ -232,24 +232,53 @@
 					{#if typeof packageInfo == 'string'}
 						<p>Permissions info not yet available for this app.</p>
 					{:else}
-						{#if packageInfo.trackers && packageInfo.trackers.length > 0}
-							<h4 class="h4 md:h3 p-2">Trackers</h4>
+						{#if packageInfo.trackers && Object.keys(packageInfo.trackers).length > 0}
+							<h4 class="h4 md:h3 p-2 md:p-4 mt-4">Trackers</h4>
 							<div class="px-4 md:px-8">
-								{#each packageInfo.trackers as tracker}
-									<p>{tracker}</p>
-								{/each}
+								<ul>
+									{#each Object.keys(packageInfo.trackers) as tracker}
+										<li>
+											<p class="h5"><a href="/trackers/{tracker}">{tracker}</a></p>
+											{#if Array.isArray(packageInfo.trackers[tracker])}
+												<ul>
+													{#each packageInfo.trackers[tracker] as item}
+														<div class="px-4 md:px-8">
+															<li>{item}</li>
+														</div>
+													{/each}
+												</ul>
+											{/if}
+										</li>
+									{/each}
+								</ul>
 							</div>
 						{/if}
-						{#if packageInfo.ads && packageInfo.ads.length > 0}
-							<h4 class="h4 md:h3 p-2">Ad Networks</h4>
+						{#if packageInfo.networks && Object.keys(packageInfo.networks).length > 0}
+							<h4 class="h4 md:h3 p-2 md:p-4 mt-4">Ad Networks</h4>
 							<div class="px-4 md:px-8">
-								{#each packageInfo.ads as ad}
-									<p>{ad}</p>
-								{/each}
+								<ul>
+									{#each Object.keys(packageInfo.networks) as network}
+										<li>
+											<p class="h5"><a href="/networks/{network}">{network}</a></p>
+											<!-- If you want to display the contents or associated values of each network, 
+												 you can add more details here. For example, if it's an array of strings, 
+												 you might want to list them. Adjust the code below based on your data structure. -->
+											{#if Array.isArray(packageInfo.networks[network])}
+												<ul>
+													{#each packageInfo.networks[network] as item}
+														<div class="px-4 md:px-8">
+															<li>{item}</li>
+														</div>
+													{/each}
+												</ul>
+											{/if}
+										</li>
+									{/each}
+								</ul>
 							</div>
 						{/if}
 						{#if packageInfo.permissions && packageInfo.permissions.length > 0}
-							<h4 class="h4 md:h3 p-2">Permissions</h4>
+							<h4 class="h4 md:h3 p-2 md:p-4 mt-4">Permissions</h4>
 							<div class="px-4 md:px-8">
 								{#each packageInfo.permissions as permission}
 									<p>{permission}</p>
@@ -257,7 +286,7 @@
 							</div>
 						{/if}
 						{#if packageInfo.leftovers && packageInfo.leftovers.length > 0}
-							<h4 class="h4 md:h3 p-2">Other Services</h4>
+							<h4 class="h4 md:h3 p-2 md:p-4 mt-4">Other Services</h4>
 							<div class="px-4 md:px-8">
 								<div class="h-[500px] w-full overflow-y-auto">
 									{#each packageInfo.leftovers as leftovers}

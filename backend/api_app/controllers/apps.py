@@ -21,7 +21,7 @@ from api_app.models import (
     DeveloperApps,
     PackageDetails,
 )
-from config import AD_NETWORK_PACKAGE_IDS, TRACKER_PACKAGE_IDS, get_logger
+from config import get_logger
 from dbcon.queries import (
     get_app_history,
     get_app_package_details,
@@ -227,11 +227,24 @@ class AppController(Controller):
         df = get_app_package_details(store_id)
 
         if df.empty:
-            msg = f"Store ID not found: {store_id!r}"
+            msg = f"Package info for store ID not found: {store_id!r}"
             raise NotFoundException(
                 msg,
                 status_code=404,
             )
+
+        networks = (
+            df[df["network_name"].notna()][["network_name", "android_name"]]
+            .groupby("network_name")["android_name"]
+            .apply(list)
+            .to_dict()
+        )
+        trackers = (
+            df[df["tracker_name"].notna()][["tracker_name", "android_name"]]
+            .groupby("tracker_name")["android_name"]
+            .apply(list)
+            .to_dict()
+        )
 
         is_permission = df["xml_path"] == "uses-permission"
         is_matching_packages = df["android_name"].str.startswith(
@@ -242,46 +255,24 @@ class AppController(Controller):
             r"^(com.android)|(android)",
         )
 
-        all_trackers_ids = [
-            tracker for trackers in TRACKER_PACKAGE_IDS.values() for tracker in trackers
-        ]
-
-        trackers = ")|(".join(all_trackers_ids)
-        trackers = f"^({trackers})"
-        is_tracker = df["android_name"].str.contains(
-            trackers,
-        )
-        all_network_ids = [
-            network
-            for networks in AD_NETWORK_PACKAGE_IDS.values()
-            for network in networks
-        ]
-        ads = ")|(".join(all_network_ids)
-        ads = f"({ads})"
-        is_ads = df["android_name"].str.contains(
-            ads,
-        )
-
         permissions_df = df[is_permission]
         android_services_df = df[is_android_activity]
-        tracker_df = df[is_tracker]
-        ads_df = df[is_ads]
 
         left_overs_df = df[
             ~is_permission
             & ~is_matching_packages
             & ~is_android_activity
-            & ~is_tracker
-            & ~is_ads
+            & df["network_name"].isna()
+            & df["tracker_name"].isna()
         ]
         permissions_list = permissions_df.android_name.tolist()
         permissions_list = [
             x.replace("android.permission.", "") for x in permissions_list
         ]
         trackers_dict = PackageDetails(
-            trackers=tracker_df.android_name.tolist(),
+            trackers=trackers,
             permissions=permissions_list,
-            ads=ads_df.android_name.tolist(),
+            networks=networks,
             android=android_services_df.android_name.tolist(),
             leftovers=left_overs_df.android_name.tolist(),
         )
@@ -317,7 +308,9 @@ class AppController(Controller):
         # This format is for echarts, expects data series as columns
         hist_dict = (
             pdf.pivot_table(
-                columns=["rank_group"], index=["crawled_date"], values="rank",
+                columns=["rank_group"],
+                index=["crawled_date"],
+                values="rank",
             )
             .reset_index()
             .to_dict(orient="records")
