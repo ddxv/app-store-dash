@@ -131,7 +131,7 @@ export interface AppFullDetails {
 			trackers: string[];
 			ads: string[];
 			android: string[];
-			leftover: string[];
+			leftovers: string[];
 		}>;
 	};
 }
