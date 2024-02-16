@@ -116,6 +116,14 @@ export interface AppRankDetail {
 	category: string;
 }
 
+interface Networks {
+	[key: string]: string[];
+}
+
+interface Trackers {
+	[key: string]: string[];
+}
+
 export interface AppFullDetails {
 	myapp: {
 		streamed: Promise<AppFullDetail>;
@@ -128,8 +136,8 @@ export interface AppFullDetails {
 	myPackageInfo: {
 		streamed: Promise<{
 			permissions: string[];
-			trackers: string[];
-			ads: string[];
+			trackers: Trackers;
+			networks: Networks;
 			android: string[];
 			leftovers: string[];
 		}>;
