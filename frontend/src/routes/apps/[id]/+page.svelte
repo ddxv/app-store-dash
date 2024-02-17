@@ -1,5 +1,6 @@
 <script lang="ts">
 	import ExternalLinkSvg from '$lib/svg/ExternalLinkSVG.svelte';
+	import ManifestItemList from '$lib/ManifestItemList.svelte';
 	import type { AppFullDetails } from '../../../types';
 	export let data: AppFullDetails;
 	import AppDetails from '$lib/RatingInstallsLarge.svelte';
@@ -232,23 +233,46 @@
 					{#if typeof packageInfo == 'string'}
 						<p>Permissions info not yet available for this app.</p>
 					{:else}
+						{#if packageInfo.permissions && packageInfo.permissions.length > 0}
+							<h4 class="h4 md:h3 p-2 md:p-4 mt-4">Permissions</h4>
+							<div class="px-4 md:px-8">
+								{#each packageInfo.permissions as permission}
+									<p>{permission}</p>
+								{/each}
+							</div>
+						{/if}
 						{#if packageInfo.trackers && Object.keys(packageInfo.trackers).length > 0}
+							<ManifestItemList items={packageInfo.trackers} title="Trackers" basePath="trackers"
+							></ManifestItemList>
+						{/if}
+						{#if packageInfo.networks && Object.keys(packageInfo.networks).length > 0}
+							<ManifestItemList items={packageInfo.networks} title="Ad Networks" basePath="networks"
+							></ManifestItemList>
+						{/if}
+						{#if packageInfo.leftovers && Object.keys(packageInfo.leftovers).length > 0}
+							<ManifestItemList items={packageInfo.leftovers} title="Other Services"
+							></ManifestItemList>
+						{/if}
+						<!-- {#if packageInfo.trackers && Object.keys(packageInfo.trackers).length > 0}
 							<h4 class="h4 md:h3 p-2 md:p-4 mt-4">Trackers</h4>
 							<div class="px-4 md:px-8">
 								<ul>
 									{#each Object.keys(packageInfo.trackers) as tracker}
-										<li>
-											<p class="h5"><a href="/trackers/{tracker}">{tracker}</a></p>
-											{#if Array.isArray(packageInfo.trackers[tracker])}
-												<ul>
-													{#each packageInfo.trackers[tracker] as item}
-														<div class="px-4 md:px-8">
-															<li>{item}</li>
-														</div>
-													{/each}
-												</ul>
-											{/if}
-										</li>
+										<p class="h5"><a href="/trackers/{tracker}">{tracker}</a></p>
+										{#each Object.keys(packageInfo.trackers[tracker]) as xml_path}
+											<li>
+												<p class="h6">{xml_path}</p>
+												{#if Array.isArray(packageInfo.trackers[tracker][xml_path])}
+													<ul>
+														{#each packageInfo.trackers[tracker][xml_path] as androidName}
+															<div class="px-4 md:px-8">
+																<li>{androidName}</li>
+															</div>
+														{/each}
+													</ul>
+												{/if}
+											</li>
+										{/each}
 									{/each}
 								</ul>
 							</div>
@@ -260,14 +284,35 @@
 									{#each Object.keys(packageInfo.networks) as network}
 										<li>
 											<p class="h5"><a href="/networks/{network}">{network}</a></p>
-											<!-- If you want to display the contents or associated values of each network, 
-												 you can add more details here. For example, if it's an array of strings, 
-												 you might want to list them. Adjust the code below based on your data structure. -->
-											{#if Array.isArray(packageInfo.networks[network])}
+											{#each Object.keys(packageInfo.networks[network]) as xml_path}
+												{#if Array.isArray(packageInfo.networks[network][xml_path])}
+													<ul>
+														{#each packageInfo.networks[network][xml_path] as androidName}
+															<div class="px-4 md:px-8">
+																<li>{androidName}</li>
+															</div>
+														{/each}
+													</ul>
+												{/if}
+											{/each}
+										</li>
+									{/each}
+								</ul>
+							</div>
+						{/if}
+
+						{#if packageInfo.leftovers && Object.keys(packageInfo.leftovers).length > 0}
+							<h4 class="h4 md:h3 p-2 md:p-4 mt-4">Other Services</h4>
+							<div class="px-4 md:px-8">
+								<ul>
+									{#each Object.keys(packageInfo.leftovers) as xml_path}
+										<li>
+											<p class="h5">{xml_path}</p>
+											{#if Array.isArray(packageInfo.leftovers[xml_path])}
 												<ul>
-													{#each packageInfo.networks[network] as item}
+													{#each packageInfo.leftovers[xml_path] as androidName}
 														<div class="px-4 md:px-8">
-															<li>{item}</li>
+															<li>{androidName}</li>
 														</div>
 													{/each}
 												</ul>
@@ -276,25 +321,7 @@
 									{/each}
 								</ul>
 							</div>
-						{/if}
-						{#if packageInfo.permissions && packageInfo.permissions.length > 0}
-							<h4 class="h4 md:h3 p-2 md:p-4 mt-4">Permissions</h4>
-							<div class="px-4 md:px-8">
-								{#each packageInfo.permissions as permission}
-									<p>{permission}</p>
-								{/each}
-							</div>
-						{/if}
-						{#if packageInfo.leftovers && packageInfo.leftovers.length > 0}
-							<h4 class="h4 md:h3 p-2 md:p-4 mt-4">Other Services</h4>
-							<div class="px-4 md:px-8">
-								<div class="h-[500px] w-full overflow-y-auto">
-									{#each packageInfo.leftovers as leftovers}
-										<p>{leftovers}</p>
-									{/each}
-								</div>
-							</div>
-						{/if}
+						{/if} -->
 					{/if}
 				{/await}
 			</div>

@@ -116,11 +116,15 @@ export interface AppRankDetail {
 	category: string;
 }
 
-interface Networks {
-	[key: string]: string[];
+export interface Networks {
+	[key: string]: { [key: string]: string[] };
 }
 
-interface Trackers {
+export interface Trackers {
+	[key: string]: { [key: string]: string[] };
+}
+
+interface UnknownManifestItems {
 	[key: string]: string[];
 }
 
@@ -139,7 +143,7 @@ export interface AppFullDetails {
 			trackers: Trackers;
 			networks: Networks;
 			android: string[];
-			leftovers: string[];
+			leftovers: UnknownManifestItems;
 		}>;
 	};
 }
