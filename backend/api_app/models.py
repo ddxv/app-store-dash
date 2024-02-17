@@ -21,9 +21,9 @@ class PackageDetails:
     """Lists of Package permissions, trackers etc from Manifest."""
 
     permissions: list[str]
-    trackers: dict[str, list[str]]
-    networks: dict[str, list[str]]
-    leftovers: list[str]
+    trackers: dict[str, dict[str, list[str]]]
+    networks: dict[str, dict[str, list[str]]]
+    leftovers: dict[str, list[str]]
     android: list[str]
 
 

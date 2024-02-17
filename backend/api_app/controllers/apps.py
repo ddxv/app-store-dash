@@ -233,18 +233,14 @@ class AppController(Controller):
                 status_code=404,
             )
 
-        networks = (
-            df[df["network_name"].notna()][["network_name", "android_name"]]
-            .groupby("network_name")["android_name"]
-            .apply(list)
-            .to_dict()
-        )
-        trackers = (
-            df[df["tracker_name"].notna()][["tracker_name", "android_name"]]
-            .groupby("tracker_name")["android_name"]
-            .apply(list)
-            .to_dict()
-        )
+        networks = {
+            k: f.groupby("xml_path")["android_name"].apply(list).to_dict()
+            for k, f in df.groupby("network_name")
+        }
+        trackers = {
+            k: f.groupby("xml_path")["android_name"].apply(list).to_dict()
+            for k, f in df.groupby("tracker_name")
+        }
 
         is_permission = df["xml_path"] == "uses-permission"
         is_matching_packages = df["android_name"].str.startswith(
@@ -269,12 +265,16 @@ class AppController(Controller):
         permissions_list = [
             x.replace("android.permission.", "") for x in permissions_list
         ]
+
         trackers_dict = PackageDetails(
             trackers=trackers,
             permissions=permissions_list,
             networks=networks,
             android=android_services_df.android_name.tolist(),
-            leftovers=left_overs_df.android_name.tolist(),
+            leftovers=left_overs_df[["xml_path", "android_name"]]
+            .groupby("xml_path")["android_name"]
+            .apply(list)
+            .to_dict(),
         )
         return trackers_dict
 
