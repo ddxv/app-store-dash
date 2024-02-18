@@ -4,7 +4,7 @@ export const ssr = true;
 export const csr = true;
 
 export const load: PageServerLoad = async () => {
-	console.log(`load categories start`);
+	// console.log(`load categories start`);
 	const res = fetch(`http://localhost:8000/api/categories`);
 
 	// setHeaders({
@@ -21,7 +21,7 @@ export const load: PageServerLoad = async () => {
 						console.log('App Not found');
 						return 'App Not Found';
 					} else if (resp.status === 500) {
-						console.log('App API Server error');
+						console.log('Categories API Server error');
 						return 'Backend Error';
 					}
 				})

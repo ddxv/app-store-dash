@@ -4,6 +4,8 @@
 """
 
 
+from typing import Self
+
 import numpy as np
 from litestar import Controller, get
 
@@ -15,8 +17,9 @@ logger = get_logger(__name__)
 
 
 def category_overview() -> CategoriesOverview:
+    """Categories for apps."""
     cats = get_appstore_categories()
-    cats = cats[cats["total_apps"] > 100]
+    cats = cats[cats["total_apps"] > 100]  # noqa: PLR2004 magic number ok
 
     cats["name"] = cats["category"]
     cats["name"] = (
@@ -49,10 +52,13 @@ def category_overview() -> CategoriesOverview:
 
 
 class CategoryController(Controller):
+
+    """App Store Categories API."""
+
     path = "/api/categories"
 
     @get(path="/", cache=True)
-    async def get_categories_overview(self) -> CategoriesOverview:
+    async def get_categories_overview(self: Self) -> CategoriesOverview:
         """Handle GET request for a list of categories.
 
         Returns
@@ -66,8 +72,8 @@ class CategoryController(Controller):
 
         return overview
 
-    @get(path="/{category_id:str}", cache=3600)
-    async def get_category(self, category_id: str) -> Category:
+    @get(path="/{category_id:str}", cache=True)
+    async def get_category(self: Self, category_id: str) -> Category:
         """Handle GET request for a single category.
 
         Returns
