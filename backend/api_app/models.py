@@ -60,18 +60,9 @@ class DeveloperApps:
 
 
 @dataclass
-class TrackerApps:
+class CompanyApps:
 
-    """A tracker's list of apps."""
-
-    title: str
-    apps: list[AppDetail]
-
-
-@dataclass
-class NetworkApps:
-
-    """A network's list of apps."""
+    """A company's list of apps."""
 
     title: str
     apps: list[AppDetail]
@@ -121,45 +112,24 @@ class CategoriesOverview:
 
 
 @dataclass
-class TrackerDetail:
+class CompanyDetail:
 
     """Describes details of a tracker.
 
     Includes its db identifier, name, and the count of its occurrences.
     """
 
-    tracker: int
-    tracker_name: str
+    company_id: int
+    name: str
     count: int
 
 
 @dataclass
-class NetworkDetail:
-
-    """Describes details of a network.
-
-    Includes its db identifier, name, and the count of its occurrences.
-    """
-
-    network: int
-    network_name: str
-    count: int
-
-
-@dataclass
-class TopTrackers:
-
-    """Contains a list of TrackerDetail objects representing the top trackers identified."""
-
-    trackers: list[TrackerDetail]
-
-
-@dataclass
-class TopNetworks:
+class TopCompanies:
 
     """Contains a list of NetworkDetail objects representing the top networks identified."""
 
-    networks: list[NetworkDetail]
+    companies: list[CompanyDetail]
 
 
 @dataclass

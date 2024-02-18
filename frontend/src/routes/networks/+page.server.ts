@@ -14,7 +14,7 @@ export const load: PageServerLoad = async ({ setHeaders }) => {
 		const res = fetch(`http://localhost:8000/api/networks`);
 
 		return {
-			networks: {
+			companies: {
 				streamed: res.then((resp) => resp.json())
 			}
 		};

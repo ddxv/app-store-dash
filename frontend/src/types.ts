@@ -149,20 +149,20 @@ export interface AppFullDetails {
 }
 
 export interface TrackerDetail {
-	tracker_name: string;
+	name: string;
 	app_count: number;
 	percent: number;
 }
 export interface TopTrackersInfo {
 	status?: number;
 	error?: string;
-	trackers: {
-		streamed: Promise<{ trackers: TrackerDetail[] }>;
+	companies: {
+		streamed: Promise<{ companies: TrackerDetail[] }>;
 	};
 }
 
 export interface NetworkDetail {
-	network_name: string;
+	name: string;
 	app_count: number;
 	percent: number;
 }
@@ -170,8 +170,8 @@ export interface NetworkDetail {
 export interface TopNetworksInfo {
 	status?: number;
 	error?: string;
-	networks: {
-		streamed: Promise<{ networks: NetworkDetail[] }>;
+	companies: {
+		streamed: Promise<{ companies: NetworkDetail[] }>;
 	};
 }
 export interface AppHistoryInfo {

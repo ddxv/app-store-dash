@@ -7,7 +7,7 @@ export const csr: boolean = true;
 console.log('Script executed');
 export const load: PageServerLoad = async ({ params, locals }) => {
 	const networkName = params.name;
-	const res = fetch(`http://localhost:8000/api/networks/${networkName}`);
+	const res = fetch(`http://localhost:8000/api/companies/${networkName}`);
 	console.log(`start load apps for tracker=${networkName}`);
 	try {
 		return {

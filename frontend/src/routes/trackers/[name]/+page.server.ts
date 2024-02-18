@@ -6,7 +6,7 @@ export const csr: boolean = true;
 console.log('Script executed');
 export const load: PageServerLoad = async ({ params, locals }) => {
 	const trackerName = params.name;
-	const res = fetch(`http://localhost:8000/api/trackers/${trackerName}`);
+	const res = fetch(`http://localhost:8000/api/companies/${trackerName}`);
 	console.log(`start load apps for tracker=${trackerName}`);
 	try {
 		return {

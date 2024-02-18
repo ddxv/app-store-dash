@@ -2,8 +2,8 @@
 	import type { TopNetworksInfo } from '../../types';
 	export let data: TopNetworksInfo;
 
-	function navigate(tracker_name: string) {
-		window.location.href = `/networks/${tracker_name}`;
+	function navigate(name: string) {
+		window.location.href = `/networks/${name}`;
 	}
 </script>
 
@@ -25,7 +25,7 @@
 		networks. Currently this list is for Android APKs only.
 	</p>
 
-	{#await data.networks.streamed}
+	{#await data.companies.streamed}
 		Loading Ad Networks...
 	{:then networks}
 		<div class="p-2 md:p-8" />
@@ -39,12 +39,12 @@
 					</tr>
 				</thead>
 				<tbody>
-					{#each Object.entries(networks.networks) as [_prop, values]}
-						<tr on:click={() => navigate(values.network_name)} style="cursor: pointer;">
+					{#each Object.entries(networks.companies) as [_prop, values]}
+						<tr on:click={() => navigate(values.name)} style="cursor: pointer;">
 							<td
 								><div class="inline-flex">
 									<h3 class="h4 md:h3">
-										{values.network_name}
+										{values.name}
 									</h3>
 								</div>
 							</td>

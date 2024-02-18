@@ -12,7 +12,7 @@ export const load: PageServerLoad = async ({ setHeaders }) => {
 		const res = fetch(`http://localhost:8000/api/trackers`);
 
 		return {
-			trackers: {
+			companies: {
 				streamed: res.then((resp) => resp.json())
 			}
 		};
