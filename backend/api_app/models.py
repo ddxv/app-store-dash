@@ -60,18 +60,9 @@ class DeveloperApps:
 
 
 @dataclass
-class TrackerApps:
+class CompanyApps:
 
-    """A tracker's list of apps."""
-
-    title: str
-    apps: list[AppDetail]
-
-
-@dataclass
-class NetworkApps:
-
-    """A network's list of apps."""
+    """A company's list of apps."""
 
     title: str
     apps: list[AppDetail]
