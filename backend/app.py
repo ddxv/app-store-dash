@@ -8,9 +8,8 @@ from litestar.openapi import OpenAPIConfig, OpenAPIController
 
 from api_app.controllers.apps import AppController
 from api_app.controllers.categories import CategoryController
-from api_app.controllers.networks import NetworksController
+from api_app.controllers.companies import CompaniesController
 from api_app.controllers.rankings import RankingsController
-from api_app.controllers.trackers import TrackersController
 
 cors_config = CORSConfig(
     allow_origins=[
@@ -39,8 +38,7 @@ app = Litestar(
         AppController,
         CategoryController,
         RankingsController,
-        TrackersController,
-        NetworksController,
+        CompaniesController,
     ],
     cors_config=cors_config,
     openapi_config=OpenAPIConfig(

@@ -38,9 +38,10 @@ QUERY_APP_PACKAGE_DETAILS = load_sql_file("query_app_package_details.sql")
 QUERY_STORE_COLLECTION_CATEGORY_MAP = load_sql_file(
     "query_store_collection_category_map.sql",
 )
-QUERY_TOP_TRACKERS = load_sql_file("query_top_trackers.sql")
 QUERY_TRACKER_APPS = load_sql_file("query_tracker_apps.sql")
-QUERY_TOP_NETWORKS = load_sql_file("query_top_networks.sql")
+QUERY_TOP_COMPANIES = load_sql_file("query_top_companies.sql")
+QUERY_TOP_PARENT_COMPANIES = load_sql_file("query_top_parent_companies.sql")
+QUERY_NETWORK_APPS = load_sql_file("query_network_apps.sql")
 QUERY_NETWORK_APPS = load_sql_file("query_network_apps.sql")
 
 
@@ -312,23 +313,29 @@ def get_manifest_names() -> pd.DataFrame:
     return df
 
 
-def get_top_trackers() -> pd.DataFrame:
-    """Get top trackers.
+def get_top_companies(
+    categories: list[int], group_by_parent: bool = False,
+) -> pd.DataFrame:
+    """Get top networks, mmps or other companies.
 
     Data is pre-processed by materialized views.
 
-    """
-    df = pd.read_sql(QUERY_TOP_TRACKERS, DBCON.engine)
-    return df
-
-
-def get_top_networks() -> pd.DataFrame:
-    """Get top networks.
-
-    Data is pre-processed by materialized views.
+    Args:
+    ----
+        categories (list[int]): list of 1=adnetworks, 2=MMP/Attribution, 3=Analytics.
+        group_by_parent (bool): Group by a parent entity if such entity exists.
 
     """
-    df = pd.read_sql(QUERY_TOP_NETWORKS, DBCON.engine)
+    if group_by_parent:
+        df = pd.read_sql(
+            QUERY_TOP_COMPANIES, DBCON.engine, params={"categories": tuple(categories)},
+        )
+    else:
+        df = pd.read_sql(
+            QUERY_TOP_PARENT_COMPANIES,
+            DBCON.engine,
+            params={"categories": tuple(categories)},
+        )
     return df
 
 

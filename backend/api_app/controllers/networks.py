@@ -10,15 +10,15 @@ from litestar.exceptions import NotFoundException
 
 from api_app.models import NetworkApps, TopNetworks
 from config import get_logger
-from dbcon.queries import get_apps_for_network, get_top_networks
+from dbcon.queries import get_apps_for_network, get_top_companies
 
 logger = get_logger(__name__)
 
 
 def networks_overview() -> TopNetworks:
     """Process networks and return TopNetworks class."""
-    df = get_top_networks()
-    df = df[~df["network_name"].isna()]
+    df = get_top_companies(categories=[1])
+    df = df[~df["name"].isna()]
     df = df.sort_values("app_count", ascending=False)
     networks = TopNetworks(networks=df.to_dict(orient="records"))
     return networks

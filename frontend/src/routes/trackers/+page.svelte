@@ -2,8 +2,8 @@
 	import type { TopTrackersInfo } from '../../types';
 	export let data: TopTrackersInfo;
 
-	function navigate(tracker_name: string) {
-		window.location.href = `/trackers/${tracker_name}`;
+	function navigate(name: string) {
+		window.location.href = `/trackers/${name}`;
 	}
 </script>
 
@@ -25,7 +25,7 @@
 		Android APKs only.
 	</p>
 
-	{#await data.trackers.streamed}
+	{#await data.companies.streamed}
 		Loading App Trackers...
 	{:then trackers}
 		<div class="p-2 md:p-8" />
@@ -39,12 +39,12 @@
 					</tr>
 				</thead>
 				<tbody>
-					{#each Object.entries(trackers.trackers) as [_prop, values]}
-						<tr on:click={() => navigate(values.tracker_name)} style="cursor: pointer;">
+					{#each Object.entries(trackers.companies) as [_prop, values]}
+						<tr on:click={() => navigate(values.name)} style="cursor: pointer;">
 							<td
 								><div class="inline-flex">
 									<h3 class="h4 md:h3">
-										{values.tracker_name}
+										{values.name}
 									</h3>
 								</div>
 							</td>
