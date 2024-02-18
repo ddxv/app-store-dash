@@ -11,7 +11,7 @@
 		</div>
 	{:then apps}
 		{#if typeof apps == 'string'}
-			Failed to load tracker
+			Failed to load network's apps.
 		{:else}
 			<h1 class="h1 p-2">Apps using {apps.title}</h1>
 			<p class="h4 p-4">

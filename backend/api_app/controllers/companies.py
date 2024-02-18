@@ -11,7 +11,7 @@ from litestar.exceptions import NotFoundException
 
 from api_app.models import CompanyApps, TopCompanies
 from config import get_logger
-from dbcon.queries import get_apps_for_network, get_top_companies
+from dbcon.queries import get_apps_for_company, get_top_companies
 
 logger = get_logger(__name__)
 
@@ -61,7 +61,7 @@ class CompaniesController(Controller):
 
         return overview
 
-    @get(path="/companies/{copmany_name:str}", cache=3600)
+    @get(path="/companies/{company_name:str}", cache=3600)
     async def get_company_apps(self: Self, company_name: str) -> CompanyApps:
         """Handle GET request for a specific company.
 
@@ -75,7 +75,7 @@ class CompaniesController(Controller):
 
         """
         logger.info(f"{self.path} start")
-        apps_df = get_apps_for_network(company_name)
+        apps_df = get_apps_for_company(company_name, include_parents=True)
 
         if apps_df.empty:
             msg = f"Network Name not found: {company_name!r}"

@@ -38,11 +38,10 @@ QUERY_APP_PACKAGE_DETAILS = load_sql_file("query_app_package_details.sql")
 QUERY_STORE_COLLECTION_CATEGORY_MAP = load_sql_file(
     "query_store_collection_category_map.sql",
 )
-QUERY_TRACKER_APPS = load_sql_file("query_tracker_apps.sql")
 QUERY_TOP_COMPANIES = load_sql_file("query_top_companies.sql")
 QUERY_TOP_PARENT_COMPANIES = load_sql_file("query_top_parent_companies.sql")
-QUERY_NETWORK_APPS = load_sql_file("query_network_apps.sql")
-QUERY_NETWORK_APPS = load_sql_file("query_network_apps.sql")
+QUERY_COMPANY_APPS = load_sql_file("query_company_apps.sql")
+QUERY_PARENT_COMPANY_APPS = load_sql_file("query_parent_company_apps.sql")
 
 
 def get_recent_apps(collection: str, limit: int = 20) -> pd.DataFrame:
@@ -265,27 +264,25 @@ def get_single_developer(developer_id: str) -> pd.DataFrame:
     return df
 
 
-def get_apps_for_tracker(tracker_name: str) -> pd.DataFrame:
-    """Get apps for for a tracker."""
-    logger.info(f"Tracker: {tracker_name=}")
-    df = pd.read_sql(
-        QUERY_TRACKER_APPS,
-        con=DBCON.engine,
-        params={"tracker_name": tracker_name, "mylimit": 20},
-    )
-    if not df.empty:
-        df = clean_app_df(df)
-    return df
-
-
-def get_apps_for_network(network_name: str) -> pd.DataFrame:
+def get_apps_for_company(
+    network_name: str,
+    *,
+    include_parents: bool = False,
+) -> pd.DataFrame:
     """Get apps for for a network."""
-    logger.info(f"Tracker: {network_name=}")
-    df = pd.read_sql(
-        QUERY_NETWORK_APPS,
-        con=DBCON.engine,
-        params={"network_name": network_name, "mylimit": 20},
-    )
+    logger.info(f"Tracker: {network_name=} & {include_parents=}")
+    if include_parents:
+        df = pd.read_sql(
+            QUERY_PARENT_COMPANY_APPS,
+            con=DBCON.engine,
+            params={"network_name": network_name, "mylimit": 20},
+        )
+    else:
+        df = pd.read_sql(
+            QUERY_COMPANY_APPS,
+            con=DBCON.engine,
+            params={"network_name": network_name, "mylimit": 20},
+        )
     if not df.empty:
         df = clean_app_df(df)
     return df
@@ -314,7 +311,9 @@ def get_manifest_names() -> pd.DataFrame:
 
 
 def get_top_companies(
-    categories: list[int], group_by_parent: bool = False,
+    categories: list[int],
+    *,
+    group_by_parent: bool = False,
 ) -> pd.DataFrame:
     """Get top networks, mmps or other companies.
 
@@ -328,7 +327,9 @@ def get_top_companies(
     """
     if group_by_parent:
         df = pd.read_sql(
-            QUERY_TOP_COMPANIES, DBCON.engine, params={"categories": tuple(categories)},
+            QUERY_TOP_COMPANIES,
+            DBCON.engine,
+            params={"categories": tuple(categories)},
         )
     else:
         df = pd.read_sql(
