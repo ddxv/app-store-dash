@@ -14,7 +14,7 @@ WHERE
             ON
                 sac.company_id = pc.parent_company_id
         WHERE
-            c.name = :network_name OR pc.name = :network_name
+            c.name = :company_name OR pc.name = :company_name
     )
 ORDER BY installs DESC
 LIMIT :mylimit;

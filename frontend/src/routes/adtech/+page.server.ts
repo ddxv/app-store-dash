@@ -1,9 +1,7 @@
 export const ssr: boolean = true;
 export const csr: boolean = true;
 
-import type { PageServerLoad } from './$types.js';
-
-// import type { PageServerLoad } from '../$types.js';
+import type { PageServerLoad } from '../$types';
 
 export const load: PageServerLoad = async ({ setHeaders }) => {
 	const emptyResponse = { streamed: {} };
@@ -11,20 +9,26 @@ export const load: PageServerLoad = async ({ setHeaders }) => {
 		'cache-control': 'max-age=3600'
 	});
 	try {
-		const res = fetch(`http://localhost:8000/api/networks`);
+		const res = fetch(`http://localhost:8000/api/trackers`);
+		const nres = fetch(`http://localhost:8000/api/networks`);
 
 		return {
-			companies: {
+			trackers: {
 				streamed: res.then((resp) => resp.json())
+			},
+			networks: {
+				streamed: nres.then((resp) => resp.json())
 			}
 		};
 	} catch (error) {
 		console.error('Failed to load app data:', error);
 		return {
-			ranks: emptyResponse,
-			history: emptyResponse,
+			networks: emptyResponse,
+			networksParents: emptyResponse,
+			trackers: emptyResponse,
+			trackersParents: emptyResponse,
 			status: 500,
-			error: 'Failed to load ranked apps'
+			error: 'Failed to load adtech ranked apps'
 		};
 	}
 };

@@ -23,7 +23,7 @@ export interface DeveloperResponse {
 	error?: string;
 }
 
-export interface TrackerApps {
+export interface CompanyApps {
 	results: { streamed: AppGroup };
 	status?: number;
 	error?: string;
@@ -148,32 +148,23 @@ export interface AppFullDetails {
 	};
 }
 
-export interface TrackerDetail {
-	name: string;
-	app_count: number;
-	percent: number;
-}
-export interface TopTrackersInfo {
-	status?: number;
-	error?: string;
-	companies: {
-		streamed: Promise<{ companies: TrackerDetail[] }>;
-	};
-}
-
-export interface NetworkDetail {
+export interface Company {
 	name: string;
 	app_count: number;
 	percent: number;
 }
 
-export interface TopNetworksInfo {
+export interface TopCompaniesInfo {
 	status?: number;
 	error?: string;
-	companies: {
-		streamed: Promise<{ companies: NetworkDetail[] }>;
+	networks: {
+		streamed: Promise<{ companies: Company[]; parent_companies: Company[] }>;
+	};
+	trackers: {
+		streamed: Promise<{ companies: Company[]; parent_companies: Company[] }>;
 	};
 }
+
 export interface AppHistoryInfo {
 	crawled_date: string;
 	review_count: number;
