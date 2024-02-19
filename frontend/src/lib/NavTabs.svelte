@@ -27,8 +27,9 @@
 	>
 		<h3 class="h5 md:h3">RANKS</h3>
 	</TabAnchor>
-	<TabAnchor href="/adtech" selected={$page.url.pathname.startsWith('/adtech')}
-		><h3 class="h5 md:h3">ADTECH</h3></TabAnchor
+	<TabAnchor
+		href="/adtech/networks?groupby=brands"
+		selected={$page.url.pathname.startsWith('/adtech')}><h3 class="h5 md:h3">ADTECH</h3></TabAnchor
 	>
 	<TabAnchor href="/about" selected={$page.url.pathname === '/about'}
 		><h3 class="h5 md:h3">ABOUT</h3></TabAnchor
