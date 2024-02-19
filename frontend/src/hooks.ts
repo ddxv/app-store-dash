@@ -1,10 +1,10 @@
 import type { Handle } from '@sveltejs/kit';
 
 export const handle: Handle = async ({ event, resolve }) => {
-	if (event.url.pathname === '/networks') {
+	if (event.url.pathname.startsWith('/networks')) {
 		return new Response(undefined, { status: 301, headers: { Location: '/adtech/networks' } });
 	}
-	if (event.url.pathname === '/trackers') {
+	if (event.url.pathname.startsWith('/trackers')) {
 		return new Response(undefined, { status: 301, headers: { Location: '/adtech/trackers' } });
 	}
 
