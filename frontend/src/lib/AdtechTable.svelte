@@ -11,9 +11,9 @@
 	<table class="table table-hover table-auto">
 		<thead>
 			<tr>
-				<th><h3 class="h3">Name</h3></th>
-				<th><h3 class="h3">Count</h3></th>
-				<th><h3 class="h3">Percentage</h3></th>
+				<th><h4 class="h4">Name</h4></th>
+				<th><h4 class="h4">Count</h4></th>
+				<th><h4 class="h4">Percentage</h4></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -21,19 +21,19 @@
 				<tr on:click={() => navigate(values.name)} style="cursor: pointer;">
 					<td
 						><div class="inline-flex">
-							<h3 class="h4 md:h3">
+							<h3 class="h6 md:h5">
 								{values.name}
 							</h3>
 						</div>
 					</td>
 					<td>
 						<div class="inline-flex">
-							<h3 class="h4 md:h3 p-2">{values.app_count}</h3>
+							<h3 class="h6 md:h5">{values.app_count}</h3>
 						</div>
 					</td>
 					<td>
 						<div class="inline-flex">
-							<h3 class="h4 md:h3 p-2">{`${(values.percent * 100).toFixed(1)}%`}</h3>
+							<h3 class="h6 md:h5">{`${(values.percent * 100).toFixed(1)}%`}</h3>
 						</div>
 					</td>
 				</tr>

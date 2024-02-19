@@ -5,9 +5,6 @@
 	import AdtechTable from '$lib/AdtechTable.svelte';
 	export let data: TopCompaniesInfo;
 
-	function navigate(name: string) {
-		window.location.href = `/adtech/companies/${name}`;
-	}
 	let entityGroup = 'networks';
 	let granularityGroup = 'brands';
 
@@ -34,7 +31,7 @@
 	/>
 </svelte:head>
 
-<div class="card p-2 md:p-16">
+<div class="card p-2 px-4 md:px-16">
 	<h3 class="h4 md:h3 p-4">Third Party Mobile Ad Tech Partners</h3>
 
 	<AdtechNav></AdtechNav>
