@@ -47,7 +47,7 @@ class CompaniesController(Controller):
             each with an id, name, type and total of apps.
 
         """
-        logger.info(f"{self.path} start")
+        logger.info(f"{self.path}/networks start")
         overview = companies_overview([1])
 
         return overview
@@ -62,7 +62,7 @@ class CompaniesController(Controller):
             each with an id, name, type and total of apps.
 
         """
-        logger.info(f"{self.path} start")
+        logger.info(f"{self.path}/trackers start")
         overview = companies_overview([2, 3])
 
         return overview
@@ -80,7 +80,7 @@ class CompaniesController(Controller):
             CompanyApps.
 
         """
-        logger.info(f"{self.path} start")
+        logger.info(f"{self.path}/companies start")
         apps_df = get_apps_for_company(company_name, include_parents=True)
 
         if apps_df.empty:

@@ -275,13 +275,13 @@ def get_apps_for_company(
         df = pd.read_sql(
             QUERY_PARENT_COMPANY_APPS,
             con=DBCON.engine,
-            params={"network_name": company_name, "mylimit": 20},
+            params={"company_name": company_name, "mylimit": 20},
         )
     else:
         df = pd.read_sql(
             QUERY_COMPANY_APPS,
             con=DBCON.engine,
-            params={"network_name": company_name, "mylimit": 20},
+            params={"company_name": company_name, "mylimit": 20},
         )
     if not df.empty:
         df = clean_app_df(df)
