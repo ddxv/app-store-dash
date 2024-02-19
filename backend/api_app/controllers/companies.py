@@ -18,11 +18,17 @@ logger = get_logger(__name__)
 
 def companies_overview(categories: list[int]) -> TopCompanies:
     """Process networks and return TopCompanies class."""
-    df = get_top_companies(categories=categories)
+    df = get_top_companies(categories=categories, group_by_parent=False)
+    pdf = get_top_companies(categories=categories, group_by_parent=True)
     df = df[~df["name"].isna()]
+    pdf = pdf[~pdf["name"].isna()]
     df = df.sort_values("app_count", ascending=False)
-    networks = TopCompanies(companies=df.to_dict(orient="records"))
-    return networks
+    pdf = pdf.sort_values("app_count", ascending=False)
+    top = TopCompanies(
+        companies=df.to_dict(orient="records"),
+        parent_companies=pdf.to_dict(orient="records"),
+    )
+    return top
 
 
 class CompaniesController(Controller):
@@ -41,7 +47,7 @@ class CompaniesController(Controller):
             each with an id, name, type and total of apps.
 
         """
-        logger.info(f"{self.path} start")
+        logger.info(f"{self.path}/networks start")
         overview = companies_overview([1])
 
         return overview
@@ -56,7 +62,7 @@ class CompaniesController(Controller):
             each with an id, name, type and total of apps.
 
         """
-        logger.info(f"{self.path} start")
+        logger.info(f"{self.path}/trackers start")
         overview = companies_overview([2, 3])
 
         return overview
@@ -71,10 +77,10 @@ class CompaniesController(Controller):
 
         Returns:
         -------
-            json.
+            CompanyApps.
 
         """
-        logger.info(f"{self.path} start")
+        logger.info(f"{self.path}/companies start")
         apps_df = get_apps_for_company(company_name, include_parents=True)
 
         if apps_df.empty:

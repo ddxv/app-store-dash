@@ -11,7 +11,7 @@ WHERE
             ON
                 sac.company_id = c.id
         WHERE
-            c.name = :network_name
+            c.name = :company_name
     )
 ORDER BY installs DESC
 LIMIT :mylimit;

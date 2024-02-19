@@ -265,23 +265,23 @@ def get_single_developer(developer_id: str) -> pd.DataFrame:
 
 
 def get_apps_for_company(
-    network_name: str,
+    company_name: str,
     *,
     include_parents: bool = False,
 ) -> pd.DataFrame:
     """Get apps for for a network."""
-    logger.info(f"Tracker: {network_name=} & {include_parents=}")
+    logger.info(f"Query: {company_name=} & {include_parents=}")
     if include_parents:
         df = pd.read_sql(
             QUERY_PARENT_COMPANY_APPS,
             con=DBCON.engine,
-            params={"network_name": network_name, "mylimit": 20},
+            params={"company_name": company_name, "mylimit": 20},
         )
     else:
         df = pd.read_sql(
             QUERY_COMPANY_APPS,
             con=DBCON.engine,
-            params={"network_name": network_name, "mylimit": 20},
+            params={"company_name": company_name, "mylimit": 20},
         )
     if not df.empty:
         df = clean_app_df(df)
@@ -327,13 +327,13 @@ def get_top_companies(
     """
     if group_by_parent:
         df = pd.read_sql(
-            QUERY_TOP_COMPANIES,
+            QUERY_TOP_PARENT_COMPANIES,
             DBCON.engine,
             params={"categories": tuple(categories)},
         )
     else:
         df = pd.read_sql(
-            QUERY_TOP_PARENT_COMPANIES,
+            QUERY_TOP_COMPANIES,
             DBCON.engine,
             params={"categories": tuple(categories)},
         )
