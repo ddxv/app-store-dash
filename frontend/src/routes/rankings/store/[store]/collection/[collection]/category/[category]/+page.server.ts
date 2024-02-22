@@ -4,7 +4,7 @@ export const csr: boolean = true;
 import type { PageServerLoad } from './$types.js';
 
 export const load: PageServerLoad = async ({ params, setHeaders, url }) => {
-	const emptyResponse = { streamed: {} };
+	const emptyResponse = {};
 	setHeaders({
 		'cache-control': 'max-age=3600'
 	});
@@ -20,12 +20,8 @@ export const load: PageServerLoad = async ({ params, setHeaders, url }) => {
 		);
 
 		return {
-			ranks: {
-				streamed: res.then((resp) => resp.json())
-			},
-			history: {
-				streamed: history.then((resp) => resp.json())
-			}
+			ranks: res.then((resp) => resp.json()),
+			history: history.then((resp) => resp.json())
 		};
 	} catch (error) {
 		console.error('Failed to load app data:', error);

@@ -9,7 +9,7 @@
 </script>
 
 <svelte:head>
-	{#await data.AppCollections.streamed}
+	{#await data.AppCollections}
 		<title>App Stats & Info</title>
 	{:then myapps}
 		{#if typeof myapps != 'string'}
@@ -28,7 +28,7 @@
 	/>
 </svelte:head>
 
-{#await data.AppCollections.streamed}
+{#await data.AppCollections}
 	<div>
 		<span>Loading data...</span>
 	</div>

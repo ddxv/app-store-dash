@@ -5,7 +5,7 @@
 </script>
 
 <div>
-	{#await data.results.streamed}
+	{#await data.results}
 		<div>
 			<span>Loading...</span>
 		</div>

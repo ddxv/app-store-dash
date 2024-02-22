@@ -12,7 +12,7 @@
 </script>
 
 <svelte:head>
-	{#await data.myapp.streamed}
+	{#await data.myapp}
 		<title>App Stats & Info</title>
 	{:then appdata}
 		{#if typeof appdata == 'string'}
@@ -40,7 +40,7 @@
 <section class="grid grid-flow-cols-1 md:grid-cols-2 md:gap-4">
 	<!-- Column1: App Icon Title & Info -->
 	<div class="card p-0 lg:p-8">
-		{#await data.myapp.streamed}
+		{#await data.myapp}
 			Loading app details...
 		{:then appdata}
 			{#if typeof appdata == 'string'}
@@ -130,7 +130,7 @@
 						Ratings: {appdata.rating_count}
 					</div>
 					<div class="flex-1">
-						{#await data.myhistory.streamed}
+						{#await data.myhistory}
 							Loading rating details...
 						{:then histdata}
 							{#each [...histdata.histogram].reverse() as count, index}
@@ -150,7 +150,7 @@
 				</div>
 
 				<h4 class="h4 md:h3 p-2 mt-2">Lastest Store Ranks</h4>
-				{#await data.myranks.streamed}
+				{#await data.myranks}
 					Loading app ranks...
 				{:then ranks}
 					{#if typeof ranks == 'string'}
@@ -176,7 +176,7 @@
 						{/if}
 					{/if}
 				{/await}
-				{#await data.myhistory.streamed}
+				{#await data.myhistory}
 					Loading historical data...
 				{:then histdata}
 					{#if histdata.history_table}
@@ -202,7 +202,7 @@
 	<!-- Column2: App Pictures -->
 	<div class="card p-8">
 		<div class="card">
-			{#await data.myapp.streamed}
+			{#await data.myapp}
 				Loading app pictures...
 			{:then appdata}
 				{#if typeof appdata == 'string'}
@@ -249,7 +249,7 @@
 				<p>The server caught an error. Please try again or try another app.</p>
 			{/await}
 		</div>
-		{#await data.myPackageInfo.streamed}
+		{#await data.myPackageInfo}
 			Loading permissions and tracker data...
 		{:then packageInfo}
 			{#if typeof packageInfo == 'string'}

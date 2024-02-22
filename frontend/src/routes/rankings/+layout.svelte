@@ -37,14 +37,14 @@
 </script>
 
 <Drawer>
-	{#await data.mycats.streamed then data}
+	{#await data.mycats then data}
 		<SideBar myCatData={data} />
 	{/await}
 </Drawer>
 
 <AppShell slotSidebarLeft="w-0 lg:w-auto">
 	<svelte:fragment slot="sidebarLeft">
-		{#await data.mycats.streamed then myCatData}
+		{#await data.mycats then myCatData}
 			<SideBar {myCatData} />
 		{/await}
 	</svelte:fragment>

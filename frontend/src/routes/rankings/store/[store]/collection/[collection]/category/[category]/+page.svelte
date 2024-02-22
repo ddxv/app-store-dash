@@ -34,10 +34,10 @@
 			.collection_name}, Category: {categoryIDLookup[collection][category].category_name}
 	</h3>
 
-	{#await data.ranks.streamed}
+	{#await data.ranks}
 		Loading App Ranks...
 	{:then ranks}
-		{#await data.history.streamed}
+		{#await data.history}
 			Loading rank history...
 		{:then history}
 			<div class="card">

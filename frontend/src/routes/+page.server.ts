@@ -4,7 +4,7 @@ export const csr: boolean = true;
 import type { PageServerLoad } from './$types.js';
 
 export const load: PageServerLoad = async ({ params, setHeaders, url }) => {
-	const emptyResponse = { streamed: {} };
+	const emptyResponse = {};
 	setHeaders({
 		'cache-control': 'max-age=3600'
 	});
@@ -16,18 +16,10 @@ export const load: PageServerLoad = async ({ params, setHeaders, url }) => {
 		const iOSGameRanks = fetch(`http://localhost:8000/api/rankings/2/4/62/short`);
 
 		return {
-			androidAppRanks: {
-				streamed: androidAppRanks.then((resp) => resp.json())
-			},
-			iOSAppRanks: {
-				streamed: iOSAppRanks.then((resp) => resp.json())
-			},
-			androidGameRanks: {
-				streamed: androidGameRanks.then((resp) => resp.json())
-			},
-			iOSGameRanks: {
-				streamed: iOSGameRanks.then((resp) => resp.json())
-			}
+			androidAppRanks: androidAppRanks.then((resp) => resp.json()),
+			iOSAppRanks: iOSAppRanks.then((resp) => resp.json()),
+			androidGameRanks: androidGameRanks.then((resp) => resp.json()),
+			iOSGameRanks: iOSGameRanks.then((resp) => resp.json())
 		};
 	} catch (error) {
 		console.error('Failed to load app data:', error);
