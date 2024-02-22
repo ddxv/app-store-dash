@@ -1,13 +1,6 @@
 <script lang="ts">
 	import '../app.postcss';
-	import {
-		AppShell,
-		AppBar,
-		initializeStores,
-		Drawer,
-		getDrawerStore,
-		type DrawerSettings
-	} from '@skeletonlabs/skeleton';
+	import { AppShell, AppBar } from '@skeletonlabs/skeleton';
 	import IconSearch from '$lib/svg/IconSearch.svelte';
 	import type { AfterNavigate } from '@sveltejs/kit';
 	import { afterNavigate } from '$app/navigation';
@@ -24,32 +17,7 @@
 		}
 	}
 
-	import { homeCategoryMap } from '../stores';
-	import type { CategoriesInfo } from '../types';
-	export let data: CategoriesInfo;
-	homeCategoryMap.set(data);
-
-	import SideBar from '$lib/SideBar.svelte';
 	import NavTabs from '$lib/NavTabs.svelte';
-	import { page } from '$app/stores';
-	initializeStores();
-	const drawerStore = getDrawerStore();
-
-	const drawerSettings: DrawerSettings = {
-		id: 'example-3',
-		// Provide your property overrides:
-		// bgDrawer: 'bg-purple-900 text-white',
-		bgDrawer: 'bg-gradient-to-tr from-indigo-100/50 via-purple-500/75 to-pink-100',
-		bgBackdrop: 'bg-gradient-to-tr from-indigo-500/10 via-purple-500/10 to-pink-500/10',
-		width: 'w-[280px] md:w-[480px] h-[580px]',
-		padding: 'p-0',
-		rounded: 'rounded-xl',
-		position: 'bottom'
-	};
-
-	const drawerOpen = () => {
-		drawerStore.open(drawerSettings);
-	};
 
 	// Scroll to top after navigation
 	afterNavigate((params: AfterNavigate) => {
@@ -60,12 +28,6 @@
 		}
 	});
 </script>
-
-<Drawer>
-	{#await data.mycats.streamed then data}
-		<SideBar myCatData={data} />
-	{/await}
-</Drawer>
 
 <!-- App Shell -->
 <AppShell
@@ -117,12 +79,6 @@
 			</svelte:fragment>
 		</AppBar>
 	</svelte:fragment>
-	<svelte:fragment slot="sidebarLeft">
-		{#await data.mycats.streamed then myCatData}
-			<SideBar {myCatData} />
-		{/await}
-	</svelte:fragment>
-
 	<svelte:fragment slot="footer">
 		<AppBar
 			slotLead="p-0"
@@ -142,21 +98,6 @@
 	</svelte:fragment>
 
 	<slot />
-	{#if $page.url.pathname.startsWith('/collections') || $page.url.pathname.startsWith('/rankings')}
-		<button
-			class="lg:hidden btn variant-filled-primary absolute right-[20px] bottom-[50px]"
-			on:click={drawerOpen}
-		>
-			<h4 class="h4">FILTERS</h4>
-			<span>
-				<svg viewBox="0 0 100 80" class="fill-token w-4 h-4">
-					<rect width="100" height="20" />
-					<rect y="30" width="100" height="20" />
-					<rect y="60" width="100" height="20" />
-				</svg>
-			</span>
-		</button>
-	{/if}
 
 	<!-- Page Route Content -->
 </AppShell>
