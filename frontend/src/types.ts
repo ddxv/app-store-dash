@@ -122,7 +122,7 @@ export interface AppHistoryInfo {
 	rating_count: number;
 }
 export interface AppFullDetails {
-	myapp: Promise<AppFullDetail>;
+	myapp: AppFullDetail;
 	status?: number;
 	error?: string;
 	myranks: Promise<{ latest: AppRankDetail[]; history: AppRankDetail[] }>;

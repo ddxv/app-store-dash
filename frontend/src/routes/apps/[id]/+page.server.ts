@@ -3,7 +3,7 @@ export const csr = true;
 
 import type { PageServerLoad } from './$types.js';
 
-export const load: PageServerLoad = async ({ params, setHeaders, locals }) => {
+export const load: PageServerLoad = async ({ params }) => {
 	const emptyResponse = { error: 'Caught error!' };
 	const id = params.id;
 
