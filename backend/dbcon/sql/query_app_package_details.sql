@@ -1,50 +1,69 @@
-WITH latest_version_codes AS (
+WITH my_app AS (
+    SELECT id
+    FROM
+        store_apps
+    WHERE
+        store_id = :store_id
+),
+
+latest_version_code AS (
     SELECT
         vc.store_app,
         MAX(vc.version_code) AS max_version_code
     FROM
         version_codes AS vc
+    INNER JOIN my_app AS app
+        ON
+            vc.store_app = app.id
     GROUP BY
         vc.store_app
+),
+
+company_categories AS (
+    SELECT
+        c.id AS company_id,
+        STRING_AGG(
+            cat.name,
+            ', '
+        ) AS category_names
+    FROM
+        adtech.companies AS c
+    LEFT JOIN adtech.company_categories AS ccat
+        ON
+            c.id = ccat.company_id
+    LEFT JOIN adtech.categories AS cat
+        ON
+            ccat.category_id = cat.id
+    GROUP BY
+        c.id
 )
 
 SELECT
-    vd.*,
     vc.store_app,
-    sa.store_id,
-    t.name AS tracker_name,
-    n.name AS network_name
+    vd.xml_path,
+    vd.tag,
+    vd.android_name,
+    c.name AS company_name,
+    cc.category_names
 FROM
     version_details AS vd
-LEFT JOIN
-    version_codes AS vc
+LEFT JOIN version_codes AS vc
     ON
         vd.version_code = vc.id
-LEFT JOIN network_package_map AS tm
+INNER JOIN latest_version_code AS lvc
     ON
-        vd.android_name ~* tm.package_pattern::TEXT
-LEFT JOIN tracker_package_map AS tr
+        vc.version_code = lvc.max_version_code
+        AND vc.store_app = lvc.store_app
+LEFT JOIN adtech.sdk_packages AS tm
     ON
-        vd.android_name ~* tr.package_pattern::TEXT
-LEFT JOIN trackers AS t
+        vd.android_name ILIKE tm.package_pattern || '%'
+LEFT JOIN adtech.companies AS c
     ON
-        tr.tracker = t.id
-LEFT JOIN networks AS n
+        tm.company_id = c.id
+LEFT JOIN company_categories AS cc
     ON
-        tm.network = n.id
-INNER JOIN
-    latest_version_codes AS lvc
-    ON
-        vc.store_app = lvc.store_app
-        AND vc.version_code = lvc.max_version_code
-LEFT JOIN store_apps AS sa
-    ON
-        vc.store_app = sa.id
-WHERE
-    vd.android_name != ''
-    AND
-    sa.store_id = :store_id
+        c.id = cc.company_id
 ORDER BY
     vc.store_app,
     vd.xml_path,
-    vd.android_name
+    vd.android_name;
