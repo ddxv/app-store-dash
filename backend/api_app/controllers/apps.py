@@ -15,6 +15,7 @@ from litestar.exceptions import NotFoundException
 from api_app.models import (
     AppDetail,
     AppGroup,
+    AppHistory,
     AppRank,
     Category,
     Collection,
@@ -45,16 +46,11 @@ def get_search_results(search_term: str) -> AppGroup:
     return app_group
 
 
-def app_history(app_dict: dict) -> dict:
+def app_history(store_app: int, app_name: str) -> AppHistory:
     """Get the history of app scraping."""
-    store_app = app_dict["id"]
-    app_name = app_dict["name"]
-
     app_hist = get_app_history(store_app)
-    app_dict["histogram"] = (
-        app_hist.sort_values(["id"]).tail(1)["histogram"].to_numpy()[0]
-    )
-    app_dict["history_table"] = app_hist.drop(["id", "store_app"], axis=1).to_dict(
+    histogram = app_hist.sort_values(["id"]).tail(1)["histogram"].to_numpy()[0]
+    history_table = app_hist.drop(["id", "store_app"], axis=1).to_dict(
         orient="records",
     )
     app_hist["group"] = app_name
@@ -120,8 +116,11 @@ def app_history(app_dict: dict) -> dict:
             change_dicts += melteddicts
         else:
             number_dicts += melteddicts
-    my_dicts = {"numbers": number_dicts, "changes": change_dicts}
-    return my_dicts
+    plot_dicts = {"numbers": number_dicts, "changes": change_dicts}
+    hist = AppHistory(
+        histogram=histogram, history_table=history_table, plot_data=plot_dicts,
+    )
+    return hist
 
 
 def get_string_date_from_days_ago(days: int) -> str:
@@ -207,9 +206,33 @@ class AppController(Controller):
                 status_code=404,
             )
         app_dict = app_df.to_dict(orient="records")[0]
-        app_hist_dict = app_history(app_dict)
-        app_dict["historyData"] = app_hist_dict
         return app_dict
+
+    @get(path="/{store_id:str}/history", cache=3600)
+    async def get_app_history_details(self: Self, store_id: str) -> AppHistory:
+        """Handle GET request for a specific app.
+
+         store_id (str): The id of the app to retrieve.
+
+        Returns
+        -------
+            json
+
+        """
+        logger.info(f"{self.path} start")
+        app_df = get_single_app(store_id)
+        if app_df.empty:
+            msg = f"Store ID not found: {store_id!r}"
+            raise NotFoundException(
+                msg,
+                status_code=404,
+            )
+        app_dict = app_df.to_dict(orient="records")[0]
+        store_app = app_dict["id"]
+        app_name = app_dict["name"]
+
+        hist_dict = app_history(store_app=store_app, app_name=app_name)
+        return hist_dict
 
     @get(path="/{store_id:str}/packageinfo", cache=3600)
     async def get_package_info(self: Self, store_id: str) -> PackageDetails:

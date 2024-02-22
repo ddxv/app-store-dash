@@ -16,6 +16,19 @@ class AppDetail:
 
 
 @dataclass
+class AppHistory:
+
+    """All app history details.
+
+    NOTE: not all details are listed in the class.
+    """
+
+    histogram: dict
+    history_table: dict
+    plot_data: dict
+
+
+@dataclass
 class PackageDetails:
 
     """Lists of Package permissions, trackers etc from Manifest."""

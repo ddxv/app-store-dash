@@ -15,6 +15,8 @@ export const load: PageServerLoad = async ({ params, setHeaders, locals }) => {
 
 	const ranks = fetch(`http://localhost:8000/api/apps/${id}/ranks`);
 
+	const appHistory = fetch(`http://localhost:8000/api/apps/${id}/history`);
+
 	const packageInfo = fetch(`http://localhost:8000/api/apps/${id}/packageinfo`);
 
 	try {
@@ -50,6 +52,27 @@ export const load: PageServerLoad = async ({ params, setHeaders, locals }) => {
 							return 'App Not Found';
 						} else if (resp.status === 500) {
 							console.log('Ranks API Server error');
+							return 'Backend Error';
+						}
+					})
+					.then(
+						(json) => json,
+						(error) => {
+							console.log('Uncaught error', error);
+							return 'Uncaught Error';
+						}
+					)
+			},
+			myhistory: {
+				streamed: appHistory
+					.then((resp) => {
+						if (resp.status === 200) {
+							return resp.json();
+						} else if (resp.status === 404) {
+							console.log('App History Not found');
+							return 'App Not Found';
+						} else if (resp.status === 500) {
+							console.log('App History API Server error');
 							return 'Backend Error';
 						}
 					})
