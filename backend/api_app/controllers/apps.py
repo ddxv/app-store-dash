@@ -235,11 +235,15 @@ class AppController(Controller):
 
         networks = {
             k: f.groupby("xml_path")["android_name"].apply(list).to_dict()
-            for k, f in df.groupby("network_name")
+            for k, f in df[
+                df["category_names"].str.contains("etwork", na=False)
+            ].groupby("company_name")
         }
         trackers = {
             k: f.groupby("xml_path")["android_name"].apply(list).to_dict()
-            for k, f in df.groupby("tracker_name")
+            for k, f in df[
+                df["category_names"].str.contains("racker", na=False)
+            ].groupby("company_name")
         }
 
         is_permission = df["xml_path"] == "uses-permission"
@@ -258,8 +262,7 @@ class AppController(Controller):
             ~is_permission
             & ~is_matching_packages
             & ~is_android_activity
-            & df["network_name"].isna()
-            & df["tracker_name"].isna()
+            & df["company_name"].isna()
         ]
         permissions_list = permissions_df.android_name.tolist()
         permissions_list = [
