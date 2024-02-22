@@ -149,7 +149,7 @@ export interface AppFullDetails {
 		streamed: Promise<{
 			histogram: number[];
 			history_table: AppHistoryInfo[];
-			historyData?: { numbers: ChartTabularData; changes: ChartTabularData };
+			plot_data?: { numbers: ChartTabularData; changes: ChartTabularData };
 		}>;
 	};
 
@@ -196,7 +196,6 @@ export interface AppFullDetail {
 	rating?: number;
 	rating_count: string;
 	review_count: string;
-	// histogram: number[];
 	rating_count_num: number;
 	category: string;
 	free: string;
@@ -212,7 +211,6 @@ export interface AppFullDetail {
 	release_date: string;
 	store_last_updated: string;
 	created_at: string;
-	// history_table: AppHistoryInfo[];
 	featured_image_url?: string;
 	phone_image_url_1?: string;
 	phone_image_url_2?: string;
@@ -220,7 +218,6 @@ export interface AppFullDetail {
 	tablet_image_url_1?: string;
 	tablet_image_url_2?: string;
 	tablet_image_url_3?: string;
-	// historyData?: { numbers: ChartTabularData; changes: ChartTabularData };
 }
 
 export type CategoryRanks = {

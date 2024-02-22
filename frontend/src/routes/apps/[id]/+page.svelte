@@ -182,14 +182,14 @@
 					{#if histdata.history_table}
 						<AppHistoryTable os={appdata.store_link} history_table={histdata.history_table} />
 					{/if}
-					{#if histdata.historyData && histdata.historyData.numbers && histdata.historyData.numbers.length > 1}
+					{#if histdata.plot_data && histdata.plot_data.numbers && histdata.plot_data.numbers.length > 1}
 						<div class="card variant-glass-surface p-2 md:p-8 mt-2 md:mt-4">
 							<h3 class="h4 md:h3 p-2">Avg Daily Counts</h3>
-							<AppPlot plotdata={histdata.historyData.numbers} plotType="number" />
+							<AppPlot plotdata={histdata.plot_data.numbers} plotType="number" />
 						</div>
 						<div class="card variant-glass-surface p-2 md:p-8 mt-2 md:mt-4">
 							<h3 class="h4 md:h3 p-2">Rate of Change Week on Week</h3>
-							<AppPlot plotdata={histdata.historyData.changes} plotType="change" />
+							<AppPlot plotdata={histdata.plot_data.changes} plotType="change" />
 						</div>
 					{/if}
 				{/await}
