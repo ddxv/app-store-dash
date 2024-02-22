@@ -37,15 +37,15 @@
 	/>
 </svelte:head>
 
-{#await data.myapp.streamed}
-	Loading App...
-{:then appdata}
-	{#if typeof appdata == 'string'}
-		<p>We had trouble handling a server error. Please try again or try another app.</p>
-	{:else}
-		<!-- App Icon Title & Info -->
-		<section class="grid grid-flow-cols-1 md:grid-cols-2 md:gap-4">
-			<div class="card p-0 lg:p-8">
+<section class="grid grid-flow-cols-1 md:grid-cols-2 md:gap-4">
+	<!-- Column1: App Icon Title & Info -->
+	<div class="card p-0 lg:p-8">
+		{#await data.myapp.streamed}
+			Loading app details...
+		{:then appdata}
+			{#if typeof appdata == 'string'}
+				<p>We had trouble handling a server error. Please try again or try another app.</p>
+			{:else}
 				<div class="card-header p-2 md:p-4">
 					<div class="inline-flex">
 						{#if appdata.icon_url_512}
@@ -127,27 +127,31 @@
 				<div class="p-2 md:flex">
 					<div class="self-center text-center">
 						<h1 class="h1 p-2">{appdata.rating}★</h1>
-						Ratings: {sum(appdata.histogram)}
+						Ratings: {appdata.rating_count}
 					</div>
 					<div class="flex-1">
-						{#each [...appdata.histogram].reverse() as count, index}
-							<div class="flex bar-spacer">
-								<span class="label">{appdata.histogram.length - index}★</span>
-								<div class="bar-container flex-1">
-									<div
-										class="bar"
-										style="width: {(count / sum(appdata.histogram)) * 100}%"
-										title="{index + 1} star: {count} ratings"
-									/>
+						{#await data.myhistory.streamed}
+							Loading rating details...
+						{:then histdata}
+							{#each [...histdata.histogram].reverse() as count, index}
+								<div class="flex bar-spacer">
+									<span class="label">{histdata.histogram.length - index}★</span>
+									<div class="bar-container flex-1">
+										<div
+											class="bar"
+											style="width: {(count / sum(histdata.histogram)) * 100}%"
+											title="{index + 1} star: {count} ratings"
+										/>
+									</div>
 								</div>
-							</div>
-						{/each}
+							{/each}
+						{/await}
 					</div>
 				</div>
 
 				<h4 class="h4 md:h3 p-2 mt-2">Lastest Store Ranks</h4>
 				{#await data.myranks.streamed}
-					Loading ...
+					Loading app ranks...
 				{:then ranks}
 					{#if typeof ranks == 'string'}
 						<p>No ranks available for this app.</p>
@@ -172,23 +176,38 @@
 						{/if}
 					{/if}
 				{/await}
-				{#if appdata.history_table}
-					<AppHistoryTable os={appdata.store_link} history_table={appdata.history_table} />
-				{/if}
-				{#if appdata.historyData && appdata.historyData.numbers && appdata.historyData.numbers.length > 1}
-					<div class="card variant-glass-surface p-2 md:p-8 mt-2 md:mt-4">
-						<h3 class="h4 md:h3 p-2">Avg Daily Counts</h3>
-						<AppPlot plotdata={appdata.historyData.numbers} plotType="number" />
-					</div>
-					<div class="card variant-glass-surface p-2 md:p-8 mt-2 md:mt-4">
-						<h3 class="h4 md:h3 p-2">Rate of Change Week on Week</h3>
-						<AppPlot plotdata={appdata.historyData.changes} plotType="change" />
-					</div>
-				{/if}
-			</div>
-			<!-- App Pictures -->
-			<div class="card p-8">
-				<div class="card">
+				{#await data.myhistory.streamed}
+					Loading historical data...
+				{:then histdata}
+					{#if histdata.history_table}
+						<AppHistoryTable os={appdata.store_link} history_table={histdata.history_table} />
+					{/if}
+					{#if histdata.plot_data && histdata.plot_data.numbers && histdata.plot_data.numbers.length > 1}
+						<div class="card variant-glass-surface p-2 md:p-8 mt-2 md:mt-4">
+							<h3 class="h4 md:h3 p-2">Avg Daily Counts</h3>
+							<AppPlot plotdata={histdata.plot_data.numbers} plotType="number" />
+						</div>
+						<div class="card variant-glass-surface p-2 md:p-8 mt-2 md:mt-4">
+							<h3 class="h4 md:h3 p-2">Rate of Change Week on Week</h3>
+							<AppPlot plotdata={histdata.plot_data.changes} plotType="change" />
+						</div>
+					{/if}
+				{/await}
+			{/if}
+		{:catch}
+			<p>The server caught an error.</p>
+		{/await}
+	</div>
+
+	<!-- Column2: App Pictures -->
+	<div class="card p-8">
+		<div class="card">
+			{#await data.myapp.streamed}
+				Loading app pictures...
+			{:then appdata}
+				{#if typeof appdata == 'string'}
+					<p>We had trouble handling a server error. Please try again.</p>
+				{:else}
 					{#if appdata.featured_image_url}
 						<div>
 							<img
@@ -207,129 +226,58 @@
 							{/if}
 						{/each}
 					</section>
-				</div>
-				<div class="p-2 md:p-4">
-					<h4 class="h4 md:h3 p-2">Additional Information</h4>
-					<div class="px-4 md:px-8">
-						<p>Free: {appdata.free}</p>
-						<p>Price: {appdata.price}</p>
-						<p>Size: {appdata.size || 'N/A'}</p>
-						<p>Minimum Android Version: {appdata.minimum_android || 'N/A'}</p>
-						<p>Developer Email: {appdata.developer_email || 'N/A'}</p>
-						<p>Content Rating: {appdata.content_rating || 'N/A'}</p>
-						<p>Ad Supported: {appdata.ad_supported || 'N/A'}</p>
-						<p>In-App Purchases: {appdata.in_app_purchases || 'N/A'}</p>
-						<p>Editor's Choice: {appdata.editors_choice || 'N/A'}</p>
-						<p>Last Crawl Result: {appdata.crawl_result}</p>
-						<p>First Released: {appdata.release_date}</p>
-						<p>Store Last Updated: {appdata.store_last_updated}</p>
-						<p>First Crawled: {appdata.created_at}</p>
+					<div class="p-2 md:p-4">
+						<h4 class="h4 md:h3 p-2">Additional Information</h4>
+						<div class="px-4 md:px-8">
+							<p>Free: {appdata.free}</p>
+							<p>Price: {appdata.price}</p>
+							<p>Size: {appdata.size || 'N/A'}</p>
+							<p>Minimum Android Version: {appdata.minimum_android || 'N/A'}</p>
+							<p>Developer Email: {appdata.developer_email || 'N/A'}</p>
+							<p>Content Rating: {appdata.content_rating || 'N/A'}</p>
+							<p>Ad Supported: {appdata.ad_supported || 'N/A'}</p>
+							<p>In-App Purchases: {appdata.in_app_purchases || 'N/A'}</p>
+							<p>Editor's Choice: {appdata.editors_choice || 'N/A'}</p>
+							<p>Last Crawl Result: {appdata.crawl_result}</p>
+							<p>First Released: {appdata.release_date}</p>
+							<p>Store Last Updated: {appdata.store_last_updated}</p>
+							<p>First Crawled: {appdata.created_at}</p>
+						</div>
 					</div>
-				</div>
-
-				{#await data.myPackageInfo.streamed}
-					Loading ...
-				{:then packageInfo}
-					{#if typeof packageInfo == 'string'}
-						<p>Permissions info not yet available for this app.</p>
-					{:else}
-						{#if packageInfo.permissions && packageInfo.permissions.length > 0}
-							<h4 class="h4 md:h3 p-2 md:p-4 mt-4">Permissions</h4>
-							<div class="px-4 md:px-8">
-								{#each packageInfo.permissions as permission}
-									<p>{permission}</p>
-								{/each}
-							</div>
-						{/if}
-						{#if packageInfo.trackers && Object.keys(packageInfo.trackers).length > 0}
-							<ManifestItemList items={packageInfo.trackers} title="Trackers" basePath="trackers"
-							></ManifestItemList>
-						{/if}
-						{#if packageInfo.networks && Object.keys(packageInfo.networks).length > 0}
-							<ManifestItemList items={packageInfo.networks} title="Ad Networks" basePath="networks"
-							></ManifestItemList>
-						{/if}
-						{#if packageInfo.leftovers && Object.keys(packageInfo.leftovers).length > 0}
-							<ManifestItemList items={packageInfo.leftovers} title="Other Services"
-							></ManifestItemList>
-						{/if}
-						<!-- {#if packageInfo.trackers && Object.keys(packageInfo.trackers).length > 0}
-							<h4 class="h4 md:h3 p-2 md:p-4 mt-4">Trackers</h4>
-							<div class="px-4 md:px-8">
-								<ul>
-									{#each Object.keys(packageInfo.trackers) as tracker}
-										<p class="h5"><a href="/trackers/{tracker}">{tracker}</a></p>
-										{#each Object.keys(packageInfo.trackers[tracker]) as xml_path}
-											<li>
-												<p class="h6">{xml_path}</p>
-												{#if Array.isArray(packageInfo.trackers[tracker][xml_path])}
-													<ul>
-														{#each packageInfo.trackers[tracker][xml_path] as androidName}
-															<div class="px-4 md:px-8">
-																<li>{androidName}</li>
-															</div>
-														{/each}
-													</ul>
-												{/if}
-											</li>
-										{/each}
-									{/each}
-								</ul>
-							</div>
-						{/if}
-						{#if packageInfo.networks && Object.keys(packageInfo.networks).length > 0}
-							<h4 class="h4 md:h3 p-2 md:p-4 mt-4">Ad Networks</h4>
-							<div class="px-4 md:px-8">
-								<ul>
-									{#each Object.keys(packageInfo.networks) as network}
-										<li>
-											<p class="h5"><a href="/networks/{network}">{network}</a></p>
-											{#each Object.keys(packageInfo.networks[network]) as xml_path}
-												{#if Array.isArray(packageInfo.networks[network][xml_path])}
-													<ul>
-														{#each packageInfo.networks[network][xml_path] as androidName}
-															<div class="px-4 md:px-8">
-																<li>{androidName}</li>
-															</div>
-														{/each}
-													</ul>
-												{/if}
-											{/each}
-										</li>
-									{/each}
-								</ul>
-							</div>
-						{/if}
-
-						{#if packageInfo.leftovers && Object.keys(packageInfo.leftovers).length > 0}
-							<h4 class="h4 md:h3 p-2 md:p-4 mt-4">Other Services</h4>
-							<div class="px-4 md:px-8">
-								<ul>
-									{#each Object.keys(packageInfo.leftovers) as xml_path}
-										<li>
-											<p class="h5">{xml_path}</p>
-											{#if Array.isArray(packageInfo.leftovers[xml_path])}
-												<ul>
-													{#each packageInfo.leftovers[xml_path] as androidName}
-														<div class="px-4 md:px-8">
-															<li>{androidName}</li>
-														</div>
-													{/each}
-												</ul>
-											{/if}
-										</li>
-									{/each}
-								</ul>
-							</div>
-						{/if} -->
-					{/if}
-				{/await}
-			</div>
-		</section>
-	{/if}
-{:catch}
-	<p>The server caught an error. Please try again or try another app.</p>
-{/await}
+				{/if}
+			{:catch}
+				<p>The server caught an error. Please try again or try another app.</p>
+			{/await}
+		</div>
+		{#await data.myPackageInfo.streamed}
+			Loading permissions and tracker data...
+		{:then packageInfo}
+			{#if typeof packageInfo == 'string'}
+				<p>Permissions info not yet available for this app.</p>
+			{:else}
+				{#if packageInfo.permissions && packageInfo.permissions.length > 0}
+					<h4 class="h4 md:h3 p-2 md:p-4 mt-4">Permissions</h4>
+					<div class="px-4 md:px-8">
+						{#each packageInfo.permissions as permission}
+							<p>{permission}</p>
+						{/each}
+					</div>
+				{/if}
+				{#if packageInfo.trackers && Object.keys(packageInfo.trackers).length > 0}
+					<ManifestItemList items={packageInfo.trackers} title="Trackers" basePath="trackers"
+					></ManifestItemList>
+				{/if}
+				{#if packageInfo.networks && Object.keys(packageInfo.networks).length > 0}
+					<ManifestItemList items={packageInfo.networks} title="Ad Networks" basePath="networks"
+					></ManifestItemList>
+				{/if}
+				{#if packageInfo.leftovers && Object.keys(packageInfo.leftovers).length > 0}
+					<ManifestItemList items={packageInfo.leftovers} title="Other Services"></ManifestItemList>
+				{/if}
+			{/if}
+		{/await}
+	</div>
+</section>
 
 <a href="/"><p>Back to Home</p></a>
 
