@@ -18,18 +18,18 @@ export interface CategoryResponse {
 }
 
 export interface DeveloperResponse {
-	results: { streamed: AppGroup };
+	results: AppGroup;
 	status?: number;
 	error?: string;
 }
 
 export interface CompanyApps {
-	results: { streamed: AppGroup };
+	results: AppGroup;
 	status?: number;
 	error?: string;
 }
 export interface SearchResponse {
-	results: { streamed: AppGroup };
+	results: AppGroup;
 	status?: number;
 	error?: string;
 }
@@ -40,7 +40,7 @@ export interface Collection {
 }
 
 export interface Collections {
-	AppCollections: { streamed: Collection };
+	AppCollections: Collection;
 	status?: number;
 	error?: string;
 }
@@ -57,7 +57,7 @@ export interface CatData {
 }
 
 export interface CategoriesInfo {
-	mycats: { streamed: Promise<CatData> };
+	mycats: Promise<CatData>;
 	status?: number;
 	error?: string;
 }
@@ -68,23 +68,12 @@ export interface AppRankResponse {
 }
 
 export interface HomeData {
-	androidAppRanks: {
-		streamed: Promise<{ ranks: RankedApps[] }>;
-	};
-	iOSAppRanks: {
-		streamed: Promise<{ ranks: RankedApps[] }>;
-	};
-	androidGameRanks: {
-		streamed: Promise<{ ranks: RankedApps[] }>;
-	};
-	iOSGameRanks: {
-		streamed: Promise<{ ranks: RankedApps[] }>;
-	};
+	androidAppRanks: Promise<{ ranks: RankedApps[] }>;
+	iOSAppRanks: Promise<{ ranks: RankedApps[] }>;
+	androidGameRanks: Promise<{ ranks: RankedApps[] }>;
+	iOSGameRanks: Promise<{ ranks: RankedApps[] }>;
 	status?: number;
 	error?: string;
-	// history: {
-	// 	streamed: Promise<{ history: RankedApps[] }>;
-	// };
 }
 
 export interface RankedAppList {
@@ -92,14 +81,10 @@ export interface RankedAppList {
 }
 
 export interface StoreCategoryRanks {
-	ranks: {
-		streamed: Promise<{ ranks: RankedApps[] }>;
-	};
+	ranks: Promise<{ ranks: RankedApps[] }>;
 	status?: number;
 	error?: string;
-	history: {
-		streamed: Promise<{ history: RankedApps[] }>;
-	};
+	history: Promise<{ history: RankedApps[] }>;
 }
 
 export interface RankedApps {
@@ -137,31 +122,22 @@ export interface AppHistoryInfo {
 	rating_count: number;
 }
 export interface AppFullDetails {
-	myapp: {
-		streamed: Promise<AppFullDetail>;
-	};
+	myapp: AppFullDetail;
 	status?: number;
 	error?: string;
-	myranks: {
-		streamed: Promise<{ latest: AppRankDetail[]; history: AppRankDetail[] }>;
-	};
-	myhistory: {
-		streamed: Promise<{
-			histogram: number[];
-			history_table: AppHistoryInfo[];
-			plot_data?: { numbers: ChartTabularData; changes: ChartTabularData };
-		}>;
-	};
-
-	myPackageInfo: {
-		streamed: Promise<{
-			permissions: string[];
-			trackers: Trackers;
-			networks: Networks;
-			android: string[];
-			leftovers: UnknownManifestItems;
-		}>;
-	};
+	myranks: Promise<{ latest: AppRankDetail[]; history: AppRankDetail[] }>;
+	myhistory: Promise<{
+		histogram: number[];
+		history_table: AppHistoryInfo[];
+		plot_data?: { numbers: ChartTabularData; changes: ChartTabularData };
+	}>;
+	myPackageInfo: Promise<{
+		permissions: string[];
+		trackers: Trackers;
+		networks: Networks;
+		android: string[];
+		leftovers: UnknownManifestItems;
+	}>;
 }
 
 export interface Company {
@@ -173,12 +149,8 @@ export interface Company {
 export interface TopCompaniesInfo {
 	status?: number;
 	error?: string;
-	networks: {
-		streamed: Promise<{ companies: Company[]; parent_companies: Company[] }>;
-	};
-	trackers: {
-		streamed: Promise<{ companies: Company[]; parent_companies: Company[] }>;
-	};
+	networks: Promise<{ companies: Company[]; parent_companies: Company[] }>;
+	trackers: Promise<{ companies: Company[]; parent_companies: Company[] }>;
 }
 
 export interface AppFullDetail {

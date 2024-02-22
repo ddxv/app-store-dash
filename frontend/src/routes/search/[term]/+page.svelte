@@ -6,7 +6,7 @@
 	export let data: SearchResponse;
 </script>
 
-{#await data.results.streamed}
+{#await data.results}
 	Loading ...
 {:then results}
 	{#if typeof results != 'string'}

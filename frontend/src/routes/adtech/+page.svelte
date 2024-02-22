@@ -1,13 +1,6 @@
 <script lang="ts">
 	import AdtechNav from '$lib/AdtechNav.svelte';
-	import type { TopCompaniesInfo } from '../../types';
-	// export let data: TopCompaniesInfo;
-
-	// function navigate(name: string) {
-	// 	window.location.href = `/adtech/companies/${name}`;
-	// }
 	let entityGroup = 'networks';
-	// let granularityGroup = 'brands';
 </script>
 
 <svelte:head>

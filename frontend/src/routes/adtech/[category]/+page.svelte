@@ -44,7 +44,7 @@
 			networks. Currently this list is for Android APKs only.
 		</p>
 
-		{#await data.networks.streamed}
+		{#await data.networks}
 			Loading Ad Networks...
 		{:then networks}
 			{#if granularityGroup === 'parents'}
@@ -57,7 +57,7 @@
 		{/await}
 	{/if}
 	{#if entityGroup === 'trackers'}
-		{#await data.trackers.streamed}
+		{#await data.trackers}
 			Loading Ad Trackers...
 		{:then trackers}
 			<p class="p-4">

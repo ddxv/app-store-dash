@@ -29,7 +29,7 @@
 		<div
 			class="snap-x scroll-px-4 snap-mandatory scroll-smooth flex gap-4 overflow-x-auto px-4 py-10"
 		>
-			{#await data.androidAppRanks.streamed}
+			{#await data.androidAppRanks}
 				Loading Android App Ranks...
 			{:then androidApps}
 				<a href="/rankings/store/1/collection/1/category/1">
@@ -44,7 +44,7 @@
 				Trouble Loading Android App Ranks.
 			{/await}
 
-			{#await data.iOSAppRanks.streamed}
+			{#await data.iOSAppRanks}
 				Loading iOS App Ranks...
 			{:then iOSApps}
 				<a href="/rankings/store/2/collection/4/category/55">
@@ -59,7 +59,7 @@
 				Trouble Loading iOS App Ranks.
 			{/await}
 
-			{#await data.androidGameRanks.streamed}
+			{#await data.androidGameRanks}
 				Loading Android Game Ranks...
 			{:then androidGames}
 				<a href="/rankings/store/1/collection/1/category/36">
@@ -74,7 +74,7 @@
 				Trouble loading android games
 			{/await}
 
-			{#await data.iOSGameRanks.streamed}
+			{#await data.iOSGameRanks}
 				Loading iOS Game Ranks...
 			{:then iOSGames}
 				<a href="/rankings/store/2/collection/4/category/62	">
