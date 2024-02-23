@@ -143,14 +143,25 @@ export interface AppFullDetails {
 export interface Company {
 	name: string;
 	app_count: number;
+	installs?: number;
 	percent: number;
 }
 
 export interface TopCompaniesInfo {
 	status?: number;
 	error?: string;
-	networks: Promise<{ companies: Company[]; parent_companies: Company[] }>;
-	trackers: Promise<{ companies: Company[]; parent_companies: Company[] }>;
+	networks: Promise<{
+		all_companies: Company[];
+		parent_companies: Company[];
+		monthly_all_companies: Company[];
+		monthly_parent_companies: Company[];
+	}>;
+	trackers: Promise<{
+		all_companies: Company[];
+		parent_companies: Company[];
+		monthly_all_companies: Company[];
+		monthly_parent_companies: Company[];
+	}>;
 }
 
 export interface AppFullDetail {

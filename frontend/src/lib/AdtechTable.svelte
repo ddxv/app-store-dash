@@ -28,7 +28,11 @@
 					</td>
 					<td>
 						<div class="inline-flex">
-							<h3 class="h6 md:h5">{values.app_count}</h3>
+							{#if values.app_count}
+								<h3 class="h6 md:h5">{values.app_count}</h3>
+							{:else}
+								<h3 class="h6 md:h5">{values.installs}</h3>
+							{/if}
 						</div>
 					</td>
 					<td>

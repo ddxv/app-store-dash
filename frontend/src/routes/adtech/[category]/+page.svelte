@@ -7,6 +7,7 @@
 
 	let entityGroup = 'networks';
 	let granularityGroup = 'brands';
+	let timeGroup = 'time';
 
 	// React to changes in the current path
 	$: {
@@ -20,6 +21,9 @@
 	// React to changes in query parameters
 	$: {
 		granularityGroup = $page.url.searchParams.get('groupby') || 'parents';
+	}
+	$: {
+		timeGroup = $page.url.searchParams.get('time') || 'month';
 	}
 </script>
 
@@ -50,7 +54,7 @@
 			{#if granularityGroup === 'parents'}
 				<AdtechTable tabledata={networks.parent_companies}></AdtechTable>
 			{:else}
-				<AdtechTable tabledata={networks.companies}></AdtechTable>
+				<AdtechTable tabledata={networks.all_companies}></AdtechTable>
 			{/if}
 		{:catch}
 			Problem loading data
@@ -66,10 +70,17 @@
 				is scanning apps to get an idea of which apps use which trackers. Currently this list is for
 				Android APKs only.
 			</p>
-			{#if granularityGroup === 'parents'}
+
+			{#if timeGroup === 'month'}
+				{#if granularityGroup === 'parents'}
+					<AdtechTable tabledata={trackers.monthly_parent_companies}></AdtechTable>
+				{:else}
+					<AdtechTable tabledata={trackers.monthly_all_companies}></AdtechTable>
+				{/if}
+			{:else if granularityGroup === 'parents'}
 				<AdtechTable tabledata={trackers.parent_companies}></AdtechTable>
 			{:else}
-				<AdtechTable tabledata={trackers.companies}></AdtechTable>
+				<AdtechTable tabledata={trackers.all_companies}></AdtechTable>
 			{/if}
 		{:catch}
 			Problem loading data

@@ -142,8 +142,10 @@ class TopCompanies:
 
     """Contains a list of NetworkDetail objects representing the top networks identified."""
 
-    companies: list[CompanyDetail]
+    all_companies: list[CompanyDetail]
     parent_companies: list[CompanyDetail]
+    monthly_all_companies: list[CompanyDetail]
+    monthly_parent_companies: list[CompanyDetail]
 
 
 @dataclass

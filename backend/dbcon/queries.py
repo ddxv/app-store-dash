@@ -40,6 +40,7 @@ QUERY_STORE_COLLECTION_CATEGORY_MAP = load_sql_file(
 )
 QUERY_TOP_COMPANIES = load_sql_file("query_top_companies.sql")
 QUERY_TOP_PARENT_COMPANIES = load_sql_file("query_top_parent_companies.sql")
+QUERY_TOP_COMPANIES_MONTH = load_sql_file("query_top_companies_month.sql")
 QUERY_COMPANY_APPS = load_sql_file("query_company_apps.sql")
 QUERY_PARENT_COMPANY_APPS = load_sql_file("query_parent_company_apps.sql")
 
@@ -311,9 +312,7 @@ def get_manifest_names() -> pd.DataFrame:
 
 
 def get_top_companies(
-    categories: list[int],
-    *,
-    group_by_parent: bool = False,
+    categories: list[int], *, group_by_parent: bool = False, monthly: bool = False,
 ) -> pd.DataFrame:
     """Get top networks, mmps or other companies.
 
@@ -323,20 +322,16 @@ def get_top_companies(
     ----
         categories (list[int]): list of 1=adnetworks, 2=MMP/Attribution, 3=Analytics.
         group_by_parent (bool): Group by a parent entity if such entity exists.
+        monthly (bool): Most recent 30 days data
 
     """
     if group_by_parent:
-        df = pd.read_sql(
-            QUERY_TOP_PARENT_COMPANIES,
-            DBCON.engine,
-            params={"categories": tuple(categories)},
-        )
+        query = QUERY_TOP_COMPANIES_MONTH if monthly else QUERY_TOP_PARENT_COMPANIES
     else:
-        df = pd.read_sql(
-            QUERY_TOP_COMPANIES,
-            DBCON.engine,
-            params={"categories": tuple(categories)},
-        )
+        query = QUERY_TOP_COMPANIES_MONTH if monthly else QUERY_TOP_COMPANIES
+
+    df = pd.read_sql(query, DBCON.engine, params={"categories": tuple(categories)})
+
     return df
 
 
