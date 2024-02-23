@@ -54,7 +54,7 @@
 			class="lg:hidden btn variant-filled-primary absolute right-[20px] bottom-[50px]"
 			on:click={drawerOpen}
 		>
-			<h4 class="h4">xFILTERS</h4>
+			<h4 class="h4">FILTERS</h4>
 			<span>
 				<svg viewBox="0 0 100 80" class="fill-token w-4 h-4">
 					<rect width="100" height="20" />

@@ -54,7 +54,7 @@
 							src="/goblin_purple_hat_250.png"
 							alt="Goblin Icon"
 						/>
-						<strong class="text-2xl ml-4 md:text-4xl uppercase">AppGoblin</strong>
+						<strong class="text-2xl ml-4 md:text-3xl uppercase">AppGoblin</strong>
 					</a>
 				</div>
 			</svelte:fragment>
