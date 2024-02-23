@@ -1,12 +1,8 @@
 import type { PageServerLoad } from './$types.js';
 
-export const load: PageServerLoad = async ({ params, setHeaders }) => {
+export const load: PageServerLoad = async ({ params }) => {
 	// const emptyResponse = { error: 'Caught error!' };
 	const id = params.id;
-
-	setHeaders({
-		'X-Accel-Buffering': 'no'
-	});
 
 	return {
 		myranks: fetch(`http://localhost:8000/api/apps/${id}/ranks`)
