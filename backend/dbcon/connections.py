@@ -9,7 +9,7 @@ from config import CONFIG, get_logger
 logger = get_logger(__name__)
 
 
-def open_ssh_tunnel(server_name: str):  # ruff: ignore
+def open_ssh_tunnel(server_name: str):  # noqa: ANN201
     """Create SSH tunnel when working remotely."""
     from sshtunnel import SSHTunnelForwarder
 
