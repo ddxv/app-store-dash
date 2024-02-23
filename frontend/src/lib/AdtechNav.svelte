@@ -30,13 +30,13 @@
 	$: currentPath = $page.url.pathname;
 </script>
 
-<div class="card mx-4 p-4">
+<div class="card">
 	<div class="flex">
-		<div class="card mx-4 p-4">
+		<div class="card mr-2 md:mr-4 p-2 md:p-4">
 			<h3 class="h5 md:h4 p-2">Company Category</h3>
 			<nav class="list-nav">
 				<ul class="rounded-md variant-outline-primary">
-					<li class="flex variant-soft-primary p-1">
+					<li class="variant-soft-primary">
 						<a
 							href={networksURL}
 							class={urlClassesActive(networksURL)}
@@ -44,6 +44,8 @@
 						>
 							<span class="flex-auto">Advertising Networks</span>
 						</a>
+					</li>
+					<li class="variant-soft-primary">
 						<a
 							href={trackersURL}
 							class={urlClassesActive(trackersURL)}
@@ -55,11 +57,11 @@
 				</ul>
 			</nav>
 		</div>
-		<div class="card mx-4 p-4">
+		<div class="card ml-2 md:ml-4 p-2 md:p-4">
 			<h3 class="h5 md:h4 p-2">Granularity</h3>
 			<nav class="list-nav">
 				<ul class="rounded-md variant-outline-primary">
-					<li class="flex variant-soft-primary p-1">
+					<li class="variant-soft-primary">
 						<a
 							href={currentPath}
 							class={paramClassesActive('groupby', groupByBrands)}
@@ -67,6 +69,8 @@
 						>
 							<span class="flex-auto">Group by SubCompany or Brand</span>
 						</a>
+					</li>
+					<li class="variant-soft-primary">
 						<a
 							href={currentPath}
 							class={paramClassesActive('groupby', groupByParents)}

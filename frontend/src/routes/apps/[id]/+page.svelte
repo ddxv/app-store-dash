@@ -219,33 +219,36 @@
 				</div>
 			</div>
 		</div>
-		{#await data.myPackageInfo}
-			Loading permissions and tracker data...
-		{:then packageInfo}
-			{#if typeof packageInfo == 'string'}
-				<p>Permissions info not yet available for this app.</p>
-			{:else}
-				{#if packageInfo.permissions && packageInfo.permissions.length > 0}
-					<h4 class="h4 md:h3 p-2 md:p-4 mt-4">Permissions</h4>
-					<div class="px-4 md:px-8">
-						{#each packageInfo.permissions as permission}
-							<p>{permission}</p>
-						{/each}
-					</div>
+		<div class="card">
+			{#await data.myPackageInfo}
+				Loading permissions and tracker data...
+			{:then packageInfo}
+				{#if typeof packageInfo == 'string'}
+					<p>Permissions info not yet available for this app.</p>
+				{:else}
+					{#if packageInfo.permissions && packageInfo.permissions.length > 0}
+						<h4 class="h4 md:h3 p-2 md:p-4 mt-4">Permissions</h4>
+						<div class="px-4 md:px-8 max-w-sm md:max-w-md lg:max-w-full overflow-x-scroll">
+							{#each packageInfo.permissions as permission}
+								<p>{permission}</p>
+							{/each}
+						</div>
+					{/if}
+					{#if packageInfo.trackers && Object.keys(packageInfo.trackers).length > 0}
+						<ManifestItemList items={packageInfo.trackers} title="Trackers" basePath="trackers"
+						></ManifestItemList>
+					{/if}
+					{#if packageInfo.networks && Object.keys(packageInfo.networks).length > 0}
+						<ManifestItemList items={packageInfo.networks} title="Ad Networks" basePath="networks"
+						></ManifestItemList>
+					{/if}
+					{#if packageInfo.leftovers && Object.keys(packageInfo.leftovers).length > 0}
+						<ManifestItemList items={packageInfo.leftovers} title="Other Services"
+						></ManifestItemList>
+					{/if}
 				{/if}
-				{#if packageInfo.trackers && Object.keys(packageInfo.trackers).length > 0}
-					<ManifestItemList items={packageInfo.trackers} title="Trackers" basePath="trackers"
-					></ManifestItemList>
-				{/if}
-				{#if packageInfo.networks && Object.keys(packageInfo.networks).length > 0}
-					<ManifestItemList items={packageInfo.networks} title="Ad Networks" basePath="networks"
-					></ManifestItemList>
-				{/if}
-				{#if packageInfo.leftovers && Object.keys(packageInfo.leftovers).length > 0}
-					<ManifestItemList items={packageInfo.leftovers} title="Other Services"></ManifestItemList>
-				{/if}
-			{/if}
-		{/await}
+			{/await}
+		</div>
 	</div>
 </section>
 
