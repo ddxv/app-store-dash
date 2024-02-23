@@ -1,17 +1,13 @@
-export const ssr = true;
-export const csr = true;
-
 import type { PageServerLoad } from './$types.js';
 
-export const load: PageServerLoad = async ({ params }) => {
-	const emptyResponse = { error: 'Caught error!' };
+export const load: PageServerLoad = async ({ params, setHeaders }) => {
+	// const emptyResponse = { error: 'Caught error!' };
 	const id = params.id;
 
-	// setHeaders({
-	// 	'cache-control': 'max-age=40000'
-	// });
+	setHeaders({
+		'X-Accel-Buffering': 'no'
+	});
 
-	// try {
 	return {
 		myranks: fetch(`http://localhost:8000/api/apps/${id}/ranks`)
 			.then((resp) => {
