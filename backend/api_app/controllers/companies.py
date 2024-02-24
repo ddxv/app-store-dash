@@ -20,19 +20,19 @@ def companies_overview(categories: list[int]) -> TopCompanies:
     """Process networks and return TopCompanies class."""
     df = get_top_companies(categories=categories, group_by_parent=False)
     mdf = get_top_companies(categories=categories, monthly=True)
+    monthly_parents = get_top_companies(
+        categories=categories, monthly=True, group_by_parent=True,
+    )
 
     total_installs = mdf["total_installs"].to_numpy()[0]
 
-    mdf = mdf[~mdf["company_name"].isna()]
-    monthly_all = mdf.groupby("company_name")[["installs", "total_installs"]].agg(
-        {"installs": "sum", "total_installs": "first"},
-    )
-    mdf.loc[mdf["parent_company_name"].notna(), "company_name"] = mdf.loc[
-        mdf["parent_company_name"].notna(),
-        "parent_company_name",
-    ]
-    monthly_parents = mdf.groupby("company_name")[["installs", "total_installs"]].agg(
-        {"installs": "sum", "total_installs": "first"},
+    mdf = mdf[~mdf["company_name"].isna()].rename(columns={"company_name": "name"})
+    monthly_all = (
+        mdf.groupby("name")[["installs", "total_installs"]]
+        .agg(
+            {"installs": "sum", "total_installs": "first"},
+        )
+        .reset_index()
     )
 
     monthly_all["percent"] = monthly_all["installs"] / total_installs
@@ -43,6 +43,8 @@ def companies_overview(categories: list[int]) -> TopCompanies:
     pdf = pdf[~pdf["name"].isna()]
     df = df.sort_values("app_count", ascending=False)
     pdf = pdf.sort_values("app_count", ascending=False)
+    monthly_all = monthly_all.sort_values("installs", ascending=False)
+    monthly_parents = monthly_parents.sort_values("installs", ascending=False)
     top = TopCompanies(
         all_companies=df.to_dict(orient="records"),
         parent_companies=pdf.to_dict(orient="records"),

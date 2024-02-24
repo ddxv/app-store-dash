@@ -7,7 +7,7 @@
 
 	let entityGroup = 'networks';
 	let granularityGroup = 'brands';
-	let timeGroup = 'time';
+	let timeGroup = 'month';
 
 	// React to changes in the current path
 	$: {
@@ -51,7 +51,15 @@
 		{#await data.networks}
 			Loading Ad Networks...
 		{:then networks}
-			{#if granularityGroup === 'parents'}
+			{#if timeGroup === 'month'}
+				{#if granularityGroup === 'parents'}
+					<AdtechTable tabledata={networks.monthly_parent_companies} tableType="installs"
+					></AdtechTable>
+				{:else}
+					<AdtechTable tabledata={networks.monthly_all_companies} tableType="installs"
+					></AdtechTable>
+				{/if}
+			{:else if granularityGroup === 'parents'}
 				<AdtechTable tabledata={networks.parent_companies}></AdtechTable>
 			{:else}
 				<AdtechTable tabledata={networks.all_companies}></AdtechTable>
@@ -73,11 +81,13 @@
 
 			{#if timeGroup === 'month'}
 				{#if granularityGroup === 'parents'}
-					<AdtechTable tabledata={trackers.monthly_parent_companies}></AdtechTable>
+					<AdtechTable tabledata={trackers.monthly_parent_companies} tableType="installs"
+					></AdtechTable>
 				{:else}
-					<AdtechTable tabledata={trackers.monthly_all_companies}></AdtechTable>
+					<AdtechTable tabledata={trackers.monthly_all_companies} tableType="installs"
+					></AdtechTable>
 				{/if}
-			{:else if granularityGroup === 'parents'}
+			{:else if granularityGroup === 'alltime'}
 				<AdtechTable tabledata={trackers.parent_companies}></AdtechTable>
 			{:else}
 				<AdtechTable tabledata={trackers.all_companies}></AdtechTable>

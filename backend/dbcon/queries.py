@@ -41,6 +41,7 @@ QUERY_STORE_COLLECTION_CATEGORY_MAP = load_sql_file(
 QUERY_TOP_COMPANIES = load_sql_file("query_top_companies.sql")
 QUERY_TOP_PARENT_COMPANIES = load_sql_file("query_top_parent_companies.sql")
 QUERY_TOP_COMPANIES_MONTH = load_sql_file("query_top_companies_month.sql")
+QUERY_TOP_PARENT_COMPANIES_MONTH = load_sql_file("query_top_companies_month_parent.sql")
 QUERY_COMPANY_APPS = load_sql_file("query_company_apps.sql")
 QUERY_PARENT_COMPANY_APPS = load_sql_file("query_parent_company_apps.sql")
 
@@ -312,7 +313,10 @@ def get_manifest_names() -> pd.DataFrame:
 
 
 def get_top_companies(
-    categories: list[int], *, group_by_parent: bool = False, monthly: bool = False,
+    categories: list[int],
+    *,
+    group_by_parent: bool = False,
+    monthly: bool = False,
 ) -> pd.DataFrame:
     """Get top networks, mmps or other companies.
 
@@ -326,7 +330,9 @@ def get_top_companies(
 
     """
     if group_by_parent:
-        query = QUERY_TOP_COMPANIES_MONTH if monthly else QUERY_TOP_PARENT_COMPANIES
+        query = (
+            QUERY_TOP_PARENT_COMPANIES_MONTH if monthly else QUERY_TOP_PARENT_COMPANIES
+        )
     else:
         query = QUERY_TOP_COMPANIES_MONTH if monthly else QUERY_TOP_COMPANIES
 
