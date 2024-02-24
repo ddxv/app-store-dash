@@ -21,7 +21,9 @@ def companies_overview(categories: list[int]) -> TopCompanies:
     df = get_top_companies(categories=categories, group_by_parent=False)
     mdf = get_top_companies(categories=categories, monthly=True)
     monthly_parents = get_top_companies(
-        categories=categories, monthly=True, group_by_parent=True,
+        categories=categories,
+        monthly=True,
+        group_by_parent=True,
     )
 
     total_installs = mdf["total_installs"].to_numpy()[0]
@@ -34,6 +36,8 @@ def companies_overview(categories: list[int]) -> TopCompanies:
         )
         .reset_index()
     )
+
+    monthly_parents = monthly_parents.rename(columns={"company_name": "name"})
 
     monthly_all["percent"] = monthly_all["installs"] / total_installs
     monthly_parents["percent"] = monthly_parents["installs"] / total_installs
