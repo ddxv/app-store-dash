@@ -87,7 +87,7 @@
 					<AdtechTable tabledata={trackers.monthly_all_companies} tableType="installs"
 					></AdtechTable>
 				{/if}
-			{:else if granularityGroup === 'alltime'}
+			{:else if granularityGroup === 'parents'}
 				<AdtechTable tabledata={trackers.parent_companies}></AdtechTable>
 			{:else}
 				<AdtechTable tabledata={trackers.all_companies}></AdtechTable>
