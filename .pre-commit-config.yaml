@@ -10,7 +10,7 @@ repos:
     rev: v1.8.0
     hooks:
       - id: mypy
-        additional_dependencies: ["types-requests", "types-PyYAML"]
+        additional_dependencies: ['types-requests', 'types-PyYAML']
   ## JS ##
   - repo: https://github.com/pre-commit/mirrors-prettier
     rev: v4.0.0-alpha.8
@@ -18,11 +18,11 @@ repos:
       - id: prettier
         args:
           [
-            "--config",
-            "frontend/.prettierrc",
-            "--ignore-unknown",
-            "--write",
-            "--check",
+            '--config',
+            'frontend/.prettierrc',
+            '--ignore-unknown',
+            '--write',
+            '--check',
           ]
         language: node
         entry: frontend/node_modules/.bin/prettier
@@ -46,8 +46,8 @@ repos:
           - svelte
           - typescript
           - eslint-plugin-svelte
-          - "@typescript-eslint/eslint-plugin"
-          - "@typescript-eslint/parser"
+          - '@typescript-eslint/eslint-plugin'
+          - '@typescript-eslint/parser'
           - svelte-eslint-parser
   - repo: local
     hooks:
@@ -63,9 +63,9 @@ repos:
     rev: 3.0.0a6
     hooks:
       - id: sqlfluff-lint
-        args: ["--config", "backend/pyproject.toml"] # Specify the config file location here
+        args: ['--config', 'backend/pyproject.toml'] # Specify the config file location here
       - id: sqlfluff-fix
-        args: ["--config", "backend/pyproject.toml"] # Specify the config file location here
+        args: ['--config', 'backend/pyproject.toml'] # Specify the config file location here
         # Arbitrary arguments to show an example
         # args: [--rules, "LT02,CP02"]
         # additional_dependencies: ['<dbt-adapter>', 'sqlfluff-templater-dbt']
