@@ -1,6 +1,6 @@
 # API & Dashboard for App Store Dash
 
-You can a production version of the site at [appgoblin.info](https://appgoblin.info)
+You can see a production version of the site at [appgoblin.info](https://appgoblin.info)
 
 [<img src="/frontend/static/appgoblin_screenshot.png" width="500"/>](/frontend/static/appgoblin_screenshot.png)
 
@@ -13,11 +13,11 @@ This repo has two parts:
 
 ## Data & Database
 
-The database referred to in this repository is created by [adscrawler](https://github.com/ddxv/adscrawler), a crawler for scraping the Google & Apple play stores and storing that to a PostgreSQL database.
+The database referred to in this repository is created by [adscrawler](https://github.com/ddxv/adscrawler), a crawler for scraping the Google & Apple play stores and storing that to a PostgreSQL database. That repo also contains a number of materialized views prepping data for the dashboard.
 
 ## API Service
 
-Once run api documentation can be found at `api/docs`
+`litestar run --debug` to start API. Once run, api documentation can be found at `api/docs`
 
 ## Setup
 
