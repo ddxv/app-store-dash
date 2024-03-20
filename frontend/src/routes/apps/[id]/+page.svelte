@@ -93,7 +93,8 @@
 						</a>
 					</p>
 				{/if}
-				<p>Store Last Crawled: {data.myapp.updated_at}</p>
+				<p>App Last Updated on Store: {data.myapp.store_last_updated}</p>
+				<p>App Last Crawled: {data.myapp.updated_at}</p>
 			</div>
 			<div class="ml-auto">
 				<a class="anchor inline-flex items-baseline" href={data.myapp.store_link} target="_blank">
