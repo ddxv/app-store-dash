@@ -38,8 +38,11 @@ FULL OUTER JOIN devs ON
 FULL OUTER JOIN apps ON
     sa.id = apps.app_id
 WHERE
-    apps.app_id IS NOT NULL
-OR devs.developer_id IS NOT NULL
+    sa.id IS NOT NULL
+    AND (
+        apps.app_id IS NOT NULL
+        OR devs.developer_id IS NOT NULL
+    )
 ORDER BY
     sa.installs DESC NULLS LAST,
     sa.rating_count DESC NULLS LAST

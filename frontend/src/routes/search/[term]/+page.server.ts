@@ -1,15 +1,15 @@
 import type { PageServerLoad } from './$types.js';
 
-export const load: PageServerLoad = async ({ params, locals }) => {
+export const load: PageServerLoad = async ({ params }) => {
 	const term = params.term;
 	const searchTerm = decodeURIComponent(term);
-	console.log(`load started search=${searchTerm}`);
+	console.log(`search start term=${searchTerm}`);
 
-	const res = fetch(`http://localhost:8000/api/apps/search/${searchTerm}`);
 	return {
-		results: res
+		results: fetch(`http://localhost:8000/api/apps/search/${searchTerm}`)
 			.then((resp) => {
 				if (resp.status === 200) {
+					console.log('Search success');
 					return resp.json();
 				} else if (resp.status === 404) {
 					console.log('App Not found');
