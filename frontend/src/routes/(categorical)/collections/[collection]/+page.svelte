@@ -1,11 +1,11 @@
 <script lang="ts">
-	import type { Collections } from '../../../types';
+	import type { Collections } from '../../../../types';
 	/** @type {import('../[collection]/$types').PageData} */
 	export let data: Collections;
 	import AppsCard from '$lib/AppGroupCard.svelte';
 
-	import { homeStoreSelection } from '../../../stores';
-	import { homeCategorySelection } from '../../../stores';
+	import { homeStoreSelection } from '../../../../stores';
+	import { homeCategorySelection } from '../../../../stores';
 </script>
 
 <svelte:head>

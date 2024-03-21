@@ -40,14 +40,23 @@
 	$: collection = +$page.params.collection;
 	$: category = +$page.params.category;
 
+	// Logic to adjust collection and category based on the store's value
 	$: {
-		if (store == 2) {
-			collection = 4;
-			category = 55;
+		// If store is not a number (NaN), default it to 1
+		if (isNaN(store)) {
+			store = 1;
 		}
-		if (store == 1) {
-			collection = 1;
-			category = 1;
+
+		switch (store) {
+			case 2:
+				collection = 4;
+				category = 55;
+				break;
+			case 1:
+			default: // Defaults for store=1 or any other value not explicitly handled
+				collection = 1;
+				category = 1;
+				break;
 		}
 	}
 </script>
@@ -178,6 +187,47 @@
 			</nav>
 		</div>
 	</div>
+	<div class="p-1 md:p-2">
+		<div class="card p-4">
+			<h4 class="md:h3 h4">Collections</h4>
+			<nav class="list-nav">
+				<ul>
+					{#each Object.entries(collectionIDLookup[store]) as [id, values]}
+						<li>
+							<a
+								href={`/rankings/store/${store}/collection/${values.collection_id}/category/${category}`}
+								class={classesActive(
+									`/rankings/store/${store}/collection/${values.collection_id}/`
+								)}>{values.collection_name}</a
+							>
+						</li>
+					{/each}
+				</ul>
+			</nav>
+		</div>
+	</div>
+	<div class="p-1 md:p-2">
+		<div class="card p-4">
+			<h4 class="h4 md:h3">Categories</h4>
+			<nav class="list-nav">
+				<ul>
+					{#each Object.entries(categoryIDLookup[collection]) as [id, values]}
+						<li>
+							<a
+								href={`/rankings/store/${store}/collection/${collection}/category/${values.category_id}`}
+								class={classesActive(
+									`/rankings/store/${store}/collection/${collection}/category/${values.category_id}`
+								)}>{values.category_name}</a
+							>
+						</li>
+					{/each}
+				</ul>
+			</nav>
+		</div>
+	</div>
+{/if}
+
+{#if $page.url.pathname == '/adtech' || $page.url.pathname.startsWith('/adtech')}
 	<div class="p-1 md:p-2">
 		<div class="card p-4">
 			<h4 class="md:h3 h4">Collections</h4>

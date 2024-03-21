@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { TopCompaniesInfo } from '../../../types';
+	import type { TopCompaniesInfo } from '../../../../types';
 	import AdtechNav from '$lib/AdtechNav.svelte';
 	import { page } from '$app/stores';
 	import AdtechTable from '$lib/AdtechTable.svelte';

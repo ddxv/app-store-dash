@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { CompanyApps } from '../../../../types';
+	import type { CompanyApps } from '../../../../../types';
 	export let data: CompanyApps;
 	import AppsCard from '$lib/AppGroupCard.svelte';
 </script>
