@@ -227,7 +227,7 @@
 	</div>
 {/if}
 
-{#if $page.url.pathname == '/adtech' || $page.url.pathname.startsWith('/adtech')}
+{#if $page.url.pathname == '/adtechX' || $page.url.pathname.startsWith('/adtechX')}
 	<div class="p-1 md:p-2">
 		<div class="card p-4">
 			<h4 class="md:h3 h4">Collections</h4>
@@ -236,10 +236,9 @@
 					{#each Object.entries(collectionIDLookup[store]) as [id, values]}
 						<li>
 							<a
-								href={`/rankings/store/${store}/collection/${values.collection_id}/category/${category}`}
-								class={classesActive(
-									`/rankings/store/${store}/collection/${values.collection_id}/`
-								)}>{values.collection_name}</a
+								href={`/adtech/collection/${values.collection_id}/category/${category}`}
+								class={classesActive(`/adtech/collection/${values.collection_id}/`)}
+								>{values.collection_name}</a
 							>
 						</li>
 					{/each}
@@ -255,15 +254,75 @@
 					{#each Object.entries(categoryIDLookup[collection]) as [id, values]}
 						<li>
 							<a
-								href={`/rankings/store/${store}/collection/${collection}/category/${values.category_id}`}
+								href={`/adtech/collection/${collection}/category/${values.category_id}`}
 								class={classesActive(
-									`/rankings/store/${store}/collection/${collection}/category/${values.category_id}`
+									`/adtech/collection/${collection}/category/${values.category_id}`
 								)}>{values.category_name}</a
 							>
 						</li>
 					{/each}
 				</ul>
 			</nav>
+		</div>
+	</div>
+{/if}
+
+{#if $page.url.pathname.startsWith('/adtech') || $page.url.pathname.startsWith('/adtech')}
+	<div class="p-1 md:p-2">
+		<div class="card p-4">
+			<h3 class="h3">Adtech Type</h3>
+			<nav class="list-nav">
+				<ul>
+					<li>
+						<a href="/adtech/networks" class={classesActive('/adtech/networks')}
+							>Advertising Networks</a
+						>
+					</li>
+					<li>
+						<a href="/adtech/trackers" class={classesActive('/adtech/trackers')}
+							>Analytics, MMP Tracking and Attribution</a
+						>
+					</li>
+					<li>
+						<a href="/adtech/top" class={classesActive('/adtech/top')}>Alltime Top</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+	<div class="p-1 md:p-2">
+		<div class="card p-4">
+			<h3 class="h3">Categories</h3>
+			<ListBox>
+				{#if myCatData}
+					{#each Object.entries(myCatData.categories) as [_prop, values]}
+						{#if values.id}
+							<ListBoxItem
+								bind:group={localHomeCategorySelect}
+								name="medium"
+								value={values.id}
+								active={buttonSelectedColor}
+								on:click={scrollTop}
+								padding="p-2 md:p-2"
+								><div class="flex w-full justify-between">
+									<div class="flex-grow">
+										{values.name}
+									</div>
+									{#if Number(values.android) > 0}
+										<div class="justify-end mr-2 md:mr-5">
+											<IconGoogle size="10" />
+										</div>
+									{:else}
+										<div class="opacity-20 justify-end mr-2 md:mr-5">
+											<IconGoogle size="10" />
+										</div>
+									{/if}
+								</div>
+							</ListBoxItem>
+						{/if}
+					{/each}
+				{/if}
+			</ListBox>
 		</div>
 	</div>
 {/if}

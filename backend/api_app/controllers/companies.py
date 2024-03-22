@@ -6,6 +6,7 @@
 
 from typing import Self
 
+import pandas as pd
 from litestar import Controller, get
 from litestar.exceptions import NotFoundException
 
@@ -45,12 +46,27 @@ def companies_overview(categories: list[int]) -> TopCompanies:
     pdf = get_top_companies(categories=categories, group_by_parent=True)
     df = df[~df["name"].isna()]
     pdf = pdf[~pdf["name"].isna()]
+
+    overall_cat_df = (
+        df.groupby("name")[["app_count", "total_app_count"]].sum().reset_index()
+    )
+    overall_cat_df["mapped_category"] = "overall"
+    overall_cat_df["percent"] = (
+        overall_cat_df["app_count"] / overall_cat_df["total_app_count"]
+    )
+
+    df = pd.concat([df, overall_cat_df])
+
+    # Function to transform each group into a list of dictionaries
+    def transform_group(group: pd.Grouper) -> dict:
+        return group.drop(columns="mapped_category").to_dict(orient="records")
+
     df = df.sort_values("app_count", ascending=False)
     pdf = pdf.sort_values("app_count", ascending=False)
     monthly_all = monthly_all.sort_values("installs", ascending=False)
     monthly_parents = monthly_parents.sort_values("installs", ascending=False)
     top = TopCompanies(
-        all_companies=df.to_dict(orient="records"),
+        all_companies=df.groupby("mapped_category").apply(transform_group).to_dict(),
         parent_companies=pdf.to_dict(orient="records"),
         monthly_all_companies=monthly_all.to_dict(orient="records"),
         monthly_parent_companies=monthly_parents.to_dict(orient="records"),

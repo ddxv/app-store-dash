@@ -25,6 +25,8 @@
 	$: {
 		timeGroup = $page.url.searchParams.get('time') || 'month';
 	}
+
+	import { homeCategorySelection } from '../../../../stores';
 </script>
 
 <svelte:head>
@@ -62,7 +64,7 @@
 			{:else if granularityGroup === 'parents'}
 				<AdtechTable tabledata={networks.parent_companies}></AdtechTable>
 			{:else}
-				<AdtechTable tabledata={networks.all_companies}></AdtechTable>
+				<AdtechTable tabledata={networks.all_companies[$homeCategorySelection]}></AdtechTable>
 			{/if}
 		{:catch}
 			Problem loading data
