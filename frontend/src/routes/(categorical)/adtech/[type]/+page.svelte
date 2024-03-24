@@ -40,14 +40,20 @@
 <div class="card p-2 px-4 md:px-16">
 	<h3 class="h4 md:h3 p-4">Third Party Mobile Ad Tech Partners</h3>
 
+	<p class="p-4">
+		These ad networks and tracker integrations are crawled for the top ~11k Android apps based on
+		thos apps that have been in the top 200 ranks for each category since February 2024. The data is
+		based on a decompiled Android APK and picking known values from the app's Android Manifests. If
+		you have any trackers or networks you'd like to see added feel free to reach out and they can be
+		added.
+	</p>
+
 	<AdtechNav></AdtechNav>
 
 	{#if entityGroup === 'networks'}
 		<p class="p-4">
-			For an app to make money from advertising, the owner of the app will usually use an Ad Network
-			to sell their apps's advertising space. These Ad Networks will require an SDK to be used to
-			manage the ad itself. AppGoblin is scanning apps to get an idea of which apps use which
-			networks. Currently this list is for Android APKs only.
+			Ad Networks will require an SDK to be used to manage the serving of their ads. AppGoblin is
+			scanning apps to get an idea of which apps use which networks.
 		</p>
 
 		{#await data.networks}
@@ -80,9 +86,7 @@
 		{:then trackers}
 			<p class="p-4">
 				Tracking users in apps for marketing purposes is much harder in apps than on the regular
-				web. Therefor most apps use other services embedded in their APKs to track users. AppGoblin
-				is scanning apps to get an idea of which apps use which trackers. Currently this list is for
-				Android APKs only.
+				web. Therefor most apps use other services embedded in their APKs to track users.
 			</p>
 
 			{#if timeGroup === 'month'}

@@ -283,9 +283,6 @@
 							>Analytics, MMP Tracking and Attribution</a
 						>
 					</li>
-					<li>
-						<a href="/adtech/top" class={classesActive('/adtech/top')}>Alltime Top</a>
-					</li>
 				</ul>
 			</nav>
 		</div>
@@ -296,7 +293,7 @@
 			<ListBox>
 				{#if myCatData}
 					{#each Object.entries(myCatData.categories) as [_prop, values]}
-						{#if values.id}
+						{#if values.id && (Number(values.android) > 0 || values.name == 'Games')}
 							<ListBoxItem
 								bind:group={localHomeCategorySelect}
 								name="medium"
