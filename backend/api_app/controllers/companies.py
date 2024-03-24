@@ -17,6 +17,38 @@ from dbcon.queries import get_apps_for_company, get_top_companies
 logger = get_logger(__name__)
 
 
+def append_overall_categories(df: pd.DataFrame) -> pd.DataFrame:
+    """Add single row for overall category."""
+    metric = "installs" if "installs" in df.columns else "app_count"
+    overall_cat_df = df.groupby("name")[[metric, f"total_{metric}"]].sum().reset_index()
+    overall_cat_df["mapped_category"] = "overall"
+    overall_cat_df["percent"] = (
+        overall_cat_df[metric] / overall_cat_df[f"total_{metric}"]
+    )
+    df = pd.concat([df, overall_cat_df])
+    df = append_games_category(df, metric)
+    return df
+
+
+def append_games_category(df: pd.DataFrame, metric: str) -> pd.DataFrame:
+    """Append a consolidated games category.
+
+    note this wouldn't work for Apple as not needed.
+    """
+    overall_cat_df = (
+        df[df["mapped_category"].str.contains(r"^game")]
+        .groupby("name")[[metric, f"total_{metric}"]]
+        .sum()
+        .reset_index()
+    )
+    overall_cat_df["mapped_category"] = "games"
+    overall_cat_df["percent"] = (
+        overall_cat_df[metric] / overall_cat_df[f"total_{metric}"]
+    )
+    df = pd.concat([df, overall_cat_df])
+    return df
+
+
 def companies_overview(categories: list[int]) -> TopCompanies:
     """Process networks and return TopCompanies class."""
     df = get_top_companies(categories=categories, group_by_parent=False)
@@ -27,11 +59,9 @@ def companies_overview(categories: list[int]) -> TopCompanies:
         group_by_parent=True,
     )
 
-    total_installs = mdf["total_installs"].to_numpy()[0]
-
     mdf = mdf[~mdf["company_name"].isna()].rename(columns={"company_name": "name"})
     monthly_all = (
-        mdf.groupby("name")[["installs", "total_installs"]]
+        mdf.groupby(["mapped_category", "name"])[["installs", "total_installs"]]
         .agg(
             {"installs": "sum", "total_installs": "first"},
         )
@@ -40,22 +70,20 @@ def companies_overview(categories: list[int]) -> TopCompanies:
 
     monthly_parents = monthly_parents.rename(columns={"company_name": "name"})
 
-    monthly_all["percent"] = monthly_all["installs"] / total_installs
-    monthly_parents["percent"] = monthly_parents["installs"] / total_installs
+    monthly_all["percent"] = monthly_all["installs"] / monthly_all["total_installs"]
+    monthly_parents["percent"] = (
+        monthly_parents["installs"] / monthly_all["total_installs"]
+    )
 
     pdf = get_top_companies(categories=categories, group_by_parent=True)
     df = df[~df["name"].isna()]
     pdf = pdf[~pdf["name"].isna()]
 
-    overall_cat_df = (
-        df.groupby("name")[["app_count", "total_app_count"]].sum().reset_index()
-    )
-    overall_cat_df["mapped_category"] = "overall"
-    overall_cat_df["percent"] = (
-        overall_cat_df["app_count"] / overall_cat_df["total_app_count"]
-    )
+    df = append_overall_categories(df)
+    pdf = append_overall_categories(pdf)
 
-    df = pd.concat([df, overall_cat_df])
+    monthly_all = append_overall_categories(monthly_all)
+    monthly_parents = append_overall_categories(monthly_parents)
 
     # Function to transform each group into a list of dictionaries
     def transform_group(group: pd.Grouper) -> dict:
@@ -67,15 +95,20 @@ def companies_overview(categories: list[int]) -> TopCompanies:
     monthly_parents = monthly_parents.sort_values("installs", ascending=False)
     top = TopCompanies(
         all_companies=df.groupby("mapped_category").apply(transform_group).to_dict(),
-        parent_companies=pdf.to_dict(orient="records"),
-        monthly_all_companies=monthly_all.to_dict(orient="records"),
-        monthly_parent_companies=monthly_parents.to_dict(orient="records"),
+        parent_companies=pdf.groupby("mapped_category")
+        .apply(transform_group)
+        .to_dict(),
+        monthly_all_companies=monthly_all.groupby("mapped_category")
+        .apply(transform_group)
+        .to_dict(),
+        monthly_parent_companies=monthly_parents.groupby("mapped_category")
+        .apply(transform_group)
+        .to_dict(),
     )
     return top
 
 
 class CompaniesController(Controller):
-
     """API EndPoint return for all ad tech companies."""
 
     path = "/api/"

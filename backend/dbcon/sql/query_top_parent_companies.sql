@@ -26,6 +26,7 @@ ON
         cm.mapped_category,
         parent_or_self_id
 ),
+
 total_app_count AS (
     SELECT
         cm.mapped_category,
@@ -39,6 +40,7 @@ total_app_count AS (
     GROUP BY
         cm.mapped_category
 )
+
 SELECT
     tc.mapped_category,
     c.name AS name,

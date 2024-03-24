@@ -25,8 +25,8 @@
 		goto(`${path}?${url.searchParams.toString()}`);
 	}
 
-	const networksURL: string = '/adtech/networks';
-	const trackersURL: string = '/adtech/trackers';
+	// const networksURL: string = '/adtech/networks';
+	// const trackersURL: string = '/adtech/trackers';
 	const groupByParents: string = 'parents';
 	const groupByBrands: string = 'brands';
 	const timeMonth: string = 'month';
@@ -38,7 +38,7 @@
 <div class="card">
 	<div class="flex">
 		<div class="card ml-2 md:ml-4 p-2 md:p-4">
-			<h3 class="h5 md:h4 p-2">Time Period</h3>
+			<h3 class="h5 md:h4 p-2">Metric</h3>
 			<nav class="list-nav">
 				<ul class="rounded-md variant-outline-primary">
 					<li class="variant-soft-primary">
@@ -47,7 +47,7 @@
 							class={paramTimeClassesActive('time', timeMonth)}
 							on:click|preventDefault={() => navigateWithParams(currentPath, 'time', timeMonth)}
 						>
-							<span class="flex-auto">Most Recent 30 Days</span>
+							<span class="flex-auto">Installs Past 30 Days</span>
 						</a>
 					</li>
 					<li class="variant-soft-primary">
@@ -56,13 +56,13 @@
 							class={paramTimeClassesActive('time', timeAlltime)}
 							on:click|preventDefault={() => navigateWithParams(currentPath, 'time', timeAlltime)}
 						>
-							<span class="flex-auto">Alltime</span>
+							<span class="flex-auto">Count of Apps</span>
 						</a>
 					</li>
 				</ul>
 			</nav>
 		</div>
-		<div class="card mr-2 md:mr-4 p-2 md:p-4">
+		<!-- <div class="card mr-2 md:mr-4 p-2 md:p-4">
 			<h3 class="h5 md:h4 p-2">Company Category</h3>
 			<nav class="list-nav">
 				<ul class="rounded-md variant-outline-primary">
@@ -86,7 +86,7 @@
 					</li>
 				</ul>
 			</nav>
-		</div>
+		</div> -->
 
 		<div class="card ml-2 md:ml-4 p-2 md:p-4">
 			<h3 class="h5 md:h4 p-2">Granularity</h3>

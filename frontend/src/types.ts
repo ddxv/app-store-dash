@@ -140,6 +140,10 @@ export interface AppFullDetails {
 	}>;
 }
 
+export interface CategoriesAdtech {
+	[category: string]: Company[];
+}
+
 export interface Company {
 	name: string;
 	app_count: number;
@@ -157,10 +161,27 @@ export interface TopCompaniesInfo {
 		monthly_parent_companies: Company[];
 	}>;
 	trackers: Promise<{
-		all_companies: Company[];
-		parent_companies: Company[];
+		all_companies: { key: Company[] };
+		parent_companies: { key: Company[] };
 		monthly_all_companies: Company[];
 		monthly_parent_companies: Company[];
+	}>;
+}
+
+export interface TopCompaniesInfo {
+	status?: number;
+	error?: string;
+	networks: Promise<{
+		all_companies: CategoriesAdtech;
+		parent_companies: CategoriesAdtech[];
+		monthly_all_companies: CategoriesAdtech[];
+		monthly_parent_companies: CategoriesAdtech[];
+	}>;
+	trackers: Promise<{
+		all_companies: CategoriesAdtech;
+		parent_companies: CategoriesAdtech;
+		monthly_all_companies: CategoriesAdtech;
+		monthly_parent_companies: CategoriesAdtech;
 	}>;
 }
 

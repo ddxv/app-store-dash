@@ -55,14 +55,18 @@
 		{:then networks}
 			{#if timeGroup === 'month'}
 				{#if granularityGroup === 'parents'}
-					<AdtechTable tabledata={networks.monthly_parent_companies} tableType="installs"
+					<AdtechTable
+						tabledata={networks.monthly_parent_companies[$homeCategorySelection]}
+						tableType="installs"
 					></AdtechTable>
 				{:else}
-					<AdtechTable tabledata={networks.monthly_all_companies} tableType="installs"
+					<AdtechTable
+						tabledata={networks.monthly_all_companies[$homeCategorySelection]}
+						tableType="installs"
 					></AdtechTable>
 				{/if}
 			{:else if granularityGroup === 'parents'}
-				<AdtechTable tabledata={networks.parent_companies}></AdtechTable>
+				<AdtechTable tabledata={networks.parent_companies[$homeCategorySelection]}></AdtechTable>
 			{:else}
 				<AdtechTable tabledata={networks.all_companies[$homeCategorySelection]}></AdtechTable>
 			{/if}
@@ -83,16 +87,20 @@
 
 			{#if timeGroup === 'month'}
 				{#if granularityGroup === 'parents'}
-					<AdtechTable tabledata={trackers.monthly_parent_companies} tableType="installs"
+					<AdtechTable
+						tabledata={trackers.monthly_parent_companies[$homeCategorySelection]}
+						tableType="installs"
 					></AdtechTable>
 				{:else}
-					<AdtechTable tabledata={trackers.monthly_all_companies} tableType="installs"
+					<AdtechTable
+						tabledata={trackers.monthly_all_companies[$homeCategorySelection]}
+						tableType="installs"
 					></AdtechTable>
 				{/if}
 			{:else if granularityGroup === 'parents'}
-				<AdtechTable tabledata={trackers.parent_companies}></AdtechTable>
+				<AdtechTable tabledata={trackers.parent_companies[$homeCategorySelection]}></AdtechTable>
 			{:else}
-				<AdtechTable tabledata={trackers.all_companies}></AdtechTable>
+				<AdtechTable tabledata={trackers.all_companies[$homeCategorySelection]}></AdtechTable>
 			{/if}
 		{:catch}
 			Problem loading data
