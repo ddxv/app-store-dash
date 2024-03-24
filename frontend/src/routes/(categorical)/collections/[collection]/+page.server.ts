@@ -3,7 +3,7 @@ export const csr: boolean = true;
 
 import type { PageServerLoad } from './$types.js';
 
-import type { Collection, Collections } from '../../../types.js';
+import type { Collection, Collections } from '../../../../types.js';
 
 export const load: PageServerLoad = async ({ params, setHeaders, locals }) => {
 	const collectionValue = params.collection;

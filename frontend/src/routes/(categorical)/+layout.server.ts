@@ -7,18 +7,14 @@ export const load: PageServerLoad = async () => {
 	console.log(`load categories start`);
 	const res = fetch(`http://localhost:8000/api/categories`);
 
-	// setHeaders({
-	// 	'cache-control': 'max-age=40000'
-	// });
-
 	return {
 		mycats: res
 			.then((resp) => {
 				if (resp.status === 200) {
 					return resp.json();
 				} else if (resp.status === 404) {
-					console.log('App Not found');
-					return 'App Not Found';
+					console.log('category Not found');
+					return 'category Not Found';
 				} else if (resp.status === 500) {
 					console.log('Categories API Server error');
 					return 'Backend Error';

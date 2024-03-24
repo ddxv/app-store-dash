@@ -14,7 +14,6 @@
 	export let data: CategoriesInfo;
 	homeCategoryMap.set(data);
 
-	import { page } from '$app/stores';
 	initializeStores();
 	const drawerStore = getDrawerStore();
 
@@ -49,19 +48,17 @@
 		{/await}
 	</svelte:fragment>
 	<slot />
-	{#if $page.url.pathname.startsWith('/collections') || $page.url.pathname.startsWith('/rankings')}
-		<button
-			class="lg:hidden btn variant-filled-primary absolute right-[20px] bottom-[50px]"
-			on:click={drawerOpen}
-		>
-			<h4 class="h4">FILTERS</h4>
-			<span>
-				<svg viewBox="0 0 100 80" class="fill-token w-4 h-4">
-					<rect width="100" height="20" />
-					<rect y="30" width="100" height="20" />
-					<rect y="60" width="100" height="20" />
-				</svg>
-			</span>
-		</button>
-	{/if}
+	<button
+		class="lg:hidden btn variant-filled-primary absolute right-[20px] bottom-[50px]"
+		on:click={drawerOpen}
+	>
+		<h4 class="h4">FILTERS</h4>
+		<span>
+			<svg viewBox="0 0 100 80" class="fill-token w-4 h-4">
+				<rect width="100" height="20" />
+				<rect y="30" width="100" height="20" />
+				<rect y="60" width="100" height="20" />
+			</svg>
+		</span>
+	</button>
 </AppShell>

@@ -3,9 +3,9 @@
 		storeIDLookup,
 		collectionIDLookup,
 		categoryIDLookup
-	} from '../../../../../../../../stores.js';
+	} from '../../../../../../../../../stores.js';
 
-	import type { StoreCategoryRanks } from '../../../../../../../../types.js';
+	import type { StoreCategoryRanks } from '../../../../../../../../../types.js';
 
 	export let data: StoreCategoryRanks;
 

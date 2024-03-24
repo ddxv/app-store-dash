@@ -3,7 +3,7 @@ import type { CategoriesInfo, Store, CategoryRanks, CollectionRanks } from './ty
 
 export const homeCollectionSelection = writable('new_monthly');
 export const homeStoreSelection = writable('google');
-export const homeCategorySelection = writable('overall');
+export const homeCategorySelection = writable<string>('overall');
 
 export const idStoreSelection = writable(1);
 export const idCollectionSelection = writable(1);

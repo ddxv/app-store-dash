@@ -1,7 +1,7 @@
 export const ssr: boolean = true;
 export const csr: boolean = true;
 
-import type { LayoutServerLoad } from '../$types';
+import type { LayoutServerLoad } from './$types';
 
 export const load: LayoutServerLoad = async () => {
 	const emptyResponse = {};
