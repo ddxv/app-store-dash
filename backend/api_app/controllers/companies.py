@@ -72,7 +72,7 @@ def companies_overview(categories: list[int]) -> TopCompanies:
 
     monthly_all["percent"] = monthly_all["installs"] / monthly_all["total_installs"]
     monthly_parents["percent"] = (
-        monthly_parents["installs"] / monthly_all["total_installs"]
+        monthly_parents["installs"] / monthly_parents["total_installs"]
     )
 
     pdf = get_top_companies(categories=categories, group_by_parent=True)
@@ -109,6 +109,7 @@ def companies_overview(categories: list[int]) -> TopCompanies:
 
 
 class CompaniesController(Controller):
+
     """API EndPoint return for all ad tech companies."""
 
     path = "/api/"
