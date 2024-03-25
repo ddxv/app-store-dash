@@ -267,7 +267,7 @@
 	</div>
 {/if}
 
-{#if $page.url.pathname.startsWith('/adtech') || $page.url.pathname.startsWith('/adtech')}
+{#if ($page.url.pathname.startsWith('/adtech') || $page.url.pathname.startsWith('/adtech')) && !$page.url.pathname.includes('companies')}
 	<div class="p-1 md:p-2">
 		<div class="card p-4">
 			<h3 class="h3">Adtech Type</h3>
