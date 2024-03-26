@@ -151,8 +151,6 @@ export interface Company {
 	percent: number;
 }
 
-
-
 export interface TopCompaniesInfo {
 	status?: number;
 	error?: string;
@@ -168,7 +166,7 @@ export interface TopCompaniesInfo {
 		monthly_all_companies: CategoriesAdtech;
 		monthly_parent_companies: CategoriesAdtech;
 	}>;
-	mycats: Promise<CatData>
+	mycats: Promise<CatData>;
 }
 
 export interface AppFullDetail {
