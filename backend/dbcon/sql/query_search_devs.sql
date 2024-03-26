@@ -4,17 +4,16 @@
 -- noqa: disable=PRS
 -- SQLFluff currently unable to parse the double @ below
 -- https://github.com/sqlfluff/sqlfluff/issues/4837
-WITH apps AS (
-    SELECT *
-    FROM
-        store_apps AS ssa
+WITH devs AS (
+    SELECT sa.* FROM store_apps sa
+    LEFT JOIN developers d ON sa.developer = d.id
     WHERE
-        textsearchable_index_col @@ to_tsquery(
+       textsearchable_index_col @@ to_tsquery(
             'simple',
             :searchinput
         )
-)
-SELECT * FROM apps
+    )
+SELECT * FROM devs
 ORDER BY
     installs DESC NULLS LAST,
     rating_count DESC NULLS LAST
