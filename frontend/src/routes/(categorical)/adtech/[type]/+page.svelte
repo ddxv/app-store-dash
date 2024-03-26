@@ -38,7 +38,7 @@
 </svelte:head>
 
 <div class="card p-2 px-4 md:px-16">
-	<h3 class="h4 md:h3 p-4">Third Party Mobile Ad Tech Partners</h3>
+	<h2 class="h4 md:h3 p-4">Third Party Mobile Ad Tech Partners</h2>
 
 	<p class="p-4">
 		These ad networks and tracker integrations are crawled for the top ~11k Android apps based on
@@ -47,15 +47,37 @@
 		you have any trackers or networks you'd like to see added feel free to reach out and they can be
 		added.
 	</p>
-
-	<AdtechNav></AdtechNav>
-
 	{#if entityGroup === 'networks'}
 		<p class="p-4">
 			Ad Networks will require an SDK to be used to manage the serving of their ads. AppGoblin is
 			scanning apps to get an idea of which apps use which networks.
 		</p>
+	{/if}
+	{#if entityGroup === 'trackers'}
+		<p class="p-4">
+			Tracking users in apps for marketing purposes is much harder in apps than on the regular web.
+			Therefor most apps use other services embedded in their APKs to track users.
+		</p>
+	{/if}
 
+	<AdtechNav></AdtechNav>
+
+	{#await data.mycats}
+		waiting for data...
+	{:then cats}
+		{#each Object.entries(cats.categories) as [_prop, values]}
+			{#if values.id == $homeCategorySelection}
+				{#if entityGroup == 'networks'}
+					<h1 class="h2 p-4">Ad Networks, Category: {values.name}</h1>
+				{/if}
+				{#if entityGroup == 'trackers'}
+					<h1 class="h1 p-4">MMPs, Category: {values.name}</h1>
+				{/if}
+			{/if}
+		{/each}
+	{/await}
+
+	{#if entityGroup === 'networks'}
 		{#await data.networks}
 			Loading Ad Networks...
 		{:then networks}
@@ -84,11 +106,6 @@
 		{#await data.trackers}
 			Loading Ad Trackers...
 		{:then trackers}
-			<p class="p-4">
-				Tracking users in apps for marketing purposes is much harder in apps than on the regular
-				web. Therefor most apps use other services embedded in their APKs to track users.
-			</p>
-
 			{#if timeGroup === 'month'}
 				{#if granularityGroup === 'parents'}
 					<AdtechTable
