@@ -7,7 +7,7 @@
 WITH apps AS (
     SELECT *
     FROM
-        store_apps AS ssa
+        store_apps
     WHERE
         textsearchable_index_col @@ to_tsquery(
             'simple',
