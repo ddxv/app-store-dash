@@ -8,7 +8,7 @@ WITH devs AS (
     SELECT sa.* FROM store_apps sa
     LEFT JOIN developers d ON sa.developer = d.id
     WHERE
-       textsearchable_index_col @@ to_tsquery(
+       d.textsearchable_index_col @@ to_tsquery(
             'simple',
             :searchinput
         )
