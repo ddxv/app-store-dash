@@ -7,7 +7,7 @@
 
 	let entityGroup = 'networks';
 	let granularityGroup = 'brands';
-	let timeGroup = 'month';
+	let metricName = 'installs';
 
 	// React to changes in the current path
 	$: {
@@ -23,7 +23,7 @@
 		granularityGroup = $page.url.searchParams.get('groupby') || 'parents';
 	}
 	$: {
-		timeGroup = $page.url.searchParams.get('time') || 'month';
+		metricName = $page.url.searchParams.get('metric') || 'installs';
 	}
 
 	import { homeCategorySelection } from '../../../../stores';
@@ -81,22 +81,16 @@
 		{#await data.networks}
 			Loading Ad Networks...
 		{:then networks}
-			{#if timeGroup === 'month'}
-				{#if granularityGroup === 'parents'}
-					<AdtechTable
-						tabledata={networks.monthly_parent_companies[$homeCategorySelection]}
-						tableType="installs"
-					></AdtechTable>
-				{:else}
-					<AdtechTable
-						tabledata={networks.monthly_all_companies[$homeCategorySelection]}
-						tableType="installs"
-					></AdtechTable>
-				{/if}
-			{:else if granularityGroup === 'parents'}
-				<AdtechTable tabledata={networks.parent_companies[$homeCategorySelection]}></AdtechTable>
+			{#if granularityGroup === 'parents'}
+				<AdtechTable
+					tabledata={networks.parent_companies[$homeCategorySelection]}
+					tableType={metricName}
+				></AdtechTable>
 			{:else}
-				<AdtechTable tabledata={networks.all_companies[$homeCategorySelection]}></AdtechTable>
+				<AdtechTable
+					tabledata={networks.all_companies[$homeCategorySelection]}
+					tableType={metricName}
+				></AdtechTable>
 			{/if}
 		{:catch}
 			Problem loading data
@@ -106,22 +100,16 @@
 		{#await data.trackers}
 			Loading Ad Trackers...
 		{:then trackers}
-			{#if timeGroup === 'month'}
-				{#if granularityGroup === 'parents'}
-					<AdtechTable
-						tabledata={trackers.monthly_parent_companies[$homeCategorySelection]}
-						tableType="installs"
-					></AdtechTable>
-				{:else}
-					<AdtechTable
-						tabledata={trackers.monthly_all_companies[$homeCategorySelection]}
-						tableType="installs"
-					></AdtechTable>
-				{/if}
-			{:else if granularityGroup === 'parents'}
-				<AdtechTable tabledata={trackers.parent_companies[$homeCategorySelection]}></AdtechTable>
+			{#if granularityGroup === 'parents'}
+				<AdtechTable
+					tabledata={trackers.parent_companies[$homeCategorySelection]}
+					tableType={metricName}
+				></AdtechTable>
 			{:else}
-				<AdtechTable tabledata={trackers.all_companies[$homeCategorySelection]}></AdtechTable>
+				<AdtechTable
+					tabledata={trackers.all_companies[$homeCategorySelection]}
+					tableType={metricName}
+				></AdtechTable>
 			{/if}
 		{:catch}
 			Problem loading data

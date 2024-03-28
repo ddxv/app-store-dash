@@ -147,8 +147,9 @@ export interface CategoriesAdtech {
 export interface Company {
 	name: string;
 	app_count: number;
-	installs?: number;
-	percent: number;
+	installs: number;
+	installs_percent: number;
+	app_count_percent: number;
 }
 
 export interface TopCompaniesInfo {
@@ -157,14 +158,10 @@ export interface TopCompaniesInfo {
 	networks: Promise<{
 		all_companies: CategoriesAdtech;
 		parent_companies: CategoriesAdtech;
-		monthly_all_companies: CategoriesAdtech;
-		monthly_parent_companies: CategoriesAdtech;
 	}>;
 	trackers: Promise<{
 		all_companies: CategoriesAdtech;
 		parent_companies: CategoriesAdtech;
-		monthly_all_companies: CategoriesAdtech;
-		monthly_parent_companies: CategoriesAdtech;
 	}>;
 	mycats: Promise<CatData>;
 }
