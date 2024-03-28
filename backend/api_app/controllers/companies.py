@@ -19,89 +19,72 @@ logger = get_logger(__name__)
 
 def append_overall_categories(df: pd.DataFrame) -> pd.DataFrame:
     """Add single row for overall category."""
-    metric = "installs" if "installs" in df.columns else "app_count"
-    overall_cat_df = df.groupby("name")[[metric, f"total_{metric}"]].sum().reset_index()
+    metrics = ["installs", "app_count"]
+    total_cols = ["total_installs", "category_total_apps"]
+    overall_cat_df = df.groupby("name")[metrics + total_cols].sum().reset_index()
     overall_cat_df["mapped_category"] = "overall"
-    overall_cat_df["percent"] = (
-        overall_cat_df[metric] / overall_cat_df[f"total_{metric}"]
-    )
     df = pd.concat([df, overall_cat_df])
-    df = append_games_category(df, metric)
-    return df
-
-
-def append_games_category(df: pd.DataFrame, metric: str) -> pd.DataFrame:
     """Append a consolidated games category.
-
     note this wouldn't work for Apple as not needed.
     """
-    overall_cat_df = (
+    games_cat_df = (
         df[df["mapped_category"].str.contains(r"^game")]
-        .groupby("name")[[metric, f"total_{metric}"]]
+        .groupby("name")[metrics + total_cols]
         .sum()
         .reset_index()
     )
-    overall_cat_df["mapped_category"] = "games"
-    overall_cat_df["percent"] = (
-        overall_cat_df[metric] / overall_cat_df[f"total_{metric}"]
-    )
-    df = pd.concat([df, overall_cat_df])
+    games_cat_df["mapped_category"] = "games"
+    df = pd.concat([df, games_cat_df])
     return df
 
 
 def companies_overview(categories: list[int]) -> TopCompanies:
     """Process networks and return TopCompanies class."""
-    df = get_top_companies(categories=categories, group_by_parent=False)
-    mdf = get_top_companies(categories=categories, monthly=True)
-    monthly_parents = get_top_companies(
+    df = get_top_companies(categories=categories)
+    df_parents = get_top_companies(
         categories=categories,
-        monthly=True,
         group_by_parent=True,
     )
 
-    mdf = mdf[~mdf["company_name"].isna()].rename(columns={"company_name": "name"})
-    monthly_all = (
-        mdf.groupby(["mapped_category", "name"])[["installs", "total_installs"]]
-        .agg(
-            {"installs": "sum", "total_installs": "first"},
-        )
-        .reset_index()
-    )
+    df = df[~df["company_name"].isna()].rename(columns={"company_name": "name"})
+    df_parents = df_parents.rename(columns={"company_name": "name"})
 
-    monthly_parents = monthly_parents.rename(columns={"company_name": "name"})
-
-    monthly_all["percent"] = monthly_all["installs"] / monthly_all["total_installs"]
-    monthly_parents["percent"] = (
-        monthly_parents["installs"] / monthly_parents["total_installs"]
-    )
-
-    pdf = get_top_companies(categories=categories, group_by_parent=True)
-    df = df[~df["name"].isna()]
-    pdf = pdf[~pdf["name"].isna()]
-
+    # Append combined columns like "overall" and "games"
     df = append_overall_categories(df)
-    pdf = append_overall_categories(pdf)
+    df_parents = append_overall_categories(df_parents)
 
-    monthly_all = append_overall_categories(monthly_all)
-    monthly_parents = append_overall_categories(monthly_parents)
+    # Since new columns added, recalculate percentages
+    df["app_count_percent"] = df["app_count"] / df["category_total_apps"]
+    df["installs_percent"] = df["installs"] / df["total_installs"]
+    df_parents["installs_percent"] = (
+        df_parents["installs"] / df_parents["total_installs"]
+    )
+    df_parents["app_count_percent"] = (
+        df_parents["app_count"] / df_parents["category_total_apps"]
+    )
 
     # Function to transform each group into a list of dictionaries
     def transform_group(group: pd.Grouper) -> dict:
         return group.drop(columns="mapped_category").to_dict(orient="records")
 
-    df = df.sort_values("app_count", ascending=False)
-    pdf = pdf.sort_values("app_count", ascending=False)
-    monthly_all = monthly_all.sort_values("installs", ascending=False)
-    monthly_parents = monthly_parents.sort_values("installs", ascending=False)
+    df = df.sort_values("installs", ascending=False)
+    df_parents = df_parents.sort_values("installs", ascending=False)
+
+    required_columns = [
+        "mapped_category",
+        "name",
+        "installs",
+        "app_count",
+        "installs_percent",
+        "app_count_percent",
+    ]
+
+    df = df[[*required_columns, "parent_company_name"]]
+    df_parents = df_parents[required_columns]
+
     top = TopCompanies(
         all_companies=df.groupby("mapped_category").apply(transform_group).to_dict(),
-        parent_companies=pdf.groupby("mapped_category")
-        .apply(transform_group)
-        .to_dict(),
-        monthly_all_companies=monthly_all.groupby("mapped_category")
-        .apply(transform_group)
-        .to_dict(),
-        monthly_parent_companies=monthly_parents.groupby("mapped_category")
+        parent_companies=df_parents.groupby("mapped_category")
         .apply(transform_group)
         .to_dict(),
     )

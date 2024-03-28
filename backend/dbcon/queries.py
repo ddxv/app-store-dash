@@ -40,8 +40,6 @@ QUERY_APP_PACKAGE_DETAILS = load_sql_file("query_app_package_details.sql")
 QUERY_STORE_COLLECTION_CATEGORY_MAP = load_sql_file(
     "query_store_collection_category_map.sql",
 )
-QUERY_TOP_COMPANIES = load_sql_file("query_top_companies.sql")
-QUERY_TOP_PARENT_COMPANIES = load_sql_file("query_top_parent_companies.sql")
 QUERY_TOP_COMPANIES_MONTH = load_sql_file("query_top_companies_month.sql")
 QUERY_TOP_PARENT_COMPANIES_MONTH = load_sql_file("query_top_companies_month_parent.sql")
 QUERY_COMPANY_APPS = load_sql_file("query_company_apps.sql")
@@ -326,7 +324,6 @@ def get_top_companies(
     categories: list[int],
     *,
     group_by_parent: bool = False,
-    monthly: bool = False,
 ) -> pd.DataFrame:
     """Get top networks, mmps or other companies.
 
@@ -336,15 +333,12 @@ def get_top_companies(
     ----
         categories (list[int]): list of 1=adnetworks, 2=MMP/Attribution, 3=Analytics.
         group_by_parent (bool): Group by a parent entity if such entity exists.
-        monthly (bool): Most recent 30 days data
 
     """
     if group_by_parent:
-        query = (
-            QUERY_TOP_PARENT_COMPANIES_MONTH if monthly else QUERY_TOP_PARENT_COMPANIES
-        )
+        query = QUERY_TOP_PARENT_COMPANIES_MONTH
     else:
-        query = QUERY_TOP_COMPANIES_MONTH if monthly else QUERY_TOP_COMPANIES
+        query = QUERY_TOP_COMPANIES_MONTH
 
     df = pd.read_sql(query, DBCON.engine, params={"categories": tuple(categories)})
 

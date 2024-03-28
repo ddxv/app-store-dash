@@ -144,8 +144,6 @@ class TopCompanies:
 
     all_companies: list[CompanyDetail]
     parent_companies: list[CompanyDetail]
-    monthly_all_companies: list[CompanyDetail]
-    monthly_parent_companies: list[CompanyDetail]
 
 
 @dataclass

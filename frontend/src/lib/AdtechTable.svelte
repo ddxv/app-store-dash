@@ -40,20 +40,31 @@
 							</h3>
 						</div>
 					</td>
-					<td>
-						<div class="inline-flex">
-							{#if tableType == 'apps'}
+					{#if tableType == 'appcount'}
+						<td>
+							<div class="inline-flex">
 								<h3 class="h7 md:h5">{formatNumber(values.app_count)}</h3>
-							{:else if values.installs}
+							</div>
+						</td>
+						<td>
+							<div class="inline-flex">
+								<h3 class="h7 md:h5">
+									{`${(values.app_count_percent * 100).toFixed(1)}%`}
+								</h3>
+							</div>
+						</td>
+					{:else if tableType == 'installs'}
+						<td>
+							<div class="inline-flex">
 								<h3 class="h7 md:h5">{formatNumber(values.installs)}</h3>
-							{/if}
-						</div>
-					</td>
-					<td>
-						<div class="inline-flex">
-							<h3 class="h7 md:h5">{`${(values.percent * 100).toFixed(1)}%`}</h3>
-						</div>
-					</td>
+							</div>
+						</td>
+						<td>
+							<div class="inline-flex">
+								<h3 class="h7 md:h5">{`${(values.installs_percent * 100).toFixed(1)}%`}</h3>
+							</div>
+						</td>
+					{/if}
 				</tr>
 			{/each}
 		</tbody>
