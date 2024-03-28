@@ -22,7 +22,7 @@
 		<thead class="px-0">
 			<tr class="px-0">
 				<th class="px-0"><h4 class="h4 px-0">Company</h4></th>
-				{#if tableType == 'apps'}
+				{#if tableType == 'appcount'}
 					<th><h4 class="h4">App Count</h4></th>
 				{:else}
 					<th><h4 class="h4">Installs</h4></th>
