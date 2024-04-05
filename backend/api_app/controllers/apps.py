@@ -164,6 +164,7 @@ def get_app_overview_dict(collection: str) -> Collection:
 
 
 class AppController(Controller):
+
     """Controller holding all API endpoints for an app."""
 
     path = "/api/apps"
