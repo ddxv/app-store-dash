@@ -21,7 +21,9 @@ def append_overall_categories(df: pd.DataFrame) -> pd.DataFrame:
     """Add single row for overall category."""
     metrics = ["installs", "app_count"]
     total_cols = ["total_installs", "category_total_apps"]
-    overall_cat_df = df.groupby("name")[metrics + total_cols].sum().reset_index()
+    overall_cat_df = (
+        df.groupby(["store", "name"])[metrics + total_cols].sum().reset_index()
+    )
     overall_cat_df["mapped_category"] = "overall"
     df = pd.concat([df, overall_cat_df])
     """Append a consolidated games category.
@@ -29,7 +31,7 @@ def append_overall_categories(df: pd.DataFrame) -> pd.DataFrame:
     """
     games_cat_df = (
         df[df["mapped_category"].str.contains(r"^game")]
-        .groupby("name")[metrics + total_cols]
+        .groupby(["store", "name"])[metrics + total_cols]
         .sum()
         .reset_index()
     )
@@ -63,14 +65,11 @@ def companies_overview(categories: list[int]) -> TopCompanies:
         df_parents["app_count"] / df_parents["category_total_apps"]
     )
 
-    # Function to transform each group into a list of dictionaries
-    def transform_group(group: pd.Grouper) -> dict:
-        return group.drop(columns="mapped_category").to_dict(orient="records")
-
     df = df.sort_values("installs", ascending=False)
     df_parents = df_parents.sort_values("installs", ascending=False)
 
     required_columns = [
+        "store",
         "mapped_category",
         "name",
         "installs",
@@ -82,11 +81,20 @@ def companies_overview(categories: list[int]) -> TopCompanies:
     df = df[[*required_columns, "parent_company_name"]]
     df_parents = df_parents[required_columns]
 
+    def transform_group(group: pd.DataFrame) -> dict:
+        return group.drop(columns=["store", "mapped_category"]).to_dict(
+            orient="records",
+        )
+
     top = TopCompanies(
-        all_companies=df.groupby("mapped_category").apply(transform_group).to_dict(),
-        parent_companies=df_parents.groupby("mapped_category")
+        all_companies=df.groupby(["store", "mapped_category"])
         .apply(transform_group)
-        .to_dict(),
+        .unstack(level=1)
+        .to_dict(orient="index"),
+        parent_companies=df_parents.groupby(["store", "mapped_category"])
+        .apply(transform_group)
+        .unstack(level=1)
+        .to_dict(orient="index"),
     )
     return top
 

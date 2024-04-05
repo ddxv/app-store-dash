@@ -140,7 +140,7 @@ class CompanyDetail:
 @dataclass
 class TopCompanies:
 
-    """Contains a list of NetworkDetail objects representing the top networks identified."""
+    """Contains a list of CompanyDetail objects representing the top networks identified."""
 
     all_companies: list[CompanyDetail]
     parent_companies: list[CompanyDetail]

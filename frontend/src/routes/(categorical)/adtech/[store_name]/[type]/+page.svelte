@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { TopCompaniesInfo } from '../../../../types';
+	import type { TopCompaniesInfo } from '../../../../../types';
 	import AdtechNav from '$lib/AdtechNav.svelte';
 	import { page } from '$app/stores';
 	import AdtechTable from '$lib/AdtechTable.svelte';
@@ -9,14 +9,16 @@
 	let granularityGroup = 'brands';
 	let metricName = 'installs';
 
-	// React to changes in the current path
+	let store_id = 1;
+
+	$: store_name = $page.params.store_name;
 	$: {
-		if ($page.url.pathname.startsWith('/adtech/networks')) {
-			entityGroup = 'networks';
-		} else if ($page.url.pathname.startsWith('/adtech/trackers')) {
-			entityGroup = 'trackers';
-		}
+		if (store_name == 'Google') {
+			store_id = 1;
+		} else store_id = 2;
 	}
+
+	$: entityGroup = $page.params.type;
 
 	// React to changes in query parameters
 	$: {
@@ -26,7 +28,7 @@
 		metricName = $page.url.searchParams.get('metric') || 'installs';
 	}
 
-	import { homeCategorySelection } from '../../../../stores';
+	import { homeCategorySelection } from '../../../../../stores';
 </script>
 
 <svelte:head>
@@ -68,10 +70,10 @@
 		{#each Object.entries(cats.categories) as [_prop, values]}
 			{#if values.id == $homeCategorySelection}
 				{#if entityGroup == 'networks'}
-					<h1 class="h2 p-4">Ad Networks, Category: {values.name}</h1>
+					<h1 class="h3 md:h2 p-4">Ad Networks, Category: {values.name}</h1>
 				{/if}
 				{#if entityGroup == 'trackers'}
-					<h1 class="h1 p-4">MMPs, Category: {values.name}</h1>
+					<h1 class="h3 md:h2 p-4">MMPs, Category: {values.name}</h1>
 				{/if}
 			{/if}
 		{/each}
@@ -83,12 +85,12 @@
 		{:then networks}
 			{#if granularityGroup === 'parents'}
 				<AdtechTable
-					tabledata={networks.parent_companies[$homeCategorySelection]}
+					tabledata={networks.parent_companies[store_id][$homeCategorySelection]}
 					tableType={metricName}
 				></AdtechTable>
 			{:else}
 				<AdtechTable
-					tabledata={networks.all_companies[$homeCategorySelection]}
+					tabledata={networks.all_companies[store_id][$homeCategorySelection]}
 					tableType={metricName}
 				></AdtechTable>
 			{/if}
@@ -102,12 +104,12 @@
 		{:then trackers}
 			{#if granularityGroup === 'parents'}
 				<AdtechTable
-					tabledata={trackers.parent_companies[$homeCategorySelection]}
+					tabledata={trackers.parent_companies[store_id][$homeCategorySelection]}
 					tableType={metricName}
 				></AdtechTable>
 			{:else}
 				<AdtechTable
-					tabledata={trackers.all_companies[$homeCategorySelection]}
+					tabledata={trackers.all_companies[store_id][$homeCategorySelection]}
 					tableType={metricName}
 				></AdtechTable>
 			{/if}

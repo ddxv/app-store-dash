@@ -118,7 +118,9 @@ def app_history(store_app: int, app_name: str) -> AppHistory:
             number_dicts += melteddicts
     plot_dicts = {"numbers": number_dicts, "changes": change_dicts}
     hist = AppHistory(
-        histogram=histogram, history_table=history_table, plot_data=plot_dicts,
+        histogram=histogram,
+        history_table=history_table,
+        plot_data=plot_dicts,
     )
     return hist
 
@@ -162,7 +164,6 @@ def get_app_overview_dict(collection: str) -> Collection:
 
 
 class AppController(Controller):
-
     """Controller holding all API endpoints for an app."""
 
     path = "/api/apps"
@@ -257,24 +258,24 @@ class AppController(Controller):
             )
 
         networks = {
-            k: f.groupby("xml_path")["android_name"].apply(list).to_dict()
+            k: f.groupby("xml_path")["value_name"].apply(list).to_dict()
             for k, f in df[
                 df["category_names"].str.contains("etwork", na=False)
             ].groupby("company_name")
         }
         trackers = {
-            k: f.groupby("xml_path")["android_name"].apply(list).to_dict()
+            k: f.groupby("xml_path")["value_name"].apply(list).to_dict()
             for k, f in df[
                 df["category_names"].str.contains("racker", na=False)
             ].groupby("company_name")
         }
 
         is_permission = df["xml_path"] == "uses-permission"
-        is_matching_packages = df["android_name"].str.startswith(
+        is_matching_packages = df["value_name"].str.startswith(
             ".".join(store_id.split(".")[:2]),
         )
 
-        is_android_activity = df["android_name"].str.contains(
+        is_android_activity = df["value_name"].str.contains(
             r"^(com.android)|(android)",
         )
 
@@ -287,7 +288,7 @@ class AppController(Controller):
             & ~is_android_activity
             & df["company_name"].isna()
         ]
-        permissions_list = permissions_df.android_name.tolist()
+        permissions_list = permissions_df.value_name.tolist()
         permissions_list = [
             x.replace("android.permission.", "") for x in permissions_list
         ]
@@ -296,9 +297,9 @@ class AppController(Controller):
             trackers=trackers,
             permissions=permissions_list,
             networks=networks,
-            android=android_services_df.android_name.tolist(),
-            leftovers=left_overs_df[["xml_path", "android_name"]]
-            .groupby("xml_path")["android_name"]
+            android=android_services_df.value_name.tolist(),
+            leftovers=left_overs_df[["xml_path", "value_name"]]
+            .groupby("xml_path")["value_name"]
             .apply(list)
             .to_dict(),
         )

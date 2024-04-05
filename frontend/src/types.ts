@@ -141,7 +141,7 @@ export interface AppFullDetails {
 }
 
 export interface CategoriesAdtech {
-	[category: string]: Company[];
+	[store:number]: {[category: string]: Company[]};
 }
 
 export interface Company {

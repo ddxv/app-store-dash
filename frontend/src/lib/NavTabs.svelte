@@ -29,7 +29,7 @@
 		<h3 class={topBarFont}>RANKS</h3>
 	</TabAnchor>
 	<TabAnchor
-		href="/adtech/networks?groupby=brands&time=month"
+		href="/adtech/Google/networks?groupby=brands&metric=appcount"
 		selected={$page.url.pathname.startsWith('/adtech')}
 		><h3 class={topBarFont}>ADTECH</h3></TabAnchor
 	>
