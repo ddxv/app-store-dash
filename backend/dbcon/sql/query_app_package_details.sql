@@ -42,7 +42,7 @@ SELECT
     vc.store_app,
     vd.xml_path,
     vd.tag,
-    vd.android_name,
+    vd.value_name,
     c.name AS company_name,
     cc.category_names
 FROM
@@ -56,7 +56,7 @@ INNER JOIN latest_version_code AS lvc
         AND vc.store_app = lvc.store_app
 LEFT JOIN adtech.sdk_packages AS tm
     ON
-        vd.android_name ILIKE tm.package_pattern || '%'
+        vd.value_name ILIKE tm.package_pattern || '%'
 LEFT JOIN adtech.companies AS c
     ON
         tm.company_id = c.id
@@ -66,4 +66,4 @@ LEFT JOIN company_categories AS cc
 ORDER BY
     vc.store_app,
     vd.xml_path,
-    vd.android_name;
+    vd.value_name;

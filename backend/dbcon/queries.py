@@ -30,7 +30,6 @@ QUERY_RANKS_FOR_APP = load_sql_file("query_ranks_for_app.sql")
 QUERY_MOST_RECENT_TOP_RANKS = load_sql_file("query_most_recent_top_ranks.sql")
 QUERY_HISTORY_TOP_RANKS = load_sql_file("query_history_top_ranks.sql")
 QUERY_APPSTORE_CATEGORIES = load_sql_file("query_appstore_categories.sql")
-QUERY_MANIFEST_NAMES = load_sql_file("query_manifest_names.sql")
 QUERY_SEARCH_APPS = load_sql_file("query_search_apps.sql")
 QUERY_SEARCH_DEVS = load_sql_file("query_search_devs.sql")
 QUERY_SINGLE_DEVELOPER = load_sql_file("query_single_developer.sql")
@@ -308,15 +307,6 @@ def search_apps(search_input: str, limit: int = 100) -> pd.DataFrame:
     df = pd.concat([apps, devapps]).drop_duplicates()
     if not df.empty:
         df = clean_app_df(df)
-    return df
-
-
-def get_manifest_names() -> pd.DataFrame:
-    """Get manifest data.
-
-    Data is pulled for some apks and extracted from the AndroidManifest.xml
-    """
-    df = pd.read_sql(QUERY_MANIFEST_NAMES, DBCON.engine)
     return df
 
 

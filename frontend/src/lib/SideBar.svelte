@@ -32,6 +32,10 @@
 		}
 	};
 
+	// For adtech
+	$: store_name = $page.params.store_name;
+	$: adtech_category = $page.params.type;
+
 	// FOLOWING IS FOR RANKINGS
 
 	import { storeIDLookup, collectionIDLookup, categoryIDLookup } from '../stores';
@@ -227,60 +231,44 @@
 	</div>
 {/if}
 
-{#if $page.url.pathname == '/adtechX' || $page.url.pathname.startsWith('/adtechX')}
-	<div class="p-1 md:p-2">
-		<div class="card p-4">
-			<h4 class="md:h3 h4">Collections</h4>
-			<nav class="list-nav">
-				<ul>
-					{#each Object.entries(collectionIDLookup[store]) as [id, values]}
-						<li>
-							<a
-								href={`/adtech/collection/${values.collection_id}/category/${category}`}
-								class={classesActive(`/adtech/collection/${values.collection_id}/`)}
-								>{values.collection_name}</a
-							>
-						</li>
-					{/each}
-				</ul>
-			</nav>
-		</div>
-	</div>
-	<div class="p-1 md:p-2">
-		<div class="card p-4">
-			<h4 class="h4 md:h3">Categories</h4>
-			<nav class="list-nav">
-				<ul>
-					{#each Object.entries(categoryIDLookup[collection]) as [id, values]}
-						<li>
-							<a
-								href={`/adtech/collection/${collection}/category/${values.category_id}`}
-								class={classesActive(
-									`/adtech/collection/${collection}/category/${values.category_id}`
-								)}>{values.category_name}</a
-							>
-						</li>
-					{/each}
-				</ul>
-			</nav>
-		</div>
-	</div>
-{/if}
-
 {#if ($page.url.pathname.startsWith('/adtech') || $page.url.pathname.startsWith('/adtech')) && !$page.url.pathname.includes('companies')}
 	<div class="p-1 md:p-2">
 		<div class="card p-4">
-			<h3 class="h3">Adtech Type</h3>
+			<h4 class="h4 md:h3">Stores</h4>
+			<nav class="list-nav">
+				<ul>
+					{#each Object.entries(storeIDLookup) as [_prop, values]}
+						<li>
+							<a
+								href={`/adtech/${values.store_name}/${adtech_category}`}
+								class={classesActive(`/adtech/${values.store_name}`)}
+							>
+								{values.store_name}
+							</a>
+						</li>
+					{/each}
+				</ul>
+			</nav>
+		</div>
+	</div>
+
+	<div class="p-1 md:p-2">
+		<div class="card p-4">
+			<h3 class="h4 md:h3">Adtech Type</h3>
 			<nav class="list-nav">
 				<ul>
 					<li>
-						<a href="/adtech/networks" class={classesActive('/adtech/networks')}
-							>Advertising Networks</a
+						<a
+							href={`/adtech/${store_name}/networks`}
+							class={classesActive('/adtech/Google/networks') ||
+								classesActive('/adtech/Apple/networks')}>Advertising Networks</a
 						>
 					</li>
 					<li>
-						<a href="/adtech/trackers" class={classesActive('/adtech/trackers')}
-							>Analytics, MMP Tracking and Attribution</a
+						<a
+							href={`/adtech/${store_name}/trackers`}
+							class={classesActive('/adtech/Google/trackers') ||
+								classesActive('/adtech/Apple/trackers')}>Analytics, MMP Tracking and Attribution</a
 						>
 					</li>
 				</ul>
@@ -289,7 +277,7 @@
 	</div>
 	<div class="p-1 md:p-2">
 		<div class="card p-4">
-			<h3 class="h3">Categories</h3>
+			<h3 class="h4 md:h3">Categories</h3>
 			<ListBox>
 				{#if myCatData}
 					{#each Object.entries(myCatData.categories) as [_prop, values]}

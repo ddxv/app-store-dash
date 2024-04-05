@@ -83,7 +83,7 @@ def companies_overview(categories: list[int]) -> TopCompanies:
 
     def transform_group(group: pd.DataFrame) -> dict:
         return group.drop(columns=["store", "mapped_category"]).to_dict(
-            orient="records"
+            orient="records",
         )
 
     top = TopCompanies(
@@ -100,6 +100,7 @@ def companies_overview(categories: list[int]) -> TopCompanies:
 
 
 class CompaniesController(Controller):
+
     """API EndPoint return for all ad tech companies."""
 
     path = "/api/"
