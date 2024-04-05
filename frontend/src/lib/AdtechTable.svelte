@@ -2,7 +2,8 @@
 	import type { Company } from '../types';
 	export let tabledata: Company[];
 
-	export let tableType: string = 'apps';
+	export let tableType: string = 'appcount';
+	export let storeId: number = 1;
 
 	function navigate(name: string) {
 		window.location.href = `/adtech/companies/${name}`;
@@ -24,6 +25,8 @@
 				<th class="px-0"><h4 class="h4 px-0">Company</h4></th>
 				{#if tableType == 'appcount'}
 					<th><h4 class="h4">App Count</h4></th>
+				{:else if storeId == 2}
+					<th><h4 class="h4">App Ratings</h4></th>
 				{:else}
 					<th><h4 class="h4">Installs</h4></th>
 				{/if}
@@ -53,7 +56,18 @@
 								</h3>
 							</div>
 						</td>
-					{:else if tableType == 'installs'}
+					{:else if storeId == 2}
+						<td>
+							<div class="inline-flex">
+								<h3 class="h7 md:h5">{formatNumber(values.ratings)}</h3>
+							</div>
+						</td>
+						<td>
+							<div class="inline-flex">
+								<h3 class="h7 md:h5">{`${(values.ratings_percent * 100).toFixed(1)}%`}</h3>
+							</div>
+						</td>
+					{:else}
 						<td>
 							<div class="inline-flex">
 								<h3 class="h7 md:h5">{formatNumber(values.installs)}</h3>

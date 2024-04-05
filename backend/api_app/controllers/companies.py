@@ -19,18 +19,29 @@ logger = get_logger(__name__)
 
 def append_overall_categories(df: pd.DataFrame) -> pd.DataFrame:
     """Add single row for overall category."""
-    metrics = ["installs", "app_count"]
-    total_cols = ["total_installs", "category_total_apps"]
-    overall_cat_df = (
-        df.groupby(["store", "name"])[metrics + total_cols].sum().reset_index()
+    metrics = ["installs", "app_count", "ratings"]
+    total_cols = ["total_ratings", "total_installs", "category_total_apps"]
+    overall_totals = (
+        df.groupby(["store", "mapped_category"])[total_cols]
+        .first()
+        .reset_index()
+        .groupby(["store"])[total_cols]
+        .sum()
     )
-    overall_cat_df["mapped_category"] = "overall"
-    df = pd.concat([df, overall_cat_df])
+    overall_company_df = df.groupby(["store", "name"])[metrics].sum().reset_index()
+    overall_df = overall_company_df.merge(
+        overall_totals,
+        how="left",
+        on="store",
+        validate="m:1",
+    )
+    overall_df["mapped_category"] = "overall"
+    df = pd.concat([df, overall_df])
     """Append a consolidated games category.
     note this wouldn't work for Apple as not needed.
     """
     games_cat_df = (
-        df[df["mapped_category"].str.contains(r"^game")]
+        df.loc[(df["mapped_category"].str.contains(r"^game")) & (df["store"] == 1)]
         .groupby(["store", "name"])[metrics + total_cols]
         .sum()
         .reset_index()
@@ -58,23 +69,35 @@ def companies_overview(categories: list[int]) -> TopCompanies:
     # Since new columns added, recalculate percentages
     df["app_count_percent"] = df["app_count"] / df["category_total_apps"]
     df["installs_percent"] = df["installs"] / df["total_installs"]
-    df_parents["installs_percent"] = (
-        df_parents["installs"] / df_parents["total_installs"]
-    )
+    df["ratings_percent"] = df["ratings"] / df["total_ratings"]
     df_parents["app_count_percent"] = (
         df_parents["app_count"] / df_parents["category_total_apps"]
     )
+    df_parents["installs_percent"] = (
+        df_parents["installs"] / df_parents["total_installs"]
+    )
+    df_parents["ratings_percent"] = df_parents["ratings"] / df_parents["total_ratings"]
 
-    df = df.sort_values("installs", ascending=False)
-    df_parents = df_parents.sort_values("installs", ascending=False)
+    df = df.sort_values(
+        ["app_count_percent", "installs", "ratings"],
+        ascending=False,
+        na_position="first",
+    )
+    df_parents = df_parents.sort_values(
+        ["app_count_percent", "installs", "ratings"],
+        ascending=False,
+        na_position="first",
+    )
 
     required_columns = [
         "store",
         "mapped_category",
         "name",
         "installs",
+        "ratings",
         "app_count",
         "installs_percent",
+        "ratings_percent",
         "app_count_percent",
     ]
 
@@ -100,7 +123,6 @@ def companies_overview(categories: list[int]) -> TopCompanies:
 
 
 class CompaniesController(Controller):
-
     """API EndPoint return for all ad tech companies."""
 
     path = "/api/"

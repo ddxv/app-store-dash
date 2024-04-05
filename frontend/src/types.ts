@@ -141,14 +141,16 @@ export interface AppFullDetails {
 }
 
 export interface CategoriesAdtech {
-	[store:number]: {[category: string]: Company[]};
+	[store: number]: { [category: string]: Company[] };
 }
 
 export interface Company {
 	name: string;
 	app_count: number;
 	installs: number;
+	ratings: number;
 	installs_percent: number;
+	ratings_percent: number;
 	app_count_percent: number;
 }
 
