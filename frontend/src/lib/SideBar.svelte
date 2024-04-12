@@ -36,6 +36,12 @@
 	$: store_name = $page.params.store_name;
 	$: adtech_category = $page.params.type;
 
+	// Function to generate a URL with existing query parameters
+	function generateLink(storeName: string, adtechCategory: string) {
+		const searchParams = $page.url.searchParams.toString();
+		return `/adtech/${storeName}/${adtechCategory}${searchParams ? '?' + searchParams : ''}`;
+	}
+
 	// FOLOWING IS FOR RANKINGS
 
 	import { storeIDLookup, collectionIDLookup, categoryIDLookup } from '../stores';
@@ -240,7 +246,7 @@
 					{#each Object.entries(storeIDLookup) as [_prop, values]}
 						<li>
 							<a
-								href={`/adtech/${values.store_name}/${adtech_category}`}
+								href={generateLink(values.store_name, adtech_category)}
 								class={classesActive(`/adtech/${values.store_name}`)}
 							>
 								{values.store_name}
@@ -259,14 +265,14 @@
 				<ul>
 					<li>
 						<a
-							href={`/adtech/${store_name}/networks`}
+							href={generateLink(store_name, 'networks')}
 							class={classesActive('/adtech/Google/networks') ||
 								classesActive('/adtech/Apple/networks')}>Advertising Networks</a
 						>
 					</li>
 					<li>
 						<a
-							href={`/adtech/${store_name}/trackers`}
+							href={generateLink(store_name, 'trackers')}
 							class={classesActive('/adtech/Google/trackers') ||
 								classesActive('/adtech/Apple/trackers')}>Analytics, MMP Tracking and Attribution</a
 						>
