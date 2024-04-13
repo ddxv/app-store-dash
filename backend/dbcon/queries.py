@@ -267,22 +267,38 @@ def get_single_developer(developer_id: str) -> pd.DataFrame:
 
 def get_apps_for_company(
     company_name: str,
+    store_id: int,
+    mapped_category: str,
     *,
     include_parents: bool = False,
 ) -> pd.DataFrame:
     """Get apps for for a network."""
     logger.info(f"Query: {company_name=} & {include_parents=}")
+
+    if mapped_category == "games":
+        mapped_category = "game%"
+
     if include_parents:
         df = pd.read_sql(
             QUERY_PARENT_COMPANY_APPS,
             con=DBCON.engine,
-            params={"company_name": company_name, "mylimit": 20},
+            params={
+                "company_name": company_name,
+                "store_id": store_id,
+                "mapped_category": mapped_category,
+                "mylimit": 20,
+            },
         )
     else:
         df = pd.read_sql(
             QUERY_COMPANY_APPS,
             con=DBCON.engine,
-            params={"company_name": company_name, "mylimit": 20},
+            params={
+                "company_name": company_name,
+                "store_id": store_id,
+                "mapped_category": mapped_category,
+                "mylimit": 20,
+            },
         )
     if not df.empty:
         df = clean_app_df(df)

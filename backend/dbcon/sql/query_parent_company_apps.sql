@@ -16,5 +16,7 @@ WHERE
         WHERE
             c.name = :company_name OR pc.name = :company_name
     )
-ORDER BY installs DESC
+    AND store = :store_id
+    AND (:mapped_category = 'overall' OR category LIKE :mapped_category)
+ORDER BY installs DESC NULLS LAST, rating_count DESC NULLS LAST
 LIMIT :mylimit;

@@ -2,6 +2,8 @@
 	import { page } from '$app/stores';
 	import { ListBox, ListBoxItem } from '@skeletonlabs/skeleton';
 
+	import { goto } from '$app/navigation';
+
 	$: classesActive = (href: string) =>
 		$page.url.pathname.startsWith(href) ? buttonSelectedColor : '';
 
@@ -25,6 +27,10 @@
 	import type { CatData } from '../types';
 	export let myCatData: CatData;
 
+	const handleCompanyCategoryClick = (categoryName: string) => {
+		goto(`/adtech/companies/${company_name}/${store_name}/${categoryName}`);
+	};
+
 	const scrollTop = () => {
 		const elemPage = document.querySelector('#page');
 		if (elemPage !== null) {
@@ -35,16 +41,29 @@
 	// For adtech
 	$: store_name = $page.params.store_name;
 	$: adtech_category = $page.params.type;
+	$: company_category = $page.params.category;
+	$: company_name = $page.params.name;
+
+	$: if ($page.params.category) {
+		localHomeCategorySelect = $page.params.category;
+	}
 
 	// Function to generate a URL with existing query parameters
-	function generateLink(storeName: string, adtechCategory: string) {
+	function generateAdtechLink(storeName: string, adtechCategory: string) {
 		const searchParams = $page.url.searchParams.toString();
 		return `/adtech/${storeName}/${adtechCategory}${searchParams ? '?' + searchParams : ''}`;
+	}
+
+	// Function to generate a URL with existing query parameters
+	function generateCompaniesLink(companyName: string, storeName: string, adtechCategory: string) {
+		const searchParams = $page.url.searchParams.toString();
+		return `/adtech/companies/${companyName}/${storeName}/${adtechCategory}${searchParams ? '?' + searchParams : ''}`;
 	}
 
 	// FOLOWING IS FOR RANKINGS
 
 	import { storeIDLookup, collectionIDLookup, categoryIDLookup } from '../stores';
+	import IconiOs from '$lib/svg/IconiOS.svelte';
 
 	$: store = +$page.params.store;
 	$: collection = +$page.params.collection;
@@ -246,7 +265,7 @@
 					{#each Object.entries(storeIDLookup) as [_prop, values]}
 						<li>
 							<a
-								href={generateLink(values.store_name, adtech_category)}
+								href={generateAdtechLink(values.store_name, adtech_category)}
 								class={classesActive(`/adtech/${values.store_name}`)}
 							>
 								{values.store_name}
@@ -265,14 +284,14 @@
 				<ul>
 					<li>
 						<a
-							href={generateLink(store_name, 'networks')}
+							href={generateAdtechLink(store_name, 'networks')}
 							class={classesActive('/adtech/Google/networks') ||
 								classesActive('/adtech/Apple/networks')}>Advertising Networks</a
 						>
 					</li>
 					<li>
 						<a
-							href={generateLink(store_name, 'trackers')}
+							href={generateAdtechLink(store_name, 'trackers')}
 							class={classesActive('/adtech/Google/trackers') ||
 								classesActive('/adtech/Apple/trackers')}>Analytics, MMP Tracking and Attribution</a
 						>
@@ -302,6 +321,70 @@
 									{#if Number(values.android) > 0}
 										<div class="justify-end mr-2 md:mr-5">
 											<IconGoogle size="10" />
+										</div>
+									{:else}
+										<div class="opacity-20 justify-end mr-2 md:mr-5">
+											<IconGoogle size="10" />
+										</div>
+									{/if}
+								</div>
+							</ListBoxItem>
+						{/if}
+					{/each}
+				{/if}
+			</ListBox>
+		</div>
+	</div>
+{/if}
+
+{#if $page.url.pathname.startsWith('/adtech/companies')}
+	<div class="p-1 md:p-2">
+		<div class="card p-4">
+			<h4 class="h4 md:h3">Stores</h4>
+			<nav class="list-nav">
+				<ul>
+					{#each Object.entries(storeIDLookup) as [_prop, values]}
+						<li>
+							<a
+								href={generateCompaniesLink(company_name, values.store_name, company_category)}
+								class={classesActive(`/adtech/companies/${company_name}/${values.store_name}`)}
+							>
+								{values.store_name}
+							</a>
+						</li>
+					{/each}
+				</ul>
+			</nav>
+		</div>
+	</div>
+
+	<div class="p-1 md:p-2">
+		<div class="card p-4">
+			<h3 class="h4 md:h3">Categories</h3>
+			<ListBox>
+				{#if myCatData}
+					{#each Object.entries(myCatData.categories) as [_prop, values]}
+						{#if values.id && (Number(values.android) > 0 || values.name == 'Games')}
+							<ListBoxItem
+								bind:group={localHomeCategorySelect}
+								name="medium"
+								value={values.id}
+								active={buttonSelectedColor}
+								on:click={() => handleCompanyCategoryClick(values.id)}
+								padding="p-2 md:p-2"
+							>
+								<div class="flex w-full justify-between">
+									<div class="flex-grow">
+										{values.name}
+									</div>
+									{#if Number(values.android) > 0 || values.name == 'Games'}
+										<div class="justify-end mr-2 md:mr-5">
+											<IconGoogle size="10" />
+										</div>
+									{/if}
+									{#if Number(values.ios) > 0}
+										<div class="justify-end mr-2 md:mr-5">
+											<IconiOs size="10" />
 										</div>
 									{:else}
 										<div class="opacity-20 justify-end mr-2 md:mr-5">
