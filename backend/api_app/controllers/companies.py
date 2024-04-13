@@ -123,6 +123,7 @@ def companies_overview(categories: list[int]) -> TopCompanies:
 
 
 class CompaniesController(Controller):
+
     """API EndPoint return for all ad tech companies."""
 
     path = "/api/"
