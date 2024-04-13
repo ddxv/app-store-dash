@@ -123,6 +123,7 @@ def companies_overview(categories: list[int]) -> TopCompanies:
 
 
 class CompaniesController(Controller):
+
     """API EndPoint return for all ad tech companies."""
 
     path = "/api/"
@@ -157,13 +158,23 @@ class CompaniesController(Controller):
 
         return overview
 
-    @get(path="/companies/{company_name:str}", cache=3600)
-    async def get_company_apps(self: Self, company_name: str) -> CompanyApps:
+    @get(
+        path="/companies/{company_name:str}/{store_name:str}/{category_name:str}",
+        cache=3600,
+    )
+    async def get_company_apps(
+        self: Self,
+        company_name: str,
+        store_name: str,
+        category_name: str,
+    ) -> CompanyApps:
         """Handle GET request for a specific company.
 
         Args:
         ----
             company_name: The name of the company to retrieve apps for.
+            store_name: The name of the store to retrieve apps for.
+            category_name: The name of the category to retrieve apps for.
 
         Returns:
         -------
@@ -171,7 +182,24 @@ class CompaniesController(Controller):
 
         """
         logger.info(f"{self.path}/companies start")
-        apps_df = get_apps_for_company(company_name, include_parents=True)
+
+        if store_name == "Google":
+            store_id = 1
+        elif store_name == "Apple":
+            store_id = 2
+        else:
+            msg = f"Store Name not found: {store_name!r}"
+            raise NotFoundException(
+                msg,
+                status_code=404,
+            )
+
+        apps_df = get_apps_for_company(
+            company_name=company_name,
+            store_id=store_id,
+            mapped_category=category_name,
+            include_parents=True,
+        )
 
         if apps_df.empty:
             msg = f"Network Name not found: {company_name!r}"

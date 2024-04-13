@@ -5,10 +5,14 @@ export const ssr: boolean = true;
 export const csr: boolean = true;
 
 console.log('Script executed');
-export const load: PageServerLoad = async ({ params, locals }) => {
+export const load: PageServerLoad = async ({ params }) => {
 	const networkName = params.name;
-	const res = fetch(`http://localhost:8000/api/companies/${networkName}`);
-	console.log(`start load apps for tracker=${networkName}`);
+	const store_name = params.store_name;
+	const category_name = params.category;
+	const res = fetch(
+		`http://localhost:8000/api/companies/${networkName}/${store_name}/${category_name}`
+	);
+	console.log(`start load apps for company=${networkName}`);
 	try {
 		return {
 			results: res

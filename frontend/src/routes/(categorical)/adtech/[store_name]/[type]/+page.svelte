@@ -88,12 +88,16 @@
 					tabledata={networks.parent_companies[store_id][$homeCategorySelection]}
 					tableType={metricName}
 					storeId={store_id}
+					category_name={$homeCategorySelection}
+					{store_name}
 				></AdtechTable>
 			{:else}
 				<AdtechTable
 					tabledata={networks.all_companies[store_id][$homeCategorySelection]}
 					tableType={metricName}
 					storeId={store_id}
+					category_name={$homeCategorySelection}
+					{store_name}
 				></AdtechTable>
 			{/if}
 		{:catch}
@@ -109,12 +113,16 @@
 					tabledata={trackers.parent_companies[store_id][$homeCategorySelection]}
 					tableType={metricName}
 					storeId={store_id}
+					category_name={$homeCategorySelection}
+					{store_name}
 				></AdtechTable>
 			{:else}
 				<AdtechTable
 					tabledata={trackers.all_companies[store_id][$homeCategorySelection]}
 					tableType={metricName}
 					storeId={store_id}
+					category_name={$homeCategorySelection}
+					{store_name}
 				></AdtechTable>
 			{/if}
 		{:catch}

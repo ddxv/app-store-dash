@@ -4,9 +4,11 @@
 
 	export let tableType: string = 'appcount';
 	export let storeId: number = 1;
+	export let store_name: string;
+	export let category_name: string;
 
 	function navigate(name: string) {
-		window.location.href = `/adtech/companies/${name}`;
+		window.location.href = `/adtech/companies/${name}/${store_name}/${category_name}`;
 	}
 
 	function formatNumber(num: number) {
