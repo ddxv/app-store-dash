@@ -1,7 +1,7 @@
 repos:
   # Ruff
   - repo: https://github.com/charliermarsh/ruff-pre-commit
-    rev: v0.3.5
+    rev: v0.3.7
     hooks:
       - id: ruff
         args: [--fix]
@@ -60,7 +60,7 @@ repos:
         require_serial: true
   ## SQL ##
   - repo: https://github.com/sqlfluff/sqlfluff
-    rev: 3.0.3
+    rev: 3.0.4
     hooks:
       - id: sqlfluff-lint
         args: ['--config', 'backend/pyproject.toml'] # Specify the config file location here
