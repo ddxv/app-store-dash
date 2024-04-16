@@ -6,6 +6,12 @@ You can see a production version of the site at [appgoblin.info](https://appgobl
 
 This is the code I used to create AppGoblin. The goal was simply to have a good source of data for Apps on the Google Play and iOS stores. The code is provided here incase it helps anyone. As this is a project for general fun and learning, please don't hesitate to reach out if you have any questions or suggestions.
 
+Features
+
+  1. App Rankings
+  2. New App Lists
+  3. Adtech rankings for top ad networks and top mobile tracking SDKs
+
 This repo has two parts:
 
    1. Python Litestar backend API found in `backend/`
