@@ -41,7 +41,7 @@ def append_overall_categories(df: pd.DataFrame) -> pd.DataFrame:
     note this wouldn't work for Apple as not needed.
     """
     games_cat_df = (
-        df.loc[(df["mapped_category"].str.contains(r"^game")) & (df["store"] == 1)]
+        df.loc[(df["mapped_category"].str.contains(r"^game"))]
         .groupby(["store", "name"])[metrics + total_cols]
         .sum()
         .reset_index()
@@ -123,7 +123,6 @@ def companies_overview(categories: list[int]) -> TopCompanies:
 
 
 class CompaniesController(Controller):
-
     """API EndPoint return for all ad tech companies."""
 
     path = "/api/"
