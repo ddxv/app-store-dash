@@ -85,7 +85,7 @@
 		{:then networks}
 			{#if granularityGroup === 'parents'}
 				<AdtechTable
-					tabledata={networks.parent_companies[store_id][$homeCategorySelection]}
+					tabledata={networks.parent_companies[store_id][$homeCategorySelection] || {}}
 					tableType={metricName}
 					storeId={store_id}
 					category_name={$homeCategorySelection}
@@ -93,7 +93,7 @@
 				></AdtechTable>
 			{:else}
 				<AdtechTable
-					tabledata={networks.all_companies[store_id][$homeCategorySelection]}
+					tabledata={networks.all_companies[store_id][$homeCategorySelection] || {}}
 					tableType={metricName}
 					storeId={store_id}
 					category_name={$homeCategorySelection}
@@ -110,7 +110,7 @@
 		{:then trackers}
 			{#if granularityGroup === 'parents'}
 				<AdtechTable
-					tabledata={trackers.parent_companies[store_id][$homeCategorySelection]}
+					tabledata={trackers.parent_companies[store_id][$homeCategorySelection] || {}}
 					tableType={metricName}
 					storeId={store_id}
 					category_name={$homeCategorySelection}
@@ -118,7 +118,7 @@
 				></AdtechTable>
 			{:else}
 				<AdtechTable
-					tabledata={trackers.all_companies[store_id][$homeCategorySelection]}
+					tabledata={trackers.all_companies[store_id][$homeCategorySelection] || {}}
 					tableType={metricName}
 					storeId={store_id}
 					category_name={$homeCategorySelection}
