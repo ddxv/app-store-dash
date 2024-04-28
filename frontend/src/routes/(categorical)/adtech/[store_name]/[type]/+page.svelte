@@ -43,11 +43,15 @@
 	<h2 class="h4 md:h3 p-4">Third Party Mobile Ad Tech Partners</h2>
 
 	<p class="p-4">
-		These ad networks and tracker integrations are crawled for the top ~11k Android apps based on
+		These ad networks and tracker integrations are crawled for the top Android and iOS apps based on
 		thos apps that have been in the top 200 ranks for each category since February 2024. The data is
-		based on a decompiled Android APK and picking known values from the app's Android Manifests. If
-		you have any trackers or networks you'd like to see added feel free to reach out and they can be
-		added.
+		based on a decompiled Android APK and unzipped iOS IPAs. Then picking known values from the
+		app's Android Manifests and iOS plist files. Roughly 15k apps for Android and 1k for iOS have
+		been scanned.
+	</p>
+	<p>
+		If you have any trackers or networks you'd like to see added feel free to reach out and they can
+		be added.
 	</p>
 	{#if entityGroup === 'networks'}
 		<p class="p-4">
