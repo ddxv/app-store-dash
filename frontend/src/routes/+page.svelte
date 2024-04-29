@@ -93,6 +93,51 @@
 	<br />
 	<div class="card p-2 md:p-8">
 		<a href="/collections/new_monthly">
+			<h1 class="h1 p-2 md:p-4">Most Integrated Ad Networks & Trackers</h1>
+			<p class="p-2 md:p-4">
+				By downloading and opening up the top apps and games from the Google and iOS Appstore we can
+				see which third-party ad networks and trackers are used across the various App Store
+				categories. The lists include various ad networks, MMPs, tracking, analytics and other 3rd
+				party services which likely collect app data. You can also help expand these lists.
+			</p>
+		</a>
+		<div
+			class="snap-x scroll-px-4 snap-mandatory scroll-smooth flex gap-4 overflow-x-auto px-4 py-10"
+		>
+			<a href="/adtech/Google/networks?groupby=brands&metric=appcount">
+				<div class="snap-center shrink-0 card w-48 md:w-56">
+					<div class="table-container card-header">
+						<h3 class="h3">Top Android Ad Networks</h3>
+					</div>
+				</div>
+			</a>
+			<a href="/adtech/Google/trackers?groupby=brands&metric=appcount">
+				<div class="snap-center shrink-0 card w-48 md:w-56">
+					<div class="table-container card-header">
+						<h3 class="h3">Top Android MMPs & Ad Tracking</h3>
+					</div>
+				</div>
+			</a>
+			<a href="/adtech/Apple/networks?groupby=brands&metric=appcount">
+				<div class="snap-center shrink-0 card w-48 md:w-56">
+					<div class="table-container card-header">
+						<h3 class="h3">Top iOS Ad Networks</h3>
+					</div>
+				</div>
+			</a>
+			<a href="/adtech/Apple/trackers?groupby=brands&metric=appcount">
+				<div class="snap-center shrink-0 card w-48 md:w-56">
+					<div class="table-container card-header">
+						<h3 class="h3">Top iOS MMPs & Ad Tracking</h3>
+					</div>
+				</div>
+			</a>
+		</div>
+	</div>
+
+	<br />
+	<div class="card p-2 md:p-8">
+		<a href="/collections/new_monthly">
 			<h1 class="h1 p-2 md:p-4">Explore New Apps</h1>
 			<p class="p-2 md:p-4">
 				<strong> Click here to see explore all categories.</strong>
