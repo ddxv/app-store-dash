@@ -5,6 +5,8 @@
 	import type { AfterNavigate } from '@sveltejs/kit';
 	import { afterNavigate } from '$app/navigation';
 
+	import githubIcon from '$lib/svg/github-mark.svg?raw';
+
 	let searchTerm: string;
 
 	function navigateToSearch(event: any) {
@@ -76,6 +78,17 @@
 						class="p-1 md:p-3"
 					/>
 				</div>
+				<a
+					class="btn btn-sm variant-ghost-surface"
+					href="https://github.com/OpenAttribution/open-attribution"
+					target="_blank"
+					rel="noreferrer"
+				>
+					<div class="inline-flex items-center">
+						{@html githubIcon}
+						<h6 class="h6 p-2 justify-center text-center">Open Source on GitHub</h6>
+					</div>
+				</a>
 			</svelte:fragment>
 		</AppBar>
 	</svelte:fragment>
