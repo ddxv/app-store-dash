@@ -56,7 +56,7 @@
 							src="/goblin_purple_hat_250.png"
 							alt="Goblin Icon"
 						/>
-						<strong class="text-2xl ml-4 md:text-3xl uppercase">AppGoblin</strong>
+						<strong class="text-xl ml-2 md:text-3xl uppercase">AppGoblin</strong>
 					</a>
 				</div>
 			</svelte:fragment>
@@ -86,7 +86,6 @@
 				>
 					<div class="inline-flex items-center">
 						{@html githubIcon}
-						<h6 class="h6 p-2 justify-center text-center">Open Source on GitHub</h6>
 					</div>
 				</a>
 			</svelte:fragment>
