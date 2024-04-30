@@ -80,7 +80,7 @@
 				</div>
 				<a
 					class="btn btn-sm variant-ghost-surface"
-					href="https://github.com/OpenAttribution/open-attribution"
+					href="https://github.com/ddxv/app-store-dash"
 					target="_blank"
 					rel="noreferrer"
 				>
