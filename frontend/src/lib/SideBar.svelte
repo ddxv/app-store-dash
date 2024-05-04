@@ -21,7 +21,7 @@
 
 	import { homeCategorySelection } from '../stores';
 	let localHomeCategorySelect = $homeCategorySelection;
-	const buttonSelectedColor = 'bg-gradient-to-tl variant-gradient-primary-secondary text-white';
+	const buttonSelectedColor = 'variant-filled-primary';
 	$: homeCategorySelection.set(localHomeCategorySelect);
 
 	import type { CatData } from '../types';

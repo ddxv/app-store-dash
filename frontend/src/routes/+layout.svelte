@@ -9,6 +9,8 @@
 
 	let searchTerm: string;
 
+	const bgBarColor = 'from-purple-500/50 via-white to-white';
+
 	function navigateToSearch(event: any) {
 		if (event.key === 'Enter' && searchTerm.trim() !== '') {
 			// Replace spaces with '+'
@@ -45,7 +47,7 @@
 			slotTrail="p-2"
 			spacing="space-y-0"
 			padding="p-0"
-			class="bg-gradient-to-tr from-indigo-500/50 via-purple-500/50 to-pink-500/50"
+			class="bg-gradient-to-br {bgBarColor}"
 		>
 			<svelte:fragment slot="lead">
 				<div class="flex items-center">
@@ -98,7 +100,7 @@
 			spacing="space-y-0"
 			padding="p-0"
 			gap="gap-0"
-			class=" bg-gradient-to-tr from-indigo-500/50 via-purple-500/50 to-pink-500/50 lg:hidden"
+			class="bg-gradient-to-tl {bgBarColor} lg:hidden"
 			gridColumns="grid-cols-[auto_1fr_auto]"
 		>
 			<svelte:fragment slot="lead">
