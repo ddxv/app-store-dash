@@ -6,6 +6,7 @@
 	import { afterNavigate } from '$app/navigation';
 
 	import githubIcon from '$lib/svg/github-mark.svg?raw';
+	import discordIcon from '$lib/svg/discord-mark-black.svg?raw';
 
 	let searchTerm: string;
 
@@ -88,6 +89,16 @@
 				>
 					<div class="inline-flex items-center">
 						{@html githubIcon}
+					</div>
+				</a>
+				<a
+					class="btn btn-sm variant-ghost-surface"
+					href="https://discord.gg/7jpWEhkXRW"
+					target="_blank"
+					rel="noreferrer"
+				>
+					<div class="inline-flex items-center">
+						{@html discordIcon}
 					</div>
 				</a>
 			</svelte:fragment>
