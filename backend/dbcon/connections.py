@@ -16,6 +16,8 @@ def open_ssh_tunnel(server_name: str):  # noqa: ANN201
     with SSHTunnelForwarder(
         (CONFIG[server_name]["host"], 22),  # Remote server IP and SSH port
         ssh_username=CONFIG[server_name]["os_user"],
+        ssh_pkey=CONFIG[server_name].get("ssh_pkey", None),
+        ssh_private_key_password=CONFIG[server_name].get("ssh_pkey_password", None),
         remote_bind_address=("127.0.0.1", 5432),
     ) as server:  # PostgreSQL server IP and sever port on remote machine
         logger.info(f"Start SSH tunnel to {server_name=}")
