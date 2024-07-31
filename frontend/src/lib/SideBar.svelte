@@ -63,7 +63,6 @@
 	// FOLOWING IS FOR RANKINGS
 
 	import { storeIDLookup, collectionIDLookup, categoryIDLookup } from '../stores';
-	import IconiOs from '$lib/svg/IconiOS.svelte';
 
 	$: store = +$page.params.store;
 	$: collection = +$page.params.collection;

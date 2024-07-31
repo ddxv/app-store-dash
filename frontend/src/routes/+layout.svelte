@@ -1,6 +1,6 @@
 <script lang="ts">
 	import '../app.postcss';
-	import { AppShell, AppBar } from '@skeletonlabs/skeleton';
+	import { AppBar } from '@skeletonlabs/skeleton';
 	import IconSearch from '$lib/svg/IconSearch.svelte';
 	import type { AfterNavigate } from '@sveltejs/kit';
 	import { afterNavigate } from '$app/navigation';
@@ -10,7 +10,7 @@
 
 	let searchTerm: string;
 
-	const bgBarColor = 'from-purple-500/50 via-white to-white';
+	const bgBarColor = 'from-purple-500/50 via-white to-blur opacity-100';
 
 	function navigateToSearch(event: any) {
 		if (event.key === 'Enter' && searchTerm.trim() !== '') {
@@ -35,13 +35,13 @@
 </script>
 
 <!-- App Shell -->
-<AppShell
+<!-- <AppShell
 	regionPage="p-2 md:p-8"
 	slotSidebarLeft="w-0 lg:w-auto"
 	slotPageHeader="hidden lg:inline-flex"
->
-	<svelte:fragment slot="header">
-		<!-- App Bar -->
+> -->
+<div class="grid grid-rows-[auto_1fr_auto]">
+	<header class="sticky top-0 z-10 lg:inline-flex">
 		<AppBar
 			gridColumns="grid-cols-[1fr_0_1fr] md:grid-cols-[0.4fr_1fr_0.3fr]"
 			slotLead="p-2"
@@ -53,7 +53,6 @@
 			<svelte:fragment slot="lead">
 				<div class="flex items-center">
 					<a class="flex" href="/">
-						<!-- <img class="h-8 m w-8 md:h-12 md:w-12" src="/cute_eyes_250.png" alt="Goblin Icon" /> -->
 						<img
 							class="ml-2 h-8 m w-8 md:h-12 md:w-12"
 							src="/goblin_purple_hat_250.png"
@@ -103,8 +102,13 @@
 				</a>
 			</svelte:fragment>
 		</AppBar>
-	</svelte:fragment>
-	<svelte:fragment slot="footer">
+	</header>
+
+	<main class="p-2 md:p-8">
+		<slot />
+	</main>
+
+	<footer class="sticky bottom-0 z-10">
 		<AppBar
 			slotLead="p-0"
 			slotTrail="p-2"
@@ -120,9 +124,5 @@
 				</div>
 			</svelte:fragment>
 		</AppBar>
-	</svelte:fragment>
-
-	<slot />
-
-	<!-- Page Route Content -->
-</AppShell>
+	</footer>
+</div>
