@@ -3,12 +3,11 @@ Description=Gunicorn instance to serve App Store API
 After=network.target
 
 [Service]
-User=ubuntu
-Group=ubuntu
+User=goblin
+Group=goblin
 RuntimeDirectory=gunicorn
-WorkingDirectory=/home/ubuntu/app-store-dash/backend
-Environment=/home/ubuntu/venvs/app-store-api-env/bin
-ExecStart=/home/ubuntu/venvs/app-store-api-env/bin/gunicorn -k uvicorn.workers.UvicornWorker --workers 1 --bind 127.0.0.1:8000 -m 007 app:app
+WorkingDirectory=/home/goblin/app-store-dash/backend
+ExecStart=/home/goblin/venvs/app-store-api-env/bin/gunicorn -k uvicorn.workers.UvicornWorker --workers 1 --bind 127.0.0.1:8000 -m 007 app:app
 ExecReload=/bin/kill -s HUP $MAINPID
 Restart=on-failure
 KillMode=mixed
@@ -16,3 +15,4 @@ PrivateTmp=true
 
 [Install]
 WantedBy=multi-user.target
+
