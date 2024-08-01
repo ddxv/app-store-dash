@@ -8,7 +8,7 @@ on:
 
 jobs:
   deploy:
-    name: Deploy to EC2 on main branch push
+    name: Deploy to cloud on main branch push
     runs-on: ubuntu-latest
     environment: production
     steps:
@@ -30,9 +30,9 @@ jobs:
             pwd
             git pull origin main
             cd frontend
-            sudo systemctl enable /home/ubuntu/app-store-dash/scripts/app-store-api.service
-            sudo systemctl enable /home/ubuntu/app-store-dash/scripts/app-store-frontend.service
+            sudo systemctl enable /home/goblin/app-store-dash/scripts/app-store-api.service
+            sudo systemctl enable /home/goblin/app-store-dash/scripts/app-store-frontend.service
             sudo systemctl daemon-reload
             sudo systemctl restart app-store-api
-            npm run build
+            NODE_OPTIONS="--max-old-space-size=800" npm run build
             sudo systemctl restart app-store-frontend
