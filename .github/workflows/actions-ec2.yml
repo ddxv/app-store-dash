@@ -34,5 +34,6 @@ jobs:
             sudo systemctl enable /home/goblin/app-store-dash/scripts/app-store-frontend.service
             sudo systemctl daemon-reload
             sudo systemctl restart app-store-api
+            pwd
             NODE_OPTIONS="--max-old-space-size=800" npm run build
             sudo systemctl restart app-store-frontend
