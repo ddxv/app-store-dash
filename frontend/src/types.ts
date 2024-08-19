@@ -1,4 +1,5 @@
 import type { ChartTabularData } from '@carbon/charts-svelte';
+import type { Row } from '@vincjo/datatables/remote';
 
 export interface AppGroup {
 	apps: AppFullDetail[];
@@ -113,7 +114,7 @@ interface UnknownManifestItems {
 	[key: string]: string[];
 }
 
-export interface AppHistoryInfo {
+export interface AppHistoryInfo extends Row {
 	crawled_date: string;
 	review_count: number;
 	rating: number;

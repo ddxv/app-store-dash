@@ -98,7 +98,7 @@ def get_db_connection(server_name: str) -> PostgresCon:
 def get_postgres_server_ips(server_name: str) -> tuple[str, str]:
     """Decide whether postgres is local or over ssh."""
     db_ip = CONFIG[server_name]["host"]
-    if db_ip == "localhost" or db_ip.startswith("172"):
+    if db_ip == "localhost" or db_ip.startswith("192.168.0"):
         db_ip = CONFIG[server_name]["host"]
         db_port = str(5432)
     else:

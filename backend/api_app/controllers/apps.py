@@ -50,8 +50,12 @@ def app_history(store_app: int, app_name: str) -> AppHistory:
     """Get the history of app scraping."""
     app_hist = get_app_history(store_app)
     histogram = app_hist.sort_values(["id"]).tail(1)["histogram"].to_numpy()[0]
-    history_table = app_hist.drop(["id", "store_app"], axis=1).to_dict(
-        orient="records",
+    history_table = (
+        app_hist.sort_values("crawled_date", ascending=False)
+        .drop(["id", "store_app"], axis=1)
+        .to_dict(
+            orient="records",
+        )
     )
     app_hist["group"] = app_name
     app_hist = app_hist[
