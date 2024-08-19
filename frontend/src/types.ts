@@ -88,7 +88,7 @@ export interface StoreCategoryRanks {
 	history: Promise<{ history: RankedApps[] }>;
 }
 
-export interface RankedApps {
+export interface RankedApps extends Row {
 	rank: number;
 	name: string;
 	store_id: string;

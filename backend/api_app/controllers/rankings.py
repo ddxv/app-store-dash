@@ -1,6 +1,6 @@
 """API endoipoints for app store rankings.
 
-/rankings/ of all apps as pulled from stores 
+/rankings/ of all apps as pulled from stores
 """
 
 import datetime
@@ -123,7 +123,7 @@ class RankingsController(Controller):
             store=store,
             collection_id=collection,
             category_id=category,
-            limit=20,
+            limit=200,
         )
         ranks_dict = df.to_dict(orient="records")
         return {"ranks": ranks_dict}

@@ -11,6 +11,7 @@
 
 	import { page } from '$app/stores';
 	import RankChart from '$lib/RankChart.svelte';
+	import AppRankTable from '$lib/AppRankTable.svelte';
 
 	$: store = +$page.params.store;
 	$: collection = +$page.params.collection;
@@ -47,44 +48,7 @@
 			Failed to load history
 		{/await}
 		<div class="p-2 md:p-4" />
-		<div class="table-container">
-			<table class="table table-hover table-auto">
-				<thead>
-					<tr>
-						<th>Rank</th>
-						<th>Name</th>
-					</tr>
-				</thead>
-				<tbody>
-					{#each Object.entries(ranks.ranks) as [_prop, values]}
-						<tr>
-							<td
-								><div class="inline-flex">
-									#
-									<h3 class="h4 md:h3">
-										{values.rank}
-									</h3>
-								</div>
-							</td>
-							<td>
-								<a href="/apps/{values.store_id}">
-									<div class="inline-flex">
-										<img
-											src={values.icon_url_512}
-											alt={values.name}
-											width="100 md:200"
-											class="p-2"
-											referrerpolicy="no-referrer"
-										/>
-										<h3 class="h4 md:h3 p-2">{values.name}</h3>
-									</div>
-								</a>
-							</td>
-						</tr>
-					{/each}
-				</tbody>
-			</table>
-		</div>
+		<AppRankTable tableData={ranks}></AppRankTable>
 	{:catch}
 		Problem loading data
 	{/await}
