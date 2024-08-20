@@ -1,6 +1,4 @@
 <script lang="ts">
-	// import { reload } from '$lib/data/api';
-
 	import Pagination from './Pagination.svelte';
 
 	import { DataHandler } from '@vincjo/datatables/remote';
