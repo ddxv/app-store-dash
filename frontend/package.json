@@ -13,14 +13,14 @@
 	},
 	"type": "module",
 	"devDependencies": {
-		"@typescript-eslint/eslint-plugin": "^6.0.0",
-		"@typescript-eslint/parser": "^6.0.0",
-		"eslint": "^8.52.0",
+		"@typescript-eslint/eslint-plugin": "^8.0.0",
+		"@typescript-eslint/parser": "^8.0.0",
+		"eslint": "^9.0.0",
 		"eslint-config-prettier": "^9.1.0",
 		"eslint-plugin-svelte": "^2.4.0",
 		"prettier": "^3.2.5",
 		"prettier-plugin-svelte": "^3.1.2",
-		"svelte-check": "^3.5.2"
+		"svelte-check": "^4.0.0"
 	},
 	"dependencies": {
 		"@carbon/charts-svelte": "^1.13.6",
@@ -37,9 +37,9 @@
 		"d3-cloud": "^1.2.7",
 		"d3-sankey": "^0.12.3",
 		"echarts": "^5.4.3",
-		"marked": "^11.2.0",
+		"marked": "^14.0.0",
 		"postcss": "^8.4.24",
-		"postcss-load-config": "^5.0.2",
+		"postcss-load-config": "^6.0.0",
 		"svelte": "^4.2.2",
 		"tailwindcss": "^3.3.2",
 		"tslib": "^2.4.1",
