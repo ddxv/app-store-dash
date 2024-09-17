@@ -1,4 +1,4 @@
-name: Push-to-EC2
+name: Push-to-Server
 
 # Trigger deployment only on push to main branch
 on:
@@ -14,7 +14,7 @@ jobs:
     steps:
       - name: Checkout the files
         uses: actions/checkout@v3
-      - name: Deploy to my EC2
+      - name: Deploy to server
         uses: appleboy/ssh-action@master
         env:
           TARGETDIR: app-store-dash
@@ -35,6 +35,6 @@ jobs:
             sudo systemctl daemon-reload
             sudo systemctl restart app-store-api
             pwd
-            NODE_OPTIONS="--max-old-space-size=800" /home/goblin/.nvm/versions/node/v20.16.0/bin/npm run build
+            NODE_OPTIONS="--max-old-space-size=800" /home/goblin/.nvm/versions/node/v20.16.0/bin/node /home/goblin/.nvm/versions/node/v20.16.0/bin/npm run build
             echo "Restart systemd service"
             sudo systemctl restart app-store-frontend
