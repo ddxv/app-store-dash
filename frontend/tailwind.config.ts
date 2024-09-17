@@ -4,6 +4,8 @@ import type { Config } from 'tailwindcss';
 // 1. Import the Skeleton plugin
 import { skeleton } from '@skeletonlabs/tw-plugin';
 
+import { myCustomTheme } from './appgoblin-theme';
+
 const config = {
 	// 2. Opt for dark mode to be handled via the class method
 	darkMode: 'class',
@@ -25,7 +27,8 @@ const config = {
 					{ name: 'wintry', enhancements: true },
 					{ name: 'modern', enhancements: true },
 					{ name: 'gold-nouveau', enhancements: true }
-				]
+				],
+				custom: [myCustomTheme]
 			}
 		})
 	]

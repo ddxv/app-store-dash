@@ -33,7 +33,7 @@
 				Loading Android App Ranks...
 			{:then androidApps}
 				<a href="/rankings/store/1/collection/1/category/1">
-					<div class="snap-center shrink-0 card w-48 md:w-56">
+					<div class="snap-center shrink-0 card variant-ghost-surface w-48 md:w-56">
 						<div class="table-container card-header">
 							<h3 class="h3">Android Apps</h3>
 							<AppRankTableShort myTable={androidApps} />
@@ -48,7 +48,7 @@
 				Loading iOS App Ranks...
 			{:then iOSApps}
 				<a href="/rankings/store/2/collection/4/category/55">
-					<div class="snap-center shrink-0 card w-48 md:w-56">
+					<div class="snap-center shrink-0 card variant-ghost-surface w-48 md:w-56">
 						<div class="table-container card-header">
 							<h3 class="h3">iOS Apps</h3>
 							<AppRankTableShort myTable={iOSApps} />
@@ -63,7 +63,7 @@
 				Loading Android Game Ranks...
 			{:then androidGames}
 				<a href="/rankings/store/1/collection/1/category/36">
-					<div class="snap-center shrink-0 card w-48 md:w-56">
+					<div class="snap-center shrink-0 card variant-ghost-surface w-48 md:w-56">
 						<div class="table-container card-header">
 							<h3 class="h3">Android Games</h3>
 							<AppRankTableShort myTable={androidGames} />
@@ -78,7 +78,7 @@
 				Loading iOS Game Ranks...
 			{:then iOSGames}
 				<a href="/rankings/store/2/collection/4/category/62	">
-					<div class="snap-center shrink-0 card w-48 md:w-56">
+					<div class="snap-center shrink-0 card variant-ghost-surface w-48 md:w-56">
 						<div class="table-container card-header">
 							<h3 class="h3">iOS Games</h3>
 							<AppRankTableShort myTable={iOSGames} />
@@ -105,28 +105,28 @@
 			class="snap-x scroll-px-4 snap-mandatory scroll-smooth flex gap-4 overflow-x-auto px-4 py-10"
 		>
 			<a href="/adtech/Google/networks?groupby=brands&metric=appcount">
-				<div class="snap-center shrink-0 card w-48 md:w-56">
+				<div class="snap-center shrink-0 card variant-ghost-surface w-48 md:w-56 md:p-4">
 					<div class="table-container card-header">
 						<h3 class="h3">Top Android Ad Networks</h3>
 					</div>
 				</div>
 			</a>
 			<a href="/adtech/Google/trackers?groupby=brands&metric=appcount">
-				<div class="snap-center shrink-0 card w-48 md:w-56">
+				<div class="snap-center shrink-0 card variant-ghost-surface w-48 md:w-56 md:p-4">
 					<div class="table-container card-header">
 						<h3 class="h3">Top Android MMPs & Ad Tracking</h3>
 					</div>
 				</div>
 			</a>
 			<a href="/adtech/Apple/networks?groupby=brands&metric=appcount">
-				<div class="snap-center shrink-0 card w-48 md:w-56">
+				<div class="snap-center shrink-0 card variant-ghost-surface w-48 md:w-56 md:p-4">
 					<div class="table-container card-header">
 						<h3 class="h3">Top iOS Ad Networks</h3>
 					</div>
 				</div>
 			</a>
 			<a href="/adtech/Apple/trackers?groupby=brands&metric=appcount">
-				<div class="snap-center shrink-0 card w-48 md:w-56">
+				<div class="snap-center shrink-0 card variant-ghost-surface w-48 md:w-56 md:p-4">
 					<div class="table-container card-header">
 						<h3 class="h3">Top iOS MMPs & Ad Tracking</h3>
 					</div>
@@ -147,28 +147,28 @@
 			class="snap-x scroll-px-4 snap-mandatory scroll-smooth flex gap-4 overflow-x-auto px-4 py-10"
 		>
 			<a href="/collections/new_weekly">
-				<div class="snap-center shrink-0 card w-48 md:w-56">
+				<div class="snap-center shrink-0 card variant-ghost-surface w-48 md:w-56 md:p-4">
 					<div class="table-container card-header">
 						<h3 class="h3">Newest Apps This Week</h3>
 					</div>
 				</div>
 			</a>
 			<a href="/collections/new_monthly">
-				<div class="snap-center shrink-0 card w-48 md:w-56">
+				<div class="snap-center shrink-0 card variant-ghost-surface w-48 md:w-56 md:p-4">
 					<div class="table-container card-header">
 						<h3 class="h3">Newest Apps This Month</h3>
 					</div>
 				</div>
 			</a>
 			<a href="/collections/new_yearly">
-				<div class="snap-center shrink-0 card w-48 md:w-56">
+				<div class="snap-center shrink-0 card variant-ghost-surface w-48 md:w-56 md:p-4">
 					<div class="table-container card-header">
 						<h3 class="h3">Newest Apps This Year</h3>
 					</div>
 				</div>
 			</a>
 			<a href="/collections/top">
-				<div class="snap-center shrink-0 card w-48 md:w-56">
+				<div class="snap-center shrink-0 card variant-ghost-surface w-48 md:w-56 md:p-4">
 					<div class="table-container card-header">
 						<h3 class="h3">Alltime Most Popular</h3>
 					</div>

@@ -10,7 +10,7 @@
 
 	let searchTerm: string;
 
-	const bgBarColor = 'from-purple-500/50 via-white to-white';
+	const bgBarColor = 'from-purple-500/40 via-white to-white';
 
 	function navigateToSearch(event: any) {
 		if (event.key === 'Enter' && searchTerm.trim() !== '') {

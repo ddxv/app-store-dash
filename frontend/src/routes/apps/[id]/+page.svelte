@@ -182,7 +182,7 @@
 
 	<!-- Column2: App Pictures -->
 	<div class="card p-8">
-		<div class="card">
+		<div class="card variant-glass-surface p-2">
 			{#if data.myapp.featured_image_url}
 				<div>
 					<img
@@ -220,7 +220,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="card">
+		<div class="card variant-glass-surface">
 			{#await data.myPackageInfo}
 				Loading permissions and tracker data...
 			{:then packageInfo}

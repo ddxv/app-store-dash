@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { TabGroup, TabAnchor } from '@skeletonlabs/skeleton';
-	const topBarFont = 'h6: md:h4';
+	const topBarFont = 'h6 md:h3';
 </script>
 
 <TabGroup
