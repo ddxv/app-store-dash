@@ -1,18 +1,20 @@
 [Unit]
 Description=Using node to serve frontend for App Store Dash
-StartLimitBurst=3
-StartLimitIntervalSec=30
 After=network.target
+StartLimitIntervalSec=30
+StartLimitBurst=3
 
 [Service]
 Type=simple
 User=goblin
 Group=goblin
 SupplementaryGroups=www-data
-Environment=NODE_ENV=production SOCKET_PATH=/tmp/app-store-frontend.sock
-ExecStartPre=/bin/bash -c "sudo rm -f /tmp/app-store-frontend.sock"
-ExecStart=/bin/bash -c "source /home/goblin/.nvm/nvm.sh && /home/goblin/.nvm/versions/node/v20.16.0/bin/node /home/goblin/app-store-dash/frontend/build"
-ExecStartPost=/bin/bash -c "sleep 5 && sudo chown www-data:www-data /tmp/app-store-frontend.sock"
+Environment=NODE_ENV=production
+Environment=SOCKET_PATH=/tmp/app-store-frontend.sock
+Environment="PATH=/home/goblin/.nvm/versions/node/v20.16.0/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin"
+ExecStartPre=/bin/rm -f /tmp/app-store-frontend.sock
+ExecStart=/bin/bash -c 'source /home/goblin/.nvm/nvm.sh && exec /home/goblin/.nvm/versions/node/v20.16.0/bin/node /home/goblin/app-store-dash/frontend/build'
+ExecStartPost=/bin/bash -c 'sleep 5 && chown www-data:www-data /tmp/app-store-frontend.sock'
 Restart=on-failure
 KillMode=mixed
 
