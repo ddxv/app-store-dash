@@ -35,6 +35,6 @@ jobs:
             sudo systemctl daemon-reload
             sudo systemctl restart app-store-api
             pwd
-            NODE_OPTIONS="--max-old-space-size=800" /home/goblin/.nvm/versions/node/v20.16.0/bin/node /home/goblin/.nvm/versions/node/v20.16.0/bin/npm run build
+            export PATH="/home/goblin/.nvm/versions/node/v20.16.0/bin:$PATH" && NODE_OPTIONS="--max-old-space-size=800" /home/goblin/.nvm/versions/node/v20.16.0/bin/npm run build
             echo "Restart systemd service"
             sudo systemctl restart app-store-frontend
