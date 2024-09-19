@@ -7,16 +7,13 @@
 
 	var osName: string;
 
-	$: store_name = $page.params.store_name;
-
-	$: if (store_name == 'Google') {
+	$: if ($page.params.store_name == 'Google') {
 		osName = 'Google Android';
 	} else {
 		osName = 'Apple iOS';
 	}
 
 	$: company_category = $page.params.category;
-	$: company_name = $page.params.name;
 </script>
 
 <div>

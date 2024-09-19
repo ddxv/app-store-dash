@@ -3,32 +3,25 @@
 	import AdtechNav from '$lib/AdtechNav.svelte';
 	import { page } from '$app/stores';
 	import AdtechTable from '$lib/AdtechTable.svelte';
+	import { homeCategorySelection } from '../../../../../stores';
 	export let data: TopCompaniesInfo;
 
-	let entityGroup = 'networks';
-	let granularityGroup = 'brands';
-	let metricName = 'installs';
+	$: console.log('homeCategorySelection:', $homeCategorySelection);
 
-	let store_id = 1;
+	// TODO: This categorySelection is shared with the numerical one used on other pages!
+	$: categorySelection =
+		$homeCategorySelection === '1' || $homeCategorySelection === null
+			? 'overall'
+			: $homeCategorySelection;
 
-	$: store_name = $page.params.store_name;
-	$: {
-		if (store_name == 'Google') {
-			store_id = 1;
-		} else store_id = 2;
-	}
+	$: store_name = $page.params.store_name || 'Google';
+	$: store_id = $page.params.store_name === 'Google' || !$page.params.store_name ? 1 : 2;
 
-	$: entityGroup = $page.params.type;
+	$: entityGroup = $page.params.type || 'networks';
 
 	// React to changes in query parameters
-	$: {
-		granularityGroup = $page.url.searchParams.get('groupby') || 'parents';
-	}
-	$: {
-		metricName = $page.url.searchParams.get('metric') || 'installs';
-	}
-
-	import { homeCategorySelection } from '../../../../../stores';
+	$: granularityGroup = $page.url.searchParams.get('groupby') || 'parents';
+	$: metricName = $page.url.searchParams.get('metric') || 'installs';
 </script>
 
 <svelte:head>
@@ -72,7 +65,7 @@
 		waiting for data...
 	{:then cats}
 		{#each Object.entries(cats.categories) as [_prop, values]}
-			{#if values.id == $homeCategorySelection}
+			{#if values.id == categorySelection}
 				{#if entityGroup == 'networks'}
 					<h1 class="h3 md:h2 p-4">Ad Networks, Category: {values.name}</h1>
 				{/if}
@@ -89,18 +82,16 @@
 		{:then networks}
 			{#if granularityGroup === 'parents'}
 				<AdtechTable
-					tabledata={networks.parent_companies[store_id][$homeCategorySelection] || {}}
+					tabledata={networks.parent_companies[store_id][categorySelection]}
 					tableType={metricName}
 					storeId={store_id}
-					category_name={$homeCategorySelection}
 					{store_name}
 				></AdtechTable>
 			{:else}
 				<AdtechTable
-					tabledata={networks.all_companies[store_id][$homeCategorySelection] || {}}
+					tabledata={networks.all_companies[store_id][categorySelection]}
 					tableType={metricName}
 					storeId={store_id}
-					category_name={$homeCategorySelection}
 					{store_name}
 				></AdtechTable>
 			{/if}
@@ -114,18 +105,16 @@
 		{:then trackers}
 			{#if granularityGroup === 'parents'}
 				<AdtechTable
-					tabledata={trackers.parent_companies[store_id][$homeCategorySelection] || {}}
+					tabledata={trackers.parent_companies[store_id][categorySelection]}
 					tableType={metricName}
 					storeId={store_id}
-					category_name={$homeCategorySelection}
 					{store_name}
 				></AdtechTable>
 			{:else}
 				<AdtechTable
-					tabledata={trackers.all_companies[store_id][$homeCategorySelection] || {}}
+					tabledata={trackers.all_companies[store_id][categorySelection]}
 					tableType={metricName}
 					storeId={store_id}
-					category_name={$homeCategorySelection}
 					{store_name}
 				></AdtechTable>
 			{/if}

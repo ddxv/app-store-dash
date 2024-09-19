@@ -3,16 +3,16 @@ export const csr: boolean = true;
 
 import type { LayoutServerLoad } from './$types';
 
-export const load: LayoutServerLoad = async () => {
+export const load: PageLoad = async ({ fetch, depends, url }) => {
 	const emptyResponse = {};
 
 	try {
-		const res = fetch(`http://localhost:8000/api/trackers`);
-		const nres = fetch(`http://localhost:8000/api/networks`);
+		const res = await fetch(`http://localhost:8000/api/trackers`);
+		const nres = await fetch(`http://localhost:8000/api/networks`);
 
 		return {
-			trackers: res.then((resp) => resp.json()),
-			networks: nres.then((resp) => resp.json())
+			trackers: res.json(),
+			networks: nres.json()
 		};
 	} catch (error) {
 		console.error('Failed to load app data:', error);
