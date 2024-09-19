@@ -133,57 +133,63 @@
 			</div>
 		</div>
 
-		<h4 class="h4 md:h3 p-2 mt-2">Lastest Store Ranks</h4>
-		{#await data.myranks}
-			Loading app ranks...
-		{:then ranks}
-			{#if typeof ranks == 'string'}
-				<p>No ranks available for this app.</p>
-			{:else}
-				{#if ranks.latest && ranks.latest.length > 0}
-					{#each ranks.latest as myrow}
-						<h6 class="h6 px-4">
-							#{myrow.rank}
-							in: {myrow.collection}
-							{myrow.category}
-							({myrow.crawled_date})
-						</h6>
-					{/each}
-				{/if}
-				{#if ranks.history && ranks.history.length > 0}
-					<div class="card variant-glass-surface mt-2 md:mt-4">
-						<h4 class="h4 md:h3 p-2 mt-2">Store Ranks Historical</h4>
-						<RankChart plotData={ranks.history} narrowBool={true} />
-					</div>
+		<div class="card variant-glass-surface p-2 md:p-8 mt-2 md:mt-4">
+			<h4 class="h4 md:h3 p-2">Lastest Store Ranks</h4>
+			{#await data.myranks}
+				Loading app ranks...
+			{:then ranks}
+				{#if typeof ranks == 'string'}
+					<p>
+						No official ranks available for this app. This app is not ranked on the store's top 200
+						apps for it's categories.
+					</p>
 				{:else}
-					<p>No ranking data available for this app.</p>
+					{#if ranks.latest && ranks.latest.length > 0}
+						{#each ranks.latest as myrow}
+							<h6 class="h6 px-4">
+								#{myrow.rank}
+								in: {myrow.collection}
+								{myrow.category}
+								({myrow.crawled_date})
+							</h6>
+						{/each}
+					{/if}
+					{#if ranks.history && ranks.history.length > 0}
+						<div class="card variant-glass-surface mt-2 md:mt-4">
+							<h4 class="h4 md:h3 p-2 mt-2">Store Ranks Historical</h4>
+							<RankChart plotData={ranks.history} narrowBool={true} />
+						</div>
+					{:else}
+						<p>No ranking data available for this app.</p>
+					{/if}
 				{/if}
-				{#await data.myhistory}
-					Loading historical data...
-				{:then histdata}
-					{#if histdata.history_table}
-						<AppHistoryTable os={data.myapp.store_link} history_table={histdata.history_table} />
-					{/if}
-					{#if histdata.plot_data && histdata.plot_data.numbers && histdata.plot_data.numbers.length > 1}
-						<div class="card variant-glass-surface p-2 md:p-8 mt-2 md:mt-4">
-							<h3 class="h4 md:h3 p-2">Avg Daily Counts</h3>
-							<AppPlot plotdata={histdata.plot_data.numbers} plotType="number" />
-						</div>
-						<div class="card variant-glass-surface p-2 md:p-8 mt-2 md:mt-4">
-							<h3 class="h4 md:h3 p-2">Rate of Change Week on Week</h3>
-							<AppPlot plotdata={histdata.plot_data.changes} plotType="change" />
-						</div>
-					{/if}
-				{/await}
+			{:catch}
+				<p>The server caught an error.</p>
+			{/await}
+		</div>
+		{#await data.myhistory}
+			Loading historical data...
+		{:then histdata}
+			{#if histdata.history_table}
+				<AppHistoryTable os={data.myapp.store_link} history_table={histdata.history_table} />
 			{/if}
-		{:catch}
-			<p>The server caught an error.</p>
+			{#if histdata.plot_data && histdata.plot_data.numbers && histdata.plot_data.numbers.length > 1}
+				<div class="card variant-glass-surface p-2 md:p-8 mt-2 md:mt-4">
+					<h3 class="h4 md:h3 p-2">Avg Daily Counts</h3>
+					<AppPlot plotdata={histdata.plot_data.numbers} plotType="number" />
+				</div>
+				<div class="card variant-glass-surface p-2 md:p-8 mt-2 md:mt-4">
+					<h3 class="h4 md:h3 p-2">Rate of Change Week on Week</h3>
+					<AppPlot plotdata={histdata.plot_data.changes} plotType="change" />
+				</div>
+			{/if}
 		{/await}
 	</div>
 
 	<!-- Column2: App Pictures -->
 	<div class="card p-8">
-		<div class="card variant-glass-surface p-2">
+		<div class="card variant-glass-surface p-2 md:p-8 mt-2 md:mt-4">
+			<h4 class="h4 md:h3 p-2">Screenshots</h4>
 			{#if data.myapp.featured_image_url}
 				<div>
 					<img
@@ -202,31 +208,32 @@
 					{/if}
 				{/each}
 			</section>
-			<div class="p-2 md:p-4">
-				<h4 class="h4 md:h3 p-2">Additional Information</h4>
-				<div class="px-4 md:px-8">
-					<p>Free: {data.myapp.free}</p>
-					<p>Price: {data.myapp.price}</p>
-					<p>Size: {data.myapp.size || 'N/A'}</p>
-					<p>Minimum Android Version: {data.myapp.minimum_android || 'N/A'}</p>
-					<p>Developer Email: {data.myapp.developer_email || 'N/A'}</p>
-					<p>Content Rating: {data.myapp.content_rating || 'N/A'}</p>
-					<p>Ad Supported: {data.myapp.ad_supported || 'N/A'}</p>
-					<p>In-App Purchases: {data.myapp.in_app_purchases || 'N/A'}</p>
-					<p>Editor's Choice: {data.myapp.editors_choice || 'N/A'}</p>
-					<p>Last Crawl Result: {data.myapp.crawl_result}</p>
-					<p>First Released: {data.myapp.release_date}</p>
-					<p>Store Last Updated: {data.myapp.store_last_updated}</p>
-					<p>First Crawled: {data.myapp.created_at}</p>
-				</div>
+		</div>
+		<div class="card variant-glass-surface p-2 md:p-8 mt-2 md:mt-4">
+			<h4 class="h4 md:h3 p-2">Additional Information</h4>
+			<div class="px-4 md:px-8">
+				<p>Free: {data.myapp.free}</p>
+				<p>Price: {data.myapp.price}</p>
+				<p>Size: {data.myapp.size || 'N/A'}</p>
+				<p>Minimum Android Version: {data.myapp.minimum_android || 'N/A'}</p>
+				<p>Developer Email: {data.myapp.developer_email || 'N/A'}</p>
+				<p>Content Rating: {data.myapp.content_rating || 'N/A'}</p>
+				<p>Ad Supported: {data.myapp.ad_supported || 'N/A'}</p>
+				<p>In-App Purchases: {data.myapp.in_app_purchases || 'N/A'}</p>
+				<p>Editor's Choice: {data.myapp.editors_choice || 'N/A'}</p>
+				<p>Last Crawl Result: {data.myapp.crawl_result}</p>
+				<p>First Released: {data.myapp.release_date}</p>
+				<p>Store Last Updated: {data.myapp.store_last_updated}</p>
+				<p>First Crawled: {data.myapp.created_at}</p>
 			</div>
 		</div>
-		<div class="card variant-glass-surface">
+		<div class="card variant-glass-surface p-2 md:p-8 mt-2 md:mt-4">
+			<h4 class="h4 md:h3 p-2">Ad SDKs & Trackers</h4>
 			{#await data.myPackageInfo}
 				Loading permissions and tracker data...
 			{:then packageInfo}
 				{#if typeof packageInfo == 'string'}
-					<p>Permissions info not yet available for this app.</p>
+					<p>Permissions, SDKs and trackers info not yet available for this app.</p>
 				{:else}
 					{#if packageInfo.permissions && packageInfo.permissions.length > 0}
 						<h4 class="h4 md:h3 p-2 md:p-4 mt-4">Permissions</h4>

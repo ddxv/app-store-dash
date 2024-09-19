@@ -12,7 +12,7 @@ export const load: PageServerLoad = async ({ params }) => {
 					console.log('App Ranks Not found');
 					return 'App Not Found';
 				} else if (resp.status === 500) {
-					console.log('Ranks API Server error');
+					console.log('App Ranks API Server error');
 					return 'Backend Error';
 				}
 			})
@@ -47,10 +47,10 @@ export const load: PageServerLoad = async ({ params }) => {
 				if (resp.status === 200) {
 					return resp.json();
 				} else if (resp.status === 404) {
-					console.log('App Ranks Not found');
-					return 'App Not Found';
+					console.log('Package Info Not found');
+					return 'Package Info Not Found';
 				} else if (resp.status === 500) {
-					console.log('Ranks API Server error');
+					console.log('Package Info API Server error');
 					return 'Backend Error';
 				}
 			})
