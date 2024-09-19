@@ -79,7 +79,7 @@
 		switch (store) {
 			case 2:
 				collection = 4;
-				category = 55;
+				category = 120;
 				break;
 			case 1:
 			default: // Defaults for store=1 or any other value not explicitly handled
@@ -203,7 +203,7 @@
 									values.store_id == 1
 										? '/collection/1/category/1'
 										: values.store_id == 2
-											? '/collection/4/category/55'
+											? '/collection/4/category/120'
 											: '' // default value or path for other store_ids if needed
 								}`}
 								class={classesActive(`/rankings/store/${values.store_id}/`)}
