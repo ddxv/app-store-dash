@@ -9,8 +9,18 @@
 	$: console.log('homeCategorySelection:', $homeCategorySelection);
 
 	// TODO: This categorySelection is shared with the numerical one used on other pages!
+	function isNumeric(value: string | number): boolean {
+		// If the value is a number, check if it's finite.
+		if (typeof value === 'number') {
+			return isFinite(value);
+		}
+
+		// If the value is a string, try parsing it as a float.
+		return !isNaN(parseFloat(value)) && isFinite(parseFloat(value));
+	}
+	// Set categorySelection based on whether the value is numeric or null
 	$: categorySelection =
-		$homeCategorySelection === '1' || $homeCategorySelection === null
+		isNumeric($homeCategorySelection) || $homeCategorySelection === null
 			? 'overall'
 			: $homeCategorySelection;
 
