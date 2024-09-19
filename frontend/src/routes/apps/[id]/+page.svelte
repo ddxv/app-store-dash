@@ -9,6 +9,7 @@
 	import RankChart from '$lib/RankChart.svelte';
 	import AppHistoryTable from '$lib/AppHistoryTable.svelte';
 	let sum = (arr: number[]) => arr.reduce((acc, curr) => acc + curr, 0);
+	$: storeName = data.myapp.store_link.includes('google') ? 'Google' : 'Apple';
 </script>
 
 <svelte:head>
@@ -236,11 +237,11 @@
 						</div>
 					{/if}
 					{#if packageInfo.trackers && Object.keys(packageInfo.trackers).length > 0}
-						<ManifestItemList items={packageInfo.trackers} title="Trackers" basePath="trackers"
+						<ManifestItemList items={packageInfo.trackers} title="Trackers" osPath={storeName}
 						></ManifestItemList>
 					{/if}
 					{#if packageInfo.networks && Object.keys(packageInfo.networks).length > 0}
-						<ManifestItemList items={packageInfo.networks} title="Ad Networks" basePath="networks"
+						<ManifestItemList items={packageInfo.networks} title="Ad Networks" osPath={storeName}
 						></ManifestItemList>
 					{/if}
 					{#if packageInfo.leftovers && Object.keys(packageInfo.leftovers).length > 0}

@@ -4,7 +4,8 @@
 
 	export let title: string;
 	export let items: Record<string, string[]> | Trackers | Networks = {};
-	export let basePath: string = '';
+	export let osPath: string = '';
+	const basePath: string = 'adtech/companies';
 
 	const androidNameFont = 'h6 px-8 md:px-16';
 	const xmlPathFont = 'h5 px-4 md:px-8';
@@ -29,7 +30,7 @@
 				<p class="h4 mt-4">
 					<a
 						class="btn hover:bg-primary-hover-token variant-ghost-primary"
-						href={`/${basePath}/${key}`}>{key}</a
+						href={`/${basePath}/${key}/${osPath}/overall`}>{key}</a
 					>
 				</p>
 				{#each Object.entries(value) as [xml_path, androidNames]}
