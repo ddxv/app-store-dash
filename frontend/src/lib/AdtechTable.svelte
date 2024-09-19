@@ -8,7 +8,7 @@
 	export let store_name: string;
 	// export let category_name: string;
 
-	$: category_name = homeCategorySelection;
+	$: category_name = $homeCategorySelection;
 
 	function navigate(name: string) {
 		window.location.href = `/adtech/companies/${name}/${store_name}/${category_name}`;
