@@ -31,6 +31,8 @@
 	} else if (os.includes('apple')) {
 		os = 'apple';
 	}
+
+	const numberFormatter = new Intl.NumberFormat('en-US');
 </script>
 
 <div class="table-container space-y-4">
@@ -59,7 +61,7 @@
 							</td>
 							{#if os == 'google'}
 								<td class="table-cell-fit !px-0">
-									{row.installs}
+									{numberFormatter.format(row.installs)}
 								</td>
 							{/if}
 							<td class="table-cell-fit !px-0">
@@ -70,10 +72,10 @@
 								{/if}
 							</td>
 							<td class="table-cell-fit !px-0">
-								{row.rating_count}
+								{numberFormatter.format(row.rating_count)}
 							</td>
 							<td class="table-cell-fit !px-0">
-								{row.review_count}
+								{numberFormatter.format(row.review_count)}
 							</td>
 						</tr>
 					{/each}
