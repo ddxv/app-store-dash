@@ -2,6 +2,48 @@
 	import discordIcon from '$lib/svg/discord-mark-black.svg?raw';
 </script>
 
+<svelte:head>
+	<!-- Title -->
+	<title>About AppGoblin: Open Source App Analytics | Join Our Community</title>
+
+	<!-- Standard meta tags -->
+	<meta
+		name="description"
+		content="Discover AppGoblin: an open source, self-funded app analytics platform. Learn about our mission, join our community on Discord, and contribute on GitHub to shape the future of app market intelligence."
+	/>
+	<meta
+		name="keywords"
+		content="AppGoblin, open source, app analytics, self-funded, community-driven, Discord, GitHub, app market intelligence, mobile app insights"
+	/>
+
+	<!-- Open Graph meta tags -->
+	<meta property="og:title" content="About AppGoblin: Open Source App Analytics Platform" />
+	<meta
+		property="og:description"
+		content="AppGoblin is a self-funded, open source app analytics platform. Join our community on Discord, contribute on GitHub, and help us revolutionize app market intelligence."
+	/>
+	<meta property="og:image" content="https://appgoblin.info/goblin_purple_hat_250.png" />
+	<meta property="og:url" content="https://appgoblin.info/about" />
+	<meta property="og:type" content="website" />
+
+	<!-- Twitter Card meta tags -->
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta
+		name="twitter:title"
+		content="About AppGoblin: Open Source App Analytics | Join Our Community"
+	/>
+	<meta
+		name="twitter:description"
+		content="Explore AppGoblin: a self-funded, open source platform for app analytics. Learn how you can contribute to our mission of providing comprehensive app market intelligence."
+	/>
+	<meta name="twitter:image" content="https://appgoblin.info/goblin_purple_hat_250.png" />
+
+	<!-- Additional meta tags -->
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta name="robots" content="index, follow" />
+	<link rel="canonical" href="https://appgoblin.info/about" />
+</svelte:head>
+
 <div class="p-2 px-8 md:px-32 lg:px-72">
 	<h1 class="h1">Thanks for checking out this project</h1>
 	<br />

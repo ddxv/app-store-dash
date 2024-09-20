@@ -35,10 +35,53 @@
 </script>
 
 <svelte:head>
-	<title>Ad {entityGroup} stats</title>
+	<!-- Title -->
+	<title>{entityGroup} AdTech Networks Analysis | App Count by Brand | AppGoblin</title>
+
+	<!-- Standard meta tags -->
 	<meta
 		name="description"
-		content="Explore top advertising networks and third party trackers data across the mobile ad ecosystem for ios and android."
+		content="Explore comprehensive data on AdTech networks used in {entityGroup} apps. Compare popular ad networks, data collectors, and tools by app count and brand. Gain insights into mobile app advertising trends."
+	/>
+	<meta
+		name="keywords"
+		content="AdTech networks, Google Play apps, mobile advertising, app analytics, data collectors, SDK analysis, brand comparison, app count metrics, advertising trackers"
+	/>
+
+	<!-- Open Graph meta tags -->
+	<meta
+		property="og:title"
+		content="Google Play AdTech Networks: App Count Analysis by Brand | AppGoblin"
+	/>
+	<meta
+		property="og:description"
+		content="Dive into detailed analytics of AdTech networks in Google Play apps. Compare top ad networks, data collectors, and tools used across brands. Uncover mobile advertising trends with AppGoblin's comprehensive data."
+	/>
+	<meta property="og:image" content="https://appgoblin.info/goblin_purple_hat_250.png" />
+	<meta
+		property="og:url"
+		content="https://appgoblin.info/adtech/Google/networks?groupby=brands&metric=appcount"
+	/>
+	<meta property="og:type" content="website" />
+
+	<!-- Twitter Card meta tags -->
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta
+		name="twitter:title"
+		content="Google Play AdTech Networks: Brand & App Count Analysis | AppGoblin"
+	/>
+	<meta
+		name="twitter:description"
+		content="Explore which AdTech networks are most popular in Google Play apps. Compare brands, analyze app counts, and uncover mobile advertising trends with AppGoblin's in-depth data."
+	/>
+	<meta name="twitter:image" content="https://appgoblin.info/goblin_purple_hat_250.png" />
+
+	<!-- Additional meta tags -->
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta name="robots" content="index, follow" />
+	<link
+		rel="canonical"
+		href="https://appgoblin.info/adtech/Google/networks?groupby=brands&metric=appcount"
 	/>
 </svelte:head>
 

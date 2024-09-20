@@ -5,6 +5,51 @@
 	export let data: HomeData;
 </script>
 
+<svelte:head>
+	<!-- Title -->
+	<title>AppGoblin: Comprehensive App Analytics & Market Trends | Google Play & iTunes</title>
+
+	<!-- Standard meta tags -->
+	<meta
+		name="description"
+		content="Discover comprehensive app analytics and market trends for Google Play and iTunes with AppGoblin. Access detailed rankings, download statistics, and competitor insights to power your app strategy."
+	/>
+	<meta
+		name="keywords"
+		content="app analytics, market trends, Google Play data, iTunes app data, app rankings, download statistics, competitor analysis, mobile app insights, app store intelligence"
+	/>
+
+	<!-- Open Graph meta tags -->
+	<meta
+		property="og:title"
+		content="AppGoblin: App Analytics & Market Trends for Google Play & iTunes"
+	/>
+	<meta
+		property="og:description"
+		content="Uncover app market trends, track rankings, and analyze competitors with AppGoblin's comprehensive analytics for Google Play and iTunes. Make data-driven decisions for your app strategy."
+	/>
+	<meta property="og:image" content="https://appgoblin.info/goblin_purple_hat_250.png" />
+	<meta property="og:url" content="https://appgoblin.info" />
+	<meta property="og:type" content="website" />
+
+	<!-- Twitter Card meta tags -->
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta
+		name="twitter:title"
+		content="AppGoblin: App Analytics & Market Trends | Google Play & iTunes"
+	/>
+	<meta
+		name="twitter:description"
+		content="Explore app market trends, track rankings, and analyze competitors with AppGoblin's comprehensive analytics for Google Play and iTunes."
+	/>
+	<meta name="twitter:image" content="https://appgoblin.info/goblin_purple_hat_250.png" />
+
+	<!-- Additional meta tags -->
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta name="robots" content="index, follow" />
+	<link rel="canonical" href="https://appgoblin.info" />
+</svelte:head>
+
 <div class="p-2 md:p-4 px-2 md:px-20 lg:px-48">
 	<br />
 	<div class="card p-2 md:p-8">
