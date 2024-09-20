@@ -26,7 +26,7 @@
 				mapsTo: 'value',
 				// percentage: true,
 				ticks: {
-					formatter: (x) => `${x}%`
+					formatter: (x: number | Date) => `${x}%`
 				},
 				scaleType: ScaleTypes.LINEAR,
 				correspondingDatasets: ['Rating Rate of Change']
@@ -52,6 +52,36 @@
 		]
 	};
 
+	export let installOptions: LineChartOptions = {
+		toolbar: { enabled: false },
+		axes: {
+			bottom: {
+				title: 'Date',
+				mapsTo: 'crawled_date',
+				scaleType: ScaleTypes.TIME
+			},
+			left: {
+				mapsTo: 'value',
+				title: 'Number',
+				scaleType: ScaleTypes.LINEAR,
+				correspondingDatasets: ['Installs Daily Average']
+			}
+		},
+		// curve: 'curveMonotoneX',
+		height: '400px'
+		// comboChartTypes: [
+		// 	{
+		// 		type: 'grouped-bar',
+		// 		correspondingDatasets: ['Installs Daily Average'],
+		// 		options: {
+		// 			points: {
+		// 				radius: 5
+		// 			}
+		// 		}
+		// 	}
+		// ]
+	};
+
 	export let numberOptions: ComboChartOptions = {
 		toolbar: { enabled: false },
 		axes: {
@@ -71,7 +101,7 @@
 		height: '400px',
 		comboChartTypes: [
 			{
-				type: 'grouped-bar',
+				type: 'stacked-bar',
 				correspondingDatasets: [
 					'Installs Daily Average',
 					'Rating Count Daily Average',
@@ -90,7 +120,7 @@
 		title: 'Step (discrete)',
 		axes: {
 			bottom: {
-				title: '2019 Annual Sales Figures',
+				title: 'Date',
 				mapsTo: 'crawled_date',
 				scaleType: ScaleTypes.TIME
 			},
@@ -110,5 +140,9 @@
 {:else if plotType == 'change'}
 	<ComboChart data={plotdata} options={changeOptions} />
 {:else if plotType == 'number'}
+	<ComboChart data={plotdata} options={numberOptions} />
+{:else if plotType == 'installs'}
+	<LineChart data={plotdata} options={installOptions} />
+{:else if plotType == 'ratings'}
 	<ComboChart data={plotdata} options={numberOptions} />
 {/if}

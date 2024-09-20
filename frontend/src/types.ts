@@ -130,7 +130,12 @@ export interface AppFullDetails {
 	myhistory: Promise<{
 		histogram: number[];
 		history_table: AppHistoryInfo[];
-		plot_data?: { numbers: ChartTabularData; changes: ChartTabularData };
+		plot_data?: {
+			numbers: ChartTabularData;
+			changes: ChartTabularData;
+			installs: ChartTabularData;
+			ratings: ChartTabularData;
+		};
 	}>;
 	myPackageInfo: Promise<{
 		permissions: string[];

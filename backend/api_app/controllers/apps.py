@@ -113,14 +113,22 @@ def app_history(store_app: int, app_name: str) -> AppHistory:
     final_metrics = [x for x in app_hist.columns if x not in ["group", "crawled_date"]]
     number_dicts = []
     change_dicts = []
+    ratings_dicts = []
+    plot_dicts = {}
     for metric in final_metrics:
         meltdf = mymelt.loc[mymelt.group == metric]
-        melteddicts = meltdf.to_dict(orient="records")
+        metric_dict = meltdf.to_dict(orient="records")
         if "Rate of Change" in metric:
-            change_dicts += melteddicts
+            change_dicts += metric_dict
         else:
-            number_dicts += melteddicts
-    plot_dicts = {"numbers": number_dicts, "changes": change_dicts}
+            number_dicts += metric_dict
+        if metric == "Installs Daily Average":
+            plot_dicts["installs"] = metric_dict
+        if metric in ["Review Count Daily Average", "Rating Count Daily Average"]:
+            ratings_dicts += metric_dict
+    plot_dicts["numbers"] = number_dicts
+    plot_dicts["ratings"] = ratings_dicts
+    plot_dicts["changes"] = change_dicts
     hist = AppHistory(
         histogram=histogram,
         history_table=history_table,

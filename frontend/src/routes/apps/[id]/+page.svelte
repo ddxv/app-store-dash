@@ -175,8 +175,12 @@
 			{/if}
 			{#if histdata.plot_data && histdata.plot_data.numbers && histdata.plot_data.numbers.length > 1}
 				<div class="card variant-glass-surface p-2 md:p-8 mt-2 md:mt-4">
-					<h3 class="h4 md:h3 p-2">Avg Daily Counts</h3>
-					<AppPlot plotdata={histdata.plot_data.numbers} plotType="number" />
+					<h3 class="h4 md:h3 p-2">Average Daily Installs</h3>
+					<AppPlot plotdata={histdata.plot_data.installs} plotType="installs" />
+				</div>
+				<div class="card variant-glass-surface p-2 md:p-8 mt-2 md:mt-4">
+					<h3 class="h4 md:h3 p-2">Average Daily Reviews & Ratings</h3>
+					<AppPlot plotdata={histdata.plot_data.ratings} plotType="ratings" />
 				</div>
 				<div class="card variant-glass-surface p-2 md:p-8 mt-2 md:mt-4">
 					<h3 class="h4 md:h3 p-2">Rate of Change Week on Week</h3>
