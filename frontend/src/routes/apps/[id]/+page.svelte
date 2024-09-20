@@ -34,7 +34,7 @@
 		content="Explore comprehensive app analytics and market trends across Google Play and iTunes with AppGoblin. Dive into detailed app rankings and download statistics to inform your app strategy and discover top-performing apps."
 	/>
 	<meta property="og:image" content="https://appgoblin.info/goblin_purple_hat_250.png" />
-	<meta property="og:url" content="https://appgoblin.info.com/" />
+	<meta property="og:url" content="https://appgoblin.info/" />
 	<meta property="og:type" content="website" />
 
 	<!-- Twitter Card meta tags -->
