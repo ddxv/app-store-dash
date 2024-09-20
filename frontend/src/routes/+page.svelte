@@ -47,7 +47,7 @@
 			{#await data.iOSAppRanks}
 				Loading iOS App Ranks...
 			{:then iOSApps}
-				<a href="/rankings/store/2/collection/4/category/55">
+				<a href="/rankings/store/2/collection/4/category/120">
 					<div class="snap-center shrink-0 card variant-ghost-surface w-48 md:w-56">
 						<div class="table-container card-header">
 							<h3 class="h3">iOS Apps</h3>

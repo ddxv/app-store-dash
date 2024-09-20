@@ -10,7 +10,7 @@ export const load: PageServerLoad = async ({ params, setHeaders, url }) => {
 	});
 	try {
 		const androidAppRanks = fetch(`http://localhost:8000/api/rankings/1/1/1/short`);
-		const iOSAppRanks = fetch(`http://localhost:8000/api/rankings/2/4/55/short`);
+		const iOSAppRanks = fetch(`http://localhost:8000/api/rankings/2/4/120/short`);
 
 		const androidGameRanks = fetch(`http://localhost:8000/api/rankings/1/1/36/short`);
 		const iOSGameRanks = fetch(`http://localhost:8000/api/rankings/2/4/62/short`);

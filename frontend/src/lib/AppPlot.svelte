@@ -62,7 +62,7 @@
 			},
 			left: {
 				mapsTo: 'value',
-				title: 'Number',
+				title: 'Installs',
 				scaleType: ScaleTypes.LINEAR,
 				correspondingDatasets: ['Installs Daily Average']
 			}
@@ -92,7 +92,7 @@
 			},
 			left: {
 				mapsTo: 'value',
-				title: 'Number',
+				title: 'Count',
 				scaleType: ScaleTypes.LINEAR,
 				correspondingDatasets: ['Installs Daily Average', 'Rating Count Daily Average']
 			}

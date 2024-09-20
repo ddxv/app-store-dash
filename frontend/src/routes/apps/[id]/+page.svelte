@@ -173,15 +173,19 @@
 			{#if histdata.history_table}
 				<AppHistoryTable os={data.myapp.store_link} history_table={histdata.history_table} />
 			{/if}
-			{#if histdata.plot_data && histdata.plot_data.numbers && histdata.plot_data.numbers.length > 1}
+			{#if histdata.plot_data && histdata.plot_data.installs && histdata.plot_data.installs.length > 1}
 				<div class="card variant-glass-surface p-2 md:p-8 mt-2 md:mt-4">
 					<h3 class="h4 md:h3 p-2">Average Daily Installs</h3>
 					<AppPlot plotdata={histdata.plot_data.installs} plotType="installs" />
 				</div>
+			{/if}
+			{#if histdata.plot_data && histdata.plot_data.ratings && histdata.plot_data.ratings.length > 1}
 				<div class="card variant-glass-surface p-2 md:p-8 mt-2 md:mt-4">
 					<h3 class="h4 md:h3 p-2">Average Daily Reviews & Ratings</h3>
 					<AppPlot plotdata={histdata.plot_data.ratings} plotType="ratings" />
 				</div>
+			{/if}
+			{#if histdata.plot_data && histdata.plot_data.changes && histdata.plot_data.changes.length > 1}
 				<div class="card variant-glass-surface p-2 md:p-8 mt-2 md:mt-4">
 					<h3 class="h4 md:h3 p-2">Rate of Change Week on Week</h3>
 					<AppPlot plotdata={histdata.plot_data.changes} plotType="change" />
@@ -239,14 +243,6 @@
 				{#if typeof packageInfo == 'string'}
 					<p>Permissions, SDKs and trackers info not yet available for this app.</p>
 				{:else}
-					{#if packageInfo.permissions && packageInfo.permissions.length > 0}
-						<h4 class="h4 md:h3 p-2 md:p-4 mt-4">Permissions</h4>
-						<div class="px-4 md:px-8 max-w-sm md:max-w-md lg:max-w-full overflow-x-scroll">
-							{#each packageInfo.permissions as permission}
-								<p>{permission}</p>
-							{/each}
-						</div>
-					{/if}
 					{#if packageInfo.trackers && Object.keys(packageInfo.trackers).length > 0}
 						<ManifestItemList items={packageInfo.trackers} title="Trackers" osPath={storeName}
 						></ManifestItemList>
@@ -254,6 +250,14 @@
 					{#if packageInfo.networks && Object.keys(packageInfo.networks).length > 0}
 						<ManifestItemList items={packageInfo.networks} title="Ad Networks" osPath={storeName}
 						></ManifestItemList>
+					{/if}
+					{#if packageInfo.permissions && packageInfo.permissions.length > 0}
+						<h4 class="h4 md:h3 p-2 md:p-4 mt-4">Permissions</h4>
+						<div class="px-4 md:px-8 max-w-sm md:max-w-md lg:max-w-full overflow-x-scroll">
+							{#each packageInfo.permissions as permission}
+								<p>{permission}</p>
+							{/each}
+						</div>
 					{/if}
 					{#if packageInfo.leftovers && Object.keys(packageInfo.leftovers).length > 0}
 						<ManifestItemList items={packageInfo.leftovers} title="Other Services"
