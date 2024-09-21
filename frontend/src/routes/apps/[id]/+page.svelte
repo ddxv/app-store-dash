@@ -9,7 +9,7 @@
 	import RankChart from '$lib/RankChart.svelte';
 	import AppHistoryTable from '$lib/AppHistoryTable.svelte';
 	let sum = (arr: number[]) => arr.reduce((acc, curr) => acc + curr, 0);
-	$: storeName = data.myapp.store_link.includes('google') ? 'Google' : 'Apple';
+	// $: storeName = data.myapp.store_link.includes('google') ? 'Google' : 'Apple';
 </script>
 
 <svelte:head>
@@ -51,85 +51,97 @@
 	<!-- Column1: App Icon Title & Info -->
 	<div class="card p-0 lg:p-8">
 		<div class="card-header p-2 md:p-4">
-			<div class="inline-flex">
-				{#if data.myapp.icon_url_512}
-					<img
-						src={data.myapp.icon_url_512}
-						alt={data.myapp.name}
-						class="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 xl:w-60 xl:h-60"
-						referrerpolicy="no-referrer"
-					/>
-				{/if}
-				<div class="p-4">
-					{#if data.myapp.installs && data.myapp.installs != '0'}
-						<AppDetails app={data.myapp} />
+			{#await data.myapp}
+				Loading rating details...
+			{:then myapp}
+				<div class="inline-flex">
+					{#if myapp.icon_url_512}
+						<img
+							src={myapp.icon_url_512}
+							alt={myapp.name}
+							class="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 xl:w-60 xl:h-60"
+							referrerpolicy="no-referrer"
+						/>
 					{/if}
+					<div class="p-4">
+						{#if myapp.installs && myapp.installs != '0'}
+							<AppDetails app={myapp} />
+						{/if}
+					</div>
 				</div>
-			</div>
 
-			<div class="block md:hidden" />
-			{#if data.myapp.developer_id}
+				<div class="block md:hidden" />
+				{#if myapp.developer_id}
+					<div class="p-2 md:py-2">
+						<a
+							href="/developers/{myapp.developer_id}"
+							class="btn hover:bg-primary-hover-token variant-ghost-primary"
+							><span>Developer: {myapp.developer_name}</span></a
+						>
+					</div>
+				{/if}
 				<div class="p-2 md:py-2">
 					<a
-						href="/developers/{data.myapp.developer_id}"
+						href="/categories/{myapp.category}"
 						class="btn hover:bg-primary-hover-token variant-ghost-primary"
-						><span>Developer: {data.myapp.developer_name}</span></a
+						><span>Category: {myapp.category}</span></a
 					>
 				</div>
-			{/if}
-			<div class="p-2 md:py-2">
-				<a
-					href="/categories/{data.myapp.category}"
-					class="btn hover:bg-primary-hover-token variant-ghost-primary"
-					><span>Category: {data.myapp.category}</span></a
-				>
-			</div>
+			{/await}
 		</div>
 
 		<div class="card-footer md:flex">
-			<div class="block">
-				<p>Store ID: {data.myapp.store_id}</p>
-				{#if data.myapp.developer_id}
-					Developer: <a
-						class="anchor inline-flex items-baseline"
-						href={data.myapp.store_developer_link}
-						target="_blank"
-					>
-						{data.myapp.developer_name}
-						<ExternalLinkSvg />
-					</a>
-				{:else}
-					<p>Developer Name: {data.myapp.developer_name}</p>
-					<p>Developer ID: {data.myapp.developer_id}</p>
-				{/if}
-				{#if data.myapp.developer_url}
-					<p>
-						Developer URL:
-						<a class="anchor inline-flex" href="https://{data.myapp.developer_url}" target="_blank">
-							{data.myapp.developer_url}
+			{#await data.myapp}
+				Loading rating details...
+			{:then myapp}
+				<div class="block">
+					<p>Store ID: {myapp.store_id}</p>
+					{#if myapp.developer_id}
+						Developer: <a
+							class="anchor inline-flex items-baseline"
+							href={myapp.store_developer_link}
+							target="_blank"
+						>
+							{myapp.developer_name}
 							<ExternalLinkSvg />
 						</a>
-					</p>
-				{/if}
-				<p>App Last Updated on Store: {data.myapp.store_last_updated}</p>
-				<p>App Last Crawled: {data.myapp.updated_at}</p>
-			</div>
-			<div class="ml-auto">
-				<a class="anchor inline-flex items-baseline" href={data.myapp.store_link} target="_blank">
-					{#if data.myapp.store_link.includes('google')}
-						<img class="w-40 md:w-60" src="/gp_en_badge_web_generic.png" alt={data.myapp.name} />
 					{:else}
-						<AvailableOniOs />
+						<p>Developer Name: {myapp.developer_name}</p>
+						<p>Developer ID: {myapp.developer_id}</p>
 					{/if}
-				</a>
-			</div>
+					{#if myapp.developer_url}
+						<p>
+							Developer URL:
+							<a class="anchor inline-flex" href="https://{myapp.developer_url}" target="_blank">
+								{myapp.developer_url}
+								<ExternalLinkSvg />
+							</a>
+						</p>
+					{/if}
+					<p>App Last Updated on Store: {myapp.store_last_updated}</p>
+					<p>App Last Crawled: {myapp.updated_at}</p>
+				</div>
+				<div class="ml-auto">
+					<a class="anchor inline-flex items-baseline" href={myapp.store_link} target="_blank">
+						{#if data.myapp.store_link.includes('google')}
+							<img class="w-40 md:w-60" src="/gp_en_badge_web_generic.png" alt={data.myapp.name} />
+						{:else}
+							<AvailableOniOs />
+						{/if}
+					</a>
+				</div>
+			{/await}
 		</div>
 		<br />
 		<div class="p-2 md:flex">
-			<div class="self-center text-center">
-				<h1 class="h1 p-2">{data.myapp.rating}★</h1>
-				Ratings: {data.myapp.rating_count}
-			</div>
+			{#await data.myapp}
+				Loading rating details...
+			{:then myapp}
+				<div class="self-center text-center">
+					<h1 class="h1 p-2">{myapp.rating}★</h1>
+					Ratings: {myapp.rating_count}
+				</div>
+			{/await}
 			<div class="flex-1">
 				{#await data.myhistory}
 					Loading rating details...
@@ -188,7 +200,9 @@
 			Loading historical data...
 		{:then histdata}
 			{#if histdata.history_table}
-				<AppHistoryTable os={data.myapp.store_link} history_table={histdata.history_table} />
+				{#await data.myapp then myapp}
+					<AppHistoryTable os={myapp.store_link} history_table={histdata.history_table} />
+				{/await}
 			{/if}
 			{#if histdata.plot_data && histdata.plot_data.installs && histdata.plot_data.installs.length > 1}
 				<div class="card variant-glass-surface p-2 md:p-8 mt-2 md:mt-4">
@@ -215,41 +229,45 @@
 	<div class="card p-8">
 		<div class="card variant-glass-surface p-2 md:p-8 mt-2 md:mt-4">
 			<h4 class="h4 md:h3 p-2">Screenshots</h4>
-			{#if data.myapp.featured_image_url}
-				<div>
-					<img
-						class="h-auto max-w-full rounded-lg p-4 mx-auto"
-						src={data.myapp.featured_image_url}
-						alt=""
-					/>
-				</div>
-			{/if}
-			<section class="grid grid-cols-2 md:grid-cols-3 gap-4">
-				{#each [data.myapp.phone_image_url_1, data.myapp.phone_image_url_2, data.myapp.phone_image_url_3, data.myapp.tablet_image_url_1, data.myapp.tablet_image_url_2, data.myapp.tablet_image_url_3] as imageUrl}
-					{#if imageUrl && imageUrl != 'null'}
-						<div>
-							<img class="h-auto max-w-full rounded-lg" src={imageUrl} alt="" />
-						</div>
-					{/if}
-				{/each}
-			</section>
+			{#await data.myapp then myapp}
+				{#if myapp.featured_image_url}
+					<div>
+						<img
+							class="h-auto max-w-full rounded-lg p-4 mx-auto"
+							src={myapp.featured_image_url}
+							alt=""
+						/>
+					</div>
+				{/if}
+				<section class="grid grid-cols-2 md:grid-cols-3 gap-4">
+					{#each [myapp.phone_image_url_1, myapp.phone_image_url_2, myapp.phone_image_url_3, myapp.tablet_image_url_1, myapp.tablet_image_url_2, myapp.tablet_image_url_3] as imageUrl}
+						{#if imageUrl && imageUrl != 'null'}
+							<div>
+								<img class="h-auto max-w-full rounded-lg" src={imageUrl} alt="" />
+							</div>
+						{/if}
+					{/each}
+				</section>
+			{/await}
 		</div>
 		<div class="card variant-glass-surface p-2 md:p-8 mt-2 md:mt-4">
 			<h4 class="h4 md:h3 p-2">Additional Information</h4>
 			<div class="px-4 md:px-8">
-				<p>Free: {data.myapp.free}</p>
-				<p>Price: {data.myapp.price}</p>
-				<p>Size: {data.myapp.size || 'N/A'}</p>
-				<p>Minimum Android Version: {data.myapp.minimum_android || 'N/A'}</p>
-				<p>Developer Email: {data.myapp.developer_email || 'N/A'}</p>
-				<p>Content Rating: {data.myapp.content_rating || 'N/A'}</p>
-				<p>Ad Supported: {data.myapp.ad_supported || 'N/A'}</p>
-				<p>In-App Purchases: {data.myapp.in_app_purchases || 'N/A'}</p>
-				<p>Editor's Choice: {data.myapp.editors_choice || 'N/A'}</p>
-				<p>Last Crawl Result: {data.myapp.crawl_result}</p>
-				<p>First Released: {data.myapp.release_date}</p>
-				<p>Store Last Updated: {data.myapp.store_last_updated}</p>
-				<p>First Crawled: {data.myapp.created_at}</p>
+				{#await data.myapp then myapp}
+					<p>Free: {myapp.free}</p>
+					<p>Price: {myapp.price}</p>
+					<p>Size: {myapp.size || 'N/A'}</p>
+					<p>Minimum Android Version: {myapp.minimum_android || 'N/A'}</p>
+					<p>Developer Email: {myapp.developer_email || 'N/A'}</p>
+					<p>Content Rating: {myapp.content_rating || 'N/A'}</p>
+					<p>Ad Supported: {myapp.ad_supported || 'N/A'}</p>
+					<p>In-App Purchases: {myapp.in_app_purchases || 'N/A'}</p>
+					<p>Editor's Choice: {myapp.editors_choice || 'N/A'}</p>
+					<p>Last Crawl Result: {myapp.crawl_result}</p>
+					<p>First Released: {myapp.release_date}</p>
+					<p>Store Last Updated: {myapp.store_last_updated}</p>
+					<p>First Crawled: {myapp.created_at}</p>
+				{/await}
 			</div>
 		</div>
 		<div class="card variant-glass-surface p-2 md:p-8 mt-2 md:mt-4">
@@ -260,26 +278,34 @@
 				{#if typeof packageInfo == 'string'}
 					<p>Permissions, SDKs and trackers info not yet available for this app.</p>
 				{:else}
-					{#if packageInfo.trackers && Object.keys(packageInfo.trackers).length > 0}
-						<ManifestItemList items={packageInfo.trackers} title="Trackers" osPath={storeName}
-						></ManifestItemList>
-					{/if}
-					{#if packageInfo.networks && Object.keys(packageInfo.networks).length > 0}
-						<ManifestItemList items={packageInfo.networks} title="Ad Networks" osPath={storeName}
-						></ManifestItemList>
-					{/if}
-					{#if packageInfo.permissions && packageInfo.permissions.length > 0}
-						<h4 class="h4 md:h3 p-2 md:p-4 mt-4">Permissions</h4>
-						<div class="px-4 md:px-8 max-w-sm md:max-w-md lg:max-w-full overflow-x-scroll">
-							{#each packageInfo.permissions as permission}
-								<p>{permission}</p>
-							{/each}
-						</div>
-					{/if}
-					{#if packageInfo.leftovers && Object.keys(packageInfo.leftovers).length > 0}
-						<ManifestItemList items={packageInfo.leftovers} title="Other Services"
-						></ManifestItemList>
-					{/if}
+					{#await data.myapp then myapp}
+						{#if packageInfo.trackers && Object.keys(packageInfo.trackers).length > 0}
+							<ManifestItemList
+								items={packageInfo.trackers}
+								title="Trackers"
+								osPath={myapp.store_link.includes('google') ? 'Google' : 'Apple'}
+							></ManifestItemList>
+						{/if}
+						{#if packageInfo.networks && Object.keys(packageInfo.networks).length > 0}
+							<ManifestItemList
+								items={packageInfo.networks}
+								title="Ad Networks"
+								osPath={myapp.store_link.includes('google') ? 'Google' : 'Apple'}
+							></ManifestItemList>
+						{/if}
+						{#if packageInfo.permissions && packageInfo.permissions.length > 0}
+							<h4 class="h4 md:h3 p-2 md:p-4 mt-4">Permissions</h4>
+							<div class="px-4 md:px-8 max-w-sm md:max-w-md lg:max-w-full overflow-x-scroll">
+								{#each packageInfo.permissions as permission}
+									<p>{permission}</p>
+								{/each}
+							</div>
+						{/if}
+						{#if packageInfo.leftovers && Object.keys(packageInfo.leftovers).length > 0}
+							<ManifestItemList items={packageInfo.leftovers} title="Other Services"
+							></ManifestItemList>
+						{/if}
+					{/await}
 				{/if}
 			{/await}
 		</div>
