@@ -13,6 +13,7 @@ from litestar import Controller, get
 from litestar.exceptions import NotFoundException
 
 from api_app.models import (
+    AdsTxtEntries,
     AppDetail,
     AppGroup,
     AppHistory,
@@ -29,6 +30,7 @@ from dbcon.queries import (
     get_ranks_for_app,
     get_recent_apps,
     get_single_app,
+    get_single_apps_adstxt,
     get_single_developer,
     search_apps,
 )
@@ -389,6 +391,38 @@ class AppController(Controller):
             apps=apps_dict,
         )
         return developer_apps
+
+    @get(path="/{store_id:str}/adstxt", cache=3600)
+    async def get_developer_adstxt(self: Self, store_id: str) -> AdsTxtEntries:
+        """Handle GET request for a store_id's related ads txt entries.
+
+        Note these IDs are only connected to the app's developer's URL and thus are not app specific.
+
+        Args:
+        ----
+            store_id (str): The url of the store_id's ads txt to retrieve
+
+        Returns:
+        -------
+            json
+
+        """
+        logger.info(f"{self.path} start")
+        adstxt_df = get_single_apps_adstxt(store_id)
+
+        if adstxt_df.empty:
+            msg = f"URL not found: {store_id!r}"
+            raise NotFoundException(
+                msg,
+                status_code=404,
+            )
+        adstxt_dict = adstxt_df.to_dict(orient="records")
+
+        txts = AdsTxtEntries(
+            entries=adstxt_dict,
+        )
+        logger.info(adstxt_df.head())
+        return txts
 
     @get(path="/search/{search_term:str}", cache=3600)
     async def search(self: Self, search_term: str) -> AppGroup:

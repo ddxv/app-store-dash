@@ -29,6 +29,14 @@ class AppHistory:
 
 
 @dataclass
+class AdsTxtEntries:
+
+    """App ads txt entries."""
+
+    entries: dict
+
+
+@dataclass
 class PackageDetails:
 
     """Lists of Package permissions, trackers etc from Manifest."""

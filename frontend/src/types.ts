@@ -122,6 +122,14 @@ export interface AppHistoryInfo extends Row {
 	country: string;
 	rating_count: number;
 }
+export interface AdsTxtEntries extends Row {
+	ad_domain: string;
+	ad_domain_url: number;
+	publisher_id: number;
+	relationship: number;
+	crawl_result: string;
+	developer_domain_crawled_at: number;
+}
 export interface AppFullDetails {
 	myapp: AppFullDetail;
 	status?: number;
@@ -143,6 +151,9 @@ export interface AppFullDetails {
 		networks: Networks;
 		android: string[];
 		leftovers: UnknownManifestItems;
+	}>;
+	myAdsTxt: Promise<{
+		entries: AdsTxtEntries[];
 	}>;
 }
 

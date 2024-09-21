@@ -8,6 +8,7 @@
 	import AvailableOniOs from '$lib/svg/AvailableOniOS.svelte';
 	import RankChart from '$lib/RankChart.svelte';
 	import AppHistoryTable from '$lib/AppHistoryTable.svelte';
+	import AdsTxtTable from '$lib/AdsTxtTable.svelte';
 	let sum = (arr: number[]) => arr.reduce((acc, curr) => acc + curr, 0);
 </script>
 
@@ -220,6 +221,14 @@
 					<h3 class="h4 md:h3 p-2">Rate of Change Week on Week</h3>
 					<AppPlot plotdata={histdata.plot_data.changes} plotType="change" />
 				</div>
+			{/if}
+		{/await}
+
+		{#await data.myAdsTxt}
+			Loading Ads-Txt data...
+		{:then adstxt}
+			{#if adstxt.entries}
+				<AdsTxtTable entries_table={adstxt.entries} />
 			{/if}
 		{/await}
 	</div>

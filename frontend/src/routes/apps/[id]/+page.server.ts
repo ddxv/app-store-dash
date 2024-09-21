@@ -79,6 +79,25 @@ export const load: PageServerLoad = async ({ params }) => {
 					console.log('Uncaught error', error);
 					return 'Uncaught Error';
 				}
+			),
+		myAdsTxt: fetch(`http://localhost:8000/api/apps/${id}/adstxt`)
+			.then((resp) => {
+				if (resp.status === 200) {
+					return resp.json();
+				} else if (resp.status === 404) {
+					console.log('AdsTxt Entries Not found');
+					return 'AdsTxt Entries Not Found';
+				} else if (resp.status === 500) {
+					console.log('AdsTxt Entries API Server error');
+					return 'AdsTxt Backend Error';
+				}
+			})
+			.then(
+				(json) => json,
+				(error) => {
+					console.log('Uncaught error', error);
+					return 'Uncaught Error';
+				}
 			)
 	};
 };

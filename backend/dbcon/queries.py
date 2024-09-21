@@ -33,6 +33,7 @@ QUERY_APPSTORE_CATEGORIES = load_sql_file("query_appstore_categories.sql")
 QUERY_SEARCH_APPS = load_sql_file("query_search_apps.sql")
 QUERY_SEARCH_DEVS = load_sql_file("query_search_devs.sql")
 QUERY_SINGLE_DEVELOPER = load_sql_file("query_single_developer.sql")
+QUERY_SINGLE_DEVELOPER_ADSTXT = load_sql_file("query_single_developer_adstxt.sql")
 QUERY_APP_HISTORY = load_sql_file("query_app_history.sql")
 QUERY_SINGLE_APP = load_sql_file("query_single_app.sql")
 QUERY_APP_PACKAGE_DETAILS = load_sql_file("query_app_package_details.sql")
@@ -262,6 +263,17 @@ def get_single_developer(developer_id: str) -> pd.DataFrame:
     )
     if not df.empty:
         df = clean_app_df(df)
+    return df
+
+
+def get_single_apps_adstxt(store_id: str) -> pd.DataFrame:
+    """Get single developer's app ads txt entries."""
+    logger.info(f"Query app's app-ads-txt: {store_id=}")
+    df = pd.read_sql(
+        QUERY_SINGLE_DEVELOPER_ADSTXT,
+        con=DBCON.engine,
+        params={"store_id": store_id},
+    )
     return df
 
 
