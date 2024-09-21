@@ -122,7 +122,7 @@
 				</div>
 				<div class="ml-auto">
 					<a class="anchor inline-flex items-baseline" href={myapp.store_link} target="_blank">
-						{#if data.myapp.store_link.includes('google')}
+						{#if myapp.store_link.includes('google')}
 							<img class="w-40 md:w-60" src="/gp_en_badge_web_generic.png" alt={myapp.name} />
 						{:else}
 							<AvailableOniOs />
