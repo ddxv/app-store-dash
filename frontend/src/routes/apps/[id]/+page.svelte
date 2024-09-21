@@ -14,37 +14,38 @@
 
 <svelte:head>
 	<!-- Title -->
-	<title>{data.myapp.name} App Stats & Info</title>
+	{#await data.myapp then myapp}
+		<title>{myapp.name} App Stats & Info</title>
 
-	<!-- Standard meta tags -->
-	<meta
-		name="description"
-		content="Explore comprehensive app analytics and market trends across Google Play and iTunes with AppGoblin. Dive into detailed app rankings and download statistics to inform your app strategy and discover top-performing apps."
-	/>
-	<meta
-		name="keywords"
-		content="{data.myapp
-			.name}, app analytics, app market data, mobile app rankings, app reviews, download statistics, Google Play data, iTunes app data, app comparison, mobile app insights"
-	/>
+		<!-- Standard meta tags -->
+		<meta
+			name="description"
+			content="Explore comprehensive app analytics and market trends across Google Play and iTunes with AppGoblin. Dive into detailed app rankings and download statistics to inform your app strategy and discover top-performing apps."
+		/>
+		<meta
+			name="keywords"
+			content="{myapp.name}, app analytics, app market data, mobile app rankings, app reviews, download statistics, Google Play data, iTunes app data, app comparison, mobile app insights"
+		/>
 
-	<!-- Open Graph meta tags -->
-	<meta property="og:title" content="{data.myapp.name} App Stats & Info - AppGoblin" />
-	<meta
-		property="og:description"
-		content="Explore comprehensive app analytics and market trends across Google Play and iTunes with AppGoblin. Dive into detailed app rankings and download statistics to inform your app strategy and discover top-performing apps."
-	/>
-	<meta property="og:image" content="https://appgoblin.info/goblin_purple_hat_250.png" />
-	<meta property="og:url" content="https://appgoblin.info/" />
-	<meta property="og:type" content="website" />
+		<!-- Open Graph meta tags -->
+		<meta property="og:title" content="{myapp.name} App Stats & Info - AppGoblin" />
+		<meta
+			property="og:description"
+			content="Explore comprehensive app analytics and market trends across Google Play and iTunes with AppGoblin. Dive into detailed app rankings and download statistics to inform your app strategy and discover top-performing apps."
+		/>
+		<meta property="og:image" content="https://appgoblin.info/goblin_purple_hat_250.png" />
+		<meta property="og:url" content="https://appgoblin.info/" />
+		<meta property="og:type" content="website" />
 
-	<!-- Twitter Card meta tags -->
-	<meta name="twitter:card" content="summary_large_image" />
-	<meta name="twitter:title" content="{data.myapp.name} App Stats & Info - AppGoblin" />
-	<meta
-		name="twitter:description"
-		content="Explore comprehensive app analytics and market trends across Google Play and iTunes with AppGoblin. Dive into detailed app rankings and download statistics to inform your app strategy and discover top-performing apps."
-	/>
-	<meta name="twitter:image" content="https://appgoblin.info/goblin_purple_hat_250.png" />
+		<!-- Twitter Card meta tags -->
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content="{myapp.name} App Stats & Info - AppGoblin" />
+		<meta
+			name="twitter:description"
+			content="Explore comprehensive app analytics and market trends across Google Play and iTunes with AppGoblin. Dive into detailed app rankings and download statistics to inform your app strategy and discover top-performing apps."
+		/>
+		<meta name="twitter:image" content="https://appgoblin.info/goblin_purple_hat_250.png" />
+	{/await}
 </svelte:head>
 
 <section class="grid grid-flow-cols-1 md:grid-cols-2 md:gap-4">
