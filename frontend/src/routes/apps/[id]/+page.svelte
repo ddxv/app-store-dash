@@ -9,7 +9,6 @@
 	import RankChart from '$lib/RankChart.svelte';
 	import AppHistoryTable from '$lib/AppHistoryTable.svelte';
 	let sum = (arr: number[]) => arr.reduce((acc, curr) => acc + curr, 0);
-	// $: storeName = data.myapp.store_link.includes('google') ? 'Google' : 'Apple';
 </script>
 
 <svelte:head>
@@ -52,7 +51,7 @@
 	<div class="card p-0 lg:p-8">
 		<div class="card-header p-2 md:p-4">
 			{#await data.myapp}
-				Loading rating details...
+				Loading app details...
 			{:then myapp}
 				<div class="inline-flex">
 					{#if myapp.icon_url_512}
@@ -92,7 +91,7 @@
 
 		<div class="card-footer md:flex">
 			{#await data.myapp}
-				Loading rating details...
+				Loading app details...
 			{:then myapp}
 				<div class="block">
 					<p>Store ID: {myapp.store_id}</p>
@@ -124,7 +123,7 @@
 				<div class="ml-auto">
 					<a class="anchor inline-flex items-baseline" href={myapp.store_link} target="_blank">
 						{#if data.myapp.store_link.includes('google')}
-							<img class="w-40 md:w-60" src="/gp_en_badge_web_generic.png" alt={data.myapp.name} />
+							<img class="w-40 md:w-60" src="/gp_en_badge_web_generic.png" alt={myapp.name} />
 						{:else}
 							<AvailableOniOs />
 						{/if}
@@ -135,7 +134,7 @@
 		<br />
 		<div class="p-2 md:flex">
 			{#await data.myapp}
-				Loading rating details...
+				Loading app rating details...
 			{:then myapp}
 				<div class="self-center text-center">
 					<h1 class="h1 p-2">{myapp.rating}★</h1>
