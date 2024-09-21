@@ -411,7 +411,7 @@ class AppController(Controller):
         adstxt_df = get_single_apps_adstxt(store_id)
 
         if adstxt_df.empty:
-            msg = f"URL not found: {store_id!r}"
+            msg = f"App's ads-txt entries not found: {store_id!r}"
             raise NotFoundException(
                 msg,
                 status_code=404,
@@ -421,7 +421,6 @@ class AppController(Controller):
         txts = AdsTxtEntries(
             entries=adstxt_dict,
         )
-        logger.info(adstxt_df.head())
         return txts
 
     @get(path="/search/{search_term:str}", cache=3600)
