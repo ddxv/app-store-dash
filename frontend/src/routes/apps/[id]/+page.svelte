@@ -20,7 +20,7 @@
 		<!-- Standard meta tags -->
 		<meta
 			name="description"
-			content="Explore comprehensive app analytics and market trends across Google Play and iTunes with AppGoblin. Dive into detailed app rankings and download statistics to inform your app strategy and discover top-performing apps."
+			content="Explore app analytics and market trends across Google Play and iTunes with AppGoblin. Dive into detailed app rankings and download statistics to inform your app strategy and discover top-performing apps."
 		/>
 		<meta
 			name="keywords"
@@ -31,7 +31,7 @@
 		<meta property="og:title" content="{myapp.name} App Stats & Info - AppGoblin" />
 		<meta
 			property="og:description"
-			content="Explore comprehensive app analytics and market trends across Google Play and iTunes with AppGoblin. Dive into detailed app rankings and download statistics to inform your app strategy and discover top-performing apps."
+			content="Explore app analytics and market trends across Google Play and iTunes with AppGoblin. Dive into detailed app rankings and download statistics to inform your app strategy and discover top-performing apps."
 		/>
 		<meta property="og:image" content="https://appgoblin.info/goblin_purple_hat_250.png" />
 		<meta property="og:url" content="https://appgoblin.info/" />
@@ -42,7 +42,7 @@
 		<meta name="twitter:title" content="{myapp.name} App Stats & Info - AppGoblin" />
 		<meta
 			name="twitter:description"
-			content="Explore comprehensive app analytics and market trends across Google Play and iTunes with AppGoblin. Dive into detailed app rankings and download statistics to inform your app strategy and discover top-performing apps."
+			content="Explore app analytics and market trends across Google Play and iTunes with AppGoblin. Dive into detailed app rankings and download statistics to inform your app strategy and discover top-performing apps."
 		/>
 		<meta name="twitter:image" content="https://appgoblin.info/goblin_purple_hat_250.png" />
 	{/await}

@@ -7,12 +7,12 @@
 
 <svelte:head>
 	<!-- Title -->
-	<title>AppGoblin: Comprehensive App Analytics & Market Trends | Google Play & iTunes</title>
+	<title>AppGoblin: App Analytics & Market Trends | Google Play & iTunes</title>
 
 	<!-- Standard meta tags -->
 	<meta
 		name="description"
-		content="Discover comprehensive app analytics and market trends for Google Play and iTunes with AppGoblin. Access detailed rankings, download statistics, and competitor insights to power your app strategy."
+		content="Discover app analytics and market trends for Google Play and iTunes with AppGoblin. Access detailed rankings, download statistics, and competitor insights to power your app strategy."
 	/>
 	<meta
 		name="keywords"
@@ -26,7 +26,7 @@
 	/>
 	<meta
 		property="og:description"
-		content="Uncover app market trends, track rankings, and analyze competitors with AppGoblin's comprehensive analytics for Google Play and iTunes. Make data-driven decisions for your app strategy."
+		content="Uncover app market trends, track rankings, and analyze competitors with AppGoblin's analytics for Google Play and iTunes. Make data-driven decisions for your app strategy."
 	/>
 	<meta property="og:image" content="https://appgoblin.info/goblin_purple_hat_250.png" />
 	<meta property="og:url" content="https://appgoblin.info" />
@@ -40,7 +40,7 @@
 	/>
 	<meta
 		name="twitter:description"
-		content="Explore app market trends, track rankings, and analyze competitors with AppGoblin's comprehensive analytics for Google Play and iTunes."
+		content="Explore app market trends, track rankings, and analyze competitors with AppGoblin's app analytics for Google Play Android and iOS Appstore."
 	/>
 	<meta name="twitter:image" content="https://appgoblin.info/goblin_purple_hat_250.png" />
 

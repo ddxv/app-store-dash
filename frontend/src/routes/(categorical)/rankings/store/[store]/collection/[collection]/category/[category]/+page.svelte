@@ -58,7 +58,7 @@
 	/>
 	<meta
 		name="twitter:description"
-		content="Explore top-ranking apps on Google Play and iOS. View monthly charts, category top 100 lists, and historical ranking data. Optimize your ASO strategy with AppGoblin's comprehensive insights."
+		content="Explore top-ranking apps on Google Play and iOS. View monthly charts, category top 100 lists, and historical ranking data. Optimize your ASO strategy with AppGoblin's insights."
 	/>
 	<meta name="twitter:image" content="https://appgoblin.info/goblin_purple_hat_250.png" />
 

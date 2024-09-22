@@ -41,7 +41,7 @@
 	<!-- Standard meta tags -->
 	<meta
 		name="description"
-		content="Explore comprehensive data on AdTech networks used in {entityGroup} apps. Compare popular ad networks, data collectors, and tools by app count and brand. Gain insights into mobile app advertising trends."
+		content="Explore Adtech ad networks and data tracking used in {entityGroup} apps. Compare popular ad networks, data collectors, and tools by app count and brand. Gain insights into mobile app advertising trends."
 	/>
 	<meta
 		name="keywords"
@@ -55,7 +55,7 @@
 	/>
 	<meta
 		property="og:description"
-		content="Dive into detailed analytics of AdTech networks in Google Play apps. Compare top ad networks, data collectors, and tools used across brands. Uncover mobile advertising trends with AppGoblin's comprehensive data."
+		content="Dive into detailed analytics of AdTech networks in Google Play apps. Compare top ad networks, data collectors, and tools used across brands. Uncover mobile advertising trends with AppGoblin's data."
 	/>
 	<meta property="og:image" content="https://appgoblin.info/goblin_purple_hat_250.png" />
 	<meta

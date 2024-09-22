@@ -34,7 +34,7 @@
 	/>
 	<meta
 		name="twitter:description"
-		content="Explore AppGoblin: a self-funded, open source platform for app analytics. Learn how you can contribute to our mission of providing comprehensive app market intelligence."
+		content="Explore AppGoblin: a self-funded, open source platform for app analytics. Learn how you can contribute to our mission of providing app market intelligence."
 	/>
 	<meta name="twitter:image" content="https://appgoblin.info/goblin_purple_hat_250.png" />
 

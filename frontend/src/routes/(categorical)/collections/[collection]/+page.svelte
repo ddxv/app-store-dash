@@ -20,7 +20,7 @@
 	{/await}
 	<meta
 		name="description"
-		content="Explore comprehensive app analytics and market trends across Google Play and iTunes with AppGoblin. Dive into detailed app rankings and download statistics to inform your app strategy and discover top-performing apps."
+		content="Explore app analytics and market trends across Google Play and iTunes with AppGoblin. Dive into detailed app rankings and download statistics to inform your app strategy and discover top-performing apps."
 	/>
 	<meta
 		name="keywords"
