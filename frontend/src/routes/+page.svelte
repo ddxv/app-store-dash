@@ -54,10 +54,11 @@
 	<br />
 	<div class="card p-2 md:p-8">
 		<a href="/about">
-			<h1 class="h1 p-2 md:p-4">AppGoblin for App Store Data and Stats</h1>
+			<h1 class="h1 p-2 md:p-4">AppGoblin: Mobile App Store Data and Stats</h1>
 			<p class="p-2 md:p-4">
-				App Goblin is an open source project for collecting Google & Apple App Store data and
-				presenting it for developers and marketers to see how their app rankings. <strong>
+				AppGoblin is an open source project for collecting Google & Apple App Store data and
+				presenting it for developers and marketers. AppGoblin features app store daily ranks and
+				stats about mobile ad networks, data analytics tools, MMPs and app-ads.txt stats.<strong>
 					Click here to learn more or request new features.</strong
 				>
 			</p>
@@ -68,7 +69,7 @@
 
 	<div class="card p-2 md:p-8">
 		<a href="/rankings/store/1/collection/1/category/1">
-			<h1 class="h1 p-2 md:p-4">Track Latest Ranks</h1>
+			<h1 class="h1 p-2 md:p-4">Latest App Store Ranks</h1>
 			<p class="p-2 md:p-4">Click through for full app store categories and rankings.</p>
 		</a>
 		<div

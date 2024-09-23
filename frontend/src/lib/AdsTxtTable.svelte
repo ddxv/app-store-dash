@@ -49,7 +49,7 @@
 							{row.publisher_id}
 						</td>
 						<td class="table-cell-fit">
-							{new Date(row.developer_domain_crawled_at).toLocaleDateString('en-US')}
+							{new Date(row.developer_domain_crawled_at).toLocaleDateString('en-CA')}
 						</td>
 					</tr>
 				{/each}
