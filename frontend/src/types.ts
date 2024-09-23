@@ -153,7 +153,8 @@ export interface AppFullDetails {
 		leftovers: UnknownManifestItems;
 	}>;
 	myAdsTxt: Promise<{
-		entries: AdsTxtEntries[];
+		direct_entries: AdsTxtEntries[];
+		reseller_entries: AdsTxtEntries[];
 	}>;
 }
 

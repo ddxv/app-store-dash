@@ -416,10 +416,16 @@ class AppController(Controller):
                 msg,
                 status_code=404,
             )
-        adstxt_dict = adstxt_df.to_dict(orient="records")
+        direct_adstxt_dict = adstxt_df[
+            adstxt_df["relationship"].str.upper() == "DIRECT"
+        ].to_dict(orient="records")
+        reseller_adstxt_dict = adstxt_df[
+            adstxt_df["relationship"].str.upper() == "RESELLER"
+        ].to_dict(orient="records")
 
         txts = AdsTxtEntries(
-            entries=adstxt_dict,
+            direct_entries=direct_adstxt_dict,
+            reseller_entries=reseller_adstxt_dict,
         )
         return txts
 

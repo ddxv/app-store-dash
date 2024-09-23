@@ -33,7 +33,8 @@ class AdsTxtEntries:
 
     """App ads txt entries."""
 
-    entries: dict
+    direct_entries: dict
+    reseller_entries: dict
 
 
 @dataclass
