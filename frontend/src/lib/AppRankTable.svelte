@@ -7,8 +7,12 @@
 
 	export let tableData: RankedAppList;
 	const totalRows = tableData.ranks.length; // Calculate totalRows based on the length of the history_table array
+	const rowsPerPage = 10;
 
-	const handler = new DataHandler<RankedApps>([], { rowsPerPage: 10, totalRows: totalRows });
+	const handler = new DataHandler<RankedApps>([], {
+		rowsPerPage: rowsPerPage,
+		totalRows: totalRows
+	});
 	const rows = handler.getRows();
 
 	handler.onChange(
@@ -66,8 +70,9 @@
 			{/each}
 		</tbody>
 	</table>
-
 	<footer class="flex justify-between">
-		<Pagination {handler} />
+		{#if totalRows > rowsPerPage}
+			<Pagination {handler} />
+		{/if}
 	</footer>
 </div>

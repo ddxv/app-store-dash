@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Pagination from './Pagination.svelte';
 
-	import { DataHandler } from '@vincjo/datatables/remote';
+	import { DataHandler, RowsPerPage } from '@vincjo/datatables/remote';
 	import type { State } from '@vincjo/datatables/remote';
 	import type { AdsTxtEntries } from '../types';
 
@@ -9,7 +9,12 @@
 
 	const totalRows = entries_table.length;
 
-	const handler = new DataHandler<AdsTxtEntries>([], { rowsPerPage: 10, totalRows: totalRows });
+	const rowsPerPage = 10;
+
+	const handler = new DataHandler<AdsTxtEntries>([], {
+		rowsPerPage: rowsPerPage,
+		totalRows: totalRows
+	});
 	const rows = handler.getRows();
 
 	handler.onChange((state: State) =>
@@ -29,34 +34,22 @@
 		<table class="table table-hover table-compact table-auto w-full">
 			<thead>
 				<tr>
-					<th class="table-cell-fit !pl-1 !pr-0">Ad Domain</th>
-					<th class="table-cell-fit !px-0">Ad Domain URL</th>
-					<th class="table-cell-fit !px-0">Publisher ID</th>
-					<th class="table-cell-fit !px-0">Relationship</th>
-					<th class="table-cell-fit !px-0">crawl_result</th>
-					<th class="table-cell-fit !px-0">Developer Domain Crawled At</th>
+					<th class="table-cell-fit">Ad Domain</th>
+					<th class="table-cell-fit">Publisher ID</th>
+					<th class="table-cell-fit">Crawled At</th>
 				</tr>
 			</thead>
 			<tbody>
 				{#each $rows as row}
 					<tr>
-						<td class="!pl-1 !pr-0">
-							{row.ad_domain}
-						</td>
-						<td class="table-cell-fit !px-0">
+						<td class="table-cell-fit">
 							{row.ad_domain_url}
 						</td>
-						<td class="table-cell-fit !px-0">
+						<td class="table-cell-fit">
 							{row.publisher_id}
 						</td>
-						<td class="table-cell-fit !px-0">
-							{row.relationship}
-						</td>
-						<td class="table-cell-fit !px-0">
-							{row.crawl_result}
-						</td>
-						<td class="table-cell-fit !px-0">
-							{row.developer_domain_crawled_at}
+						<td class="table-cell-fit">
+							{new Date(row.developer_domain_crawled_at).toLocaleDateString('en-US')}
 						</td>
 					</tr>
 				{/each}
@@ -64,7 +57,9 @@
 		</table>
 		<footer class="flex justify-between">
 			<!-- <RowCount {handler} /> -->
-			<Pagination {handler} />
+			{#if totalRows > rowsPerPage}
+				<Pagination {handler} />
+			{/if}
 		</footer>
 	</div>
 </div>

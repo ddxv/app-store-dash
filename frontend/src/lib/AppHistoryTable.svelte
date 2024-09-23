@@ -7,9 +7,13 @@
 
 	export let history_table: AppHistoryInfo[];
 
-	const totalRows = history_table.length; // Calculate totalRows based on the length of the history_table array
+	const totalRows = history_table.length;
+	const rowsPerPage = 10;
 
-	const handler = new DataHandler<AppHistoryInfo>([], { rowsPerPage: 10, totalRows: totalRows });
+	const handler = new DataHandler<AppHistoryInfo>([], {
+		rowsPerPage: rowsPerPage,
+		totalRows: totalRows
+	});
 	const rows = handler.getRows();
 
 	handler.onChange(
@@ -83,7 +87,9 @@
 			</table>
 			<footer class="flex justify-between">
 				<!-- <RowCount {handler} /> -->
-				<Pagination {handler} />
+				{#if totalRows > rowsPerPage}
+					<Pagination {handler} />
+				{/if}
 			</footer>
 		</div>
 	</div>
