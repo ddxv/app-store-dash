@@ -1,30 +1,26 @@
-import type { PageServerLoad } from './$types.js';
+// import type { PageServerLoad } from './$types.js';
+import type { PageServerLoad } from './$types';
+
 
 export const load: PageServerLoad = async ({ params }) => {
-	const term = params.term;
-	const searchTerm = decodeURIComponent(term);
-	console.log(`search start term=${searchTerm}`);
+    const term = params.term;
+    const searchTerm = decodeURIComponent(term);
+    console.log(`search start term=${searchTerm}`);
 
-	return {
-		results: fetch(`http://localhost:8000/api/apps/search/${searchTerm}`)
-			.then((resp) => {
-				if (resp.status === 200) {
-					console.log('Search success');
-					return resp.json();
-				} else if (resp.status === 404) {
-					console.log('App Not found');
-					return 'App Not Found';
-				} else if (resp.status === 500) {
-					console.log('API Server error');
-					return 'Backend Error';
-				}
-			})
-			.then(
-				(json) => json,
-				(error) => {
-					console.log('Uncaught error', error);
-					return 'Uncaught Error';
-				}
-			)
-	};
+    try {
+        const response = await fetch(`http://localhost:8000/api/apps/search/${searchTerm}`);
+        if (response.status === 200) {
+            console.log('Search success');
+            return { results: await response.json() };
+        } else if (response.status === 404) {
+            console.log('App Not found');
+            return { results: 'App Not Found' };
+        } else if (response.status === 500) {
+            console.log('API Server error');
+            return { results: 'Backend Error' };
+        }
+    } catch (error) {
+        console.log('Uncaught error', error);
+        return { results: 'Uncaught Error' };
+    }
 };
