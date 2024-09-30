@@ -1,4 +1,3 @@
-// import type { PageServerLoad } from './$types.js';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ params }) => {
@@ -7,7 +6,7 @@ export const load: PageServerLoad = async ({ params }) => {
 	console.log(`search start term=${searchTerm}`);
 
 	try {
-		const response = await fetch(`http://localhost:8000/api/apps/search/${searchTerm}`);
+		const response = await fetch(`http://localhost:8000/api/apps/search/${searchTerm}/playstore`);
 		if (response.status === 200) {
 			console.log('Search success');
 			return { results: await response.json() };

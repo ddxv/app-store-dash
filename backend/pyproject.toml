@@ -4,10 +4,17 @@ name = "app-store-dash-backend"
 description = "Backend server for app store dashboard"
 version = "0.0.1"
 
+dependencies = [
+    "litestar[standard]",
+    "pandas",
+    "numpy",
+    "sqlalchemy",
+    "adscrawler @ https://github.com/ddxv/adscrawler",
+]
+
 [project.optional-dependencies]
 dev = ["pre-commit", "psycopg2-binary", "sshtunnel"]
 
-dependencies = ["litestar[standard]", "pandas", "numpy", "sqlalchemy"]
 
 [build-system]
 requires = ["setuptools", "wheel"]

@@ -37,6 +37,7 @@
 		"d3-cloud": "^1.2.7",
 		"d3-sankey": "^0.12.3",
 		"echarts": "^5.4.3",
+		"google-play-scraper": "^10.0.0",
 		"marked": "^14.0.0",
 		"postcss": "^8.4.24",
 		"postcss-load-config": "^6.0.0",
