@@ -5,19 +5,17 @@
 	import { goto } from '$app/navigation';
 
 	export let data: SearchResponse;
-	let searchTerm: string | null= '';
+	let searchTerm: string | null = '';
 
 	$: searchTerm = $page.params.term;
 
 	function searchGooglePlay() {
-    if (searchTerm) {
-      goto(`/search/${encodeURIComponent(searchTerm)}/playstore`);
-    }
-	else {
-		console.log("FAIL")
+		if (searchTerm) {
+			goto(`/search/${encodeURIComponent(searchTerm)}/playstore`);
+		} else {
+			console.log('FAIL');
+		}
 	}
-  }
-
 </script>
 
 {#await data.results}

@@ -13,6 +13,7 @@ class AppDetail:
 
     store_id: str
     name: str
+    store_url: str
 
 
 @dataclass

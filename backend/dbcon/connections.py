@@ -102,7 +102,7 @@ def get_postgres_server_ips(server_name: str) -> tuple[str, str]:
         db_ip = CONFIG[server_name]["host"]
         db_port = str(5432)
     else:
-        logger.info(f"Opening SSH tunnel to {server_name=}")
+        logger.info(f"Opening SSH tunnel to {db_ip=} {server_name=}")
         ssh_server = open_ssh_tunnel(server_name)
         ssh_server.start()
         db_port = str(ssh_server.local_bind_port)

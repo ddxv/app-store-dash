@@ -9,7 +9,10 @@ from typing import Self
 
 import numpy as np
 import pandas as pd
-from litestar import Controller, get
+from adscrawler import connection as write_conn
+from adscrawler.app_stores import google, scrape_stores
+from litestar import Controller, Response, get
+from litestar.background_tasks import BackgroundTask
 from litestar.exceptions import NotFoundException
 
 from api_app.models import (
@@ -39,6 +42,26 @@ logger = get_logger(__name__)
 
 
 def get_search_results(search_term: str) -> AppGroup:
+    """Parse search term and return resulting APpGroup."""
+    decoded_input = urllib.parse.unquote(search_term)
+    df = search_apps(search_input=decoded_input, limit=20)
+    logger.info(f"{decoded_input=} returned rows: {df.shape[0]}")
+    apps_dict = df.to_dict(orient="records")
+    app_group = AppGroup(title=search_term, apps=apps_dict)
+    return app_group
+
+
+def process_search_results(results: list[dict]) -> None:
+    """After having queried an external app store send results to db."""
+    logger.info("search results to try opening connection")
+    db_conn = write_conn.get_db_connection(use_ssh_tunnel=True)
+    db_conn.set_engine()
+    logger.info("search results to be processed")
+    scrape_stores.process_scraped(db_conn, results, "appgoblin_search")
+    logger.info("search results done")
+
+
+def get_playstore_results(search_term: str) -> AppGroup:
     """Parse search term and return resulting APpGroup."""
     decoded_input = urllib.parse.unquote(search_term)
     df = search_apps(search_input=decoded_input, limit=20)
@@ -442,6 +465,26 @@ class AppController(Controller):
 
         apps_dict = get_search_results(search_term)
         return apps_dict
+
+    @get(path="/search/{search_term:str}/playstore", cache=3600)
+    async def search_playstore(self: Self, search_term: str) -> AppGroup:
+        """Search apps and developers.
+
+        Args:
+        ----
+            search_term: str the search term to search for. Can search packages, developers and app names.
+
+        """
+        logger.info(f"{self.path} term={search_term} for playstore")
+
+        results = google.search_play_store(search_term)
+        app_group = AppGroup(title="Google Playstore Results", apps=results)
+        if len(results) > 0:
+            return Response(
+                app_group,
+                background=BackgroundTask(process_search_results, results),
+            )
+        return app_group
 
 
 COLLECTIONS = {

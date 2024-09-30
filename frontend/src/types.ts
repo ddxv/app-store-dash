@@ -35,6 +35,11 @@ export interface SearchResponse {
 	error?: string;
 }
 
+export interface PlaystoreSearchResponse {
+	results: AppGroup;
+	status?: number;
+	error?: string;
+}
 export interface Collection {
 	categories: AppGroup;
 	title: string;
