@@ -13,7 +13,14 @@
 		if (searchTerm) {
 			goto(`/search/${encodeURIComponent(searchTerm)}/playstore`);
 		} else {
-			console.log('FAIL');
+			console.log('search term error');
+		}
+	}
+	function searchAppleStore() {
+		if (searchTerm) {
+			goto(`/search/${encodeURIComponent(searchTerm)}/applestore`);
+		} else {
+			console.log('search term error');
 		}
 	}
 </script>
@@ -33,7 +40,10 @@
 				Try searching on Google Play. Results may take a couple minutes to be live on AppGoblin.
 			</p>
 			<button class="btn variant-filled-primary p-2" on:click={searchGooglePlay}>
-				Search Google Play
+				Search Google Play Store
+			</button>
+			<button class="btn variant-filled-primary p-2" on:click={searchAppleStore}>
+				Search Apple App Store
 			</button>
 		</div>
 	{:else}

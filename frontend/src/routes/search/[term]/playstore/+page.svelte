@@ -13,7 +13,6 @@
 		{#if results.apps.length > 0}
 			<!-- <pre>{JSON.stringify(results, null, 2)}</pre> -->
 			<AppGroupCard apps={results} />
-			<!-- Print the results as JSON -->
 		{:else}
 			<h3 class="h3">No apps found, please try your search again.</h3>
 		{/if}

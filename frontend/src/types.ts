@@ -40,6 +40,11 @@ export interface PlaystoreSearchResponse {
 	status?: number;
 	error?: string;
 }
+export interface AppleStoreSearchResponse {
+	results: AppGroup;
+	status?: number;
+	error?: string;
+}
 export interface Collection {
 	categories: AppGroup;
 	title: string;

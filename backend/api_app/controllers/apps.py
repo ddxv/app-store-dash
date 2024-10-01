@@ -1,6 +1,7 @@
 """API for app data.
 
 /apps/{store_id} a specific app
+/apps/search/{search_term} search for apps
 """
 
 import datetime
@@ -10,7 +11,7 @@ from typing import Self
 import numpy as np
 import pandas as pd
 from adscrawler import connection as write_conn
-from adscrawler.app_stores import google, scrape_stores
+from adscrawler.app_stores import apple, google, scrape_stores
 from litestar import Controller, Response, get
 from litestar.background_tasks import BackgroundTask
 from litestar.exceptions import NotFoundException
@@ -483,6 +484,34 @@ class AppController(Controller):
             return Response(
                 app_group,
                 background=BackgroundTask(process_search_results, results),
+            )
+        return app_group
+
+    @get(path="/search/{search_term:str}/applestore", cache=3600)
+    async def search_applestore(self: Self, search_term: str) -> AppGroup:
+        """Search apps and developers.
+
+        Args:
+        ----
+            search_term: str the search term to search for. Can search packages, developers and app names.
+
+        """
+        logger.info(f"{self.path} term={search_term} for apple store")
+
+        ids = apple.search_app_store_for_ids(search_term)
+        full_results = [{"store_id": store_id, "store": 2} for store_id in ids]
+        results = apple.app_details_for_ids(ids[:10])
+
+        df = pd.DataFrame(results)
+        df = apple.clean_ios_app_df(df)
+
+        results_dict = df.to_dict(orient="records")
+
+        app_group = AppGroup(title="Apple App Store Results", apps=results_dict)
+        if len(results) > 0:
+            return Response(
+                app_group,
+                background=BackgroundTask(process_search_results, full_results),
             )
         return app_group
 
