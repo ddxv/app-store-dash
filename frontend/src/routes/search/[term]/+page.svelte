@@ -39,12 +39,16 @@
 			<p class="p-2">
 				Try searching on Google Play. Results may take a couple minutes to be live on AppGoblin.
 			</p>
-			<button class="btn variant-filled-primary p-2" on:click={searchGooglePlay}>
-				Search Google Play Store
-			</button>
-			<button class="btn variant-filled-primary p-2" on:click={searchAppleStore}>
-				Search Apple App Store
-			</button>
+			<card class="card variant-glass-surface p-4">
+				<button class="btn variant-filled-primary p-2" on:click={searchGooglePlay}>
+					Search Google Play Store
+				</button>
+			</card>
+			<card class="card variant-glass-surface p-4">
+				<button class="btn variant-filled-primary p-2" on:click={searchAppleStore}>
+					Search Apple App Store
+				</button>
+			</card>
 		</div>
 	{:else}
 		<p>Search failed please try again ... {results}</p>

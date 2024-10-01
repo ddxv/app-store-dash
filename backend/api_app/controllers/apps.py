@@ -505,6 +505,8 @@ class AppController(Controller):
         df = pd.DataFrame(results)
         df = apple.clean_ios_app_df(df)
 
+        df["store_link"] = "https://apps.apple.com/us/app/-/id" + df["store_id"]
+
         results_dict = df.to_dict(orient="records")
 
         app_group = AppGroup(title="Apple App Store Results", apps=results_dict)
