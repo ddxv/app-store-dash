@@ -44,6 +44,7 @@ QUERY_TOP_COMPANIES_MONTH = load_sql_file("query_top_companies_month.sql")
 QUERY_TOP_PARENT_COMPANIES_MONTH = load_sql_file("query_top_companies_month_parent.sql")
 QUERY_COMPANY_APPS = load_sql_file("query_company_apps.sql")
 QUERY_PARENT_COMPANY_APPS = load_sql_file("query_parent_company_apps.sql")
+QUERY_COMPANIES_OVERVIEW = load_sql_file("query_companies_overview.sql")
 
 
 def get_recent_apps(collection: str, limit: int = 20) -> pd.DataFrame:
@@ -211,6 +212,14 @@ def get_app_package_details(store_id: str) -> pd.DataFrame:
         DBCON.engine,
         params={"store_id": store_id},
     )
+    return df
+
+
+def get_companies_overview() -> pd.DataFrame:
+    """Get overview of companies from multiple types like sdk and app-ads.txt."""
+    logger.info("query companies overview")
+    df = pd.read_sql(QUERY_COMPANIES_OVERVIEW, DBCON.engine)
+    df["store"] = df["store"].replace({1: "Google Play", 2: "Apple App Store"})
     return df
 
 

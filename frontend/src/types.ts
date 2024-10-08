@@ -140,6 +140,20 @@ export interface AdsTxtEntries extends Row {
 	crawl_result: string;
 	developer_domain_crawled_at: number;
 }
+
+export interface CompaniesOverviewEntries extends Row {
+	ad_network: string;
+	tag_source: string;
+	store: string;
+	app_count: number;
+}
+
+export interface CompaniesOverview {
+	status?: number;
+	error?: string;
+	companiesOverview: CompaniesOverviewEntries[];
+}
+
 export interface AppFullDetails {
 	myapp: AppFullDetail;
 	status?: number;

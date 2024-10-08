@@ -1,5 +1,6 @@
 """API endoipoints for companies.
 
+/companies/ returns list of top companies overall.
 /networks/ returns list of top networks.
 /trackers/ returns list of top trackers.
 """
@@ -12,7 +13,11 @@ from litestar.exceptions import NotFoundException
 
 from api_app.models import CompanyApps, TopCompanies
 from config import get_logger
-from dbcon.queries import get_apps_for_company, get_top_companies
+from dbcon.queries import (
+    get_apps_for_company,
+    get_companies_overview,
+    get_top_companies,
+)
 
 logger = get_logger(__name__)
 
@@ -128,6 +133,21 @@ class CompaniesController(Controller):
 
     path = "/api/"
 
+    @get(path="/companies", cache=3600)
+    async def companies_ov(self: Self) -> dict:
+        """Handle GET request for a all companies.
+
+        Returns
+        -------
+            A dictionary representation of the list of networks
+            each with an id, name, type and total of apps.
+
+        """
+        logger.info(f"{self.path}/companies start")
+        overview = get_companies_overview()
+
+        return overview.to_dict(orient="records")
+
     @get(path="/networks", cache=3600)
     async def top_networks(self: Self) -> TopCompanies:
         """Handle GET request for a list of top networks.
@@ -181,7 +201,7 @@ class CompaniesController(Controller):
             CompanyApps.
 
         """
-        logger.info(f"{self.path}/companies start")
+        logger.info(f"{self.path}/companies/{store_name} start")
 
         if store_name == "Google":
             store_id = 1
