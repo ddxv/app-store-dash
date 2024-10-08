@@ -148,6 +148,24 @@ class CompanyDetail:
 
 
 @dataclass
+class PlatformCompanies:
+
+    """Represents companies for a specific platform."""
+
+    ios: list[CompanyDetail]
+    android: list[CompanyDetail]
+
+
+@dataclass
+class CompaniesOverview:
+
+    """Contains a list of CompanyDetail objects representing the top networks identified."""
+
+    sdk: PlatformCompanies
+    adstxt: PlatformCompanies
+
+
+@dataclass
 class TopCompanies:
 
     """Contains a list of CompanyDetail objects representing the top networks identified."""

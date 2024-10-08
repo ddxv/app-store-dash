@@ -11,7 +11,12 @@ import pandas as pd
 from litestar import Controller, get
 from litestar.exceptions import NotFoundException
 
-from api_app.models import CompanyApps, TopCompanies
+from api_app.models import (
+    CompaniesOverview,
+    CompanyApps,
+    PlatformCompanies,
+    TopCompanies,
+)
 from config import get_logger
 from dbcon.queries import (
     get_apps_for_company,
@@ -134,7 +139,7 @@ class CompaniesController(Controller):
     path = "/api/"
 
     @get(path="/companies", cache=3600)
-    async def companies_ov(self: Self) -> dict:
+    async def companies(self: Self) -> CompaniesOverview:
         """Handle GET request for a all companies.
 
         Returns
@@ -144,9 +149,40 @@ class CompaniesController(Controller):
 
         """
         logger.info(f"{self.path}/companies start")
-        overview = get_companies_overview()
+        overview_df = get_companies_overview()
 
-        return overview.to_dict(orient="records")
+        ios_sdk = overview_df[
+            (~overview_df["store"].str.contains("google", case=False))
+            & (overview_df["tag_source"] == "sdk")
+        ]
+
+        ios_adstxt = overview_df[
+            (~overview_df["store"].str.contains("google", case=False))
+            & (overview_df["tag_source"] == "app_ads")
+        ]
+
+        android_sdk = overview_df[
+            (overview_df["store"].str.contains("google", case=False))
+            & (overview_df["tag_source"] == "sdk")
+        ]
+
+        android_adstxt = overview_df[
+            (overview_df["store"].str.contains("google", case=False))
+            & (overview_df["tag_source"] == "app_ads")
+        ]
+
+        results = CompaniesOverview(
+            sdk=PlatformCompanies(
+                ios=ios_sdk.to_dict(orient="records"),
+                android=android_sdk.to_dict(orient="records"),
+            ),
+            adstxt=PlatformCompanies(
+                ios=ios_adstxt.to_dict(orient="records"),
+                android=android_adstxt.to_dict(orient="records"),
+            ),
+        )
+
+        return results
 
     @get(path="/networks", cache=3600)
     async def top_networks(self: Self) -> TopCompanies:

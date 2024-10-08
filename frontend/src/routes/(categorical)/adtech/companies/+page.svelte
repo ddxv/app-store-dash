@@ -1,8 +1,7 @@
 <script lang="ts">
-	import type { CompaniesOverview, CompaniesOverviewEntries } from '../../../../types';
+	import type { CompaniesOverview } from '../../../../types';
 	export let data: CompaniesOverview;
 	import CompaniesOverviewTable from '$lib/CompaniesOverviewTable.svelte';
-	console.log('HEIIIIIIIIIIIIIII');
 </script>
 
 <div>
@@ -13,13 +12,16 @@
 	{:then apps}
 		{#if typeof apps == 'string'}
 			Failed to load network's apps.
-		{:else}
-			{console.log('HII11111111111111')}
-			{#if apps}
-				{console.log('HEIIIIIIIIIIIIIII2222222222')}
-				<CompaniesOverviewTable entries_table={apps}></CompaniesOverviewTable>
+		{:else if apps}
+			<div class="flex gap-2">
+				<CompaniesOverviewTable entries_table={apps.sdk.android}></CompaniesOverviewTable>
+				<CompaniesOverviewTable entries_table={apps.sdk.ios}></CompaniesOverviewTable>
 				<p class="p-2" />
-			{/if}
+				<CompaniesOverviewTable entries_table={apps.adstxt.android}></CompaniesOverviewTable>
+				<CompaniesOverviewTable entries_table={apps.adstxt.ios}></CompaniesOverviewTable>
+			</div>
+
+			<p class="p-2" />
 		{/if}
 	{:catch error}
 		<p style="color: red">{error.message}</p>

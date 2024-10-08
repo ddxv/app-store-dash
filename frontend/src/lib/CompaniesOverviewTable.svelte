@@ -28,6 +28,10 @@
 
 	handler.invalidate();
 	console.log(`TABLE ${totalRows}`);
+
+	function navigate(name: string) {
+		window.location.href = `/adtech/companies/${name}/`;
+	}
 </script>
 
 <div class="table-container space-y-4">
@@ -35,24 +39,21 @@
 		<table class="table table-hover table-compact table-auto w-full">
 			<thead>
 				<tr>
-					<th class="table-cell-fit">Ad Domain</th>
-					<th class="table-cell-fit">Publisher ID</th>
-					<th class="table-cell-fit">Crawled At</th>
-					<th class="table-cell-fit">Crawled At</th>
+					<th class="table-cell-fit"></th>
+					<th class="table-cell-fit">Ad Network</th>
+					<th class="table-cell-fit">App Count</th>
 				</tr>
 			</thead>
 			<tbody>
-				{#each $rows as row}
-					<tr>
+				{#each $rows as row, index}
+					<tr on:click={() => navigate(row.ad_network)} style="cursor: pointer;" class="px-0">
+						<td class="table-cell-fit">
+							{index + 1}
+						</td>
 						<td class="table-cell-fit">
 							{row.ad_network}
 						</td>
-						<td class="table-cell-fit">
-							{row.store}
-						</td>
-						<td class="table-cell-fit">
-							{row.tag_source}
-						</td>
+
 						<td class="table-cell-fit">
 							{row.app_count}
 						</td>

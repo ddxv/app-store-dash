@@ -148,10 +148,20 @@ export interface CompaniesOverviewEntries extends Row {
 	app_count: number;
 }
 
+export interface CompaniesOverviewPlatforms extends Row {
+	android: CompaniesOverviewEntries[];
+	ios: CompaniesOverviewEntries[];
+}
+
+export interface CompaniesOverviewSections extends Row {
+	sdk: CompaniesOverviewPlatforms;
+	adstxt: CompaniesOverviewPlatforms;
+}
+
 export interface CompaniesOverview {
 	status?: number;
 	error?: string;
-	companiesOverview: CompaniesOverviewEntries[];
+	companiesOverview: CompaniesOverviewSections;
 }
 
 export interface AppFullDetails {
