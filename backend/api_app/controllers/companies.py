@@ -181,8 +181,34 @@ class CompaniesController(Controller):
 
         Returns
         -------
-            A dictionary representation of the list of networks
+            A dictionary representation of the list of companies
             each with an id, name, type and total of apps.
+
+        """
+        logger.info(f"{self.path}/companies start")
+
+        results = get_overviews()
+
+        return results
+
+    @get(
+        path="/companies/{company_name:str}/{category_name:str}",
+        cache=3600,
+    )
+    async def company(
+        self: Self, company_name: str, category_name: str,
+    ) -> CompaniesOverview:
+        """Handle GET request for a specific company.
+
+        Args:
+        ----
+            company_name: The name of the company to retrieve apps for.
+            category_name: The name of the category to retrieve apps for.
+
+        Returns:
+        -------
+            A dictionary representation of the list of apps
+            for a specific company.
 
         """
         logger.info(f"{self.path}/companies start")
