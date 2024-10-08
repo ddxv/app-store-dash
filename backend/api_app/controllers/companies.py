@@ -27,6 +27,43 @@ from dbcon.queries import (
 logger = get_logger(__name__)
 
 
+def get_overviews() -> CompaniesOverview:
+    """Get the overview data from the database."""
+    overview_df = get_companies_overview()
+
+    ios_sdk = overview_df[
+        (~overview_df["store"].str.contains("google", case=False))
+        & (overview_df["tag_source"] == "sdk")
+    ]
+
+    ios_adstxt = overview_df[
+        (~overview_df["store"].str.contains("google", case=False))
+        & (overview_df["tag_source"] == "app_ads")
+    ]
+
+    android_sdk = overview_df[
+        (overview_df["store"].str.contains("google", case=False))
+        & (overview_df["tag_source"] == "sdk")
+    ]
+
+    android_adstxt = overview_df[
+        (overview_df["store"].str.contains("google", case=False))
+        & (overview_df["tag_source"] == "app_ads")
+    ]
+
+    results = CompaniesOverview(
+        sdk=PlatformCompanies(
+            ios=ios_sdk.to_dict(orient="records"),
+            android=android_sdk.to_dict(orient="records"),
+        ),
+        adstxt=PlatformCompanies(
+            ios=ios_adstxt.to_dict(orient="records"),
+            android=android_adstxt.to_dict(orient="records"),
+        ),
+    )
+    return results
+
+
 def append_overall_categories(df: pd.DataFrame) -> pd.DataFrame:
     """Add single row for overall category."""
     metrics = ["installs", "app_count", "ratings"]
@@ -149,38 +186,8 @@ class CompaniesController(Controller):
 
         """
         logger.info(f"{self.path}/companies start")
-        overview_df = get_companies_overview()
 
-        ios_sdk = overview_df[
-            (~overview_df["store"].str.contains("google", case=False))
-            & (overview_df["tag_source"] == "sdk")
-        ]
-
-        ios_adstxt = overview_df[
-            (~overview_df["store"].str.contains("google", case=False))
-            & (overview_df["tag_source"] == "app_ads")
-        ]
-
-        android_sdk = overview_df[
-            (overview_df["store"].str.contains("google", case=False))
-            & (overview_df["tag_source"] == "sdk")
-        ]
-
-        android_adstxt = overview_df[
-            (overview_df["store"].str.contains("google", case=False))
-            & (overview_df["tag_source"] == "app_ads")
-        ]
-
-        results = CompaniesOverview(
-            sdk=PlatformCompanies(
-                ios=ios_sdk.to_dict(orient="records"),
-                android=android_sdk.to_dict(orient="records"),
-            ),
-            adstxt=PlatformCompanies(
-                ios=ios_adstxt.to_dict(orient="records"),
-                android=android_adstxt.to_dict(orient="records"),
-            ),
-        )
+        results = get_overviews()
 
         return results
 
