@@ -47,6 +47,8 @@ QUERY_COMPANY_APPS_NEW = load_sql_file("query_company_apps_new.sql")
 QUERY_PARENT_COMPANY_APPS = load_sql_file("query_parent_company_apps.sql")
 QUERY_COMPANIES_OVERVIEW = load_sql_file("query_companies_overview.sql")
 QUERY_COMPANY_OVERVIEW = load_sql_file("query_company_overview.sql")
+QUERY_COMPANY_TREE = load_sql_file("query_company_tree.sql")
+QUERY_COMPANY_SDKS = load_sql_file("query_company_sdks.sql")
 
 
 def get_recent_apps(collection: str, limit: int = 20) -> pd.DataFrame:
@@ -229,9 +231,33 @@ def get_company_overview(company_name: str) -> pd.DataFrame:
     """Get overview of companies from multiple types like sdk and app-ads.txt."""
     logger.info(f"query company overview: {company_name=}")
     df = pd.read_sql(
-        QUERY_COMPANY_OVERVIEW, DBCON.engine, params={"company": company_name},
+        QUERY_COMPANY_OVERVIEW,
+        DBCON.engine,
+        params={"company": company_name},
     )
     df["store"] = df["store"].replace({1: "Google Play", 2: "Apple App Store"})
+    return df
+
+
+def get_company_tree(company_name: str) -> pd.DataFrame:
+    """Get a company tree with parent companies and domains."""
+    logger.info(f"query company tree: {company_name=}")
+    df = pd.read_sql(
+        QUERY_COMPANY_TREE,
+        DBCON.engine,
+        params={"company": company_name},
+    )
+    return df
+
+
+def get_company_sdks(company_name: str) -> pd.DataFrame:
+    """Get a company tree with parent companies and domains."""
+    logger.info(f"query company sdks: {company_name=}")
+    df = pd.read_sql(
+        QUERY_COMPANY_SDKS,
+        DBCON.engine,
+        params={"company": company_name},
+    )
     return df
 
 

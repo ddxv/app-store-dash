@@ -135,6 +135,36 @@ class CategoriesOverview:
 
 
 @dataclass
+class CompanyPatterns:
+    package_patterns: list[str]
+    paths: list[str]
+
+
+@dataclass
+class CompanyPatternsDict:
+    companies: dict[str, CompanyPatterns]
+
+
+@dataclass
+class ChildrenCompanyTree:
+
+    """A company tree with parent companies and domains."""
+
+    company_name: str
+    domain: str
+
+
+@dataclass
+class ParentCompanyTree:
+
+    """A company tree with parent companies and domains."""
+
+    parent_company_name: str
+    parent_company_domain: str
+    children_companies: list[ChildrenCompanyTree]
+
+
+@dataclass
 class CompanyDetail:
 
     """Describes details of a tracker.

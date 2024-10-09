@@ -17,7 +17,10 @@ from api_app.models import (
     CompanyApps,
     CompanyAppsOverview,
     CompanyOverview,
+    CompanyPatterns,
+    CompanyPatternsDict,
     CompanyPlatformOverview,
+    ParentCompanyTree,
     PlatformCompanies,
     TopCompanies,
 )
@@ -26,6 +29,8 @@ from dbcon.queries import (
     get_apps_for_company,
     get_companies_overview,
     get_company_overview,
+    get_company_sdks,
+    get_company_tree,
     get_top_companies,
     new_get_apps_for_company,
 )
@@ -330,6 +335,95 @@ class CompaniesController(Controller):
         results = get_company_apps_new(company_name=company_name)
 
         return results
+
+    @get(
+        path="/companies/{company_name:str}/tree",
+        cache=3600,
+    )
+    async def company_tree(
+        self: Self,
+        company_name: str,
+    ) -> ParentCompanyTree:
+        """Handle GET request for company tree.
+
+        Args:
+        ----
+        company_name : str
+            The name of the company to retrieve apps for.
+
+        Returns:
+        -------
+        ParentCompanyTree
+            An overview of companies, filtered for the specified company and category.
+
+        """
+        logger.info(f"GET /api/companies/{company_name}/tree start")
+
+        df = get_company_tree(company_name=company_name)
+
+        parent_company = df["parent_company_name"].tolist()[0]
+        parent_company_domain = df[df["parent_company_name"] == df["company_name"]][
+            "domain"
+        ].tolist()[0]
+
+        children_companies = df[~(df["parent_company_name"] == df["company_name"])][
+            ["company_name", "domain"]
+        ].to_dict(orient="records")
+
+        tree = ParentCompanyTree(
+            parent_company_name=parent_company,
+            parent_company_domain=parent_company_domain,
+            children_companies=children_companies,
+        )
+
+        return tree
+
+    @get(
+        path="/companies/{company_name:str}/sdks",
+        cache=3600,
+    )
+    async def company_sdks(
+        self: Self,
+        company_name: str,
+    ) -> CompanyPatternsDict:
+        """Handle GET request for company sdks.
+
+        Args:
+        ----
+        company_name : str
+            The name of the company to retrieve apps for.
+
+        Returns:
+        -------
+        ParentCompanySDKs
+            An overview of companies, filtered for the specified company and category.
+
+        """
+        logger.info(f"GET /api/companies/{company_name}/sdks start")
+
+        df = get_company_sdks(company_name=company_name)
+
+        mydict = CompanyPatternsDict(
+            companies={
+                company_name[0]: CompanyPatterns(
+                    package_patterns=mylist["package_pattern"].unique().tolist(),
+                    paths=mylist["path_pattern"].unique().tolist(),
+                )
+                for company_name, mylist in df.groupby(["company_name"])
+            },
+        )
+
+        # mydict = {}
+        # for company, mylist in df.groupby(["company_name"]):
+        #     company_name = company[0]
+        #     package_patterns = mylist["package_pattern"].unique().tolist()
+        #     paths = mylist["path_pattern"].unique().tolist()
+        #     mydict[company_name] = {
+        #         "package_patterns": package_patterns,
+        #         "paths": paths,
+        #     }
+
+        return mydict
 
     @get(
         path="/companies/{company_name:str}/{store_name:str}/{category_name:str}",

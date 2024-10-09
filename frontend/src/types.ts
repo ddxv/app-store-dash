@@ -193,11 +193,35 @@ export interface CompanyDetails {
 	total_apps: number;
 }
 
+export interface ChildrenCompanyTree {
+	company_name: string;
+	domain: string;
+}
+
+export interface ParentCompanyTree {
+	parent_company_name: string;
+	parent_company_domain: string;
+	children_companies: ChildrenCompanyTree[];
+}
+
+export interface CompanyPatterns {
+	package_patterns: string[];
+	paths: string[];
+}
+
+export interface CompanyPatternsDict {
+	companies: {
+		[company_name: string]: CompanyPatterns;
+	};
+}
+
 export interface CompanyFullDetails {
 	status?: number;
 	error?: string;
 	companyDetails: CompanyDetails;
 	companyOverview: CompanyOverviewSections;
+	companyTree: ParentCompanyTree;
+	companySdks: CompanyPatternsDict;
 }
 
 export interface AppFullDetails {
