@@ -3,7 +3,7 @@
 
 	import { DataHandler } from '@vincjo/datatables/remote';
 	import type { State } from '@vincjo/datatables/remote';
-	import type { OverviewAppList, CompanyOverviewApps } from '../types';
+	import type { CompanyOverviewApps } from '../types';
 
 	export let entries_table: CompanyOverviewApps[];
 
@@ -32,6 +32,14 @@
 	function navigate(store_id: string) {
 		window.location.href = `/apps/${store_id}/`;
 	}
+
+	console.log(entries_table[0].installs, typeof entries_table[0].installs);
+
+	$: firstRowInstalls =
+		entries_table &&
+		entries_table.length > 0 &&
+		typeof entries_table[0].installs === 'string' &&
+		entries_table[0].installs != 'N/A';
 </script>
 
 <div class="table-container space-y-4">
@@ -41,7 +49,13 @@
 				<tr>
 					<th class="table-cell-fit"></th>
 					<th class="table-cell-fit">App</th>
-					<th class="table-cell-fit">Installs</th>
+					<th class="table-cell-fit">
+						{#if firstRowInstalls}
+							Installs
+						{:else}
+							Ratings
+						{/if}
+					</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -55,7 +69,11 @@
 						</td>
 
 						<td class="table-cell-fit">
-							{row.installs}
+							{#if row.installs && typeof row.installs === 'string' && row.installs != 'N/A'}
+								{row.installs}
+							{:else}
+								{row.rating_count}
+							{/if}
 						</td>
 					</tr>
 				{/each}

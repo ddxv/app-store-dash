@@ -15,15 +15,17 @@ from api_app.models import (
     AppGroup,
     CompaniesOverview,
     CompanyApps,
+    CompanyAppsOverview,
     CompanyOverview,
+    CompanyPlatformOverview,
     PlatformCompanies,
-    PlatformCompanyApps,
     TopCompanies,
 )
 from config import get_logger
 from dbcon.queries import (
     get_apps_for_company,
     get_companies_overview,
+    get_company_overview,
     get_top_companies,
     new_get_apps_for_company,
 )
@@ -31,7 +33,7 @@ from dbcon.queries import (
 logger = get_logger(__name__)
 
 
-def get_company_overview(company_name: str) -> CompanyOverview:
+def get_company_apps_new(company_name: str) -> CompanyAppsOverview:
     """Get the overview data from the database."""
     df = new_get_apps_for_company(company_name=company_name)
 
@@ -47,17 +49,15 @@ def get_company_overview(company_name: str) -> CompanyOverview:
     ]
     ios_sdk = df[(df["tag_source"] == "sdk") & (~df["store"].str.startswith("Google"))]
 
-    logger.info(f"Query finished: {android_adstxt.head()=}")
-
-    results = CompanyOverview(
-        adstxt=PlatformCompanyApps(
+    results = CompanyAppsOverview(
+        adstxt=CompanyPlatformOverview(
             android=AppGroup(
                 apps=android_adstxt.to_dict(orient="records"),
                 title=company_name,
             ),
             ios=AppGroup(apps=ios_adstxt.to_dict(orient="records"), title=company_name),
         ),
-        sdk=PlatformCompanyApps(
+        sdk=CompanyPlatformOverview(
             android=AppGroup(
                 apps=android_sdk.to_dict(orient="records"),
                 title=company_name,
@@ -228,26 +228,24 @@ class CompaniesController(Controller):
         """
         logger.info("GET /api/companies start")
 
-        results = get_overviews()
+        overview = get_overviews()
 
-        return results
+        return overview
 
     @get(
         path="/companies/{company_name:str}",
         cache=3600,
     )
-    async def company(
+    async def company_overview(
         self: Self,
         company_name: str,
-    ) -> CompanyOverview:
+    ) -> CompanyAppsOverview:
         """Handle GET request for a specific company.
 
         Args:
         ----
         company_name : str
             The name of the company to retrieve apps for.
-        category_name : str
-            The name of the category to retrieve apps for.
 
         Returns:
         -------
@@ -257,7 +255,79 @@ class CompaniesController(Controller):
         """
         logger.info(f"GET /api/companies/{company_name}/ start")
 
-        results = get_company_overview(company_name=company_name)
+        df = get_company_overview(company_name=company_name)
+
+        # Define conditions
+        conditions = {
+            "sdk_ios": (df["store"].str.contains("Apple"))
+            & (df["tag_source"] == "sdk"),
+            "sdk_android": (df["store"].str.contains("Google"))
+            & (df["tag_source"] == "sdk"),
+            "adstxt_ios": (df["store"].str.contains("Apple"))
+            & (df["tag_source"] == "app_ads"),
+            "adstxt_android": (df["store"].str.contains("Google"))
+            & (df["tag_source"] == "app_ads"),
+        }
+
+        # Calculate sums for all conditions in one go
+        results = {
+            key: df.loc[condition, "app_count"].sum()
+            for key, condition in conditions.items()
+        }
+
+        # Unpack results
+        (
+            sdk_ios_total_apps,
+            sdk_android_total_apps,
+            adstxt_ios_total_apps,
+            adstxt_android_total_apps,
+        ) = (
+            results["sdk_ios"],
+            results["sdk_android"],
+            results["adstxt_ios"],
+            results["adstxt_android"],
+        )
+
+        total_apps = (
+            sdk_ios_total_apps
+            + sdk_android_total_apps
+            + adstxt_ios_total_apps
+            + adstxt_android_total_apps
+        )
+
+        overview = CompanyOverview(
+            total_apps=total_apps,
+            adstxt_ios_total_apps=adstxt_ios_total_apps,
+            adstxt_android_total_apps=adstxt_android_total_apps,
+            sdk_ios_total_apps=sdk_ios_total_apps,
+            sdk_android_total_apps=sdk_android_total_apps,
+        )
+        return overview
+
+    @get(
+        path="/companies/{company_name:str}/apps",
+        cache=3600,
+    )
+    async def company_apps(
+        self: Self,
+        company_name: str,
+    ) -> CompanyAppsOverview:
+        """Handle GET request for a specific company.
+
+        Args:
+        ----
+        company_name : str
+            The name of the company to retrieve apps for.
+
+        Returns:
+        -------
+        CompaniesOverview
+            An overview of companies, filtered for the specified company and category.
+
+        """
+        logger.info(f"GET /api/companies/{company_name}/apps start")
+
+        results = get_company_apps_new(company_name=company_name)
 
         return results
 

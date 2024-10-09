@@ -166,7 +166,7 @@ class CompaniesOverview:
 
 
 @dataclass
-class PlatformCompanyApps:
+class CompanyPlatformOverview:
 
     """Represents companies for a specific platform."""
 
@@ -175,12 +175,24 @@ class PlatformCompanyApps:
 
 
 @dataclass
+class CompanyAppsOverview:
+
+    """Overview of a company's apps on different platforms."""
+
+    sdk: CompanyPlatformOverview
+    adstxt: CompanyPlatformOverview
+
+
+@dataclass
 class CompanyOverview:
 
     """Contains a list of CompanyDetail objects representing the top networks identified."""
 
-    sdk: PlatformCompanyApps
-    adstxt: PlatformCompanyApps
+    total_apps: int
+    adstxt_ios_total_apps: int
+    adstxt_android_total_apps: int
+    sdk_ios_total_apps: int
+    sdk_android_total_apps: int
 
 
 @dataclass

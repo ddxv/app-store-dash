@@ -46,6 +46,7 @@ QUERY_COMPANY_APPS = load_sql_file("query_company_apps.sql")
 QUERY_COMPANY_APPS_NEW = load_sql_file("query_company_apps_new.sql")
 QUERY_PARENT_COMPANY_APPS = load_sql_file("query_parent_company_apps.sql")
 QUERY_COMPANIES_OVERVIEW = load_sql_file("query_companies_overview.sql")
+QUERY_COMPANY_OVERVIEW = load_sql_file("query_company_overview.sql")
 
 
 def get_recent_apps(collection: str, limit: int = 20) -> pd.DataFrame:
@@ -220,6 +221,16 @@ def get_companies_overview() -> pd.DataFrame:
     """Get overview of companies from multiple types like sdk and app-ads.txt."""
     logger.info("query companies overview")
     df = pd.read_sql(QUERY_COMPANIES_OVERVIEW, DBCON.engine)
+    df["store"] = df["store"].replace({1: "Google Play", 2: "Apple App Store"})
+    return df
+
+
+def get_company_overview(company_name: str) -> pd.DataFrame:
+    """Get overview of companies from multiple types like sdk and app-ads.txt."""
+    logger.info(f"query company overview: {company_name=}")
+    df = pd.read_sql(
+        QUERY_COMPANY_OVERVIEW, DBCON.engine, params={"company": company_name},
+    )
     df["store"] = df["store"].replace({1: "Google Play", 2: "Apple App Store"})
     return df
 

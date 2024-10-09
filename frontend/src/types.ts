@@ -185,9 +185,18 @@ export interface CompanyOverviewSections {
 	adstxt: CompanyOverviewPlatforms;
 }
 
-export interface CompanyOverview {
+export interface CompanyDetails {
+	sdk_ios_total_apps: number;
+	sdk_android_total_apps: number;
+	adstxt_ios_total_apps: number;
+	adstxt_android_total_apps: number;
+	total_apps: number;
+}
+
+export interface CompanyFullDetails {
 	status?: number;
 	error?: string;
+	companyDetails: CompanyDetails;
 	companyOverview: CompanyOverviewSections;
 }
 
