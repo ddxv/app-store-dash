@@ -164,6 +164,33 @@ export interface CompaniesOverview {
 	companiesOverview: CompaniesOverviewSections;
 }
 
+export interface OverviewAppList {
+	apps: CompanyOverviewApps[];
+}
+
+export interface CompanyOverviewApps extends Row {
+	//del
+	rank: number;
+	name: string;
+	store_id: string;
+}
+
+export interface CompanyOverviewPlatforms {
+	android: OverviewAppList;
+	ios: OverviewAppList;
+}
+
+export interface CompanyOverviewSections {
+	sdk: CompanyOverviewPlatforms;
+	adstxt: CompanyOverviewPlatforms;
+}
+
+export interface CompanyOverview {
+	status?: number;
+	error?: string;
+	companyOverview: CompanyOverviewSections;
+}
+
 export interface AppFullDetails {
 	myapp: AppFullDetail;
 	status?: number;

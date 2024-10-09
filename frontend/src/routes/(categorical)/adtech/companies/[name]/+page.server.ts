@@ -11,13 +11,13 @@ export const load: PageServerLoad = async ({ params }) => {
 	console.log(`start load overview for company=${networkName}`);
 	try {
 		return {
-			results: res
+			companyOverview: res
 				.then((resp) => {
 					if (resp.status === 200) {
 						return resp.json();
 					} else if (resp.status === 404) {
-						console.log('Tracker Not found');
-						return 'Tracker Not Found';
+						console.log('Company Not found');
+						return 'Company Not Found';
 					} else if (resp.status === 500) {
 						console.log('API Server error');
 						return 'Backend Error';

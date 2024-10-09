@@ -12,9 +12,12 @@ from litestar import Controller, get
 from litestar.exceptions import NotFoundException
 
 from api_app.models import (
+    AppGroup,
     CompaniesOverview,
     CompanyApps,
+    CompanyOverview,
     PlatformCompanies,
+    PlatformCompanyApps,
     TopCompanies,
 )
 from config import get_logger
@@ -22,9 +25,47 @@ from dbcon.queries import (
     get_apps_for_company,
     get_companies_overview,
     get_top_companies,
+    new_get_apps_for_company,
 )
 
 logger = get_logger(__name__)
+
+
+def get_company_overview(company_name: str) -> CompanyOverview:
+    """Get the overview data from the database."""
+    df = new_get_apps_for_company(company_name=company_name)
+
+    android_adstxt = df[
+        (df["tag_source"] == "app_ads") & (df["store"].str.startswith("Google"))
+    ]
+    ios_adstxt = df[
+        (df["tag_source"] == "app_ads") & (~df["store"].str.startswith("Google"))
+    ]
+
+    android_sdk = df[
+        (df["tag_source"] == "sdk") & (df["store"].str.startswith("Google"))
+    ]
+    ios_sdk = df[(df["tag_source"] == "sdk") & (~df["store"].str.startswith("Google"))]
+
+    logger.info(f"Query finished: {android_adstxt.head()=}")
+
+    results = CompanyOverview(
+        adstxt=PlatformCompanyApps(
+            android=AppGroup(
+                apps=android_adstxt.to_dict(orient="records"),
+                title=company_name,
+            ),
+            ios=AppGroup(apps=ios_adstxt.to_dict(orient="records"), title=company_name),
+        ),
+        sdk=PlatformCompanyApps(
+            android=AppGroup(
+                apps=android_sdk.to_dict(orient="records"),
+                title=company_name,
+            ),
+            ios=AppGroup(apps=ios_sdk.to_dict(orient="records"), title=company_name),
+        ),
+    )
+    return results
 
 
 def get_overviews() -> CompaniesOverview:
@@ -177,75 +218,48 @@ class CompaniesController(Controller):
 
     @get(path="/companies", cache=3600)
     async def companies(self: Self) -> CompaniesOverview:
-        """Handle GET request for a all companies.
+        """Handle GET request for all companies.
 
         Returns
         -------
-            A dictionary representation of the list of companies
-            each with an id, name, type and total of apps.
+        CompaniesOverview
+            An overview of companies across different platforms and sources.
 
         """
-        logger.info(f"{self.path}/companies start")
+        logger.info("GET /api/companies start")
 
         results = get_overviews()
 
         return results
 
     @get(
-        path="/companies/{company_name:str}/{category_name:str}",
+        path="/companies/{company_name:str}",
         cache=3600,
     )
     async def company(
-        self: Self, company_name: str, category_name: str,
-    ) -> CompaniesOverview:
+        self: Self,
+        company_name: str,
+    ) -> CompanyOverview:
         """Handle GET request for a specific company.
 
         Args:
         ----
-            company_name: The name of the company to retrieve apps for.
-            category_name: The name of the category to retrieve apps for.
+        company_name : str
+            The name of the company to retrieve apps for.
+        category_name : str
+            The name of the category to retrieve apps for.
 
         Returns:
         -------
-            A dictionary representation of the list of apps
-            for a specific company.
+        CompaniesOverview
+            An overview of companies, filtered for the specified company and category.
 
         """
-        logger.info(f"{self.path}/companies start")
+        logger.info(f"GET /api/companies/{company_name}/ start")
 
-        results = get_overviews()
+        results = get_company_overview(company_name=company_name)
 
         return results
-
-    @get(path="/networks", cache=3600)
-    async def top_networks(self: Self) -> TopCompanies:
-        """Handle GET request for a list of top networks.
-
-        Returns
-        -------
-            A dictionary representation of the list of networks
-            each with an id, name, type and total of apps.
-
-        """
-        logger.info(f"{self.path}/networks start")
-        overview = companies_overview(categories=[1])
-
-        return overview
-
-    @get(path="/trackers", cache=3600)
-    async def top_trackers(self: Self) -> TopCompanies:
-        """Handle GET request for a list of top trackers.
-
-        Returns
-        -------
-            A dictionary representation of the list of trackers
-            each with an id, name, type and total of apps.
-
-        """
-        logger.info(f"{self.path}/trackers start")
-        overview = companies_overview(categories=[2, 3])
-
-        return overview
 
     @get(
         path="/companies/{company_name:str}/{store_name:str}/{category_name:str}",
@@ -257,20 +271,31 @@ class CompaniesController(Controller):
         store_name: str,
         category_name: str,
     ) -> CompanyApps:
-        """Handle GET request for a specific company.
+        """Handle GET request for apps of a specific company.
 
         Args:
         ----
-            company_name: The name of the company to retrieve apps for.
-            store_name: The name of the store to retrieve apps for.
-            category_name: The name of the category to retrieve apps for.
+        company_name : str
+            The name of the company to retrieve apps for.
+        store_name : str
+            The name of the store to retrieve apps for.
+        category_name : str
+            The name of the category to retrieve apps for.
 
         Returns:
         -------
-            CompanyApps.
+        CompanyApps
+            A representation of the apps for the specified company, store, and category.
+
+        Raises:
+        ------
+        NotFoundException
+            If the store name or company name is not found.
 
         """
-        logger.info(f"{self.path}/companies/{store_name} start")
+        logger.info(
+            f"GET /api/companies/{company_name}/{store_name}/{category_name} start",
+        )
 
         if store_name == "Google":
             store_id = 1
@@ -303,3 +328,33 @@ class CompaniesController(Controller):
             apps=apps_dict,
         )
         return apps
+
+    @get(path="/networks", cache=3600)
+    async def top_networks(self: Self) -> TopCompanies:
+        """Handle GET request for a list of top networks.
+
+        Returns
+        -------
+        TopCompanies
+            A representation of the top networks across different platforms and categories.
+
+        """
+        logger.info("GET /api/networks start")
+        overview = companies_overview(categories=[1])
+
+        return overview
+
+    @get(path="/trackers", cache=3600)
+    async def top_trackers(self: Self) -> TopCompanies:
+        """Handle GET request for a list of top trackers.
+
+        Returns
+        -------
+        TopCompanies
+            A representation of the top trackers across different platforms and categories.
+
+        """
+        logger.info("GET /api/trackers start")
+        overview = companies_overview(categories=[2, 3])
+
+        return overview

@@ -166,6 +166,24 @@ class CompaniesOverview:
 
 
 @dataclass
+class PlatformCompanyApps:
+
+    """Represents companies for a specific platform."""
+
+    ios: AppGroup
+    android: AppGroup
+
+
+@dataclass
+class CompanyOverview:
+
+    """Contains a list of CompanyDetail objects representing the top networks identified."""
+
+    sdk: PlatformCompanyApps
+    adstxt: PlatformCompanyApps
+
+
+@dataclass
 class TopCompanies:
 
     """Contains a list of CompanyDetail objects representing the top networks identified."""

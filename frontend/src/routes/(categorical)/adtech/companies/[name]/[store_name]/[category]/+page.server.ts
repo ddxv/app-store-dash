@@ -20,8 +20,8 @@ export const load: PageServerLoad = async ({ params }) => {
 					if (resp.status === 200) {
 						return resp.json();
 					} else if (resp.status === 404) {
-						console.log('Tracker Not found');
-						return 'Tracker Not Found';
+						console.log('Company Category Not found');
+						return 'Company Category Not Found';
 					} else if (resp.status === 500) {
 						console.log('API Server error');
 						return 'Backend Error';

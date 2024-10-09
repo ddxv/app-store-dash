@@ -43,6 +43,7 @@ QUERY_STORE_COLLECTION_CATEGORY_MAP = load_sql_file(
 QUERY_TOP_COMPANIES_MONTH = load_sql_file("query_top_companies_month.sql")
 QUERY_TOP_PARENT_COMPANIES_MONTH = load_sql_file("query_top_companies_month_parent.sql")
 QUERY_COMPANY_APPS = load_sql_file("query_company_apps.sql")
+QUERY_COMPANY_APPS_NEW = load_sql_file("query_company_apps_new.sql")
 QUERY_PARENT_COMPANY_APPS = load_sql_file("query_parent_company_apps.sql")
 QUERY_COMPANIES_OVERVIEW = load_sql_file("query_companies_overview.sql")
 
@@ -283,6 +284,34 @@ def get_single_apps_adstxt(store_id: str) -> pd.DataFrame:
         con=DBCON.engine,
         params={"store_id": store_id},
     )
+    return df
+
+
+def new_get_apps_for_company(
+    company_name: str,
+    mapped_category: str | None = None,
+) -> pd.DataFrame:
+    """Get apps for for a network."""
+    logger.info(f"Query: {company_name=}")
+
+    mylimit = 20
+
+    if mapped_category == "games":
+        mapped_category = "game%"
+
+    df = pd.read_sql(
+        QUERY_COMPANY_APPS_NEW,
+        con=DBCON.engine,
+        params={
+            "ad_network": company_name,
+            "mapped_category": mapped_category,
+            "mylimit": mylimit,
+        },
+    )
+    if not df.empty:
+        df["review_count"] = 0
+        df["rating"] = 5
+        df = clean_app_df(df)
     return df
 
 

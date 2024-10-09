@@ -15,8 +15,8 @@ export const load: PageServerLoad = async ({}) => {
 					if (resp.status === 200) {
 						return resp.json();
 					} else if (resp.status === 404) {
-						console.log('Tracker Not found');
-						return 'Tracker Not Found';
+						console.log('Companes overview not found');
+						return 'Company overview not Found';
 					} else if (resp.status === 500) {
 						console.log('API Server error');
 						return 'Backend Error';
