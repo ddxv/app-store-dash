@@ -29,10 +29,11 @@ from dbcon.queries import (
     get_apps_for_company,
     get_companies_overview,
     get_company_overview,
+    get_company_parent_categories,
     get_company_sdks,
     get_company_tree,
     get_top_companies,
-    new_get_apps_for_company,
+    new_get_top_apps_for_company,
 )
 
 logger = get_logger(__name__)
@@ -40,7 +41,7 @@ logger = get_logger(__name__)
 
 def get_company_apps_new(company_name: str) -> CompanyAppsOverview:
     """Get the overview data from the database."""
-    df = new_get_apps_for_company(company_name=company_name)
+    df = new_get_top_apps_for_company(company_name=company_name)
 
     android_adstxt = df[
         (df["tag_source"] == "app_ads") & (df["store"].str.startswith("Google"))
@@ -244,7 +245,7 @@ class CompaniesController(Controller):
     async def company_overview(
         self: Self,
         company_name: str,
-    ) -> CompanyAppsOverview:
+    ) -> CompanyOverview:
         """Handle GET request for a specific company.
 
         Args:
@@ -310,7 +311,7 @@ class CompaniesController(Controller):
         return overview
 
     @get(
-        path="/companies/{company_name:str}/apps",
+        path="/companies/{company_name:str}/topapps",
         cache=3600,
     )
     async def company_apps(
@@ -335,6 +336,70 @@ class CompaniesController(Controller):
         results = get_company_apps_new(company_name=company_name)
 
         return results
+
+    @get(
+        path="/companies/{company_name:str}/parentcategories",
+        cache=3600,
+    )
+    async def company_parent_categories(
+        self: Self,
+        company_name: str,
+    ) -> dict:
+        """Handle GET request for a specific company parent categories.
+
+        Args:
+        ----
+        company_name : str
+            The name of the company to retrieve apps for.
+
+        Returns:
+        -------
+        dict
+            A dictionary of parent categories for the specified company.
+
+        """
+        logger.info(f"GET /api/companies/{company_name}/parentcategories start")
+
+        df = get_company_parent_categories(company_name=company_name)
+
+        num_categories = 6
+
+        top_cats = (
+            df.sort_values(by="app_count", ascending=False)
+            .head(num_categories)
+            .app_categories.tolist()
+        )
+
+        df.loc[df["app_category"].isin(top_cats), "app_category"] = "others"
+
+        df = df.groupby(["app_category"])["app_count"].sum().reset_index()
+
+        df["name"] = df["app_category"]
+
+        df["name"] = (
+            df["name"]
+            .str.replace("game_", "Games: ")
+            .str.replace("_and_", " & ")
+            .str.replace("_", " ")
+            .str.title()
+        )
+
+        df = df.rename(columns={"name": "group", "app_count": "value"})
+
+        """export default [
+                  {
+                    group: '2V2N 9KYPM version 1',
+                    value: 20000
+                },
+                {
+                    group: 'L22I P66EP L22I P66EP L22I P66EP',
+                    value: 65000
+                },
+                ...
+                ]
+            """
+
+        return df.to_dict(orient="records")
 
     @get(
         path="/companies/{company_name:str}/tree",
@@ -412,16 +477,6 @@ class CompaniesController(Controller):
                 for company_name, mylist in df.groupby(["company_name"])
             },
         )
-
-        # mydict = {}
-        # for company, mylist in df.groupby(["company_name"]):
-        #     company_name = company[0]
-        #     package_patterns = mylist["package_pattern"].unique().tolist()
-        #     paths = mylist["path_pattern"].unique().tolist()
-        #     mydict[company_name] = {
-        #         "package_patterns": package_patterns,
-        #         "paths": paths,
-        #     }
 
         return mydict
 

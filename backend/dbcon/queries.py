@@ -43,12 +43,13 @@ QUERY_STORE_COLLECTION_CATEGORY_MAP = load_sql_file(
 QUERY_TOP_COMPANIES_MONTH = load_sql_file("query_top_companies_month.sql")
 QUERY_TOP_PARENT_COMPANIES_MONTH = load_sql_file("query_top_companies_month_parent.sql")
 QUERY_COMPANY_APPS = load_sql_file("query_company_apps.sql")
-QUERY_COMPANY_APPS_NEW = load_sql_file("query_company_apps_new.sql")
+QUERY_COMPANY_TOP_APPS_NEW = load_sql_file("query_company_apps_new.sql")
 QUERY_PARENT_COMPANY_APPS = load_sql_file("query_parent_company_apps.sql")
 QUERY_COMPANIES_OVERVIEW = load_sql_file("query_companies_overview.sql")
 QUERY_COMPANY_OVERVIEW = load_sql_file("query_company_overview.sql")
 QUERY_COMPANY_TREE = load_sql_file("query_company_tree.sql")
 QUERY_COMPANY_SDKS = load_sql_file("query_company_sdks.sql")
+QUERY_PARENT_COMPANY_CATEGORIES = load_sql_file("query_company_parent_category.sql")
 
 
 def get_recent_apps(collection: str, limit: int = 20) -> pd.DataFrame:
@@ -261,6 +262,17 @@ def get_company_sdks(company_name: str) -> pd.DataFrame:
     return df
 
 
+def get_company_parent_categories(company_name: str) -> pd.DataFrame:
+    """Get a company parent categories."""
+    logger.info(f"query company parent categories: {company_name=}")
+    df = pd.read_sql(
+        QUERY_PARENT_COMPANY_CATEGORIES,
+        DBCON.engine,
+        params={"company_name": company_name},
+    )
+    return df
+
+
 def clean_app_df(df: pd.DataFrame) -> pd.DataFrame:
     """Apply generic cleaning for a DF with app data from store_apps table."""
     df["store"] = df["store"].replace({1: "Google Play", 2: "Apple App Store"})
@@ -324,7 +336,7 @@ def get_single_apps_adstxt(store_id: str) -> pd.DataFrame:
     return df
 
 
-def new_get_apps_for_company(
+def new_get_top_apps_for_company(
     company_name: str,
     mapped_category: str | None = None,
 ) -> pd.DataFrame:
@@ -337,7 +349,7 @@ def new_get_apps_for_company(
         mapped_category = "game%"
 
     df = pd.read_sql(
-        QUERY_COMPANY_APPS_NEW,
+        QUERY_COMPANY_TOP_APPS_NEW,
         con=DBCON.engine,
         params={
             "ad_network": company_name,
