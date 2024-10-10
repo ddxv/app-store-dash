@@ -4,8 +4,6 @@
 
 	export let title: string;
 	export let items: Record<string, string[]> | Trackers | Networks = {};
-	export let osPath: string = '';
-	const basePath: string = 'adtech/companies';
 
 	import CompanyButton from './CompanyButton.svelte';
 
@@ -29,7 +27,9 @@
 				</li>
 			{:else}
 				<!-- For trackers and networks -->
-				<CompanyButton companyName={key} localUrl={`/${basePath}/${key}/${osPath}/overall`} />
+				<div class="mt-4">
+					<CompanyButton companyName={key} />
+				</div>
 				{#each Object.entries(value) as [xml_path, androidNames]}
 					<li>
 						<p class={xmlPathFont}>{xml_path}</p>

@@ -325,18 +325,10 @@
 				{:else}
 					{#await data.myapp then myapp}
 						{#if packageInfo.trackers && Object.keys(packageInfo.trackers).length > 0}
-							<ManifestItemList
-								items={packageInfo.trackers}
-								title="Trackers"
-								osPath={myapp.store_link.includes('google') ? 'Google' : 'Apple'}
-							></ManifestItemList>
+							<ManifestItemList items={packageInfo.trackers} title="Trackers"></ManifestItemList>
 						{/if}
 						{#if packageInfo.networks && Object.keys(packageInfo.networks).length > 0}
-							<ManifestItemList
-								items={packageInfo.networks}
-								title="Ad Networks"
-								osPath={myapp.store_link.includes('google') ? 'Google' : 'Apple'}
-							></ManifestItemList>
+							<ManifestItemList items={packageInfo.networks} title="Ad Networks"></ManifestItemList>
 						{/if}
 						{#if packageInfo.permissions && packageInfo.permissions.length > 0}
 							<h4 class="h4 md:h3 p-2 md:p-4 mt-4">Permissions</h4>

@@ -1,9 +1,10 @@
 <script lang="ts">
 	import Pagination from './Pagination.svelte';
 
-	import { DataHandler, RowsPerPage } from '@vincjo/datatables/remote';
+	import { DataHandler } from '@vincjo/datatables/remote';
 	import type { State } from '@vincjo/datatables/remote';
 	import type { AdsTxtEntries } from '../types';
+	import CompanyButton from './CompanyButton.svelte';
 
 	export let entries_table: AdsTxtEntries[];
 
@@ -34,6 +35,7 @@
 		<table class="table table-hover table-compact table-auto w-full">
 			<thead>
 				<tr>
+					<th class="table-cell-fit">Company</th>
 					<th class="table-cell-fit">Ad Domain</th>
 					<th class="table-cell-fit">Publisher ID</th>
 					<th class="table-cell-fit">Crawled At</th>
@@ -42,6 +44,13 @@
 			<tbody>
 				{#each $rows as row}
 					<tr>
+						<td class="table-cell-fit">
+							{#if row.company_name}
+								<CompanyButton companyName={row.company_name} />
+							{:else}
+								<CompanyButton companyName={row.ad_domain_url} />
+							{/if}
+						</td>
 						<td class="table-cell-fit">
 							{row.ad_domain_url}
 						</td>

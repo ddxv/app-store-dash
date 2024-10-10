@@ -19,10 +19,7 @@
 		<ul class="space-y-2">
 			{#each myTree.children_companies as child}
 				<li class="flex items-center space-x-2">
-					<CompanyButton
-						companyName={child.company_name}
-						localUrl={`/adtech/companies/${child.company_name}`}
-					/>
+					<CompanyButton companyName={child.company_name} />
 					<div class="h-6 w-px bg-gray-300"></div>
 					<a
 						href={`https://${child.domain}`}

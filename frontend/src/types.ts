@@ -133,10 +133,11 @@ export interface AppHistoryInfo extends Row {
 	rating_count: number;
 }
 export interface AdsTxtEntries extends Row {
-	ad_domain: string;
-	ad_domain_url: number;
-	publisher_id: number;
-	relationship: number;
+	company_name: string;
+	ad_domain: number;
+	ad_domain_url: string;
+	publisher_id: string;
+	relationship: string;
 	crawl_result: string;
 	developer_domain_crawled_at: number;
 }
