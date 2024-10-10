@@ -223,6 +223,7 @@ export interface CompanyFullDetails {
 	companyOverview: CompanyOverviewSections;
 	companyTree: ParentCompanyTree;
 	companySdks: CompanyPatternsDict;
+	companyParentCategories: ChartTabularData;
 }
 
 export interface AppFullDetails {

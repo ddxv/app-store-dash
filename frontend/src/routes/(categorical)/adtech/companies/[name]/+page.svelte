@@ -32,8 +32,6 @@
 			<p class="text-red-500 text-center">{error.message}</p>
 		{/await}
 
-		<CompanyCategoryPie />
-
 		<div class="lg:col-span-1">
 			{#await data.companyDetails}
 				<div class="bg-white p-6 rounded-lg shadow-md flex justify-center items-center h-40">
@@ -55,6 +53,20 @@
 			{/await}
 		</div>
 	</div>
+
+	{#await data.companyParentCategories}
+		<div class="bg-white p-6 rounded-lg shadow-md">
+			<h1 class="text-xl font-bold text-gray-800 mb-4">Parent Categories</h1>
+		</div>
+	{:then myPieData}
+		{#if typeof myPieData == 'string'}
+			<p class="text-red-500 text-center">Failed to load parent categories.</p>
+		{:else if myPieData}
+			<CompanyCategoryPie plotData={myPieData} />
+		{/if}
+	{:catch error}
+		<p class="text-red-500 text-center">{error.message}</p>
+	{/await}
 
 	{#await data.companyTree}
 		<div class="bg-white p-6 rounded-md shadow-md flex justify-center items-center h-40">

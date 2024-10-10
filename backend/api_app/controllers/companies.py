@@ -362,15 +362,15 @@ class CompaniesController(Controller):
 
         df = get_company_parent_categories(company_name=company_name)
 
-        num_categories = 6
+        num_categories = 9
 
         top_cats = (
             df.sort_values(by="app_count", ascending=False)
             .head(num_categories)
-            .app_categories.tolist()
+            .app_category.tolist()
         )
 
-        df.loc[df["app_category"].isin(top_cats), "app_category"] = "others"
+        df.loc[~df["app_category"].isin(top_cats), "app_category"] = "others"
 
         df = df.groupby(["app_category"])["app_count"].sum().reset_index()
 
