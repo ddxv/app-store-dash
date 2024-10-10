@@ -40,11 +40,13 @@
 			{:then myData}
 				{#if typeof myData == 'string'}
 					<p class="text-red-500 text-center">Failed to load company details.</p>
-				{:else if myData}
+				{:else if myData.categories.all}
 					<div class="bg-white p-6 rounded-lg shadow-md">
 						<h2 class="text-xl font-bold text-gray-800 mb-4">Total Apps</h2>
 						<p class="text-lg text-gray-700">
-							<span class="font-semibold text-gray-900">{formatNumber(myData.total_apps)}</span>
+							<span class="font-semibold text-gray-900"
+								>{formatNumber(myData.categories.all.total_apps)}</span
+							>
 						</p>
 					</div>
 				{/if}
@@ -103,16 +105,16 @@
 {:then myData}
 	<CompanyTableGrid>
 		<span slot="sdk-android-total-apps">
-			{formatNumber(myData.sdk_android_total_apps)}
+			{formatNumber(myData.categories.all.sdk_android_total_apps)}
 		</span>
 		<span slot="sdk-ios-total-apps">
-			{formatNumber(myData.sdk_ios_total_apps)}
+			{formatNumber(myData.categories.all.sdk_ios_total_apps)}
 		</span>
 		<span slot="adstxt-android-total-apps">
-			{formatNumber(myData.adstxt_android_total_apps)}
+			{formatNumber(myData.categories.all.adstxt_android_total_apps)}
 		</span>
 		<span slot="adstxt-ios-total-apps">
-			{formatNumber(myData.adstxt_ios_total_apps)}
+			{formatNumber(myData.categories.all.adstxt_ios_total_apps)}
 		</span>
 
 		<div slot="sdk-android">
@@ -121,10 +123,8 @@
 			{:then tableData}
 				{#if typeof tableData == 'string'}
 					Failed to load company's apps.
-				{:else if tableData}
+				{:else if tableData && tableData.sdk.android.apps.length > 0}
 					<CompanyOverviewTable entries_table={tableData.sdk.android.apps} />
-				{:else}
-					Failed to load company overview.
 				{/if}
 			{:catch error}
 				<p style="color: red">{error.message}</p>
@@ -136,7 +136,7 @@
 			{:then tableData}
 				{#if typeof tableData == 'string'}
 					Failed to load company's apps.
-				{:else if tableData}
+				{:else if tableData && tableData.sdk.ios.apps.length > 0}
 					<CompanyOverviewTable entries_table={tableData.sdk.ios.apps} />
 				{/if}
 			{:catch error}
@@ -149,7 +149,7 @@
 			{:then tableData}
 				{#if typeof tableData == 'string'}
 					Failed to load company's apps.
-				{:else if tableData}
+				{:else if tableData && tableData.adstxt.android.apps.length > 0}
 					<CompanyOverviewTable entries_table={tableData.adstxt.android.apps} />
 				{/if}
 			{/await}
@@ -160,7 +160,7 @@
 			{:then tableData}
 				{#if typeof tableData == 'string'}
 					Failed to load company's apps.
-				{:else if tableData}
+				{:else if tableData && tableData.adstxt.ios.apps.length > 0}
 					<CompanyOverviewTable entries_table={tableData.adstxt.ios.apps} />
 				{/if}
 			{/await}

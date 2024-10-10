@@ -28,7 +28,11 @@
 	export let myCatData: CatData;
 
 	const handleCompanyCategoryClick = (categoryName: string) => {
-		goto(`/adtech/companies/${company_name}/${store_name}/${categoryName}`);
+		if (categoryName == 'overall') {
+			goto(`/adtech/companies/${company_name}/`);
+		} else {
+			goto(`/adtech/companies/${company_name}/${categoryName}`);
+		}
 	};
 
 	const scrollTop = () => {
@@ -347,26 +351,6 @@
 {/if}
 
 {#if $page.url.pathname.startsWith('/adtech/companies')}
-	<div class="p-1 md:p-2">
-		<div class="card p-4">
-			<h4 class="h4 md:h3">Stores</h4>
-			<nav class="list-nav">
-				<ul>
-					{#each Object.entries(storeIDLookup) as [_prop, values]}
-						<li>
-							<a
-								href={generateCompaniesLink(company_name, values.store_name, company_category)}
-								class={classesActive(`/adtech/companies/${company_name}/${values.store_name}`)}
-							>
-								{values.store_name}
-							</a>
-						</li>
-					{/each}
-				</ul>
-			</nav>
-		</div>
-	</div>
-
 	<div class="p-1 md:p-2">
 		<div class="card p-4">
 			<h3 class="h4 md:h3">Categories</h3>

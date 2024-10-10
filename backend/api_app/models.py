@@ -1,6 +1,7 @@
 """Data models for APIs."""
 
 from dataclasses import dataclass, field
+from typing import Any
 
 
 @dataclass
@@ -136,12 +137,18 @@ class CategoriesOverview:
 
 @dataclass
 class CompanyPatterns:
+
+    """Holds a list of package patterns and paths for a company."""
+
     package_patterns: list[str]
     paths: list[str]
 
 
 @dataclass
 class CompanyPatternsDict:
+
+    """Holds a list of package patterns and paths for a company."""
+
     companies: dict[str, CompanyPatterns]
 
 
@@ -214,15 +221,36 @@ class CompanyAppsOverview:
 
 
 @dataclass
-class CompanyOverview:
+class CompanyAppStats:
 
     """Contains a list of CompanyDetail objects representing the top networks identified."""
 
-    total_apps: int
-    adstxt_ios_total_apps: int
-    adstxt_android_total_apps: int
-    sdk_ios_total_apps: int
-    sdk_android_total_apps: int
+    total_apps: int = 0
+    adstxt_ios_total_apps: int = 0
+    adstxt_android_total_apps: int = 0
+    sdk_ios_total_apps: int = 0
+    sdk_android_total_apps: int = 0
+
+
+@dataclass
+class CompanyCategoryOverview:
+
+    """Contains a dictionary of categories, each with their associated statistics."""
+
+    categories: dict[str, CompanyAppStats] = field(default_factory=dict)
+
+    def add_category(self, category: str) -> None:
+        """Add a category to the overview."""
+        if category not in self.categories:
+            self.categories[category] = CompanyAppStats()
+
+    def update_stats(self, category: str, **kwargs: dict[str, Any]) -> None:
+        """Update the stats for a category."""
+        if category not in self.categories:
+            self.add_category(category)
+        for key, value in kwargs.items():
+            if hasattr(self.categories[category], key):
+                setattr(self.categories[category], key, value)
 
 
 @dataclass

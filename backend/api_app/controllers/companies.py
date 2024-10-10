@@ -16,7 +16,7 @@ from api_app.models import (
     CompaniesOverview,
     CompanyApps,
     CompanyAppsOverview,
-    CompanyOverview,
+    CompanyCategoryOverview,
     CompanyPatterns,
     CompanyPatternsDict,
     CompanyPlatformOverview,
@@ -39,9 +39,13 @@ from dbcon.queries import (
 logger = get_logger(__name__)
 
 
-def get_company_apps_new(company_name: str) -> CompanyAppsOverview:
+def get_company_apps_new(
+    company_name: str, category: str | None = None,
+) -> CompanyAppsOverview:
     """Get the overview data from the database."""
-    df = new_get_top_apps_for_company(company_name=company_name)
+    df = new_get_top_apps_for_company(
+        company_name=company_name, mapped_category=category,
+    )
 
     android_adstxt = df[
         (df["tag_source"] == "app_ads") & (df["store"].str.startswith("Google"))
@@ -245,7 +249,7 @@ class CompaniesController(Controller):
     async def company_overview(
         self: Self,
         company_name: str,
-    ) -> CompanyOverview:
+    ) -> CompanyCategoryOverview:
         """Handle GET request for a specific company.
 
         Args:
@@ -263,7 +267,8 @@ class CompaniesController(Controller):
 
         df = get_company_overview(company_name=company_name)
 
-        # Define conditions
+        overview = CompanyCategoryOverview()
+
         conditions = {
             "sdk_ios": (df["store"].str.contains("Apple"))
             & (df["tag_source"] == "sdk"),
@@ -301,13 +306,67 @@ class CompaniesController(Controller):
             + adstxt_android_total_apps
         )
 
-        overview = CompanyOverview(
+        overview.update_stats(
+            "all",
             total_apps=total_apps,
             adstxt_ios_total_apps=adstxt_ios_total_apps,
             adstxt_android_total_apps=adstxt_android_total_apps,
             sdk_ios_total_apps=sdk_ios_total_apps,
             sdk_android_total_apps=sdk_android_total_apps,
         )
+
+        cats = df.app_category.unique().tolist()
+        for cat in cats:
+            conditions = {
+                "sdk_ios": (df["store"].str.contains("Apple"))
+                & (df["tag_source"] == "sdk")
+                & (df["app_category"] == cat),
+                "sdk_android": (df["store"].str.contains("Google"))
+                & (df["tag_source"] == "sdk")
+                & (df["app_category"] == cat),
+                "adstxt_ios": (df["store"].str.contains("Apple"))
+                & (df["tag_source"] == "app_ads")
+                & (df["app_category"] == cat),
+                "adstxt_android": (df["store"].str.contains("Google"))
+                & (df["tag_source"] == "app_ads")
+                & (df["app_category"] == cat),
+            }
+
+            # Calculate sums for all conditions in one go
+            results = {
+                key: df.loc[condition, "app_count"].sum()
+                for key, condition in conditions.items()
+            }
+
+            # Unpack results
+            (
+                sdk_ios_total_apps,
+                sdk_android_total_apps,
+                adstxt_ios_total_apps,
+                adstxt_android_total_apps,
+            ) = (
+                results["sdk_ios"],
+                results["sdk_android"],
+                results["adstxt_ios"],
+                results["adstxt_android"],
+            )
+
+            total_apps = (
+                sdk_ios_total_apps
+                + sdk_android_total_apps
+                + adstxt_ios_total_apps
+                + adstxt_android_total_apps
+            )
+
+            overview.update_stats(
+                cat,
+                total_apps=total_apps,
+                adstxt_ios_total_apps=adstxt_ios_total_apps,
+                adstxt_android_total_apps=adstxt_android_total_apps,
+                sdk_ios_total_apps=sdk_ios_total_apps,
+                sdk_android_total_apps=sdk_android_total_apps,
+            )
+
         return overview
 
     @get(
@@ -317,23 +376,26 @@ class CompaniesController(Controller):
     async def company_apps(
         self: Self,
         company_name: str,
+        category: str | None = None,
     ) -> CompanyAppsOverview:
-        """Handle GET request for a specific company.
+        """Handle GET request for a specific company top apps.
 
         Args:
         ----
         company_name : str
             The name of the company to retrieve apps for.
+        category : str | None
+            The category to retrieve apps for.
 
         Returns:
         -------
-        CompaniesOverview
+        CompanyAppsOverview
             An overview of companies, filtered for the specified company and category.
 
         """
-        logger.info(f"GET /api/companies/{company_name}/apps start")
+        logger.info(f"GET /api/companies/{company_name}/topapps {category=} start")
 
-        results = get_company_apps_new(company_name=company_name)
+        results = get_company_apps_new(company_name=company_name, category=category)
 
         return results
 
@@ -386,19 +448,6 @@ class CompaniesController(Controller):
 
         df = df.rename(columns={"name": "group", "app_count": "value"})
 
-        """export default [
-                  {
-                    group: '2V2N 9KYPM version 1',
-                    value: 20000
-                },
-                {
-                    group: 'L22I P66EP L22I P66EP L22I P66EP',
-                    value: 65000
-                },
-                ...
-                ]
-            """
-
         return df.to_dict(orient="records")
 
     @get(
@@ -427,9 +476,12 @@ class CompaniesController(Controller):
         df = get_company_tree(company_name=company_name)
 
         parent_company = df["parent_company_name"].tolist()[0]
-        parent_company_domain = df[df["parent_company_name"] == df["company_name"]][
-            "domain"
-        ].tolist()[0]
+        try:
+            parent_company_domain = df[df["parent_company_name"] == df["company_name"]][
+                "domain"
+            ].tolist()[0]
+        except IndexError:
+            parent_company_domain = df["domain"].tolist()[0]
 
         children_companies = df[~(df["parent_company_name"] == df["company_name"])][
             ["company_name", "domain"]

@@ -186,7 +186,7 @@ export interface CompanyOverviewSections {
 	adstxt: CompanyOverviewPlatforms;
 }
 
-export interface CompanyDetails {
+export interface CategoryAppStats {
 	sdk_ios_total_apps: number;
 	sdk_android_total_apps: number;
 	adstxt_ios_total_apps: number;
@@ -216,14 +216,26 @@ export interface CompanyPatternsDict {
 	};
 }
 
+export interface CompanyCategoryOverview {
+	categories: {
+		[key: string]: CategoryAppStats;
+	};
+}
+
 export interface CompanyFullDetails {
 	status?: number;
 	error?: string;
-	companyDetails: CompanyDetails;
+	companyDetails: CompanyCategoryOverview;
 	companyOverview: CompanyOverviewSections;
 	companyTree: ParentCompanyTree;
 	companySdks: CompanyPatternsDict;
 	companyParentCategories: ChartTabularData;
+}
+export interface CompanyCategoryDetails {
+	status?: number;
+	error?: string;
+	companyDetails: CompanyCategoryOverview;
+	companyCategoryApps: CompanyOverviewSections;
 }
 
 export interface AppFullDetails {
