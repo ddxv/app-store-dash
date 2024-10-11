@@ -14,7 +14,7 @@ LEFT JOIN adtech.companies AS cc
 LEFT JOIN adtech.sdk_packages AS sp
     ON
         c.id = sp.company_id
-        OR cc.id = sp.company_id
+        -- OR cc.id = sp.company_id
 LEFT JOIN adtech.sdk_paths AS sp2
     ON
         c.id = sp2.company_id

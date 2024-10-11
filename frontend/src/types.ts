@@ -196,12 +196,13 @@ export interface CategoryAppStats {
 
 export interface ChildrenCompanyTree {
 	company_name: string;
-	domain: string;
+	domains: string[];
 }
 
 export interface ParentCompanyTree {
-	parent_company_name: string;
-	parent_company_domain: string;
+	parent_company_name: string | null;
+	company_name: string;
+	domains: string[];
 	children_companies: ChildrenCompanyTree[];
 }
 

@@ -3,7 +3,6 @@
 /categories/{category_id} a specific app
 """
 
-
 from typing import Self
 
 import numpy as np
@@ -69,6 +68,7 @@ class CategoryController(Controller):
         """
         logger.info(f"{self.path} start")
         overview = category_overview()
+        logger.info(f"{self.path} return")
 
         return overview
 

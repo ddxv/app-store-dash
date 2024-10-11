@@ -20,4 +20,4 @@ FULL OUTER JOIN ad_domains AS ad
 WHERE
     c.name = :company
     OR cc.name = :company
-    OR ad.domain LIKE '%' || :company || '%';
+    OR ad.domain ILIKE :company || '%';

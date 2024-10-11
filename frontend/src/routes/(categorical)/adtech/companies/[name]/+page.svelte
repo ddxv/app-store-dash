@@ -9,29 +9,44 @@
 	import CompanyTableGrid from '$lib/CompanyTableGrid.svelte';
 	import CompanyTree from '$lib/CompanyTree.svelte';
 	import CompanySDKs from '$lib/CompanySDKs.svelte';
-
+	import ExternalLink from '$lib/ExternalLink.svelte';
+	import CompanyButton from '$lib/CompanyButton.svelte';
 	function formatNumber(num: number) {
 		return new Intl.NumberFormat('en-US').format(num);
 	}
 </script>
 
+<div class="flex items-center mb-2">
+	<h1 class="text-3xl font-bold text-gray-800">{name}</h1>
+	<div class="h-8 w-px bg-gray-300 mx-2"></div>
+	{#await data.companyTree}
+		<span class="text-lg text-gray-600">Loading...</span>
+	{:then myTree}
+		{#if typeof myTree == 'string'}
+			<p class="text-red-500">Failed to load company tree.</p>
+		{:else if myTree}
+			<div class="flex items-center">
+				{#each myTree.domains as domain}
+					<ExternalLink {domain} />
+				{/each}
+			</div>
+		{/if}
+	{:catch error}
+		<p class="text-red-500">{error.message}</p>
+	{/await}
+</div>
+
+{#await data.companyTree then myTree}
+	{#if myTree && myTree.parent_company_name}
+		<div class="flex items-center mt-2 ml-4">
+			<p class="text-xl font-bold text-gray-800 mr-2">Parent Company:</p>
+			<CompanyButton companyName={myTree.parent_company_name} />
+		</div>
+	{/if}
+{/await}
+
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 	<div class="bg-white p-6 rounded-lg shadow-md">
-		<h1 class="text-3xl font-bold mb-6 text-gray-800">{name}</h1>
-		{#await data.companyTree}
-			<div class="bg-white p-6 rounded-md shadow-md flex justify-center items-center h-40">
-				<span class="text-lg text-gray-600">Loading...</span>
-			</div>
-		{:then myTree}
-			{#if typeof myTree == 'string'}
-				<p class="text-red-500 text-center">Failed to load company tree.</p>
-			{:else if myTree}
-				<p class="text-gray-700">Domain: {myTree.parent_company_domain}</p>
-			{/if}
-		{:catch error}
-			<p class="text-red-500 text-center">{error.message}</p>
-		{/await}
-
 		<div class="lg:col-span-1">
 			{#await data.companyDetails}
 				<div class="bg-white p-6 rounded-lg shadow-md flex justify-center items-center h-40">

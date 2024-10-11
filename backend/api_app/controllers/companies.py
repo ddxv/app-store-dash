@@ -40,11 +40,13 @@ logger = get_logger(__name__)
 
 
 def get_company_apps_new(
-    company_name: str, category: str | None = None,
+    company_name: str,
+    category: str | None = None,
 ) -> CompanyAppsOverview:
     """Get the overview data from the database."""
     df = new_get_top_apps_for_company(
-        company_name=company_name, mapped_category=category,
+        company_name=company_name,
+        mapped_category=category,
     )
 
     android_adstxt = df[
@@ -476,20 +478,35 @@ class CompaniesController(Controller):
         df = get_company_tree(company_name=company_name)
 
         parent_company = df["parent_company_name"].tolist()[0]
-        try:
-            parent_company_domain = df[df["parent_company_name"] == df["company_name"]][
-                "domain"
-            ].tolist()[0]
-        except IndexError:
-            parent_company_domain = df["domain"].tolist()[0]
 
-        children_companies = df[~(df["parent_company_name"] == df["company_name"])][
-            ["company_name", "domain"]
-        ].to_dict(orient="records")
+        if parent_company == company_name:
+            parent_company = None
+
+        domains = (
+            df[
+                ~(parent_company == df["company_name"])
+                & (company_name == df["company_name"])
+            ]["domain"]
+            .unique()
+            .tolist()
+        )
+
+        children_companies = (
+            df[
+                ~(parent_company == df["company_name"])
+                & (company_name != df["company_name"])
+            ]
+            .rename(columns={"domain": "domains"})
+            .groupby(["company_name"])["domains"]
+            .apply(lambda x: list(x))
+            .reset_index()
+            .to_dict(orient="records")
+        )
 
         tree = ParentCompanyTree(
             parent_company_name=parent_company,
-            parent_company_domain=parent_company_domain,
+            company_name=company_name,
+            domains=domains,
             children_companies=children_companies,
         )
 
@@ -612,6 +629,7 @@ class CompaniesController(Controller):
         """
         logger.info("GET /api/networks start")
         overview = companies_overview(categories=[1])
+        logger.info("GET /api/networks return")
 
         return overview
 
@@ -627,5 +645,6 @@ class CompaniesController(Controller):
         """
         logger.info("GET /api/trackers start")
         overview = companies_overview(categories=[2, 3])
+        logger.info("GET /api/trackers return")
 
         return overview

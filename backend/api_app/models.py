@@ -158,7 +158,7 @@ class ChildrenCompanyTree:
     """A company tree with parent companies and domains."""
 
     company_name: str
-    domain: str
+    domains: list[str]
 
 
 @dataclass
@@ -166,8 +166,9 @@ class ParentCompanyTree:
 
     """A company tree with parent companies and domains."""
 
-    parent_company_name: str
-    parent_company_domain: str
+    parent_company_name: str | None
+    company_name: str
+    domains: list[str]
     children_companies: list[ChildrenCompanyTree]
 
 
