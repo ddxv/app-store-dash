@@ -80,9 +80,9 @@ def get_company_apps_new(
     return results
 
 
-def get_overviews() -> CompaniesOverview:
+def get_overviews(category: str | None = None) -> CompaniesOverview:
     """Get the overview data from the database."""
-    overview_df = get_companies_overview()
+    overview_df = get_companies_overview(app_category=category)
 
     ios_sdk = overview_df[
         (~overview_df["store"].str.contains("google", case=False))
@@ -241,6 +241,22 @@ class CompaniesController(Controller):
         logger.info("GET /api/companies start")
 
         overview = get_overviews()
+
+        return overview
+
+    @get(path="/companies/categories/{category:str}", cache=3600)
+    async def companies_categories(self: Self, category: str) -> CompaniesOverview:
+        """Handle GET request for all companies in a category.
+
+        Returns
+        -------
+        CompaniesOverview
+            An overview of companies across different platforms and sources.
+
+        """
+        logger.info(f"GET /api/companies/categories/{category} start")
+
+        overview = get_overviews(category=category)
 
         return overview
 

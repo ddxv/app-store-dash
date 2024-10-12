@@ -222,10 +222,12 @@ def get_app_package_details(store_id: str) -> pd.DataFrame:
     return df
 
 
-def get_companies_overview() -> pd.DataFrame:
+def get_companies_overview(app_category: str | None = None) -> pd.DataFrame:
     """Get overview of companies from multiple types like sdk and app-ads.txt."""
     logger.info("query companies overview")
-    df = pd.read_sql(QUERY_COMPANIES_OVERVIEW, DBCON.engine)
+    df = pd.read_sql(
+        QUERY_COMPANIES_OVERVIEW, DBCON.engine, params={"app_category": app_category},
+    )
     df["store"] = df["store"].replace({1: "Google Play", 2: "Apple App Store"})
     return df
 
