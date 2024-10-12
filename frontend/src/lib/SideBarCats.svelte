@@ -1,13 +1,10 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { ListBox, ListBoxItem } from '@skeletonlabs/skeleton';
+	import { ListBox } from '@skeletonlabs/skeleton';
 
 	import SideBarCatsListBoxItem from './SideBarCatsListBoxItem.svelte';
 
 	export let baseUrl: string;
-
-	import IconGoogle from '$lib/svg/IconGoogle.svelte';
-	import IconiOS from '$lib/svg/IconiOS.svelte';
 
 	import { homeCollectionSelection } from '../stores';
 	let localHomeCollectionSelect = $homeCollectionSelection;
@@ -23,7 +20,6 @@
 	$: homeCategorySelection.set(localHomeCategorySelect);
 
 	import type { CatData } from '../types';
-	import SideBar from './SideBar.svelte';
 
 	$: if ($page.params.category) {
 		localHomeCategorySelect = $page.params.category;
@@ -41,6 +37,10 @@
 					{#if values.id && (Number(values.android) > 0 || values.name == 'Games')}
 						{#if values.id != 'overall'}
 							<a href="{baseUrl}/{values.id}">
+								<SideBarCatsListBoxItem {values} {localHomeCategorySelect} />
+							</a>
+						{:else if baseUrl == '/companies/categories'}
+							<a href="/companies">
 								<SideBarCatsListBoxItem {values} {localHomeCategorySelect} />
 							</a>
 						{:else}
