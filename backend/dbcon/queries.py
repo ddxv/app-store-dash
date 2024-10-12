@@ -51,6 +51,7 @@ QUERY_COMPANY_PARENT_OVERVIEW = load_sql_file("query_company_parent_overview.sql
 QUERY_COMPANY_TREE = load_sql_file("query_company_tree.sql")
 QUERY_COMPANY_SDKS = load_sql_file("query_company_sdks.sql")
 QUERY_PARENT_COMPANY_CATEGORIES = load_sql_file("query_company_parent_category.sql")
+QUERY_COMPANY_CATEGORIES = load_sql_file("query_company_category.sql")
 
 
 def get_recent_apps(collection: str, limit: int = 20) -> pd.DataFrame:
@@ -277,6 +278,12 @@ def get_company_parent_categories(company_name: str) -> pd.DataFrame:
         DBCON.engine,
         params={"company_name": company_name},
     )
+    if df.empty:
+        df = pd.read_sql(
+            QUERY_COMPANY_CATEGORIES,
+            DBCON.engine,
+            params={"company_name": company_name},
+        )
     return df
 
 

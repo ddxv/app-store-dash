@@ -1,6 +1,6 @@
 <script lang="ts">
 	export let companyName: string;
-	const baseUrl = '/adtech/companies';
+	const baseUrl = '/companies';
 </script>
 
 <p class="h4">
