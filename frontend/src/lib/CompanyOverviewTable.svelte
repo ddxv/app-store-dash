@@ -29,10 +29,6 @@
 	handler.invalidate();
 	console.log(`TABLE ${totalRows}`);
 
-	function navigate(store_id: string) {
-		window.location.href = `/apps/${store_id}/`;
-	}
-
 	console.log(entries_table[0].installs, typeof entries_table[0].installs);
 
 	$: firstRowInstalls =
@@ -60,21 +56,23 @@
 			</thead>
 			<tbody>
 				{#each $rows as row, index}
-					<tr on:click={() => navigate(row.store_id)} style="cursor: pointer;" class="px-0">
-						<td class="table-cell-fit">
-							{index + 1}
-						</td>
-						<td class="table-cell-fit">
-							{row.name}
-						</td>
+					<tr style="cursor: pointer;" class="px-0">
+						<a href="/apps/{row.store_id}" class="table-row-link">
+							<td class="table-cell-fit">
+								{index + 1}
+							</td>
+							<td class="table-cell-fit">
+								{row.name}
+							</td>
 
-						<td class="table-cell-fit">
-							{#if row.installs && typeof row.installs === 'string' && row.installs != 'N/A'}
-								{row.installs}
-							{:else}
-								{row.rating_count}
-							{/if}
-						</td>
+							<td class="table-cell-fit">
+								{#if row.installs && typeof row.installs === 'string' && row.installs != 'N/A'}
+									{row.installs}
+								{:else}
+									{row.rating_count}
+								{/if}
+							</td>
+						</a>
 					</tr>
 				{/each}
 			</tbody>
@@ -87,3 +85,14 @@
 		</footer>
 	</div>
 </div>
+
+<style>
+	.table-row-link {
+		display: contents;
+		text-decoration: none;
+		color: inherit;
+	}
+	.table-row-link:hover td {
+		background-color: #f5f5f5;
+	}
+</style>
