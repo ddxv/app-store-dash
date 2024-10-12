@@ -27,9 +27,7 @@
 	);
 
 	handler.invalidate();
-	console.log(`TABLE ${totalRows}`);
-
-	console.log(entries_table[0].installs, typeof entries_table[0].installs);
+	console.log(`TABLE Company: ${totalRows}`);
 
 	$: firstRowInstalls =
 		entries_table &&

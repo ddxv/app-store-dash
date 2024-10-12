@@ -5,9 +5,8 @@ export const csr: boolean = true;
 
 export const load: PageServerLoad = async ({ parent, params }) => {
 	const networkName = params.name;
-	const res = fetch(`http://localhost:8000/api/companies/${networkName}`);
-	const res_apps = fetch(`http://localhost:8000/api/companies/${networkName}/topapps`);
 	const res_tree = fetch(`http://localhost:8000/api/companies/${networkName}/tree`);
+	const res_apps = fetch(`http://localhost:8000/api/companies/${networkName}/topapps`);
 	const res_sdks = fetch(`http://localhost:8000/api/companies/${networkName}/sdks`);
 
 	const { companyDetails } = await parent();
@@ -19,13 +18,13 @@ export const load: PageServerLoad = async ({ parent, params }) => {
 	try {
 		return {
 			companyDetails: companyDetails,
-			companyOverview: res_apps
+			companyTree: res_tree
 				.then((resp) => {
 					if (resp.status === 200) {
 						return resp.json();
 					} else if (resp.status === 404) {
-						console.log('Company Not found');
-						return 'Company Not Found';
+						console.log('Company Tree Not found');
+						return 'Company Tree Not Found';
 					} else if (resp.status === 500) {
 						console.log('API Server error');
 						return 'Backend Error';
@@ -38,13 +37,13 @@ export const load: PageServerLoad = async ({ parent, params }) => {
 						return 'Uncaught Error';
 					}
 				),
-			companyTree: res_tree
+			companyOverview: res_apps
 				.then((resp) => {
 					if (resp.status === 200) {
 						return resp.json();
 					} else if (resp.status === 404) {
-						console.log('Company Tree Not found');
-						return 'Company Tree Not Found';
+						console.log('Company Not found');
+						return 'Company Not Found';
 					} else if (resp.status === 500) {
 						console.log('API Server error');
 						return 'Backend Error';

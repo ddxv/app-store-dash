@@ -29,4 +29,6 @@
 	// ];
 </script>
 
-<DonutChart data={plotData} options={categoryPieOptions} />
+<div class="p-4">
+	<DonutChart data={plotData} options={categoryPieOptions} />
+</div>

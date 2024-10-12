@@ -27,11 +27,7 @@
 	);
 
 	handler.invalidate();
-	console.log(`TABLE ${totalRows}`);
-
-	function navigate(name: string) {
-		window.location.href = `/adtech/companies/${name}/`;
-	}
+	console.log(`TABLE Companies: ${totalRows}`);
 </script>
 
 <div class="table-container space-y-4">
@@ -46,18 +42,20 @@
 			</thead>
 			<tbody>
 				{#each $rows as row, index}
-					<tr on:click={() => navigate(row.ad_network)} style="cursor: pointer;" class="px-0">
-						<td class="table-cell-fit">
-							{index + 1}
-						</td>
-						<td class="table-cell-fit">
-							{row.ad_network}
-						</td>
+					<tr style="cursor: pointer;" class="px-0">
+						<a href="/adtech/companies/{row.ad_network}" class="table-row-link">
+							<td class="table-cell-fit">
+								{index + 1}
+							</td>
+							<td class="table-cell-fit">
+								{row.ad_network}
+							</td>
 
-						<td class="table-cell-fit">
-							{row.app_count}
-						</td>
-					</tr>
+							<td class="table-cell-fit">
+								{row.app_count}
+							</td>
+						</a></tr
+					>
 				{/each}
 			</tbody>
 		</table>
@@ -69,3 +67,14 @@
 		</footer>
 	</div>
 </div>
+
+<style>
+	.table-row-link {
+		display: contents;
+		text-decoration: none;
+		color: inherit;
+	}
+	.table-row-link:hover td {
+		background-color: #f5f5f5;
+	}
+</style>

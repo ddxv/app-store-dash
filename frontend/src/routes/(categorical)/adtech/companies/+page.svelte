@@ -1,18 +1,9 @@
 <script lang="ts">
 	import type { CompaniesOverview } from '../../../../types';
-	import { page } from '$app/stores';
-	const { name } = $page.params;
 	export let data: CompaniesOverview;
 	import CompaniesOverviewTable from '$lib/CompaniesOverviewTable.svelte';
 
 	import CompanyTableGrid from '$lib/CompanyTableGrid.svelte';
-	import CompanyTree from '$lib/CompanyTree.svelte';
-	import CompanySDKs from '$lib/CompanySDKs.svelte';
-	import ExternalLink from '$lib/ExternalLink.svelte';
-	import CompanyButton from '$lib/CompanyButton.svelte';
-	function formatNumber(num: number) {
-		return new Intl.NumberFormat('en-US').format(num);
-	}
 </script>
 
 <div class="flex items-center mb-2">
@@ -52,9 +43,12 @@
 </div>
 {#await data.companiesOverview}
 	<div><span>Loading...</span></div>
-{:then myData}
-	<CompanyTableGrid>
-		<!-- <span slot="sdk-android-total-apps">
+{:then tableData}
+	{#if typeof tableData == 'string'}
+		Failed to load companies.
+	{:else}
+		<CompanyTableGrid>
+			<!-- <span slot="sdk-android-total-apps">
 			{formatNumber(myData.categories.all.sdk_android_total_apps)}
 		</span>
 		<span slot="sdk-ios-total-apps">
@@ -67,53 +61,26 @@
 			{formatNumber(myData.categories.all.adstxt_ios_total_apps)}
 		</span> -->
 
-		<div slot="sdk-android">
-			{#await data.companiesOverview}
-				<div><span>Loading...</span></div>
-			{:then tableData}
-				{#if typeof tableData == 'string'}
-					Failed to load company's apps.
-				{:else if tableData && tableData.sdk.android.length > 0}
+			<div slot="sdk-android">
+				{#if tableData && tableData.sdk.android.length > 0}
 					<CompaniesOverviewTable entries_table={tableData.sdk.android} />
 				{/if}
-			{:catch error}
-				<p style="color: red">{error.message}</p>
-			{/await}
-		</div>
-		<div slot="sdk-ios">
-			{#await data.companiesOverview}
-				<div><span>Loading...</span></div>
-			{:then tableData}
-				{#if typeof tableData == 'string'}
-					Failed to load company's apps.
-				{:else if tableData && tableData.sdk.ios.length > 0}
+			</div>
+			<div slot="sdk-ios">
+				{#if tableData && tableData.sdk.ios.length > 0}
 					<CompaniesOverviewTable entries_table={tableData.sdk.ios} />
 				{/if}
-			{:catch error}
-				<p style="color: red">{error.message}</p>
-			{/await}
-		</div>
-		<div slot="adstxt-android">
-			{#await data.companiesOverview}
-				<div><span>Loading...</span></div>
-			{:then tableData}
-				{#if typeof tableData == 'string'}
-					Failed to load company's apps.
-				{:else if tableData && tableData.adstxt.android.length > 0}
+			</div>
+			<div slot="adstxt-android">
+				{#if tableData && tableData.adstxt.android.length > 0}
 					<CompaniesOverviewTable entries_table={tableData.adstxt.android} />
 				{/if}
-			{/await}
-		</div>
-		<div slot="adstxt-ios">
-			{#await data.companiesOverview}
-				<div><span>Loading...</span></div>
-			{:then tableData}
-				{#if typeof tableData == 'string'}
-					Failed to load company's apps.
-				{:else if tableData && tableData.adstxt.ios.length > 0}
+			</div>
+			<div slot="adstxt-ios">
+				{#if tableData && tableData.adstxt.ios.length > 0}
 					<CompaniesOverviewTable entries_table={tableData.adstxt.ios} />
 				{/if}
-			{/await}
-		</div>
-	</CompanyTableGrid>
+			</div>
+		</CompanyTableGrid>
+	{/if}
 {/await}
