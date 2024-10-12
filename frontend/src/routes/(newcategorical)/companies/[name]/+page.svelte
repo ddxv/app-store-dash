@@ -127,16 +127,16 @@
 		{:else}
 			<CompanyTableGrid>
 				<span slot="sdk-android-total-apps">
-					{formatNumber(detailsData.categories.all.sdk_android_total_apps)}
+					Android Apps: {formatNumber(detailsData.categories.all.sdk_android_total_apps)}
 				</span>
 				<span slot="sdk-ios-total-apps">
-					{formatNumber(detailsData.categories.all.sdk_ios_total_apps)}
+					iOS Apps: {formatNumber(detailsData.categories.all.sdk_ios_total_apps)}
 				</span>
 				<span slot="adstxt-android-total-apps">
-					{formatNumber(detailsData.categories.all.adstxt_android_total_apps)}
+					Android Companies: {formatNumber(detailsData.categories.all.adstxt_android_total_apps)}
 				</span>
 				<span slot="adstxt-ios-total-apps">
-					{formatNumber(detailsData.categories.all.adstxt_ios_total_apps)}
+					iOS Companies: {formatNumber(detailsData.categories.all.adstxt_ios_total_apps)}
 				</span>
 
 				<div slot="sdk-android">
