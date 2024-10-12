@@ -157,6 +157,7 @@ export interface CompaniesOverviewPlatforms extends Row {
 export interface CompaniesOverviewSections extends Row {
 	sdk: CompaniesOverviewPlatforms;
 	adstxt: CompaniesOverviewPlatforms;
+	categories: CompanyCategoryOverview;
 }
 
 export interface CompaniesOverview {

@@ -13,10 +13,10 @@ from litestar.exceptions import NotFoundException
 
 from api_app.models import (
     AppGroup,
+    CategoryOverview,
     CompaniesOverview,
     CompanyApps,
     CompanyAppsOverview,
-    CompanyCategoryOverview,
     CompanyPatterns,
     CompanyPatternsDict,
     CompanyPlatformOverview,
@@ -84,6 +84,14 @@ def get_overviews(category: str | None = None) -> CompaniesOverview:
     """Get the overview data from the database."""
     overview_df = get_companies_overview(app_category=category)
 
+    category_overview = make_category_uniques(df=overview_df)
+
+    overview_df = (
+        overview_df.groupby(["ad_network", "store", "tag_source"])["app_count"]
+        .sum()
+        .reset_index()
+    ).sort_values(by=["app_count"], ascending=False)
+
     ios_sdk = overview_df[
         (~overview_df["store"].str.contains("google", case=False))
         & (overview_df["tag_source"] == "sdk")
@@ -113,6 +121,7 @@ def get_overviews(category: str | None = None) -> CompaniesOverview:
             ios=ios_adstxt.to_dict(orient="records"),
             android=android_adstxt.to_dict(orient="records"),
         ),
+        categories=category_overview,
     )
     return results
 
@@ -222,6 +231,198 @@ def companies_overview(categories: list[int]) -> TopCompanies:
     return top
 
 
+def make_category_uniques(df: pd.DataFrame) -> CategoryOverview:
+    """Make category sums for overview."""
+    overview = CategoryOverview()
+    conditions = {
+        "sdk_ios": (df["store"].str.contains("Apple")) & (df["tag_source"] == "sdk"),
+        "sdk_android": (df["store"].str.contains("Google"))
+        & (df["tag_source"] == "sdk"),
+        "adstxt_ios": (df["store"].str.contains("Apple"))
+        & (df["tag_source"] == "app_ads"),
+        "adstxt_android": (df["store"].str.contains("Google"))
+        & (df["tag_source"] == "app_ads"),
+    }
+
+    # Calculate sums for all conditions in one go
+    results = {
+        key: df.loc[condition, "ad_network"].nunique()
+        for key, condition in conditions.items()
+    }
+
+    # Unpack results
+    (
+        sdk_ios_total_apps,
+        sdk_android_total_apps,
+        adstxt_ios_total_apps,
+        adstxt_android_total_apps,
+    ) = (
+        results["sdk_ios"],
+        results["sdk_android"],
+        results["adstxt_ios"],
+        results["adstxt_android"],
+    )
+
+    total_apps = df["ad_network"].nunique()
+
+    overview.update_stats(
+        "all",
+        total_apps=total_apps,
+        adstxt_ios_total_apps=adstxt_ios_total_apps,
+        adstxt_android_total_apps=adstxt_android_total_apps,
+        sdk_ios_total_apps=sdk_ios_total_apps,
+        sdk_android_total_apps=sdk_android_total_apps,
+    )
+    cats = df.app_category.unique().tolist()
+    for cat in cats:
+        conditions = {
+            "sdk_ios": (df["store"].str.contains("Apple"))
+            & (df["tag_source"] == "sdk")
+            & (df["app_category"] == cat),
+            "sdk_android": (df["store"].str.contains("Google"))
+            & (df["tag_source"] == "sdk")
+            & (df["app_category"] == cat),
+            "adstxt_ios": (df["store"].str.contains("Apple"))
+            & (df["tag_source"] == "app_ads")
+            & (df["app_category"] == cat),
+            "adstxt_android": (df["store"].str.contains("Google"))
+            & (df["tag_source"] == "app_ads")
+            & (df["app_category"] == cat),
+        }
+
+        # Calculate sums for all conditions in one go
+        results = {
+            key: df.loc[condition, "ad_network"].nunique()
+            for key, condition in conditions.items()
+        }
+
+        # Unpack results
+        (
+            sdk_ios_total_apps,
+            sdk_android_total_apps,
+            adstxt_ios_total_apps,
+            adstxt_android_total_apps,
+        ) = (
+            results["sdk_ios"],
+            results["sdk_android"],
+            results["adstxt_ios"],
+            results["adstxt_android"],
+        )
+
+        total_apps = df[df["app_category"] == cat]["ad_network"].nunique()
+
+        overview.update_stats(
+            cat,
+            total_apps=total_apps,
+            adstxt_ios_total_apps=adstxt_ios_total_apps,
+            adstxt_android_total_apps=adstxt_android_total_apps,
+            sdk_ios_total_apps=sdk_ios_total_apps,
+            sdk_android_total_apps=sdk_android_total_apps,
+        )
+    return overview
+
+
+def make_category_sums(df: pd.DataFrame) -> CategoryOverview:
+    """Make category sums for overview."""
+    overview = CategoryOverview()
+    conditions = {
+        "sdk_ios": (df["store"].str.contains("Apple")) & (df["tag_source"] == "sdk"),
+        "sdk_android": (df["store"].str.contains("Google"))
+        & (df["tag_source"] == "sdk"),
+        "adstxt_ios": (df["store"].str.contains("Apple"))
+        & (df["tag_source"] == "app_ads"),
+        "adstxt_android": (df["store"].str.contains("Google"))
+        & (df["tag_source"] == "app_ads"),
+    }
+
+    # Calculate sums for all conditions in one go
+    results = {
+        key: df.loc[condition, "app_count"].sum()
+        for key, condition in conditions.items()
+    }
+
+    # Unpack results
+    (
+        sdk_ios_total_apps,
+        sdk_android_total_apps,
+        adstxt_ios_total_apps,
+        adstxt_android_total_apps,
+    ) = (
+        results["sdk_ios"],
+        results["sdk_android"],
+        results["adstxt_ios"],
+        results["adstxt_android"],
+    )
+
+    total_apps = (
+        sdk_ios_total_apps
+        + sdk_android_total_apps
+        + adstxt_ios_total_apps
+        + adstxt_android_total_apps
+    )
+
+    overview.update_stats(
+        "all",
+        total_apps=total_apps,
+        adstxt_ios_total_apps=adstxt_ios_total_apps,
+        adstxt_android_total_apps=adstxt_android_total_apps,
+        sdk_ios_total_apps=sdk_ios_total_apps,
+        sdk_android_total_apps=sdk_android_total_apps,
+    )
+    cats = df.app_category.unique().tolist()
+    for cat in cats:
+        conditions = {
+            "sdk_ios": (df["store"].str.contains("Apple"))
+            & (df["tag_source"] == "sdk")
+            & (df["app_category"] == cat),
+            "sdk_android": (df["store"].str.contains("Google"))
+            & (df["tag_source"] == "sdk")
+            & (df["app_category"] == cat),
+            "adstxt_ios": (df["store"].str.contains("Apple"))
+            & (df["tag_source"] == "app_ads")
+            & (df["app_category"] == cat),
+            "adstxt_android": (df["store"].str.contains("Google"))
+            & (df["tag_source"] == "app_ads")
+            & (df["app_category"] == cat),
+        }
+
+        # Calculate sums for all conditions in one go
+        results = {
+            key: df.loc[condition, "app_count"].sum()
+            for key, condition in conditions.items()
+        }
+
+        # Unpack results
+        (
+            sdk_ios_total_apps,
+            sdk_android_total_apps,
+            adstxt_ios_total_apps,
+            adstxt_android_total_apps,
+        ) = (
+            results["sdk_ios"],
+            results["sdk_android"],
+            results["adstxt_ios"],
+            results["adstxt_android"],
+        )
+
+        total_apps = (
+            sdk_ios_total_apps
+            + sdk_android_total_apps
+            + adstxt_ios_total_apps
+            + adstxt_android_total_apps
+        )
+
+        overview.update_stats(
+            cat,
+            total_apps=total_apps,
+            adstxt_ios_total_apps=adstxt_ios_total_apps,
+            adstxt_android_total_apps=adstxt_android_total_apps,
+            sdk_ios_total_apps=sdk_ios_total_apps,
+            sdk_android_total_apps=sdk_android_total_apps,
+        )
+    return overview
+
+
 class CompaniesController(Controller):
 
     """API EndPoint return for all ad tech companies."""
@@ -267,7 +468,7 @@ class CompaniesController(Controller):
     async def company_overview(
         self: Self,
         company_name: str,
-    ) -> CompanyCategoryOverview:
+    ) -> CategoryOverview:
         """Handle GET request for a specific company.
 
         Args:
@@ -285,105 +486,7 @@ class CompaniesController(Controller):
 
         df = get_company_overview(company_name=company_name)
 
-        overview = CompanyCategoryOverview()
-
-        conditions = {
-            "sdk_ios": (df["store"].str.contains("Apple"))
-            & (df["tag_source"] == "sdk"),
-            "sdk_android": (df["store"].str.contains("Google"))
-            & (df["tag_source"] == "sdk"),
-            "adstxt_ios": (df["store"].str.contains("Apple"))
-            & (df["tag_source"] == "app_ads"),
-            "adstxt_android": (df["store"].str.contains("Google"))
-            & (df["tag_source"] == "app_ads"),
-        }
-
-        # Calculate sums for all conditions in one go
-        results = {
-            key: df.loc[condition, "app_count"].sum()
-            for key, condition in conditions.items()
-        }
-
-        # Unpack results
-        (
-            sdk_ios_total_apps,
-            sdk_android_total_apps,
-            adstxt_ios_total_apps,
-            adstxt_android_total_apps,
-        ) = (
-            results["sdk_ios"],
-            results["sdk_android"],
-            results["adstxt_ios"],
-            results["adstxt_android"],
-        )
-
-        total_apps = (
-            sdk_ios_total_apps
-            + sdk_android_total_apps
-            + adstxt_ios_total_apps
-            + adstxt_android_total_apps
-        )
-
-        overview.update_stats(
-            "all",
-            total_apps=total_apps,
-            adstxt_ios_total_apps=adstxt_ios_total_apps,
-            adstxt_android_total_apps=adstxt_android_total_apps,
-            sdk_ios_total_apps=sdk_ios_total_apps,
-            sdk_android_total_apps=sdk_android_total_apps,
-        )
-
-        cats = df.app_category.unique().tolist()
-        for cat in cats:
-            conditions = {
-                "sdk_ios": (df["store"].str.contains("Apple"))
-                & (df["tag_source"] == "sdk")
-                & (df["app_category"] == cat),
-                "sdk_android": (df["store"].str.contains("Google"))
-                & (df["tag_source"] == "sdk")
-                & (df["app_category"] == cat),
-                "adstxt_ios": (df["store"].str.contains("Apple"))
-                & (df["tag_source"] == "app_ads")
-                & (df["app_category"] == cat),
-                "adstxt_android": (df["store"].str.contains("Google"))
-                & (df["tag_source"] == "app_ads")
-                & (df["app_category"] == cat),
-            }
-
-            # Calculate sums for all conditions in one go
-            results = {
-                key: df.loc[condition, "app_count"].sum()
-                for key, condition in conditions.items()
-            }
-
-            # Unpack results
-            (
-                sdk_ios_total_apps,
-                sdk_android_total_apps,
-                adstxt_ios_total_apps,
-                adstxt_android_total_apps,
-            ) = (
-                results["sdk_ios"],
-                results["sdk_android"],
-                results["adstxt_ios"],
-                results["adstxt_android"],
-            )
-
-            total_apps = (
-                sdk_ios_total_apps
-                + sdk_android_total_apps
-                + adstxt_ios_total_apps
-                + adstxt_android_total_apps
-            )
-
-            overview.update_stats(
-                cat,
-                total_apps=total_apps,
-                adstxt_ios_total_apps=adstxt_ios_total_apps,
-                adstxt_android_total_apps=adstxt_android_total_apps,
-                sdk_ios_total_apps=sdk_ios_total_apps,
-                sdk_android_total_apps=sdk_android_total_apps,
-            )
+        overview = make_category_sums(df=df)
 
         return overview
 

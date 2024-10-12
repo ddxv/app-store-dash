@@ -226,9 +226,12 @@ def get_companies_overview(app_category: str | None = None) -> pd.DataFrame:
     """Get overview of companies from multiple types like sdk and app-ads.txt."""
     logger.info("query companies overview")
     df = pd.read_sql(
-        QUERY_COMPANIES_OVERVIEW, DBCON.engine, params={"app_category": app_category},
+        QUERY_COMPANIES_OVERVIEW,
+        DBCON.engine,
+        params={"app_category": app_category},
     )
     df["store"] = df["store"].replace({1: "Google Play", 2: "Apple App Store"})
+    df.loc[df["app_category"].isna(), "app_category"] = "None"
     return df
 
 

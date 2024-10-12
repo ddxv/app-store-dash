@@ -195,12 +195,46 @@ class PlatformCompanies:
 
 
 @dataclass
+class CategoryAppStats:
+
+    """Contains a list of CompanyDetail objects representing the top networks identified."""
+
+    total_apps: int = 0
+    adstxt_ios_total_apps: int = 0
+    adstxt_android_total_apps: int = 0
+    sdk_ios_total_apps: int = 0
+    sdk_android_total_apps: int = 0
+
+
+@dataclass
+class CategoryOverview:
+
+    """Contains a dictionary of categories, each with their associated statistics."""
+
+    categories: dict[str, CategoryAppStats] = field(default_factory=dict)
+
+    def add_category(self, category: str) -> None:
+        """Add a category to the overview."""
+        if category not in self.categories:
+            self.categories[category] = CategoryAppStats()
+
+    def update_stats(self, category: str, **kwargs: dict[str, Any]) -> None:
+        """Update the stats for a category."""
+        if category not in self.categories:
+            self.add_category(category)
+        for key, value in kwargs.items():
+            if hasattr(self.categories[category], key):
+                setattr(self.categories[category], key, value)
+
+
+@dataclass
 class CompaniesOverview:
 
     """Contains a list of CompanyDetail objects representing the top networks identified."""
 
     sdk: PlatformCompanies
     adstxt: PlatformCompanies
+    categories: CategoryOverview
 
 
 @dataclass
@@ -219,39 +253,6 @@ class CompanyAppsOverview:
 
     sdk: CompanyPlatformOverview
     adstxt: CompanyPlatformOverview
-
-
-@dataclass
-class CompanyAppStats:
-
-    """Contains a list of CompanyDetail objects representing the top networks identified."""
-
-    total_apps: int = 0
-    adstxt_ios_total_apps: int = 0
-    adstxt_android_total_apps: int = 0
-    sdk_ios_total_apps: int = 0
-    sdk_android_total_apps: int = 0
-
-
-@dataclass
-class CompanyCategoryOverview:
-
-    """Contains a dictionary of categories, each with their associated statistics."""
-
-    categories: dict[str, CompanyAppStats] = field(default_factory=dict)
-
-    def add_category(self, category: str) -> None:
-        """Add a category to the overview."""
-        if category not in self.categories:
-            self.categories[category] = CompanyAppStats()
-
-    def update_stats(self, category: str, **kwargs: dict[str, Any]) -> None:
-        """Update the stats for a category."""
-        if category not in self.categories:
-            self.add_category(category)
-        for key, value in kwargs.items():
-            if hasattr(self.categories[category], key):
-                setattr(self.categories[category], key, value)
 
 
 @dataclass

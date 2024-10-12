@@ -39,7 +39,7 @@
 							<a href="{baseUrl}/{values.id}">
 								<SideBarCatsListBoxItem {values} {localHomeCategorySelect} />
 							</a>
-						{:else if baseUrl == '/companies/categories'}
+						{:else if baseUrl == '/companies/categories' && values.id == 'overall'}
 							<a href="/companies">
 								<SideBarCatsListBoxItem {values} {localHomeCategorySelect} />
 							</a>

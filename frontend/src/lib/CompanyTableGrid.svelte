@@ -13,7 +13,7 @@
 			<div class="card variant-glass-surface">
 				<div class="card-header">
 					<p class="text-lg text-gray-700">
-						Android Apps: <slot name="sdk-android-total-apps" />
+						<slot name="sdk-android-total-apps">Android Apps:</slot>
 					</p>
 				</div>
 				<div class="card-content">
@@ -24,7 +24,7 @@
 			<div class="card variant-glass-surface">
 				<div class="card-header">
 					<p class="text-lg text-gray-700">
-						iOS Apps: <slot name="sdk-ios-total-apps" />
+						<slot name="sdk-ios-total-apps">iOS Apps:</slot>
 					</p>
 				</div>
 				<div class="card-content">
@@ -47,7 +47,7 @@
 			<div class="card variant-glass-surface">
 				<div class="card-header">
 					<p class="text-lg text-gray-700">
-						Android Apps: <slot name="adstxt-android-total-apps" />
+						<slot name="adstxt-android-total-apps">Android Apps:</slot>
 					</p>
 				</div>
 				<div class="card-content">
@@ -58,7 +58,7 @@
 			<div class="card variant-glass-surface">
 				<div class="card-header">
 					<p class="text-lg text-gray-700">
-						iOS Apps: <slot name="adstxt-ios-total-apps" />
+						<slot name="adstxt-ios-total-apps">iOS Apps:</slot>
 					</p>
 				</div>
 				<div class="card-content">

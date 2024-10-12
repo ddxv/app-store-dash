@@ -6,6 +6,10 @@
 	import CompanyTableGrid from '$lib/CompanyTableGrid.svelte';
 	import WhiteCard from '$lib/WhiteCard.svelte';
 	import CompaniesLayout from '$lib/CompaniesLayout.svelte';
+
+	function formatNumber(num: number) {
+		return new Intl.NumberFormat('en-US').format(num);
+	}
 </script>
 
 <div class="flex items-center mb-2">
@@ -22,15 +26,15 @@
 		{:then myData}
 			{#if typeof myData == 'string'}
 				<p class="text-red-500 text-center">Failed to load company details.</p>
-				<!-- {:else if myData.categories.all}
-					<div class="bg-white p-6 rounded-lg shadow-md">
-						<h2 class="text-xl font-bold text-gray-800 mb-4">Total Apps</h2>
-						<p class="text-lg text-gray-700">
-							<span class="font-semibold text-gray-900"
-								>{formatNumber(myData.categories.all.total_apps)}</span
-							>
-						</p>
-					</div> -->
+			{:else if myData && myData.categories}
+				<div class="bg-white p-6 rounded-lg shadow-md">
+					<h2 class="text-xl font-bold text-gray-800 mb-4">Total Ad Tech Companies</h2>
+					<p class="text-lg text-gray-700">
+						<span class="font-semibold text-gray-900"
+							>{formatNumber(myData.categories.categories.all.total_apps)}</span
+						>
+					</p>
+				</div>
 			{/if}
 		{:catch error}
 			<p class="text-red-500 text-center">{error.message}</p>
@@ -45,20 +49,23 @@
 {:then tableData}
 	{#if typeof tableData == 'string'}
 		Failed to load companies.
-	{:else}
+	{:else if tableData.categories}
 		<CompanyTableGrid>
-			<!-- <span slot="sdk-android-total-apps">
-			{formatNumber(myData.categories.all.sdk_android_total_apps)}
-		</span>
-		<span slot="sdk-ios-total-apps">
-			{formatNumber(myData.categories.all.sdk_ios_total_apps)}
-		</span>
-		<span slot="adstxt-android-total-apps">
-			{formatNumber(myData.categories.all.adstxt_android_total_apps)}
-		</span>
-		<span slot="adstxt-ios-total-apps">
-			{formatNumber(myData.categories.all.adstxt_ios_total_apps)}
-		</span> -->
+			<span slot="sdk-android-total-apps"
+				>Android Companies:
+				{formatNumber(tableData.categories.categories.all.sdk_android_total_apps)}
+			</span>
+			<span slot="sdk-ios-total-apps">
+				iOS Companies: {formatNumber(tableData.categories.categories.all.sdk_ios_total_apps)}
+			</span>
+			<span slot="adstxt-android-total-apps">
+				Android Companies: {formatNumber(
+					tableData.categories.categories.all.adstxt_android_total_apps
+				)}
+			</span>
+			<span slot="adstxt-ios-total-apps">
+				iOS Companies: {formatNumber(tableData.categories.categories.all.adstxt_ios_total_apps)}
+			</span>
 
 			<div slot="sdk-android">
 				{#if tableData && tableData.sdk.android.length > 0}
