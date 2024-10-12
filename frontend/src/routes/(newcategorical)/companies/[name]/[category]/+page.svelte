@@ -9,6 +9,8 @@
 	import WhiteCard from '$lib/WhiteCard.svelte';
 
 	import CompanyTableGrid from '$lib/CompanyTableGrid.svelte';
+	import ExternalLink from '$lib/ExternalLink.svelte';
+	import CompanyButton from '$lib/CompanyButton.svelte';
 
 	$: company_category = $page.params.category;
 
@@ -17,7 +19,37 @@
 	}
 </script>
 
-<h1 class="text-3xl font-bold mb-6 text-gray-800">{name}: {company_category}</h1>
+<div class="flex items-center mb-2">
+	<h1 class="text-3xl font-bold text-gray-800">{name}</h1>
+	<div class="h-8 w-px bg-gray-300 mx-2"></div>
+	{#await data.companyTree}
+		<span class="text-lg text-gray-600">Loading...</span>
+	{:then myTree}
+		{#if typeof myTree == 'string'}
+			<p class="text-red-500">Failed to load company tree.</p>
+		{:else if myTree}
+			<div class="flex items-center">
+				{#each myTree.domains as domain}
+					<ExternalLink {domain} />
+				{/each}
+			</div>
+		{/if}
+	{:catch error}
+		<p class="text-red-500">{error.message}</p>
+	{/await}
+</div>
+
+<h3 class="text-xl font-bold mb-6 text-gray-800">Category: {company_category}</h3>
+
+{#await data.companyTree then myTree}
+	{#if myTree && myTree.parent_company_name}
+		<div class="flex items-center mt-2 ml-4">
+			<p class="text-xl font-bold text-gray-800 mr-2">Parent Company:</p>
+			<CompanyButton companyName={myTree.parent_company_name} />
+		</div>
+	{/if}
+{/await}
+
 <CompaniesLayout>
 	<WhiteCard slot="card1">
 		{#await data.companyDetails}

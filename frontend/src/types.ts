@@ -227,7 +227,7 @@ export interface CompanyFullDetails {
 	status?: number;
 	error?: string;
 	companyDetails: CompanyCategoryOverview;
-	companyOverview: CompanyOverviewSections;
+	companyTopApps: CompanyOverviewSections;
 	companyTree: ParentCompanyTree;
 	companySdks: CompanyPatternsDict;
 	companyParentCategories: ChartTabularData;
@@ -237,6 +237,7 @@ export interface CompanyCategoryDetails {
 	error?: string;
 	companyDetails: CompanyCategoryOverview;
 	companyCategoryApps: CompanyOverviewSections;
+	companyTree: ParentCompanyTree;
 }
 
 export interface AppFullDetails {

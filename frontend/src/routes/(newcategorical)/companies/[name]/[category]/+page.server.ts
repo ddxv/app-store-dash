@@ -7,17 +7,17 @@ console.log('Script executed');
 export const load: PageServerLoad = async ({ parent, params }) => {
 	const networkName = params.name;
 	const category = params.category;
-	// const res = fetch(`http://localhost:8000/api/companies/${networkName}`);
 	const res_apps = fetch(
 		`http://localhost:8000/api/companies/${networkName}/topapps?category=${category}`
 	);
 
-	const { companyDetails } = await parent();
+	const { companyDetails, companyTree } = await parent();
 
 	console.log(`start load overview for company=${networkName}`);
 	try {
 		return {
 			companyDetails: companyDetails,
+			companyTree: companyTree,
 			companyCategoryApps: res_apps
 				.then((resp) => {
 					if (resp.status === 200) {

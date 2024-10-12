@@ -2,9 +2,9 @@
 	import { page } from '$app/stores';
 	import { ListBox, ListBoxItem } from '@skeletonlabs/skeleton';
 
-	export let baseUrl: string;
+	import SideBarCatsListBoxItem from './SideBarCatsListBoxItem.svelte';
 
-	$: console.log('MYURL', baseUrl);
+	export let baseUrl: string;
 
 	import IconGoogle from '$lib/svg/IconGoogle.svelte';
 	import IconiOS from '$lib/svg/IconiOS.svelte';
@@ -20,17 +20,10 @@
 
 	import { homeCategorySelection } from '../stores';
 	let localHomeCategorySelect = $homeCategorySelection;
-	const buttonSelectedColor = 'variant-filled-primary';
 	$: homeCategorySelection.set(localHomeCategorySelect);
 
 	import type { CatData } from '../types';
-
-	const scrollTop = () => {
-		const elemPage = document.querySelector('#page');
-		if (elemPage !== null) {
-			elemPage.scrollTop = 0;
-		}
-	};
+	import SideBar from './SideBar.svelte';
 
 	$: if ($page.params.category) {
 		localHomeCategorySelect = $page.params.category;
@@ -46,40 +39,15 @@
 			{#if myCatData}
 				{#each Object.entries(myCatData.categories) as [_prop, values]}
 					{#if values.id && (Number(values.android) > 0 || values.name == 'Games')}
-						<a href="{baseUrl}/{values.id}">
-							<ListBoxItem
-								bind:group={localHomeCategorySelect}
-								name="medium"
-								value={values.id}
-								active={buttonSelectedColor}
-								padding="p-2 md:p-2"
-							>
-								<div class="flex w-full justify-between">
-									<div class="flex-grow">
-										{values.name}
-									</div>
-
-									{#if Number(values.android) > 0 || values.name == 'Games'}
-										<div class="justify-end mr-2 md:mr-5">
-											<IconGoogle size="10" />
-										</div>
-									{:else}
-										<div class="opacity-20 justify-end mr-2 md:mr-5">
-											<IconGoogle size="10" />
-										</div>
-									{/if}
-									{#if Number(values.ios) > 0}
-										<div class="justify-end mr-2 md:mr-5">
-											<IconiOS size="10" />
-										</div>
-									{:else}
-										<div class="opacity-20 justify-end mr-2 md:mr-5">
-											<IconiOS size="10" />
-										</div>
-									{/if}
-								</div>
-							</ListBoxItem>
-						</a>
+						{#if values.id != 'overall'}
+							<a href="{baseUrl}/{values.id}">
+								<SideBarCatsListBoxItem {values} {localHomeCategorySelect} />
+							</a>
+						{:else}
+							<a href={baseUrl}>
+								<SideBarCatsListBoxItem {values} {localHomeCategorySelect} />
+							</a>
+						{/if}
 					{/if}
 				{/each}
 			{/if}

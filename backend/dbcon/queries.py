@@ -43,7 +43,7 @@ QUERY_STORE_COLLECTION_CATEGORY_MAP = load_sql_file(
 QUERY_TOP_COMPANIES_MONTH = load_sql_file("query_top_companies_month.sql")
 QUERY_TOP_PARENT_COMPANIES_MONTH = load_sql_file("query_top_companies_month_parent.sql")
 QUERY_COMPANY_APPS = load_sql_file("query_company_apps.sql")
-QUERY_COMPANY_TOP_APPS_NEW = load_sql_file("query_company_apps_new.sql")
+QUERY_COMPANY_TOP_APPS_NEW = load_sql_file("query_company_top_apps.sql")
 QUERY_PARENT_COMPANY_APPS = load_sql_file("query_parent_company_apps.sql")
 QUERY_COMPANIES_OVERVIEW = load_sql_file("query_companies_overview.sql")
 QUERY_COMPANY_OVERVIEW = load_sql_file("query_company_overview.sql")
@@ -245,6 +245,7 @@ def get_company_overview(company_name: str) -> pd.DataFrame:
             params={"company": company_name},
         )
     df["store"] = df["store"].replace({1: "Google Play", 2: "Apple App Store"})
+    df.loc[df["app_category"].isna(), "app_category"] = "None"
     return df
 
 
@@ -284,6 +285,7 @@ def get_company_parent_categories(company_name: str) -> pd.DataFrame:
             DBCON.engine,
             params={"company_name": company_name},
         )
+    df.loc[df["app_category"].isna(), "app_category"] = "None"
     return df
 
 

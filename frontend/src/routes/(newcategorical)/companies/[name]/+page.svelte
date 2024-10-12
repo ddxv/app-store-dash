@@ -118,8 +118,8 @@
 
 {#await data.companyDetails}
 	<div><span>Loading...</span></div>
-{:then myData}
-	{#await data.companyOverview}
+{:then detailsData}
+	{#await data.companyTopApps}
 		<div><span>Loading...</span></div>
 	{:then tableData}
 		{#if typeof tableData == 'string'}
@@ -127,16 +127,16 @@
 		{:else}
 			<CompanyTableGrid>
 				<span slot="sdk-android-total-apps">
-					{formatNumber(myData.categories.all.sdk_android_total_apps)}
+					{formatNumber(detailsData.categories.all.sdk_android_total_apps)}
 				</span>
 				<span slot="sdk-ios-total-apps">
-					{formatNumber(myData.categories.all.sdk_ios_total_apps)}
+					{formatNumber(detailsData.categories.all.sdk_ios_total_apps)}
 				</span>
 				<span slot="adstxt-android-total-apps">
-					{formatNumber(myData.categories.all.adstxt_android_total_apps)}
+					{formatNumber(detailsData.categories.all.adstxt_android_total_apps)}
 				</span>
 				<span slot="adstxt-ios-total-apps">
-					{formatNumber(myData.categories.all.adstxt_ios_total_apps)}
+					{formatNumber(detailsData.categories.all.adstxt_ios_total_apps)}
 				</span>
 
 				<div slot="sdk-android">
