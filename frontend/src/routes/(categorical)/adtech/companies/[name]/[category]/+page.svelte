@@ -5,6 +5,9 @@
 	export let data: CompanyCategoryDetails;
 	import CompanyOverviewTable from '$lib/CompanyOverviewTable.svelte';
 
+	import CompaniesLayout from '$lib/CompaniesLayout.svelte';
+	import WhiteCard from '$lib/WhiteCard.svelte';
+
 	import CompanyTableGrid from '$lib/CompanyTableGrid.svelte';
 
 	$: company_category = $page.params.category;
@@ -14,34 +17,31 @@
 	}
 </script>
 
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-	<div class="bg-white p-6 rounded-lg shadow-md">
-		<h1 class="text-3xl font-bold mb-6 text-gray-800">{name}: {company_category}</h1>
-
-		<div class="lg:col-span-1">
-			{#await data.companyDetails}
-				<div class="bg-white p-6 rounded-lg shadow-md flex justify-center items-center h-40">
-					<span class="text-lg text-gray-600">Loading...</span>
+<h1 class="text-3xl font-bold mb-6 text-gray-800">{name}: {company_category}</h1>
+<CompaniesLayout>
+	<WhiteCard slot="card1">
+		{#await data.companyDetails}
+			<div class="bg-white p-6 rounded-lg shadow-md flex justify-center items-center h-40">
+				<span class="text-lg text-gray-600">Loading...</span>
+			</div>
+		{:then myData}
+			{#if typeof myData == 'string'}
+				<p class="text-red-500 text-center">Failed to load company details.</p>
+			{:else if myData}
+				<div class="bg-white p-6 rounded-lg shadow-md">
+					<h2 class="text-xl font-bold text-gray-800 mb-4">Total Apps</h2>
+					<p class="text-lg text-gray-700">
+						<span class="font-semibold text-gray-900"
+							>{formatNumber(myData.categories[company_category].total_apps)}</span
+						>
+					</p>
 				</div>
-			{:then myData}
-				{#if typeof myData == 'string'}
-					<p class="text-red-500 text-center">Failed to load company details.</p>
-				{:else if myData}
-					<div class="bg-white p-6 rounded-lg shadow-md">
-						<h2 class="text-xl font-bold text-gray-800 mb-4">Total Apps</h2>
-						<p class="text-lg text-gray-700">
-							<span class="font-semibold text-gray-900"
-								>{formatNumber(myData.categories[company_category].total_apps)}</span
-							>
-						</p>
-					</div>
-				{/if}
-			{:catch error}
-				<p class="text-red-500 text-center">{error.message}</p>
-			{/await}
-		</div>
-	</div>
-</div>
+			{/if}
+		{:catch error}
+			<p class="text-red-500 text-center">{error.message}</p>
+		{/await}
+	</WhiteCard>
+</CompaniesLayout>
 
 {#await data.companyDetails}
 	<div><span>Loading...</span></div>

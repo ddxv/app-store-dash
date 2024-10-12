@@ -48,7 +48,6 @@
 {/await}
 
 <CompaniesLayout>
-	<!-- <div class="lg:col-span-1"> -->
 	<WhiteCard slot="card1">
 		{#await data.companyDetails}
 			<span class="text-lg text-gray-600">Loading...</span>
@@ -69,7 +68,6 @@
 			<p class="text-red-500 text-center">{error.message}</p>
 		{/await}
 	</WhiteCard>
-	<!-- </div> -->
 
 	<WhiteCard slot="card2">
 		<div>
