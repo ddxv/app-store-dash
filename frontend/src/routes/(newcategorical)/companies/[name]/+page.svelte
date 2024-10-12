@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { CompanyFullDetails } from '../../../../../types';
+	import type { CompanyFullDetails } from '../../../../types';
 	import { page } from '$app/stores';
 	const { name } = $page.params;
 	export let data: CompanyFullDetails;
@@ -12,7 +12,7 @@
 	import ExternalLink from '$lib/ExternalLink.svelte';
 	import CompanyButton from '$lib/CompanyButton.svelte';
 	import WhiteCard from '$lib/WhiteCard.svelte';
-	import CompaniesLayout from '../../../../../lib/CompaniesLayout.svelte';
+	import CompaniesLayout from '../../../../lib/CompaniesLayout.svelte';
 	function formatNumber(num: number) {
 		return new Intl.NumberFormat('en-US').format(num);
 	}

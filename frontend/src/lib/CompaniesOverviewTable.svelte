@@ -43,7 +43,7 @@
 			<tbody>
 				{#each $rows as row, index}
 					<tr style="cursor: pointer;" class="px-0">
-						<a href="/adtech/companies/{row.ad_network}" class="table-row-link">
+						<a href="/companies/{row.ad_network}" class="table-row-link">
 							<td class="table-cell-fit">
 								{index + 1}
 							</td>

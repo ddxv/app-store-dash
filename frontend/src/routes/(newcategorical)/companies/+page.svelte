@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { CompaniesOverview } from '../../../../types';
+	import type { CompaniesOverview } from '../../../types';
 	export let data: CompaniesOverview;
 	import CompaniesOverviewTable from '$lib/CompaniesOverviewTable.svelte';
 
