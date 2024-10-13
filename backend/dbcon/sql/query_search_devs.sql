@@ -5,8 +5,8 @@
 -- SQLFluff currently unable to parse the double @ below
 -- https://github.com/sqlfluff/sqlfluff/issues/4837
 WITH devs AS (
-    SELECT sa.* FROM store_apps sa
-    LEFT JOIN developers d ON sa.developer = d.id
+    SELECT sa.* FROM store_apps AS sa
+    LEFT JOIN developers AS d ON sa.developer = d.id
     WHERE
        d.textsearchable_index_col @@ to_tsquery(
             'simple',

@@ -1,10 +1,10 @@
 SELECT
     c.name AS company_name,
-    ad."domain",
+    ad.domain,
     COALESCE(
         cc.name,
         c.name,
-        ad."domain"
+        ad.domain
     ) AS parent_company_name
 FROM
     adtech.companies AS c
