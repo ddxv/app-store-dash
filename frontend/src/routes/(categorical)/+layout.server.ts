@@ -1,18 +1,12 @@
-import type { PageServerLoad } from './$types';
+import type { LayoutServerLoad } from './$types';
 
 export const ssr = true;
 export const csr = true;
 
-export const load: PageServerLoad = async ({ fetch, setHeaders }) => {
+export const load: LayoutServerLoad = async ({ fetch }) => {
 	console.log(`load categories start`);
 	try {
 		const res = await fetch(`http://localhost:8000/api/categories`);
-
-		// Set cache headers
-		setHeaders({
-			age: res.headers.get('age') || '0',
-			'cache-control': res.headers.get('cache-control') || 'no-store'
-		});
 
 		if (res.status === 200) {
 			const data = await res.json();
