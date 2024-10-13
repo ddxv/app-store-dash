@@ -12,9 +12,11 @@
 			{#each myTree.children_companies as child}
 				<li class="flex items-center space-x-2">
 					<CompanyButton companyName={child.company_name} />
-					<div class="h-6 w-px bg-gray-300"></div>
 					{#each child.domains as domain}
-						<ExternalLink {domain} />
+						{#if domain}
+							<div class="h-6 w-px bg-gray-300"></div>
+							<ExternalLink {domain} />
+						{/if}
 					{/each}
 				</li>
 			{/each}
