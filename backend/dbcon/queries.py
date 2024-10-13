@@ -46,6 +46,8 @@ QUERY_COMPANY_APPS = load_sql_file("query_company_apps.sql")
 QUERY_COMPANY_TOP_APPS_NEW = load_sql_file("query_company_top_apps.sql")
 QUERY_PARENT_COMPANY_APPS = load_sql_file("query_parent_company_apps.sql")
 QUERY_COMPANIES_OVERVIEW = load_sql_file("query_companies_overview.sql")
+QUERY_COMPANIES_PARENT_OVERVIEW = load_sql_file("query_companies_parent_overview.sql")
+QUERY_COMPANIES_PARENT_TOP = load_sql_file("query_companies_parent_top.sql")
 QUERY_COMPANY_OVERVIEW = load_sql_file("query_company_overview.sql")
 QUERY_COMPANY_PARENT_OVERVIEW = load_sql_file("query_company_parent_overview.sql")
 QUERY_COMPANY_TREE = load_sql_file("query_company_tree.sql")
@@ -222,16 +224,27 @@ def get_app_package_details(store_id: str) -> pd.DataFrame:
     return df
 
 
-def get_companies_overview(app_category: str | None = None) -> pd.DataFrame:
+def get_companies_parent_overview(app_category: str | None = None) -> pd.DataFrame:
     """Get overview of companies from multiple types like sdk and app-ads.txt."""
     logger.info("query companies overview")
     df = pd.read_sql(
-        QUERY_COMPANIES_OVERVIEW,
+        QUERY_COMPANIES_PARENT_OVERVIEW,
         DBCON.engine,
         params={"app_category": app_category},
     )
     df["store"] = df["store"].replace({1: "Google Play", 2: "Apple App Store"})
     df.loc[df["app_category"].isna(), "app_category"] = "None"
+    return df
+
+
+def get_companies_top(app_category: str | None = None, limit: int = 10) -> pd.DataFrame:
+    """Get overview of companies from multiple types like sdk and app-ads.txt."""
+    logger.info("query companies overview")
+    df = pd.read_sql(
+        QUERY_COMPANIES_PARENT_TOP,
+        DBCON.engine,
+        params={"app_category": app_category, "mylimit": limit},
+    )
     return df
 
 

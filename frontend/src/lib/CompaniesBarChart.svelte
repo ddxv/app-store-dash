@@ -1,0 +1,54 @@
+<script lang="ts">
+	import {
+		BarChartSimple,
+		ScaleTypes,
+		type ChartTabularData,
+		type BarChartOptions
+	} from '@carbon/charts-svelte';
+	import '@carbon/charts-svelte/styles.css';
+
+	export let plotData: ChartTabularData;
+	export let plotTitle: string;
+	export let plotHeightPx: string = '300px';
+
+	export let chartOptions: BarChartOptions = {
+		title: plotTitle,
+		axes: {
+			left: {
+				mapsTo: 'group',
+				scaleType: ScaleTypes.LABELS
+			},
+			bottom: {
+				mapsTo: 'value'
+			}
+		},
+		height: plotHeightPx
+	};
+
+	// export let plotData: ChartTabularData = [
+	//   {
+	//     group: 'Qty',
+	//     value: 65000
+	//   },
+	//   {
+	//     group: 'More',
+	//     value: 29123
+	//   },
+	//   {
+	//     group: 'Sold',
+	//     value: 35213
+	//   },
+	//   {
+	//     group: 'Restocking',
+	//     value: 51213
+	//   },
+	//   {
+	//     group: 'Misc',
+	//     value: 16932
+	//   }
+	// ]
+</script>
+
+<div class="p-4">
+	<BarChartSimple data={plotData} options={chartOptions} />
+</div>

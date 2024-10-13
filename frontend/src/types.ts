@@ -166,6 +166,10 @@ export interface CompaniesOverviewEntries extends Row {
 export interface CompaniesOverviewPlatforms extends Row {
 	android: CompaniesOverviewEntries[];
 	ios: CompaniesOverviewEntries[];
+	top: {
+		group: string;
+		value: number;
+	}[];
 }
 
 export interface CompaniesOverviewSections extends Row {

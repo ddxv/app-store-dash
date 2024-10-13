@@ -2,6 +2,7 @@
 	import type { CompaniesOverview } from '../../../../../types';
 	export let data: CompaniesOverview;
 	import CompaniesOverviewTable from '$lib/CompaniesOverviewTable.svelte';
+	import CompaniesBarChart from '$lib/CompaniesBarChart.svelte';
 
 	import CompanyTableGrid from '$lib/CompanyTableGrid.svelte';
 	import WhiteCard from '$lib/WhiteCard.svelte';
@@ -17,16 +18,16 @@
 	<div class="h-8 w-px bg-gray-300 mx-2"></div>
 </div>
 
-<CompaniesLayout>
-	<WhiteCard slot="card1">
-		{#await data.companiesOverview}
-			<div class="bg-white p-6 rounded-lg shadow-md flex justify-center items-center h-40">
-				<span class="text-lg text-gray-600">Loading...</span>
-			</div>
-		{:then myData}
-			{#if typeof myData == 'string'}
-				<p class="text-red-500 text-center">Failed to load company details.</p>
-			{:else if myData.categories.categories}
+{#await data.companiesOverview}
+	<div class="bg-white p-6 rounded-lg shadow-md flex justify-center items-center h-40">
+		<span class="text-lg text-gray-600">Loading...</span>
+	</div>
+{:then myData}
+	{#if typeof myData == 'string'}
+		<p class="text-red-500 text-center">Failed to load company details.</p>
+	{:else if myData.categories.categories}
+		<CompaniesLayout>
+			<WhiteCard slot="card1">
 				<div class="bg-white p-6 rounded-lg shadow-md">
 					<h2 class="text-xl font-bold text-gray-800 mb-4">Total Apps</h2>
 					<p class="text-lg text-gray-700">
@@ -35,15 +36,23 @@
 						>
 					</p>
 				</div>
-			{/if}
-		{:catch error}
-			<p class="text-red-500 text-center">{error.message}</p>
-		{/await}
-	</WhiteCard>
+			</WhiteCard>
 
-	<WhiteCard slot="card2">CHART HERE</WhiteCard>
-	<WhiteCard slot="card3">SOMETHING ELSE HERE</WhiteCard>
-</CompaniesLayout>
+			<WhiteCard slot="card2">
+				<CompaniesBarChart plotData={myData.sdk.top} plotTitle="Top SDK Companies" />
+			</WhiteCard>
+			<WhiteCard slot="card3"
+				><CompaniesBarChart
+					plotData={myData.adstxt.top}
+					plotTitle="Top Adstxt Companies"
+				/></WhiteCard
+			>
+		</CompaniesLayout>
+	{/if}
+{:catch error}
+	<p class="text-red-500 text-center">{error.message}</p>
+{/await}
+
 {#await data.companiesOverview}
 	<div><span>Loading...</span></div>
 {:then tableData}

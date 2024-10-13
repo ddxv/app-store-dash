@@ -192,6 +192,7 @@ class PlatformCompanies:
 
     ios: list[CompanyDetail]
     android: list[CompanyDetail]
+    top: list[dict]
 
 
 @dataclass

@@ -27,7 +27,8 @@ from api_app.models import (
 from config import get_logger
 from dbcon.queries import (
     get_apps_for_company,
-    get_companies_overview,
+    get_companies_parent_overview,
+    get_companies_top,
     get_company_overview,
     get_company_parent_categories,
     get_company_sdks,
@@ -82,7 +83,18 @@ def get_company_apps_new(
 
 def get_overviews(category: str | None = None) -> CompaniesOverview:
     """Get the overview data from the database."""
-    overview_df = get_companies_overview(app_category=category)
+    overview_df = get_companies_parent_overview(app_category=category)
+
+    top_df = get_companies_top(app_category=category, limit=5)
+    top_sdk_df = top_df[top_df["tag_source"] == "sdk"].copy()
+    top_adstxt_df = top_df[top_df["tag_source"] == "app_ads"].copy()
+
+    top_sdk_df = top_sdk_df.rename(
+        columns={"ad_network": "group", "app_count": "value"},
+    ).sort_values(by=["value"], ascending=True)
+    top_adstxt_df = top_adstxt_df.rename(
+        columns={"ad_network": "group", "app_count": "value"},
+    ).sort_values(by=["value"], ascending=True)
 
     category_overview = make_category_uniques(df=overview_df)
 
@@ -114,15 +126,18 @@ def get_overviews(category: str | None = None) -> CompaniesOverview:
 
     results = CompaniesOverview(
         sdk=PlatformCompanies(
-            ios=ios_sdk.to_dict(orient="records"),
             android=android_sdk.to_dict(orient="records"),
+            ios=ios_sdk.to_dict(orient="records"),
+            top=top_sdk_df.to_dict(orient="records"),
         ),
         adstxt=PlatformCompanies(
-            ios=ios_adstxt.to_dict(orient="records"),
             android=android_adstxt.to_dict(orient="records"),
+            ios=ios_adstxt.to_dict(orient="records"),
+            top=top_adstxt_df.to_dict(orient="records"),
         ),
         categories=category_overview,
     )
+
     return results
 
 
