@@ -1,6 +1,20 @@
 import type { ChartTabularData } from '@carbon/charts-svelte';
 import type { Row } from '@vincjo/datatables/remote';
 
+export type Crumb<M = any> = {
+	title?: string;
+	url?: string;
+	metadata?: M;
+};
+export type ModuleData = {
+	pageTitle?: string;
+	getPageTitle?: (data: any) => string;
+};
+
+export type MyCrumbMetadata = {
+	extraValue: string;
+};
+
 export interface AppGroup {
 	apps: AppFullDetail[];
 	title: string;
