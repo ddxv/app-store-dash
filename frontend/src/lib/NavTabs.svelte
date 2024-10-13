@@ -33,6 +33,9 @@
 		selected={$page.url.pathname.startsWith('/adtech')}
 		><h3 class={topBarFont}>ADTECH RANKS</h3></TabAnchor
 	>
+	<TabAnchor href="/companies" selected={$page.url.pathname.startsWith('/companies')}
+		><h3 class={topBarFont}>Companies</h3></TabAnchor
+	>
 	<TabAnchor href="/about" selected={$page.url.pathname === '/about'}
 		><h3 class={topBarFont}>ABOUT</h3></TabAnchor
 	>

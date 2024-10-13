@@ -40,52 +40,65 @@
 		</thead>
 		<tbody class="px-0">
 			{#each Object.entries(tabledata) as [_prop, values]}
-				<tr on:click={() => navigate(values.name)} style="cursor: pointer;" class="px-0">
-					<td class="px-0"
-						><div class="inline-flex">
-							<h3 class="h7 md:h5">
-								{values.name}
-							</h3>
-						</div>
-					</td>
-					{#if tableType == 'appcount'}
-						<td>
-							<div class="inline-flex">
-								<h3 class="h7 md:h5">{formatNumber(values.app_count)}</h3>
-							</div>
-						</td>
-						<td>
+				<tr style="cursor: pointer;" class="px-0">
+					<a href={`/companies/${values.name}`} class="table-row-link">
+						<td class="px-0">
 							<div class="inline-flex">
 								<h3 class="h7 md:h5">
-									{`${(values.app_count_percent * 100).toFixed(1)}%`}
+									{values.name}
 								</h3>
 							</div>
 						</td>
-					{:else if storeId == 2}
-						<td>
-							<div class="inline-flex">
-								<h3 class="h7 md:h5">{formatNumber(values.ratings)}</h3>
-							</div>
-						</td>
-						<td>
-							<div class="inline-flex">
-								<h3 class="h7 md:h5">{`${(values.ratings_percent * 100).toFixed(1)}%`}</h3>
-							</div>
-						</td>
-					{:else}
-						<td>
-							<div class="inline-flex">
-								<h3 class="h7 md:h5">{formatNumber(values.installs)}</h3>
-							</div>
-						</td>
-						<td>
-							<div class="inline-flex">
-								<h3 class="h7 md:h5">{`${(values.installs_percent * 100).toFixed(1)}%`}</h3>
-							</div>
-						</td>
-					{/if}
+						{#if tableType == 'appcount'}
+							<td>
+								<div class="inline-flex">
+									<h3 class="h7 md:h5">{formatNumber(values.app_count)}</h3>
+								</div>
+							</td>
+							<td>
+								<div class="inline-flex">
+									<h3 class="h7 md:h5">
+										{`${(values.app_count_percent * 100).toFixed(1)}%`}
+									</h3>
+								</div>
+							</td>
+						{:else if storeId == 2}
+							<td>
+								<div class="inline-flex">
+									<h3 class="h7 md:h5">{formatNumber(values.ratings)}</h3>
+								</div>
+							</td>
+							<td>
+								<div class="inline-flex">
+									<h3 class="h7 md:h5">{`${(values.ratings_percent * 100).toFixed(1)}%`}</h3>
+								</div>
+							</td>
+						{:else}
+							<td>
+								<div class="inline-flex">
+									<h3 class="h7 md:h5">{formatNumber(values.installs)}</h3>
+								</div>
+							</td>
+							<td>
+								<div class="inline-flex">
+									<h3 class="h7 md:h5">{`${(values.installs_percent * 100).toFixed(1)}%`}</h3>
+								</div>
+							</td>
+						{/if}
+					</a>
 				</tr>
 			{/each}
 		</tbody>
 	</table>
 </div>
+
+<style>
+	.table-row-link {
+		display: contents;
+		text-decoration: none;
+		color: inherit;
+	}
+	.table-row-link:hover td {
+		background-color: #e2e2e2;
+	}
+</style>
