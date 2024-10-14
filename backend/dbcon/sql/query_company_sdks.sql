@@ -11,6 +11,18 @@ FROM
 LEFT JOIN adtech.companies AS cc
     ON
         c.parent_company_id = cc.id
+LEFT JOIN adtech.company_domain_mapping AS cdm
+    ON
+        c.id = cdm.company_id
+LEFT JOIN adtech.company_domain_mapping AS pcdm
+    ON
+        cc.id = pcdm.company_id
+LEFT JOIN ad_domains AS ad
+    ON
+        cdm.domain_id = ad.id
+LEFT JOIN ad_domains AS parad
+    ON
+        pcdm.domain_id = parad.id
 LEFT JOIN adtech.sdk_packages AS sp
     ON
         c.id = sp.company_id
@@ -20,5 +32,5 @@ LEFT JOIN adtech.sdk_paths AS sp2
         c.id = sp2.company_id
         OR cc.id = sp2.company_id
 WHERE
-    c.name = :company
-    OR cc.name = :company;
+    ad.domain = :company_domain
+    OR parad.domain = :company_domain

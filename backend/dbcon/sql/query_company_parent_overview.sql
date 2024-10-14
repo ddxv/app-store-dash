@@ -8,5 +8,5 @@ SELECT
 FROM
     adtech.companies_parent_app_counts
 WHERE company_domain = :company_domain
-GROUP BY company_domain, store, tag_source, app_category
+GROUP BY company_domain, company_name, store, tag_source, app_category
 ORDER BY app_count DESC;

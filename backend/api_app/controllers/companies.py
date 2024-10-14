@@ -609,7 +609,7 @@ class CompaniesController(Controller):
         """
         logger.info(f"GET /api/companies/{company_name}/tree start")
 
-        df = get_company_tree(company_name=company_name)
+        df = get_company_tree(company_domain=company_name)
 
         parent_company = df["parent_company_name"].tolist()[0]
 
@@ -620,7 +620,7 @@ class CompaniesController(Controller):
             df[
                 ~(parent_company == df["company_name"])
                 & (company_name == df["company_name"])
-            ]["domain"]
+            ]["company_domain"]
             .unique()
             .tolist()
         )
@@ -630,7 +630,7 @@ class CompaniesController(Controller):
                 ~(parent_company == df["company_name"])
                 & (company_name != df["company_name"])
             ]
-            .rename(columns={"domain": "domains"})
+            .rename(columns={"company_domain": "domains"})
             .groupby(["company_name"])["domains"]
             .apply(lambda x: list(x))
             .reset_index()
@@ -669,7 +669,7 @@ class CompaniesController(Controller):
         """
         logger.info(f"GET /api/companies/{company_name}/sdks start")
 
-        df = get_company_sdks(company_name=company_name)
+        df = get_company_sdks(company_domain=company_name)
 
         mydict = CompanyPatternsDict(
             companies={

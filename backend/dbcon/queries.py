@@ -254,7 +254,7 @@ def get_company_overview(company_domain: str) -> pd.DataFrame:
     df = pd.read_sql(
         QUERY_COMPANY_PARENT_OVERVIEW,
         DBCON.engine,
-        params={"company": company_domain},
+        params={"company_domain": company_domain},
     )
     if df.empty:
         df = pd.read_sql(
@@ -267,24 +267,24 @@ def get_company_overview(company_domain: str) -> pd.DataFrame:
     return df
 
 
-def get_company_tree(company_name: str) -> pd.DataFrame:
+def get_company_tree(company_domain: str) -> pd.DataFrame:
     """Get a company tree with parent companies and domains."""
-    logger.info(f"query company tree: {company_name=}")
+    logger.info(f"query company tree: {company_domain=}")
     df = pd.read_sql(
         QUERY_COMPANY_TREE,
         DBCON.engine,
-        params={"company": company_name},
+        params={"company_domain": company_domain},
     )
     return df
 
 
-def get_company_sdks(company_name: str) -> pd.DataFrame:
+def get_company_sdks(company_domain: str) -> pd.DataFrame:
     """Get a company tree with parent companies and domains."""
-    logger.info(f"query company sdks: {company_name=}")
+    logger.info(f"query company sdks: {company_domain=}")
     df = pd.read_sql(
         QUERY_COMPANY_SDKS,
         DBCON.engine,
-        params={"company": company_name},
+        params={"company_domain": company_domain},
     )
     return df
 
