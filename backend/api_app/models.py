@@ -1,7 +1,6 @@
 """Data models for APIs."""
 
 from dataclasses import dataclass, field
-from typing import Any
 
 
 @dataclass
@@ -220,7 +219,7 @@ class CategoryOverview:
         if category not in self.categories:
             self.categories[category] = CategoryAppStats()
 
-    def update_stats(self, category: str, **kwargs: dict[str, Any]) -> None:
+    def update_stats(self, category: str, **kwargs: int) -> None:
         """Update the stats for a category."""
         if category not in self.categories:
             self.add_category(category)

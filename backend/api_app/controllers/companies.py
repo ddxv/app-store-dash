@@ -100,7 +100,8 @@ def get_overviews(category: str | None = None) -> CompaniesOverview:
 
     overview_df = (
         overview_df.groupby(
-            ["company_name", "company_domain", "store", "tag_source"], dropna=False,
+            ["company_name", "company_domain", "store", "tag_source"],
+            dropna=False,
         )["app_count"]
         .sum()
         .reset_index()
@@ -251,91 +252,44 @@ def companies_overview(categories: list[int]) -> TopCompanies:
 def make_category_uniques(df: pd.DataFrame) -> CategoryOverview:
     """Make category sums for overview."""
     overview = CategoryOverview()
-    conditions = {
-        "sdk_ios": (df["store"].str.contains("Apple")) & (df["tag_source"] == "sdk"),
-        "sdk_android": (df["store"].str.contains("Google"))
-        & (df["tag_source"] == "sdk"),
-        "adstxt_ios": (df["store"].str.contains("Apple"))
-        & (df["tag_source"] == "app_ads"),
-        "adstxt_android": (df["store"].str.contains("Google"))
-        & (df["tag_source"] == "app_ads"),
+
+    # Precompute boolean masks
+    is_apple = df["store"].str.contains("Apple")
+    is_google = df["store"].str.contains("Google")
+    is_sdk = df["tag_source"] == "sdk"
+    is_app_ads = df["tag_source"] == "app_ads"
+
+    # Function to calculate unique counts
+    def get_unique_counts(mask: pd.Series) -> int:
+        return df.loc[mask, "company_domain"].nunique()
+
+    # Calculate overall stats
+    overall_stats = {
+        "total_apps": df["company_domain"].nunique(),
+        "sdk_ios_total_apps": get_unique_counts(is_apple & is_sdk),
+        "sdk_android_total_apps": get_unique_counts(is_google & is_sdk),
+        "adstxt_ios_total_apps": get_unique_counts(is_apple & is_app_ads),
+        "adstxt_android_total_apps": get_unique_counts(is_google & is_app_ads),
     }
+    overview.update_stats("all", **overall_stats)
 
-    # Calculate sums for all conditions in one go
-    results = {
-        key: df.loc[condition, "company_domain"].nunique()
-        for key, condition in conditions.items()
-    }
-
-    # Unpack results
-    (
-        sdk_ios_total_apps,
-        sdk_android_total_apps,
-        adstxt_ios_total_apps,
-        adstxt_android_total_apps,
-    ) = (
-        results["sdk_ios"],
-        results["sdk_android"],
-        results["adstxt_ios"],
-        results["adstxt_android"],
-    )
-
-    total_apps = df["company_domain"].nunique()
-
-    overview.update_stats(
-        "all",
-        total_apps=total_apps,
-        adstxt_ios_total_apps=adstxt_ios_total_apps,
-        adstxt_android_total_apps=adstxt_android_total_apps,
-        sdk_ios_total_apps=sdk_ios_total_apps,
-        sdk_android_total_apps=sdk_android_total_apps,
-    )
-    cats = df.app_category.unique().tolist()
-    for cat in cats:
-        conditions = {
-            "sdk_ios": (df["store"].str.contains("Apple"))
-            & (df["tag_source"] == "sdk")
-            & (df["app_category"] == cat),
-            "sdk_android": (df["store"].str.contains("Google"))
-            & (df["tag_source"] == "sdk")
-            & (df["app_category"] == cat),
-            "adstxt_ios": (df["store"].str.contains("Apple"))
-            & (df["tag_source"] == "app_ads")
-            & (df["app_category"] == cat),
-            "adstxt_android": (df["store"].str.contains("Google"))
-            & (df["tag_source"] == "app_ads")
-            & (df["app_category"] == cat),
+    # Calculate stats for each category
+    categories = df["app_category"].unique()
+    for cat in categories:
+        cat_mask = df["app_category"] == cat
+        cat_stats = {
+            "total_apps": get_unique_counts(cat_mask),
+            "sdk_ios_total_apps": get_unique_counts(cat_mask & is_apple & is_sdk),
+            "sdk_android_total_apps": get_unique_counts(cat_mask & is_google & is_sdk),
+            "adstxt_ios_total_apps": get_unique_counts(
+                cat_mask & is_apple & is_app_ads,
+            ),
+            "adstxt_android_total_apps": get_unique_counts(
+                cat_mask & is_google & is_app_ads,
+            ),
         }
+        overview.update_stats(cat, **cat_stats)
 
-        # Calculate sums for all conditions in one go
-        results = {
-            key: df.loc[condition, "company_domain"].nunique()
-            for key, condition in conditions.items()
-        }
-
-        # Unpack results
-        (
-            sdk_ios_total_apps,
-            sdk_android_total_apps,
-            adstxt_ios_total_apps,
-            adstxt_android_total_apps,
-        ) = (
-            results["sdk_ios"],
-            results["sdk_android"],
-            results["adstxt_ios"],
-            results["adstxt_android"],
-        )
-
-        total_apps = df[df["app_category"] == cat]["company_domain"].nunique()
-
-        overview.update_stats(
-            cat,
-            total_apps=total_apps,
-            adstxt_ios_total_apps=adstxt_ios_total_apps,
-            adstxt_android_total_apps=adstxt_android_total_apps,
-            sdk_ios_total_apps=sdk_ios_total_apps,
-            sdk_android_total_apps=sdk_android_total_apps,
-        )
     return overview
 
 
