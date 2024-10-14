@@ -15,14 +15,14 @@
 <svelte:head>
 	{#await data.myapp then myapp}
 		{#if myapp.store_link.includes('google')}
-			<title>{myapp.name} Android App Stats & Trends | {myapp.developer_name}</title>
+			<title>{myapp.name} Android Trends | {myapp.developer_name} | AppGoblin App Data</title>
 			<meta
 				name="description"
 				content="Explore {myapp.name} Android app's analytics and market trends on Google Play with AppGoblin. Developed by {myapp.developer_name} (ID: {myapp.developer_id}). Dive into detailed app rankings and download statistics to inform your Android app strategy and discover top-performing apps."
 			/>
 			<meta
 				name="keywords"
-				content="{myapp.name}, {myapp.developer_name}, {myapp.developer_id}, {myapp.category} analytics, market data, Android app rankings, app reviews, download statistics, Google Play data, app comparison, mobile app insights, Android"
+				content="{myapp.name}, {myapp.developer_name}, {myapp.developer_id}, {myapp.category} analytics, ads, market data, Android app rankings, app reviews, download statistics, Google Play data, app comparison, mobile app insights, Android"
 			/>
 			<meta
 				property="og:title"
@@ -30,18 +30,18 @@
 			/>
 			<meta
 				property="og:description"
-				content="Explore Android app analytics and market trends on Google Play with AppGoblin. {myapp.name} by {myapp.developer_name} (ID: {myapp.developer_id}). Dive into detailed app rankings and download statistics to inform your Android app strategy and discover top-performing apps."
+				content="Explore {myapp.name} Android app analytics and market trends on Google Play with AppGoblin. {myapp.name} by {myapp.developer_name} (ID: {myapp.developer_id}). Dive into detailed app rankings and download statistics to inform your Android app strategy and discover top-performing apps."
 			/>
 			<meta
 				name="twitter:title"
-				content="{myapp.name} Android App Stats & Info - AppGoblin | {myapp.developer_name}"
+				content="{myapp.name} Android | {myapp.developer_name} | App Stats & Info - AppGoblin"
 			/>
 			<meta
 				name="twitter:description"
-				content="Explore Android app analytics and market trends on Google Play with AppGoblin. {myapp.name} by {myapp.developer_name} (ID: {myapp.developer_id}). Dive into detailed app rankings and download statistics to inform your Android app strategy and discover top-performing apps."
+				content="Explore {myapp.name} Android app analytics and market trends on Google Play with AppGoblin. {myapp.name} by {myapp.developer_name} (ID: {myapp.developer_id}). Dive into detailed app rankings and download statistics to inform your Android app strategy and discover top-performing apps."
 			/>
 		{:else}
-			<title>{myapp.name} iOS App Stats & Trends | {myapp.developer_name}</title>
+			<title>{myapp.name} iOS Trends | {myapp.developer_name} | AppGoblin App Data</title>
 			<meta
 				name="description"
 				content="Explore {myapp.name} iOS app's analytics and market trends on the App Store with AppGoblin. Developed by {myapp.developer_name} (ID: {myapp.developer_id}). Dive into detailed app rankings and download statistics to inform your iOS app strategy and discover top-performing apps."
@@ -52,19 +52,19 @@
 			/>
 			<meta
 				property="og:title"
-				content="{myapp.name} iOS App Stats & Info - AppGoblin | {myapp.developer_name}"
+				content="{myapp.name} iOS | {myapp.developer_name} | App Stats & Info - AppGoblin"
 			/>
 			<meta
 				property="og:description"
-				content="Explore iOS app analytics and market trends on the App Store with AppGoblin. {myapp.name} by {myapp.developer_name} (ID: {myapp.developer_id}). Dive into detailed app rankings and download statistics to inform your iOS app strategy and discover top-performing apps."
+				content="Explore {myapp.name} iOS app analytics and market trends on the App Store with AppGoblin. {myapp.name} by {myapp.developer_name} (ID: {myapp.developer_id}). Dive into detailed app rankings and download statistics to inform your iOS app strategy and discover top-performing apps."
 			/>
 			<meta
 				name="twitter:title"
-				content="{myapp.name} iOS App Stats & Info - AppGoblin | {myapp.developer_name}"
+				content="{myapp.name} iOS | {myapp.developer_name} | App Stats & Info - AppGoblin "
 			/>
 			<meta
 				name="twitter:description"
-				content="Explore iOS app analytics and market trends on the App Store with AppGoblin. {myapp.name} by {myapp.developer_name} (ID: {myapp.developer_id}). Dive into detailed app rankings and download statistics to inform your iOS app strategy and discover top-performing apps."
+				content="Explore {myapp.name} iOS app analytics and market trends on the App Store with AppGoblin. {myapp.name} by {myapp.developer_name} (ID: {myapp.developer_id}). Dive into detailed app rankings and download statistics to inform your iOS app strategy and discover top-performing apps."
 			/>
 		{/if}
 		<meta property="og:image" content="https://appgoblin.info/goblin_purple_hat_250.png" />
@@ -72,6 +72,7 @@
 		<meta property="og:type" content="website" />
 		<meta name="twitter:card" content="summary_large_image" />
 		<meta name="twitter:image" content="https://appgoblin.info/goblin_purple_hat_250.png" />
+		<link rel="canonical" href="https://appgoblin.info/apps/{myapp.store_id}" />
 	{/await}
 </svelte:head>
 
