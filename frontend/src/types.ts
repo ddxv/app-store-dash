@@ -158,6 +158,7 @@ export interface AdsTxtEntries extends Row {
 
 export interface CompaniesOverviewEntries extends Row {
 	company_domain: string;
+	company_name: string;
 	tag_source: string;
 	store: string;
 	app_count: number;

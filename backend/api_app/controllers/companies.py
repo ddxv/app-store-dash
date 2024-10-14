@@ -99,7 +99,9 @@ def get_overviews(category: str | None = None) -> CompaniesOverview:
     category_overview = make_category_uniques(df=overview_df)
 
     overview_df = (
-        overview_df.groupby(["company_domain", "store", "tag_source"])["app_count"]
+        overview_df.groupby(
+            ["company_name", "company_domain", "store", "tag_source"], dropna=False,
+        )["app_count"]
         .sum()
         .reset_index()
     ).sort_values(by=["app_count"], ascending=False)

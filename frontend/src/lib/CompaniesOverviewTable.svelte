@@ -48,7 +48,8 @@
 								{index + 1}
 							</td>
 							<td class="table-cell-fit">
-								{row.company_domain}
+								{row.company_name}
+								({row.company_domain})
 							</td>
 
 							<td class="table-cell-fit">
