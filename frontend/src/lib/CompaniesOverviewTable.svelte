@@ -47,11 +47,16 @@
 							<td class="table-cell-fit">
 								{index + 1}
 							</td>
-							<td class="table-cell-fit">
-								{row.company_name}
-								({row.company_domain})
-							</td>
-
+							{#if row.company_name}
+								<td class="table-cell-fit">
+									{row.company_name}
+									({row.company_domain})
+								</td>
+							{:else}
+								<td class="table-cell-fit">
+									{row.company_domain}
+								</td>
+							{/if}
 							<td class="table-cell-fit">
 								{row.app_count}
 							</td>

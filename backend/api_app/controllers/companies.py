@@ -7,6 +7,7 @@
 
 from typing import Self
 
+import numpy as np
 import pandas as pd
 from litestar import Controller, get
 from litestar.exceptions import NotFoundException
@@ -89,11 +90,22 @@ def get_overviews(category: str | None = None) -> CompaniesOverview:
     top_sdk_df = top_df[top_df["tag_source"] == "sdk"].copy()
     top_adstxt_df = top_df[top_df["tag_source"] == "app_ads"].copy()
 
+    top_sdk_df["company_title"] = np.where(
+        top_sdk_df["company_name"].isna(),
+        top_sdk_df["company_domain"],
+        top_sdk_df["company_name"],
+    )
+    top_adstxt_df["company_title"] = np.where(
+        top_adstxt_df["company_name"].isna(),
+        top_adstxt_df["company_domain"],
+        top_adstxt_df["company_name"],
+    )
+
     top_sdk_df = top_sdk_df.rename(
-        columns={"company_domain": "group", "app_count": "value"},
+        columns={"company_title": "group", "app_count": "value"},
     ).sort_values(by=["value"], ascending=True)
     top_adstxt_df = top_adstxt_df.rename(
-        columns={"company_domain": "group", "app_count": "value"},
+        columns={"company_title": "group", "app_count": "value"},
     ).sort_values(by=["value"], ascending=True)
 
     category_overview = make_category_uniques(df=overview_df)
