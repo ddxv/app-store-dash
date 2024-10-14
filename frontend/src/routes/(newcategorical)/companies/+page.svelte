@@ -12,6 +12,34 @@
 	}
 </script>
 
+<svelte:head>
+	<title>Top Adtech Companies, Ad Networks & Data Trackers | AppGoblin</title>
+	<meta
+		name="description"
+		content="Explore top-ranked adtech advertising networks, data trackers, MMPs, and programmatic networks. Discover insights from app-ads.txt files and our extensive research on hundreds of ad tech companies across various app categories."
+	/>
+	<meta
+		name="keywords"
+		content="adtech companies, advertising networks, data trackers, MMPs, programmatic networks, app-ads.txt, mobile advertising, ad tech analytics, app marketing, AppGoblin"
+	/>
+	<meta property="og:title" content="Top Adtech Companies & Ad Networks | AppGoblin Analytics" />
+	<meta
+		property="og:description"
+		content="Discover top adtech companies, ad networks, and data trackers. Explore comprehensive data on hundreds of ad tech firms, their app clients, and market presence across different app categories."
+	/>
+	<meta name="twitter:title" content="Leading Adtech Companies & Networks | AppGoblin Insights" />
+	<meta
+		name="twitter:description"
+		content="Uncover insights on top adtech firms, ad networks, and data trackers. Analyze data from app-ads.txt files and our research on hundreds of ad tech companies and their app clients."
+	/>
+	<meta property="og:image" content="https://appgoblin.info/adtech-companies-banner.png" />
+	<meta property="og:url" content="https://appgoblin.info/companies" />
+	<meta property="og:type" content="website" />
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:image" content="https://appgoblin.info/adtech-companies-banner.png" />
+	<link rel="canonical" href="https://appgoblin.info/companies" />
+</svelte:head>
+
 <div class="flex items-center mb-2">
 	<h1 class="text-3xl font-bold text-gray-800">Companies Overview</h1>
 	<div class="h-8 w-px bg-gray-300 mx-2"></div>
