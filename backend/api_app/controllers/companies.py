@@ -612,6 +612,7 @@ class CompaniesController(Controller):
         df = get_company_tree(company_domain=company_name)
 
         parent_company = df["parent_company_name"].tolist()[0]
+        parent_company_domain = df["parent_company_domain"].tolist()[0]
 
         if parent_company == company_name:
             parent_company = None
@@ -639,6 +640,7 @@ class CompaniesController(Controller):
 
         tree = ParentCompanyTree(
             parent_company_name=parent_company,
+            parent_company_domain=parent_company_domain,
             company_name=company_name,
             domains=domains,
             children_companies=children_companies,

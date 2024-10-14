@@ -167,6 +167,7 @@ class ParentCompanyTree:
     """A company tree with parent companies and domains."""
 
     parent_company_name: str | None
+    parent_company_domain: str | None
     company_name: str
     domains: list[str]
     children_companies: list[ChildrenCompanyTree]

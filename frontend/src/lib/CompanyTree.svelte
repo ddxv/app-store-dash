@@ -11,11 +11,13 @@
 		<ul class="space-y-2">
 			{#each myTree.children_companies as child}
 				<li class="flex items-center space-x-2">
-					<CompanyButton companyName={child.company_name} />
 					{#each child.domains as domain}
 						{#if domain}
+							<CompanyButton companyName={child.company_name} companyDomain={domain} />
 							<div class="h-6 w-px bg-gray-300"></div>
 							<ExternalLink {domain} />
+						{:else}
+							{child.company_name} has no url defined
 						{/if}
 					{/each}
 				</li>

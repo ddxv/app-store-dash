@@ -28,7 +28,7 @@
 			{:else}
 				<!-- For trackers and networks -->
 				<div class="mt-4">
-					<CompanyButton companyName={key} />
+					<CompanyButton companyName={key} companyDomain={key} />
 				</div>
 				{#each Object.entries(value) as [xml_path, androidNames]}
 					<li>

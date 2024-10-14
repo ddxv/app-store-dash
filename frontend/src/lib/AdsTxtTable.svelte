@@ -46,9 +46,9 @@
 					<tr>
 						<td class="table-cell-fit">
 							{#if row.company_name}
-								<CompanyButton companyName={row.company_name} />
+								<CompanyButton companyName={row.company_name} companyDomain={row.ad_domain_url} />
 							{:else}
-								<CompanyButton companyName={row.ad_domain_url} />
+								<CompanyButton companyDomain={row.ad_domain_url} companyName={row.ad_domain_url} />
 							{/if}
 						</td>
 						<td class="table-cell-fit">

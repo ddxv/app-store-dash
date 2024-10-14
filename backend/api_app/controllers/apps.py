@@ -300,13 +300,13 @@ class AppController(Controller):
             k: f.groupby("xml_path")["value_name"].apply(list).to_dict()
             for k, f in df[
                 df["category_names"].str.contains("etwork", na=False)
-            ].groupby("company_name")
+            ].groupby("company_domain")
         }
         trackers = {
             k: f.groupby("xml_path")["value_name"].apply(list).to_dict()
             for k, f in df[
                 df["category_names"].str.contains("racker", na=False)
-            ].groupby("company_name")
+            ].groupby("company_domain")
         }
 
         is_permission = df["xml_path"] == "uses-permission"

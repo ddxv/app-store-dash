@@ -39,10 +39,13 @@
 </div>
 
 {#await data.companyTree then myTree}
-	{#if myTree && myTree.parent_company_name}
+	{#if myTree && myTree.parent_company_name && myTree.parent_company_domain}
 		<div class="flex items-center mt-2 ml-4">
 			<p class="text-xl font-bold text-gray-800 mr-2">Parent Company:</p>
-			<CompanyButton companyName={myTree.parent_company_name} />
+			<CompanyButton
+				companyName={myTree.parent_company_name}
+				companyDomain={myTree.parent_company_domain}
+			/>
 		</div>
 	{/if}
 {/await}
