@@ -46,7 +46,7 @@ def get_company_apps_new(
 ) -> CompanyAppsOverview:
     """Get the overview data from the database."""
     df = new_get_top_apps_for_company(
-        company_name=company_name,
+        company_domain=company_name,
         mapped_category=category,
     )
 
@@ -90,16 +90,16 @@ def get_overviews(category: str | None = None) -> CompaniesOverview:
     top_adstxt_df = top_df[top_df["tag_source"] == "app_ads"].copy()
 
     top_sdk_df = top_sdk_df.rename(
-        columns={"ad_network": "group", "app_count": "value"},
+        columns={"company_domain": "group", "app_count": "value"},
     ).sort_values(by=["value"], ascending=True)
     top_adstxt_df = top_adstxt_df.rename(
-        columns={"ad_network": "group", "app_count": "value"},
+        columns={"company_domain": "group", "app_count": "value"},
     ).sort_values(by=["value"], ascending=True)
 
     category_overview = make_category_uniques(df=overview_df)
 
     overview_df = (
-        overview_df.groupby(["ad_network", "store", "tag_source"])["app_count"]
+        overview_df.groupby(["company_domain", "store", "tag_source"])["app_count"]
         .sum()
         .reset_index()
     ).sort_values(by=["app_count"], ascending=False)
@@ -261,7 +261,7 @@ def make_category_uniques(df: pd.DataFrame) -> CategoryOverview:
 
     # Calculate sums for all conditions in one go
     results = {
-        key: df.loc[condition, "ad_network"].nunique()
+        key: df.loc[condition, "company_domain"].nunique()
         for key, condition in conditions.items()
     }
 
@@ -278,7 +278,7 @@ def make_category_uniques(df: pd.DataFrame) -> CategoryOverview:
         results["adstxt_android"],
     )
 
-    total_apps = df["ad_network"].nunique()
+    total_apps = df["company_domain"].nunique()
 
     overview.update_stats(
         "all",
@@ -307,7 +307,7 @@ def make_category_uniques(df: pd.DataFrame) -> CategoryOverview:
 
         # Calculate sums for all conditions in one go
         results = {
-            key: df.loc[condition, "ad_network"].nunique()
+            key: df.loc[condition, "company_domain"].nunique()
             for key, condition in conditions.items()
         }
 
@@ -324,7 +324,7 @@ def make_category_uniques(df: pd.DataFrame) -> CategoryOverview:
             results["adstxt_android"],
         )
 
-        total_apps = df[df["app_category"] == cat]["ad_network"].nunique()
+        total_apps = df[df["app_category"] == cat]["company_domain"].nunique()
 
         overview.update_stats(
             cat,

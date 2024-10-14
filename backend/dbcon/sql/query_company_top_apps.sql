@@ -11,7 +11,7 @@ WITH ranked_apps AS (
     FROM
         adtech.company_top_apps
     WHERE
-        company = :ad_network
+        company_domain = :company_domain
         AND (:mapped_category IS NULL OR category = :mapped_category)
 )
 

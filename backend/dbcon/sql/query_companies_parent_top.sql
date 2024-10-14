@@ -1,6 +1,7 @@
 WITH ranked_apps AS (
     SELECT
-        ad_network,
+        company_domain,
+        company_name,
         tag_source,
         SUM(app_count) AS app_count,
         ROW_NUMBER() OVER (
@@ -11,12 +12,13 @@ WITH ranked_apps AS (
         adtech.companies_parent_app_counts
     WHERE
         app_category = :app_category OR :app_category IS NULL
-    GROUP BY ad_network, tag_source
+    GROUP BY company_domain, company_name, tag_source
 )
 
 SELECT
     tag_source,
-    ad_network,
+    company_domain,
+    company_name,
     app_count
 FROM ranked_apps
 WHERE rank <= :mylimit

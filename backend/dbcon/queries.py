@@ -43,7 +43,7 @@ QUERY_STORE_COLLECTION_CATEGORY_MAP = load_sql_file(
 QUERY_TOP_COMPANIES_MONTH = load_sql_file("query_top_companies_month.sql")
 QUERY_TOP_PARENT_COMPANIES_MONTH = load_sql_file("query_top_companies_month_parent.sql")
 QUERY_COMPANY_APPS = load_sql_file("query_company_apps.sql")
-QUERY_COMPANY_TOP_APPS_NEW = load_sql_file("query_company_top_apps.sql")
+QUERY_COMPANY_TOP_APPS = load_sql_file("query_company_top_apps.sql")
 QUERY_PARENT_COMPANY_APPS = load_sql_file("query_parent_company_apps.sql")
 QUERY_COMPANIES_OVERVIEW = load_sql_file("query_companies_overview.sql")
 QUERY_COMPANIES_PARENT_OVERVIEW = load_sql_file("query_companies_parent_overview.sql")
@@ -371,11 +371,11 @@ def get_single_apps_adstxt(store_id: str) -> pd.DataFrame:
 
 
 def new_get_top_apps_for_company(
-    company_name: str,
+    company_domain: str,
     mapped_category: str | None = None,
 ) -> pd.DataFrame:
     """Get apps for for a network."""
-    logger.info(f"Query: {company_name=}")
+    logger.info(f"Query: {company_domain=}")
 
     mylimit = 20
 
@@ -383,10 +383,10 @@ def new_get_top_apps_for_company(
         mapped_category = "game%"
 
     df = pd.read_sql(
-        QUERY_COMPANY_TOP_APPS_NEW,
+        QUERY_COMPANY_TOP_APPS,
         con=DBCON.engine,
         params={
-            "ad_network": company_name,
+            "company_domain": company_domain,
             "mapped_category": mapped_category,
             "mylimit": mylimit,
         },

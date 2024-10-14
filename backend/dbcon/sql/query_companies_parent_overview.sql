@@ -1,5 +1,6 @@
 SELECT
-    ad_network,
+    company_domain,
+    company_name,
     store,
     app_category,
     tag_source,
@@ -8,5 +9,5 @@ FROM
     adtech.companies_parent_app_counts
 WHERE
     app_category = :app_category OR :app_category IS NULL
-GROUP BY ad_network, store, app_category, tag_source
+GROUP BY company_domain, company_name, store, app_category, tag_source
 ORDER BY app_count DESC;
