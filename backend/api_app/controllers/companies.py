@@ -499,7 +499,7 @@ class CompaniesController(Controller):
         """
         logger.info(f"GET /api/companies/{company_name}/ start")
 
-        df = get_company_overview(company_name=company_name)
+        df = get_company_overview(company_domain=company_name)
 
         overview = make_category_sums(df=df)
 
@@ -558,7 +558,7 @@ class CompaniesController(Controller):
         """
         logger.info(f"GET /api/companies/{company_name}/parentcategories start")
 
-        df = get_company_parent_categories(company_name=company_name)
+        df = get_company_parent_categories(company_domain=company_name)
 
         num_categories = 9
 

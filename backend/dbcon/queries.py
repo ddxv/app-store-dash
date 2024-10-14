@@ -248,19 +248,19 @@ def get_companies_top(app_category: str | None = None, limit: int = 10) -> pd.Da
     return df
 
 
-def get_company_overview(company_name: str) -> pd.DataFrame:
+def get_company_overview(company_domain: str) -> pd.DataFrame:
     """Get overview of companies from multiple types like sdk and app-ads.txt."""
-    logger.info(f"query company overview: {company_name=}")
+    logger.info(f"query company overview: {company_domain=}")
     df = pd.read_sql(
         QUERY_COMPANY_PARENT_OVERVIEW,
         DBCON.engine,
-        params={"company": company_name},
+        params={"company": company_domain},
     )
     if df.empty:
         df = pd.read_sql(
             QUERY_COMPANY_OVERVIEW,
             DBCON.engine,
-            params={"company": company_name},
+            params={"company_domain": company_domain},
         )
     df["store"] = df["store"].replace({1: "Google Play", 2: "Apple App Store"})
     df.loc[df["app_category"].isna(), "app_category"] = "None"
@@ -289,19 +289,19 @@ def get_company_sdks(company_name: str) -> pd.DataFrame:
     return df
 
 
-def get_company_parent_categories(company_name: str) -> pd.DataFrame:
+def get_company_parent_categories(company_domain: str) -> pd.DataFrame:
     """Get a company parent categories."""
-    logger.info(f"query company parent categories: {company_name=}")
+    logger.info(f"query company parent categories: {company_domain=}")
     df = pd.read_sql(
         QUERY_PARENT_COMPANY_CATEGORIES,
         DBCON.engine,
-        params={"company_name": company_name},
+        params={"company_domain": company_domain},
     )
     if df.empty:
         df = pd.read_sql(
             QUERY_COMPANY_CATEGORIES,
             DBCON.engine,
-            params={"company_name": company_name},
+            params={"company_domain": company_domain},
         )
     df.loc[df["app_category"].isna(), "app_category"] = "None"
     return df
