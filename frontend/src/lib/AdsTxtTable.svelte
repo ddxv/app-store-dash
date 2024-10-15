@@ -10,7 +10,7 @@
 
 	const totalRows = entries_table.length;
 
-	const rowsPerPage = 10;
+	const rowsPerPage = 50;
 
 	const handler = new DataHandler<AdsTxtEntries>([], {
 		rowsPerPage: rowsPerPage,
