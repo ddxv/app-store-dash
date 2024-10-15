@@ -36,7 +36,8 @@
 
 	<!-- App Ads.txt Section -->
 	<div class="bg-white p-6 rounded-lg shadow-md">
-		<h2 class="text-xl font-bold text-gray-800 mb-4">App Ads.txt</h2>
+		<h2 class="text-xl font-bold text-gray-800">App Ads.txt</h2>
+		<p class="text-small font-bold text-gray-800 mb-4">('DIRECT')</p>
 		<p class="text-lg text-gray-700 mb-2">
 			App-ads.txt files are an open standard by the IAB to help combat ad fraud. This data was
 			crawled from the URLs on the app's developer pages. Not all apps have app-ads.txt, many do

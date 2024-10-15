@@ -136,10 +136,12 @@
 					iOS Apps: {formatNumber(detailsData.categories.all.sdk_ios_total_apps)}
 				</span>
 				<span slot="adstxt-android-total-apps">
-					Android Companies: {formatNumber(detailsData.categories.all.adstxt_android_total_apps)}
+					Android Companies: {formatNumber(
+						detailsData.categories.all.adstxt_direct_android_total_apps
+					)}
 				</span>
 				<span slot="adstxt-ios-total-apps">
-					iOS Companies: {formatNumber(detailsData.categories.all.adstxt_ios_total_apps)}
+					iOS Companies: {formatNumber(detailsData.categories.all.adstxt_direct_ios_total_apps)}
 				</span>
 
 				<div slot="sdk-android">
@@ -153,13 +155,13 @@
 					{/if}
 				</div>
 				<div slot="adstxt-android">
-					{#if tableData && tableData.adstxt.android.apps.length > 0}
-						<CompanyOverviewTable entries_table={tableData.adstxt.android.apps} />
+					{#if tableData && tableData.adstxt_direct.android.apps.length > 0}
+						<CompanyOverviewTable entries_table={tableData.adstxt_direct.android.apps} />
 					{/if}
 				</div>
 				<div slot="adstxt-ios">
-					{#if tableData && tableData.adstxt.ios.apps.length > 0}
-						<CompanyOverviewTable entries_table={tableData.adstxt.ios.apps} />
+					{#if tableData && tableData.adstxt_direct.ios.apps.length > 0}
+						<CompanyOverviewTable entries_table={tableData.adstxt_direct.ios.apps} />
 					{/if}
 				</div>
 			</CompanyTableGrid>

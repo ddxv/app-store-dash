@@ -226,7 +226,7 @@ def get_app_package_details(store_id: str) -> pd.DataFrame:
 
 def get_companies_parent_overview(app_category: str | None = None) -> pd.DataFrame:
     """Get overview of companies from multiple types like sdk and app-ads.txt."""
-    logger.info("query companies overview")
+    logger.info("query companies parent overview start")
     df = pd.read_sql(
         QUERY_COMPANIES_PARENT_OVERVIEW,
         DBCON.engine,
@@ -234,17 +234,19 @@ def get_companies_parent_overview(app_category: str | None = None) -> pd.DataFra
     )
     df["store"] = df["store"].replace({1: "Google Play", 2: "Apple App Store"})
     df.loc[df["app_category"].isna(), "app_category"] = "None"
+    logger.info("query companies parent overview return")
     return df
 
 
 def get_companies_top(app_category: str | None = None, limit: int = 10) -> pd.DataFrame:
     """Get overview of companies from multiple types like sdk and app-ads.txt."""
-    logger.info("query companies overview")
+    logger.info("query companies parent top start")
     df = pd.read_sql(
         QUERY_COMPANIES_PARENT_TOP,
         DBCON.engine,
         params={"app_category": app_category, "mylimit": limit},
     )
+    logger.info("query companies parent top return")
     return df
 
 

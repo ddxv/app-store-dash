@@ -51,11 +51,20 @@ def get_company_apps_new(
         mapped_category=category,
     )
 
-    android_adstxt = df[
-        (df["tag_source"] == "app_ads") & (df["store"].str.startswith("Google"))
+    android_adstxt_reseller = df[
+        (df["tag_source"] == "app_ads_reseller")
+        & (df["store"].str.startswith("Google"))
     ]
-    ios_adstxt = df[
-        (df["tag_source"] == "app_ads") & (~df["store"].str.startswith("Google"))
+    ios_adstxt_reseller = df[
+        (df["tag_source"] == "app_ads_reseller")
+        & (~df["store"].str.startswith("Google"))
+    ]
+
+    android_adstxt_direct = df[
+        (df["tag_source"] == "app_ads_direct") & (df["store"].str.startswith("Google"))
+    ]
+    ios_adstxt_direct = df[
+        (df["tag_source"] == "app_ads_direct") & (~df["store"].str.startswith("Google"))
     ]
 
     android_sdk = df[
@@ -64,12 +73,23 @@ def get_company_apps_new(
     ios_sdk = df[(df["tag_source"] == "sdk") & (~df["store"].str.startswith("Google"))]
 
     results = CompanyAppsOverview(
-        adstxt=CompanyPlatformOverview(
+        adstxt_reseller=CompanyPlatformOverview(
             android=AppGroup(
-                apps=android_adstxt.to_dict(orient="records"),
+                apps=android_adstxt_reseller.to_dict(orient="records"),
                 title=company_name,
             ),
-            ios=AppGroup(apps=ios_adstxt.to_dict(orient="records"), title=company_name),
+            ios=AppGroup(
+                apps=ios_adstxt_reseller.to_dict(orient="records"), title=company_name,
+            ),
+        ),
+        adstxt_direct=CompanyPlatformOverview(
+            android=AppGroup(
+                apps=android_adstxt_direct.to_dict(orient="records"),
+                title=company_name,
+            ),
+            ios=AppGroup(
+                apps=ios_adstxt_direct.to_dict(orient="records"), title=company_name,
+            ),
         ),
         sdk=CompanyPlatformOverview(
             android=AppGroup(
@@ -88,23 +108,32 @@ def get_overviews(category: str | None = None) -> CompaniesOverview:
 
     top_df = get_companies_top(app_category=category, limit=5)
     top_sdk_df = top_df[top_df["tag_source"] == "sdk"].copy()
-    top_adstxt_df = top_df[top_df["tag_source"] == "app_ads"].copy()
+    top_adstxt_direct_df = top_df[top_df["tag_source"] == "app_ads_direct"].copy()
+    top_adstxt_reseller_df = top_df[top_df["tag_source"] == "app_ads_reseller"].copy()
 
     top_sdk_df["company_title"] = np.where(
         top_sdk_df["company_name"].isna(),
         top_sdk_df["company_domain"],
         top_sdk_df["company_name"],
     )
-    top_adstxt_df["company_title"] = np.where(
-        top_adstxt_df["company_name"].isna(),
-        top_adstxt_df["company_domain"],
-        top_adstxt_df["company_name"],
+    top_adstxt_direct_df["company_title"] = np.where(
+        top_adstxt_direct_df["company_name"].isna(),
+        top_adstxt_direct_df["company_domain"],
+        top_adstxt_direct_df["company_name"],
+    )
+    top_adstxt_reseller_df["company_title"] = np.where(
+        top_adstxt_reseller_df["company_name"].isna(),
+        top_adstxt_reseller_df["company_domain"],
+        top_adstxt_reseller_df["company_name"],
     )
 
     top_sdk_df = top_sdk_df.rename(
         columns={"company_title": "group", "app_count": "value"},
     ).sort_values(by=["value"], ascending=True)
-    top_adstxt_df = top_adstxt_df.rename(
+    top_adstxt_direct_df = top_adstxt_direct_df.rename(
+        columns={"company_title": "group", "app_count": "value"},
+    ).sort_values(by=["value"], ascending=True)
+    top_adstxt_reseller_df = top_adstxt_reseller_df.rename(
         columns={"company_title": "group", "app_count": "value"},
     ).sort_values(by=["value"], ascending=True)
 
@@ -124,9 +153,14 @@ def get_overviews(category: str | None = None) -> CompaniesOverview:
         & (overview_df["tag_source"] == "sdk")
     ]
 
-    ios_adstxt = overview_df[
+    ios_adstxt_direct = overview_df[
         (~overview_df["store"].str.contains("google", case=False))
-        & (overview_df["tag_source"] == "app_ads")
+        & (overview_df["tag_source"] == "app_ads_direct")
+    ]
+
+    ios_adstxt_reseller = overview_df[
+        (~overview_df["store"].str.contains("google", case=False))
+        & (overview_df["tag_source"] == "app_ads_reseller")
     ]
 
     android_sdk = overview_df[
@@ -134,9 +168,14 @@ def get_overviews(category: str | None = None) -> CompaniesOverview:
         & (overview_df["tag_source"] == "sdk")
     ]
 
-    android_adstxt = overview_df[
+    android_adstxt_direct = overview_df[
         (overview_df["store"].str.contains("google", case=False))
-        & (overview_df["tag_source"] == "app_ads")
+        & (overview_df["tag_source"] == "app_ads_direct")
+    ]
+
+    android_adstxt_reseller = overview_df[
+        (overview_df["store"].str.contains("google", case=False))
+        & (overview_df["tag_source"] == "app_ads_reseller")
     ]
 
     results = CompaniesOverview(
@@ -145,10 +184,15 @@ def get_overviews(category: str | None = None) -> CompaniesOverview:
             ios=ios_sdk.to_dict(orient="records"),
             top=top_sdk_df.to_dict(orient="records"),
         ),
-        adstxt=PlatformCompanies(
-            android=android_adstxt.to_dict(orient="records"),
-            ios=ios_adstxt.to_dict(orient="records"),
-            top=top_adstxt_df.to_dict(orient="records"),
+        adstxt_direct=PlatformCompanies(
+            android=android_adstxt_direct.to_dict(orient="records"),
+            ios=ios_adstxt_direct.to_dict(orient="records"),
+            top=top_adstxt_direct_df.to_dict(orient="records"),
+        ),
+        adstxt_reseller=PlatformCompanies(
+            android=android_adstxt_reseller.to_dict(orient="records"),
+            ios=ios_adstxt_reseller.to_dict(orient="records"),
+            top=top_adstxt_reseller_df.to_dict(orient="records"),
         ),
         categories=category_overview,
     )
@@ -269,7 +313,8 @@ def make_category_uniques(df: pd.DataFrame) -> CategoryOverview:
     is_apple = df["store"].str.contains("Apple")
     is_google = df["store"].str.contains("Google")
     is_sdk = df["tag_source"] == "sdk"
-    is_app_ads = df["tag_source"] == "app_ads"
+    is_app_ads_reseller = df["tag_source"] == "app_ads_reseller"
+    is_app_ads_direct = df["tag_source"] == "app_ads_direct"
 
     # Function to calculate unique counts
     def get_unique_counts(mask: pd.Series) -> int:
@@ -280,8 +325,16 @@ def make_category_uniques(df: pd.DataFrame) -> CategoryOverview:
         "total_apps": df["company_domain"].nunique(),
         "sdk_ios_total_apps": get_unique_counts(is_apple & is_sdk),
         "sdk_android_total_apps": get_unique_counts(is_google & is_sdk),
-        "adstxt_ios_total_apps": get_unique_counts(is_apple & is_app_ads),
-        "adstxt_android_total_apps": get_unique_counts(is_google & is_app_ads),
+        "adstxt_direct_ios_total_apps": get_unique_counts(is_apple & is_app_ads_direct),
+        "adstxt_direct_android_total_apps": get_unique_counts(
+            is_google & is_app_ads_direct,
+        ),
+        "adstxt_reseller_ios_total_apps": get_unique_counts(
+            is_apple & is_app_ads_reseller,
+        ),
+        "adstxt_reseller_android_total_apps": get_unique_counts(
+            is_google & is_app_ads_reseller,
+        ),
     }
     overview.update_stats("all", **overall_stats)
 
@@ -293,11 +346,17 @@ def make_category_uniques(df: pd.DataFrame) -> CategoryOverview:
             "total_apps": get_unique_counts(cat_mask),
             "sdk_ios_total_apps": get_unique_counts(cat_mask & is_apple & is_sdk),
             "sdk_android_total_apps": get_unique_counts(cat_mask & is_google & is_sdk),
-            "adstxt_ios_total_apps": get_unique_counts(
-                cat_mask & is_apple & is_app_ads,
+            "adstxt_direct_ios_total_apps": get_unique_counts(
+                cat_mask & is_apple & is_app_ads_direct,
             ),
-            "adstxt_android_total_apps": get_unique_counts(
-                cat_mask & is_google & is_app_ads,
+            "adstxt_direct_android_total_apps": get_unique_counts(
+                cat_mask & is_google & is_app_ads_direct,
+            ),
+            "adstxt_reseller_ios_total_apps": get_unique_counts(
+                cat_mask & is_apple & is_app_ads_reseller,
+            ),
+            "adstxt_reseller_android_total_apps": get_unique_counts(
+                cat_mask & is_google & is_app_ads_reseller,
             ),
         }
         overview.update_stats(cat, **cat_stats)
@@ -312,10 +371,14 @@ def make_category_sums(df: pd.DataFrame) -> CategoryOverview:
         "sdk_ios": (df["store"].str.contains("Apple")) & (df["tag_source"] == "sdk"),
         "sdk_android": (df["store"].str.contains("Google"))
         & (df["tag_source"] == "sdk"),
-        "adstxt_ios": (df["store"].str.contains("Apple"))
-        & (df["tag_source"] == "app_ads"),
-        "adstxt_android": (df["store"].str.contains("Google"))
-        & (df["tag_source"] == "app_ads"),
+        "adstxt_direct_ios": (df["store"].str.contains("Apple"))
+        & (df["tag_source"] == "app_ads_direct"),
+        "adstxt_direct_android": (df["store"].str.contains("Google"))
+        & (df["tag_source"] == "app_ads_direct"),
+        "adstxt_reseller_ios": (df["store"].str.contains("Apple"))
+        & (df["tag_source"] == "app_ads_reseller"),
+        "adstxt_reseller_android": (df["store"].str.contains("Google"))
+        & (df["tag_source"] == "app_ads_reseller"),
     }
 
     # Calculate sums for all conditions in one go
@@ -328,27 +391,35 @@ def make_category_sums(df: pd.DataFrame) -> CategoryOverview:
     (
         sdk_ios_total_apps,
         sdk_android_total_apps,
-        adstxt_ios_total_apps,
-        adstxt_android_total_apps,
+        adstxt_direct_ios_total_apps,
+        adstxt_direct_android_total_apps,
+        adstxt_reseller_ios_total_apps,
+        adstxt_reseller_android_total_apps,
     ) = (
         results["sdk_ios"],
         results["sdk_android"],
-        results["adstxt_ios"],
-        results["adstxt_android"],
+        results["adstxt_direct_ios"],
+        results["adstxt_direct_android"],
+        results["adstxt_reseller_ios"],
+        results["adstxt_reseller_android"],
     )
 
     total_apps = (
         sdk_ios_total_apps
         + sdk_android_total_apps
-        + adstxt_ios_total_apps
-        + adstxt_android_total_apps
+        + adstxt_direct_ios_total_apps
+        + adstxt_direct_android_total_apps
+        + adstxt_reseller_ios_total_apps
+        + adstxt_reseller_android_total_apps
     )
 
     overview.update_stats(
         "all",
         total_apps=total_apps,
-        adstxt_ios_total_apps=adstxt_ios_total_apps,
-        adstxt_android_total_apps=adstxt_android_total_apps,
+        adstxt_direct_ios_total_apps=adstxt_direct_ios_total_apps,
+        adstxt_direct_android_total_apps=adstxt_direct_android_total_apps,
+        adstxt_reseller_ios_total_apps=adstxt_reseller_ios_total_apps,
+        adstxt_reseller_android_total_apps=adstxt_reseller_android_total_apps,
         sdk_ios_total_apps=sdk_ios_total_apps,
         sdk_android_total_apps=sdk_android_total_apps,
     )
@@ -361,11 +432,17 @@ def make_category_sums(df: pd.DataFrame) -> CategoryOverview:
             "sdk_android": (df["store"].str.contains("Google"))
             & (df["tag_source"] == "sdk")
             & (df["app_category"] == cat),
-            "adstxt_ios": (df["store"].str.contains("Apple"))
-            & (df["tag_source"] == "app_ads")
+            "adstxt_direct_ios": (df["store"].str.contains("Apple"))
+            & (df["tag_source"] == "app_ads_direct")
             & (df["app_category"] == cat),
-            "adstxt_android": (df["store"].str.contains("Google"))
-            & (df["tag_source"] == "app_ads")
+            "adstxt_direct_android": (df["store"].str.contains("Google"))
+            & (df["tag_source"] == "app_ads_direct")
+            & (df["app_category"] == cat),
+            "adstxt_reseller_ios": (df["store"].str.contains("Apple"))
+            & (df["tag_source"] == "app_ads_reseller")
+            & (df["app_category"] == cat),
+            "adstxt_reseller_android": (df["store"].str.contains("Google"))
+            & (df["tag_source"] == "app_ads_reseller")
             & (df["app_category"] == cat),
         }
 
@@ -379,27 +456,35 @@ def make_category_sums(df: pd.DataFrame) -> CategoryOverview:
         (
             sdk_ios_total_apps,
             sdk_android_total_apps,
-            adstxt_ios_total_apps,
-            adstxt_android_total_apps,
+            adstxt_direct_ios_total_apps,
+            adstxt_direct_android_total_apps,
+            adstxt_reseller_ios_total_apps,
+            adstxt_reseller_android_total_apps,
         ) = (
             results["sdk_ios"],
             results["sdk_android"],
-            results["adstxt_ios"],
-            results["adstxt_android"],
+            results["adstxt_direct_ios"],
+            results["adstxt_direct_android"],
+            results["adstxt_reseller_ios"],
+            results["adstxt_reseller_android"],
         )
 
         total_apps = (
             sdk_ios_total_apps
             + sdk_android_total_apps
-            + adstxt_ios_total_apps
-            + adstxt_android_total_apps
+            + adstxt_direct_ios_total_apps
+            + adstxt_direct_android_total_apps
+            + adstxt_reseller_ios_total_apps
+            + adstxt_reseller_android_total_apps
         )
 
         overview.update_stats(
             cat,
             total_apps=total_apps,
-            adstxt_ios_total_apps=adstxt_ios_total_apps,
-            adstxt_android_total_apps=adstxt_android_total_apps,
+            adstxt_direct_ios_total_apps=adstxt_direct_ios_total_apps,
+            adstxt_direct_android_total_apps=adstxt_direct_android_total_apps,
+            adstxt_reseller_ios_total_apps=adstxt_reseller_ios_total_apps,
+            adstxt_reseller_android_total_apps=adstxt_reseller_android_total_apps,
             sdk_ios_total_apps=sdk_ios_total_apps,
             sdk_android_total_apps=sdk_android_total_apps,
         )

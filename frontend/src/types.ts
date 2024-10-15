@@ -175,7 +175,8 @@ export interface CompaniesOverviewPlatforms extends Row {
 
 export interface CompaniesOverviewSections extends Row {
 	sdk: CompaniesOverviewPlatforms;
-	adstxt: CompaniesOverviewPlatforms;
+	adstxt_direct: CompaniesOverviewPlatforms;
+	adstxt_reseller: CompaniesOverviewPlatforms;
 	categories: CompanyCategoryOverview;
 }
 
@@ -203,14 +204,17 @@ export interface CompanyOverviewPlatforms {
 
 export interface CompanyOverviewSections {
 	sdk: CompanyOverviewPlatforms;
-	adstxt: CompanyOverviewPlatforms;
+	adstxt_direct: CompanyOverviewPlatforms;
+	adstxt_reseller: CompanyOverviewPlatforms;
 }
 
 export interface CategoryAppStats {
 	sdk_ios_total_apps: number;
 	sdk_android_total_apps: number;
-	adstxt_ios_total_apps: number;
-	adstxt_android_total_apps: number;
+	adstxt_direct_ios_total_apps: number;
+	adstxt_direct_android_total_apps: number;
+	adstxt_reseller_ios_total_apps: number;
+	adstxt_reseller_android_total_apps: number;
 	total_apps: number;
 }
 

@@ -69,7 +69,7 @@
 			>
 			<WhiteCard slot="card3"
 				><CompaniesBarChart
-					plotData={myData.adstxt.top}
+					plotData={myData.adstxt_direct.top}
 					plotTitle="Top Adstxt Companies"
 				/></WhiteCard
 			>
@@ -95,11 +95,13 @@
 			</span>
 			<span slot="adstxt-android-total-apps">
 				Android Companies: {formatNumber(
-					tableData.categories.categories.all.adstxt_android_total_apps
+					tableData.categories.categories.all.adstxt_direct_android_total_apps
 				)}
 			</span>
 			<span slot="adstxt-ios-total-apps">
-				iOS Companies: {formatNumber(tableData.categories.categories.all.adstxt_ios_total_apps)}
+				iOS Companies: {formatNumber(
+					tableData.categories.categories.all.adstxt_direct_ios_total_apps
+				)}
 			</span>
 
 			<div slot="sdk-android">
@@ -113,13 +115,13 @@
 				{/if}
 			</div>
 			<div slot="adstxt-android">
-				{#if tableData && tableData.adstxt.android.length > 0}
-					<CompaniesOverviewTable entries_table={tableData.adstxt.android} />
+				{#if tableData && tableData.adstxt_direct.android.length > 0}
+					<CompaniesOverviewTable entries_table={tableData.adstxt_direct.android} />
 				{/if}
 			</div>
 			<div slot="adstxt-ios">
-				{#if tableData && tableData.adstxt.ios.length > 0}
-					<CompaniesOverviewTable entries_table={tableData.adstxt.ios} />
+				{#if tableData && tableData.adstxt_direct.ios.length > 0}
+					<CompaniesOverviewTable entries_table={tableData.adstxt_direct.ios} />
 				{/if}
 			</div>
 		</CompanyTableGrid>

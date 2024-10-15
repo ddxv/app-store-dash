@@ -95,10 +95,10 @@
 					{formatNumber(myData.categories[company_category].sdk_ios_total_apps)}
 				</span>
 				<span slot="adstxt-android-total-apps">
-					{formatNumber(myData.categories[company_category].adstxt_android_total_apps)}
+					{formatNumber(myData.categories[company_category].adstxt_direct_android_total_apps)}
 				</span>
 				<span slot="adstxt-ios-total-apps">
-					{formatNumber(myData.categories[company_category].adstxt_ios_total_apps)}
+					{formatNumber(myData.categories[company_category].adstxt_direct_ios_total_apps)}
 				</span>
 
 				<div slot="sdk-android">
@@ -116,13 +116,13 @@
 					{/if}
 				</div>
 				<div slot="adstxt-android">
-					{#if tableData.adstxt.android.apps}
-						<CompanyOverviewTable entries_table={tableData.adstxt.android.apps} />
+					{#if tableData.adstxt_direct.android.apps}
+						<CompanyOverviewTable entries_table={tableData.adstxt_direct.android.apps} />
 					{/if}
 				</div>
 				<div slot="adstxt-ios">
-					{#if tableData.adstxt.ios.apps}
-						<CompanyOverviewTable entries_table={tableData.adstxt.ios.apps} />
+					{#if tableData.adstxt_direct.ios.apps}
+						<CompanyOverviewTable entries_table={tableData.adstxt_direct.ios.apps} />
 					{/if}
 				</div>
 			</CompanyTableGrid>

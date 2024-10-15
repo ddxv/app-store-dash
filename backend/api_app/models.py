@@ -201,8 +201,10 @@ class CategoryAppStats:
     """Contains a list of CompanyDetail objects representing the top networks identified."""
 
     total_apps: int = 0
-    adstxt_ios_total_apps: int = 0
-    adstxt_android_total_apps: int = 0
+    adstxt_direct_ios_total_apps: int = 0
+    adstxt_direct_android_total_apps: int = 0
+    adstxt_reseller_ios_total_apps: int = 0
+    adstxt_reseller_android_total_apps: int = 0
     sdk_ios_total_apps: int = 0
     sdk_android_total_apps: int = 0
 
@@ -234,7 +236,8 @@ class CompaniesOverview:
     """Contains a list of CompanyDetail objects representing the top networks identified."""
 
     sdk: PlatformCompanies
-    adstxt: PlatformCompanies
+    adstxt_direct: PlatformCompanies
+    adstxt_reseller: PlatformCompanies
     categories: CategoryOverview
 
 
@@ -253,7 +256,8 @@ class CompanyAppsOverview:
     """Overview of a company's apps on different platforms."""
 
     sdk: CompanyPlatformOverview
-    adstxt: CompanyPlatformOverview
+    adstxt_direct: CompanyPlatformOverview
+    adstxt_reseller: CompanyPlatformOverview
 
 
 @dataclass
