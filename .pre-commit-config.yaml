@@ -38,7 +38,7 @@ repos:
         name: eslint
         language: node
         entry: frontend/node_modules/eslint/bin/eslint.js
-        #args: ['--fix'] #lets wait before using this
+        args: [--config, frontend/eslint.config.js]
         require_serial: true
         files: \.(js|ts|svelte|css|mjs)$
         additional_dependencies:
