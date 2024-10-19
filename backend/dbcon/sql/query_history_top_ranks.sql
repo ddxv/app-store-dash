@@ -14,7 +14,11 @@ WHERE
             app_rankings AS ar
         WHERE
             ar.crawled_date
-            = (SELECT max(crawled_date) FROM app_rankings WHERE store = :store)
+            = (
+                SELECT max(ar.crawled_date)
+                FROM app_rankings
+                WHERE ar.store = :store
+            )
             AND ar.store = :store
             AND ar.store_collection = :collection_id
             AND ar.store_category = :category_id
