@@ -36,8 +36,8 @@
 			<thead>
 				<tr>
 					<th class="table-cell-fit"></th>
-					<th class="table-cell-fit">Ad Network</th>
-					<th class="table-cell-fit">App Count</th>
+					<th class="table-cell-fit">Company</th>
+					<th class="table-cell-fit">Apps</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -58,7 +58,7 @@
 								</td>
 							{/if}
 							<td class="table-cell-fit">
-								{row.app_count}
+								{(row.percentage * 100).toFixed(2)}%
 							</td>
 						</a></tr
 					>

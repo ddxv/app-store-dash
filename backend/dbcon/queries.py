@@ -10,8 +10,13 @@ from sqlalchemy import text
 from config import MODULE_DIR, get_logger
 from dbcon.connections import get_db_connection
 
+from cachetools import cached, TTLCache
+
 logger = get_logger(__name__)
 
+
+TWODAYCACHE = TTLCache(maxsize=100, ttl=2 * 24 * 60 * 60)  # 2 days = 172800 seconds
+ONEDAYCACHE = TTLCache(maxsize=100, ttl=1 * 24 * 60 * 60)  # 1 day = 86400 seconds
 
 SQL_DIR = pathlib.Path(MODULE_DIR, "dbcon/sql/")
 
@@ -54,6 +59,7 @@ QUERY_COMPANY_TREE = load_sql_file("query_company_tree.sql")
 QUERY_COMPANY_SDKS = load_sql_file("query_company_sdks.sql")
 QUERY_PARENT_COMPANY_CATEGORIES = load_sql_file("query_company_parent_category.sql")
 QUERY_COMPANY_CATEGORIES = load_sql_file("query_company_category.sql")
+QUERY_CATEGORY_TOTALS = load_sql_file("query_category_totals.sql")
 
 
 def get_recent_apps(collection: str, limit: int = 20) -> pd.DataFrame:
@@ -111,6 +117,7 @@ def get_recent_apps(collection: str, limit: int = 20) -> pd.DataFrame:
     return df
 
 
+@cached(cache=TWODAYCACHE)
 def get_appstore_categories() -> pd.DataFrame:
     """Get categories for both appstores."""
     df = pd.read_sql(QUERY_APPSTORE_CATEGORIES, DBCON.engine)
@@ -185,6 +192,7 @@ def get_history_top_ranks(
     return df
 
 
+@cached(cache=TWODAYCACHE)
 def get_store_collection_category_map() -> pd.DataFrame:
     """Get store collection and category map."""
     df = pd.read_sql(QUERY_STORE_COLLECTION_CATEGORY_MAP, con=DBCON.engine)
@@ -224,6 +232,7 @@ def get_app_package_details(store_id: str) -> pd.DataFrame:
     return df
 
 
+@cached(cache=ONEDAYCACHE)
 def get_companies_parent_overview(app_category: str | None = None) -> pd.DataFrame:
     """Get overview of companies from multiple types like sdk and app-ads.txt."""
     logger.info("query companies parent overview start")
@@ -238,6 +247,7 @@ def get_companies_parent_overview(app_category: str | None = None) -> pd.DataFra
     return df
 
 
+@cached(cache=ONEDAYCACHE)
 def get_companies_top(app_category: str | None = None, limit: int = 10) -> pd.DataFrame:
     """Get overview of companies from multiple types like sdk and app-ads.txt."""
     logger.info("query companies parent top start")
@@ -306,6 +316,14 @@ def get_company_parent_categories(company_domain: str) -> pd.DataFrame:
             params={"company_domain": company_domain},
         )
     df.loc[df["app_category"].isna(), "app_category"] = "None"
+    return df
+
+@cached(cache=TWODAYCACHE)
+def get_category_totals() -> pd.DataFrame:
+    """Get category totals."""
+    df = pd.read_sql(QUERY_CATEGORY_TOTALS, DBCON.engine)
+    df = df.rename(columns={"app_count": "total_app_count"})
+    df["store"] = df["store"].replace({1: "Google Play", 2: "Apple App Store"})
     return df
 
 

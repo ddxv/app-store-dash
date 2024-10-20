@@ -36,6 +36,7 @@ from dbcon.queries import (
     get_company_tree,
     get_top_companies,
     new_get_top_apps_for_company,
+    get_category_totals,
 )
 
 logger = get_logger(__name__)
@@ -107,6 +108,16 @@ def get_overviews(category: str | None = None) -> CompaniesOverview:
     overview_df = get_companies_parent_overview(app_category=category)
 
     top_df = get_companies_top(app_category=category, limit=5)
+
+    category_totals_df = get_category_totals()
+
+    overview_df = overview_df.merge(
+        category_totals_df,
+        on=["app_category", "store", "tag_source"],
+        validate="m:1",
+    )
+
+
     top_sdk_df = top_df[top_df["tag_source"] == "sdk"].copy()
     top_adstxt_direct_df = top_df[top_df["tag_source"] == "app_ads_direct"].copy()
     top_adstxt_reseller_df = top_df[top_df["tag_source"] == "app_ads_reseller"].copy()
@@ -143,10 +154,12 @@ def get_overviews(category: str | None = None) -> CompaniesOverview:
         overview_df.groupby(
             ["company_name", "company_domain", "store", "tag_source"],
             dropna=False,
-        )["app_count"]
+        )[["app_count", "total_app_count"]]
         .sum()
         .reset_index()
     ).sort_values(by=["app_count"], ascending=False)
+    
+    overview_df['percentage'] = overview_df['app_count'] / overview_df['total_app_count']
 
     ios_sdk = overview_df[
         (~overview_df["store"].str.contains("google", case=False))
