@@ -158,8 +158,18 @@ def get_overviews(category: str | None = None) -> CompaniesOverview:
         .sum()
         .reset_index()
     ).sort_values(by=["app_count"], ascending=False)
+
     
     overview_df['percentage'] = overview_df['app_count'] / overview_df['total_app_count']
+
+    overview_df['store_tag'] = np.where(overview_df['store'].str.contains('Google'), 'google', 'apple')
+
+    overview_df['store_tag_source'] = overview_df['store_tag'] + '_' + overview_df['tag_source']
+
+
+    new_overview_df = overview_df.pivot(index=['company_name', 'company_domain'], columns=["store_tag_source"], values="percentage").reset_index()
+
+
 
     ios_sdk = overview_df[
         (~overview_df["store"].str.contains("google", case=False))
@@ -192,6 +202,7 @@ def get_overviews(category: str | None = None) -> CompaniesOverview:
     ]
 
     results = CompaniesOverview(
+        companies_overview=new_overview_df.to_dict(orient="records"),
         sdk=PlatformCompanies(
             android=android_sdk.to_dict(orient="records"),
             ios=ios_sdk.to_dict(orient="records"),

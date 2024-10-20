@@ -1,9 +1,12 @@
 <script lang="ts">
-	import Pagination from './Pagination.svelte';
+	// import Pagination from './Pagination.svelte';
 
-	import { DataHandler } from '@vincjo/datatables/remote';
-	import type { State } from '@vincjo/datatables/remote';
+	// import { DataHandler } from '@vincjo/datatables/remote';
+	import { DataHandler } from '@vincjo/datatables';
+	// import type { State } from '@vincjo/datatables/remote';
 	import type { CompaniesOverviewEntries } from '../types';
+
+	import ThSort from './ThSort.svelte';
 
 	export let entries_table: CompaniesOverviewEntries[];
 
@@ -11,22 +14,23 @@
 
 	const rowsPerPage = 100;
 
-	const handler = new DataHandler<CompaniesOverviewEntries>([], {
+	const handler = new DataHandler<CompaniesOverviewEntries>(entries_table, {
 		rowsPerPage: rowsPerPage,
-		totalRows: totalRows
+		// totalRows: totalRows
 	});
+
 	const rows = handler.getRows();
 
-	handler.onChange((state: State) =>
-		Promise.resolve(
-			entries_table.slice(
-				0 + (state.pageNumber - 1) * state.rowsPerPage,
-				state.rowsPerPage * state.pageNumber
-			)
-		)
-	);
+	// handler.onChange((state: State) =>
+	// 	Promise.resolve(
+	// 		entries_table.slice(
+	// 			0 + (state.pageNumber - 1) * state.rowsPerPage,
+	// 			state.rowsPerPage * state.pageNumber
+	// 		)
+	// 	)
+	// );
 
-	handler.invalidate();
+	// handler.invalidate();
 	console.log(`TABLE Companies: ${totalRows}`);
 </script>
 
@@ -36,8 +40,10 @@
 			<thead>
 				<tr>
 					<th class="table-cell-fit"></th>
-					<th class="table-cell-fit">Company</th>
-					<th class="table-cell-fit">Apps</th>
+				<ThSort {handler} orderBy="company_name">Company</ThSort>
+                <ThSort {handler} orderBy="percentage">Apps</ThSort>
+					<!-- <th class="table-cell-fit">Company</th> -->
+					<!-- <th class="table-cell-fit">Apps</th> -->
 				</tr>
 			</thead>
 			<tbody>
@@ -67,9 +73,9 @@
 		</table>
 		<footer class="flex justify-between">
 			<!-- <RowCount {handler} /> -->
-			{#if totalRows > rowsPerPage}
+			<!-- {#if totalRows > rowsPerPage}
 				<Pagination {handler} />
-			{/if}
+			{/if} -->
 		</footer>
 	</div>
 </div>

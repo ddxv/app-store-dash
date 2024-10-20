@@ -235,6 +235,7 @@ class CompaniesOverview:
 
     """Contains a list of CompanyDetail objects representing the top networks identified."""
 
+    companies_overview: list[CompanyDetail]
     sdk: PlatformCompanies
     adstxt_direct: PlatformCompanies
     adstxt_reseller: PlatformCompanies
