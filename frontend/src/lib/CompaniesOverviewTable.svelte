@@ -1,12 +1,12 @@
 <script lang="ts">
-	// import Pagination from './Pagination.svelte';
+	import Pagination from './Pagination.svelte';
 
 	// import { DataHandler } from '@vincjo/datatables/remote';
 	import { DataHandler } from '@vincjo/datatables';
 	// import type { State } from '@vincjo/datatables/remote';
 	import type { CompaniesOverviewEntries } from '../types';
 
-	import ThSort from './ThSort.svelte';
+	import ThSort from './clientside/ThSort.svelte';
 
 	export let entries_table: CompaniesOverviewEntries[];
 
@@ -73,9 +73,9 @@
 		</table>
 		<footer class="flex justify-between">
 			<!-- <RowCount {handler} /> -->
-			<!-- {#if totalRows > rowsPerPage}
+			{#if totalRows > rowsPerPage}
 				<Pagination {handler} />
-			{/if} -->
+			{/if}
 		</footer>
 	</div>
 </div>

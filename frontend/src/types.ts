@@ -1,5 +1,6 @@
 import type { ChartTabularData } from '@carbon/charts-svelte';
 import type { Row } from '@vincjo/datatables/remote';
+import type { Row as ClientRow } from '@vincjo/datatables';
 
 export type Crumb<M = any> = {
 	title?: string;
@@ -156,7 +157,7 @@ export interface AdsTxtEntries extends Row {
 	developer_domain_crawled_at: number;
 }
 
-export interface CompaniesOverviewEntries extends Row {
+export interface CompaniesOverviewEntries extends ClientRow {
 	company_domain: string;
 	company_name: string;
 	tag_source: string;
@@ -165,7 +166,7 @@ export interface CompaniesOverviewEntries extends Row {
 	percentage: number;
 }
 
-export interface CompaniesOverviewPlatforms extends Row {
+export interface CompaniesOverviewPlatforms {
 	android: CompaniesOverviewEntries[];
 	ios: CompaniesOverviewEntries[];
 	top: {
@@ -174,7 +175,7 @@ export interface CompaniesOverviewPlatforms extends Row {
 	}[];
 }
 
-export interface CompaniesOverviewSections extends Row {
+export interface CompaniesOverviewSections {
 	sdk: CompaniesOverviewPlatforms;
 	adstxt_direct: CompaniesOverviewPlatforms;
 	adstxt_reseller: CompaniesOverviewPlatforms;
