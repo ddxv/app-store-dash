@@ -1,12 +1,9 @@
 <script lang="ts">
 	import Pagination from './Pagination.svelte';
-
-	// import { DataHandler } from '@vincjo/datatables/remote';
 	import { DataHandler } from '@vincjo/datatables';
-	// import type { State } from '@vincjo/datatables/remote';
 	import type { CompaniesOverviewEntries } from '../types';
-
 	import ThSort from './clientside/ThSort.svelte';
+	// import ThFilter from './clientside/ThFilter.svelte';
 
 	export let entries_table: CompaniesOverviewEntries[];
 
@@ -16,21 +13,10 @@
 
 	const handler = new DataHandler<CompaniesOverviewEntries>(entries_table, {
 		rowsPerPage: rowsPerPage,
-		// totalRows: totalRows
 	});
 
 	const rows = handler.getRows();
 
-	// handler.onChange((state: State) =>
-	// 	Promise.resolve(
-	// 		entries_table.slice(
-	// 			0 + (state.pageNumber - 1) * state.rowsPerPage,
-	// 			state.rowsPerPage * state.pageNumber
-	// 		)
-	// 	)
-	// );
-
-	// handler.invalidate();
 	console.log(`TABLE Companies: ${totalRows}`);
 </script>
 
@@ -40,11 +26,13 @@
 			<thead>
 				<tr>
 					<th class="table-cell-fit"></th>
-				<ThSort {handler} orderBy="company_name">Company</ThSort>
-                <ThSort {handler} orderBy="percentage">Apps</ThSort>
-					<!-- <th class="table-cell-fit">Company</th> -->
-					<!-- <th class="table-cell-fit">Apps</th> -->
+					<ThSort {handler} orderBy="company_name">Company</ThSort>
+                	<ThSort {handler} orderBy="google_sdk">Android SDK</ThSort>
+                	<ThSort {handler} orderBy="apple_sdk">iOS SDK</ThSort>
+                	<ThSort {handler} orderBy="google_app_ads_direct">Android AdsTxt</ThSort>
+                	<ThSort {handler} orderBy="apple_app_ads_direct">iOS AdsTxt</ThSort>
 				</tr>
+				
 			</thead>
 			<tbody>
 				{#each $rows as row, index}
@@ -53,18 +41,28 @@
 							<td class="table-cell-fit">
 								{index + 1}
 							</td>
-							{#if row.company_name}
 								<td class="table-cell-fit">
+							{#if row.company_name}
 									{row.company_name}
 									({row.company_domain})
-								</td>
 							{:else}
-								<td class="table-cell-fit">
 									{row.company_domain}
-								</td>
 							{/if}
+								</td>
 							<td class="table-cell-fit">
-								{(row.percentage * 100).toFixed(2)}%
+								{(row.google_sdk * 100).toFixed(2)}%
+							</td>
+
+							<td class="table-cell-fit">
+								{(row.apple_sdk * 100).toFixed(2)}%
+							</td>
+
+							<td class="table-cell-fit">
+								{(row.google_app_ads_direct * 100).toFixed(2)}%
+							</td>
+
+							<td class="table-cell-fit">
+								{(row.apple_app_ads_direct * 100).toFixed(2)}%
 							</td>
 						</a></tr
 					>

@@ -169,6 +169,8 @@ def get_overviews(category: str | None = None) -> CompaniesOverview:
 
     new_overview_df = overview_df.pivot(index=['company_name', 'company_domain'], columns=["store_tag_source"], values="percentage").reset_index()
 
+    new_overview_df = new_overview_df.sort_values(by=['google_sdk', 'apple_sdk', 'google_app_ads_direct', 'apple_app_ads_direct'], ascending=False).head(1000)
+
 
 
     ios_sdk = overview_df[

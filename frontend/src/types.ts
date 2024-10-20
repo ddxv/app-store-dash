@@ -176,6 +176,7 @@ export interface CompaniesOverviewPlatforms {
 }
 
 export interface CompaniesOverviewSections {
+	companies_overview: CompaniesOverviewEntries[];
 	sdk: CompaniesOverviewPlatforms;
 	adstxt_direct: CompaniesOverviewPlatforms;
 	adstxt_reseller: CompaniesOverviewPlatforms;

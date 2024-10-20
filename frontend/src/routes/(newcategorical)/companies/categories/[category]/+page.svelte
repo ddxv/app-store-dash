@@ -1,12 +1,14 @@
 <script lang="ts">
 	import type { CompaniesOverview } from '../../../../../types';
 	export let data: CompaniesOverview;
-	import CompaniesOverviewTable from '$lib/CompaniesOverviewTable.svelte';
+	import CompaniesOverviewTablePart from '$lib/CompaniesOverviewTablePart.svelte';
 	import CompaniesBarChart from '$lib/CompaniesBarChart.svelte';
+	import CompaniesOverviewTable from '$lib/CompaniesOverviewTable.svelte';
 
 	import CompanyTableGrid from '$lib/CompanyTableGrid.svelte';
 	import WhiteCard from '$lib/WhiteCard.svelte';
 	import CompaniesLayout from '$lib/CompaniesLayout.svelte';
+	import CompaniesTableGrid from '$lib/CompaniesTableGrid.svelte';
 
 	function formatNumber(num: number) {
 		return new Intl.NumberFormat('en-US').format(num);
@@ -59,7 +61,18 @@
 	{#if typeof tableData == 'string'}
 		Failed to load companies.
 	{:else}
-		<CompanyTableGrid>
+			<CompaniesTableGrid>
+
+
+
+			<div slot="main-table">
+				{#if tableData && tableData.companies_overview.length > 0}
+					<CompaniesOverviewTable entries_table={tableData.companies_overview} />
+				{/if}
+			</div>
+
+
+
 			<span slot="sdk-android-total-apps">
 				Android Companies: {formatNumber(
 					tableData.categories.categories.all.sdk_android_total_apps
@@ -78,26 +91,7 @@
 				)}
 			</span>
 
-			<div slot="sdk-android">
-				{#if tableData && tableData.sdk.android.length > 0}
-					<CompaniesOverviewTable entries_table={tableData.sdk.android} />
-				{/if}
-			</div>
-			<div slot="sdk-ios">
-				{#if tableData && tableData.sdk.ios.length > 0}
-					<CompaniesOverviewTable entries_table={tableData.sdk.ios} />
-				{/if}
-			</div>
-			<div slot="adstxt-android">
-				{#if tableData && tableData.adstxt_direct.android.length > 0}
-					<CompaniesOverviewTable entries_table={tableData.adstxt_direct.android} />
-				{/if}
-			</div>
-			<div slot="adstxt-ios">
-				{#if tableData && tableData.adstxt_direct.ios.length > 0}
-					<CompaniesOverviewTable entries_table={tableData.adstxt_direct.ios} />
-				{/if}
-			</div>
-		</CompanyTableGrid>
+			
+			</CompaniesTableGrid>
 	{/if}
 {/await}
