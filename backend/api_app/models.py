@@ -190,8 +190,6 @@ class PlatformCompanies:
 
     """Represents companies for a specific platform."""
 
-    ios: list[CompanyDetail]
-    android: list[CompanyDetail]
     top: list[dict]
 
 

@@ -167,8 +167,6 @@ export interface CompaniesOverviewEntries extends ClientRow {
 }
 
 export interface CompaniesOverviewPlatforms {
-	android: CompaniesOverviewEntries[];
-	ios: CompaniesOverviewEntries[];
 	top: {
 		group: string;
 		value: number;

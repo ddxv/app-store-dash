@@ -1,11 +1,9 @@
 <script lang="ts">
 	import type { CompaniesOverview } from '../../../../../types';
 	export let data: CompaniesOverview;
-	import CompaniesOverviewTablePart from '$lib/CompaniesOverviewTablePart.svelte';
 	import CompaniesBarChart from '$lib/CompaniesBarChart.svelte';
 	import CompaniesOverviewTable from '$lib/CompaniesOverviewTable.svelte';
 
-	import CompanyTableGrid from '$lib/CompanyTableGrid.svelte';
 	import WhiteCard from '$lib/WhiteCard.svelte';
 	import CompaniesLayout from '$lib/CompaniesLayout.svelte';
 	import CompaniesTableGrid from '$lib/CompaniesTableGrid.svelte';

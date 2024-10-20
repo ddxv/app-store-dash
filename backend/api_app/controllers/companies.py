@@ -161,63 +161,21 @@ def get_overviews(category: str | None = None) -> CompaniesOverview:
 
     
     overview_df['percentage'] = overview_df['app_count'] / overview_df['total_app_count']
-
     overview_df['store_tag'] = np.where(overview_df['store'].str.contains('Google'), 'google', 'apple')
-
     overview_df['store_tag_source'] = overview_df['store_tag'] + '_' + overview_df['tag_source']
+    overview_df = overview_df.pivot(index=['company_name', 'company_domain'], columns=["store_tag_source"], values="percentage").reset_index()
+    overview_df = overview_df.sort_values(by=['google_sdk', 'apple_sdk', 'google_app_ads_direct', 'apple_app_ads_direct'], ascending=False).head(1000)
 
-
-    new_overview_df = overview_df.pivot(index=['company_name', 'company_domain'], columns=["store_tag_source"], values="percentage").reset_index()
-
-    new_overview_df = new_overview_df.sort_values(by=['google_sdk', 'apple_sdk', 'google_app_ads_direct', 'apple_app_ads_direct'], ascending=False).head(1000)
-
-
-
-    ios_sdk = overview_df[
-        (~overview_df["store"].str.contains("google", case=False))
-        & (overview_df["tag_source"] == "sdk")
-    ]
-
-    ios_adstxt_direct = overview_df[
-        (~overview_df["store"].str.contains("google", case=False))
-        & (overview_df["tag_source"] == "app_ads_direct")
-    ]
-
-    ios_adstxt_reseller = overview_df[
-        (~overview_df["store"].str.contains("google", case=False))
-        & (overview_df["tag_source"] == "app_ads_reseller")
-    ]
-
-    android_sdk = overview_df[
-        (overview_df["store"].str.contains("google", case=False))
-        & (overview_df["tag_source"] == "sdk")
-    ]
-
-    android_adstxt_direct = overview_df[
-        (overview_df["store"].str.contains("google", case=False))
-        & (overview_df["tag_source"] == "app_ads_direct")
-    ]
-
-    android_adstxt_reseller = overview_df[
-        (overview_df["store"].str.contains("google", case=False))
-        & (overview_df["tag_source"] == "app_ads_reseller")
-    ]
 
     results = CompaniesOverview(
-        companies_overview=new_overview_df.to_dict(orient="records"),
+        companies_overview=overview_df.to_dict(orient="records"),
         sdk=PlatformCompanies(
-            android=android_sdk.to_dict(orient="records"),
-            ios=ios_sdk.to_dict(orient="records"),
             top=top_sdk_df.to_dict(orient="records"),
         ),
         adstxt_direct=PlatformCompanies(
-            android=android_adstxt_direct.to_dict(orient="records"),
-            ios=ios_adstxt_direct.to_dict(orient="records"),
             top=top_adstxt_direct_df.to_dict(orient="records"),
         ),
         adstxt_reseller=PlatformCompanies(
-            android=android_adstxt_reseller.to_dict(orient="records"),
-            ios=ios_adstxt_reseller.to_dict(orient="records"),
             top=top_adstxt_reseller_df.to_dict(orient="records"),
         ),
         categories=category_overview,
