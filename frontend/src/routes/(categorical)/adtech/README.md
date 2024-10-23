@@ -1,19 +1,22 @@
-NEW ROUTES:
+CURRENT ROUTES:
 /apps/ -> list of all apps
-/apps/com.specific.app-> Single app page
-/companies/ -> list of all companies
-/companies/company-categories/tools -> list of all companies that are tools
-/companies/company-categories/ad-networks -> list of all companies that are ad-networks
-/companies/company-categories/ad-networks/app-categories/Education -> list of all companies that are ad-networks in this category
-/companies/app-categories/Education -> list of all companies in this category
-/companies/UA -> list of apps for company "UA"
-/companies/UA/Education -> list of apps for company "UA" in this category
+/apps/com.specific.app-> Single app page, with links to companies
 
- OLDISH ROUTES:
-/adtech/companies/
-/adtech/companies/categories/Education
-/adtech/companies/UA
-/adtech/companies/UA/Education
+/companies/ -> list of all companies
+/companies/unityads.com -> list of apps for company "unityads.com"
+
+/companies/categories/education -> list of all companies by number of apps in this app-category
+
+/companies/unityads.com/education -> list of apps for company "unityads.com" in this category
+
+NEW:
+/companies/types/{type}/               # List companies of specific type (e.g., tools, ad-networks)
+/companies/types/{type}/apps/          # List all apps from companies of this type
+
+/categories/{category}/                # List all apps in category
+/companies/{company-id}/categories/{category}/  # List company's apps in category
+/companies/types/{type}/categories/{category}/  # List apps from companies of type in category
+
 
 OLD ROUTE (included the android/ios breakout of "Google" which i'm removing):
 /adtech/companies/UA/Google/Education
