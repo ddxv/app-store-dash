@@ -844,7 +844,7 @@ class CompaniesController(Controller):
         return company_types
 
     @get(path="/companies/types/{type_slug:str}", cache=True)
-    async def all_adtech_types(self: Self, type_slug:str) -> CompanyTypes:
+    async def adtech_type(self: Self, type_slug:str) -> CompaniesOverview:
         """Handle GET request for a list of adtech company categories.
 
         Returns
@@ -853,9 +853,14 @@ class CompaniesController(Controller):
             each with an id, name, type and total of apps
 
         """
-        logger.info(f"{self.path} start")
-        top_companies = get_adtech_category_type()
-        logger.info(f"{self.path} return")
+        logger.info("/companies/types/ start")
+        top_companies = get_adtech_category_type(type_slug)
+        logger.info("/companies/types/ return")
+
+
+        CompaniesOverview
+
+
 
         company_types = CompanyTypes(types=company_types_df.to_dict(orient='records'))
 
