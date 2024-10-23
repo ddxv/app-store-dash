@@ -10,6 +10,8 @@ from sqlalchemy import text
 from config import MODULE_DIR, get_logger
 from dbcon.connections import get_db_connection
 
+from functools import lru_cache
+
 
 logger = get_logger(__name__)
 
@@ -41,6 +43,9 @@ QUERY_SINGLE_APP = load_sql_file("query_single_app.sql")
 QUERY_APP_PACKAGE_DETAILS = load_sql_file("query_app_package_details.sql")
 QUERY_STORE_COLLECTION_CATEGORY_MAP = load_sql_file(
     "query_store_collection_category_map.sql",
+)
+QUERY_ADTECH_CATEGORIES = load_sql_file(
+    "query_adtech_categories.sql",
 )
 QUERY_TOP_COMPANIES_MONTH = load_sql_file("query_top_companies_month.sql")
 QUERY_TOP_PARENT_COMPANIES_MONTH = load_sql_file("query_top_companies_month_parent.sql")
@@ -114,6 +119,7 @@ def get_recent_apps(collection: str, limit: int = 20) -> pd.DataFrame:
     return df
 
 
+@lru_cache(maxsize=1)
 def get_appstore_categories() -> pd.DataFrame:
     """Get categories for both appstores."""
     df = pd.read_sql(QUERY_APPSTORE_CATEGORIES, DBCON.engine)
@@ -128,6 +134,19 @@ def get_appstore_categories() -> pd.DataFrame:
     df["total_apps"] = df["android"] + df["ios"]
     df = df.sort_values("total_apps", ascending=False)
     return df
+
+@lru_cache(maxsize=1)
+def get_store_collection_category_map() -> pd.DataFrame:
+    """Get store collection and category map."""
+    df = pd.read_sql(QUERY_STORE_COLLECTION_CATEGORY_MAP, con=DBCON.engine)
+    return df
+
+@lru_cache(maxsize=1)
+def get_adtech_categories() -> pd.DataFrame:
+    """Get the categories for adtech."""
+    df = pd.read_sql(QUERY_ADTECH_CATEGORIES, con=DBCON.engine)
+    return df
+
 
 
 def get_ranks_for_app(store_id: str, days: int = 30) -> pd.DataFrame:
@@ -187,11 +206,6 @@ def get_history_top_ranks(
     )
     return df
 
-
-def get_store_collection_category_map() -> pd.DataFrame:
-    """Get store collection and category map."""
-    df = pd.read_sql(QUERY_STORE_COLLECTION_CATEGORY_MAP, con=DBCON.engine)
-    return df
 
 
 def get_category_top_apps_by_installs(category: str, limit: int = 10) -> pd.DataFrame:
