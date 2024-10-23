@@ -24,6 +24,7 @@ from api_app.models import (
     ParentCompanyTree,
     PlatformCompanies,
     TopCompanies,
+    CompanyTypes
 )
 from config import get_logger
 from dbcon.queries import (
@@ -37,6 +38,8 @@ from dbcon.queries import (
     get_top_companies,
     new_get_top_apps_for_company,
     get_category_totals,
+    get_adtech_categories,
+    get_adtech_category_type
 )
 
 logger = get_logger(__name__)
@@ -821,3 +824,39 @@ class CompaniesController(Controller):
         logger.info("GET /api/trackers return")
 
         return overview
+
+    @get(path="/companies/types/", cache=True)
+    async def all_adtech_types(self: Self) -> CompanyTypes:
+        """Handle GET request for a list of adtech company categories.
+
+        Returns
+        -------
+            A dictionary representation of the list of categories
+            each with an id, name, type and total of apps
+
+        """
+        logger.info(f"{self.path} start")
+        company_types_df = get_adtech_categories()
+        logger.info(f"{self.path} return")
+
+        company_types = CompanyTypes(types=company_types_df.to_dict(orient='records'))
+
+        return company_types
+
+    @get(path="/companies/types/{type_slug:str}", cache=True)
+    async def all_adtech_types(self: Self, type_slug:str) -> CompanyTypes:
+        """Handle GET request for a list of adtech company categories.
+
+        Returns
+        -------
+            A dictionary representation of the list of categories
+            each with an id, name, type and total of apps
+
+        """
+        logger.info(f"{self.path} start")
+        top_companies = get_adtech_category_type()
+        logger.info(f"{self.path} return")
+
+        company_types = CompanyTypes(types=company_types_df.to_dict(orient='records'))
+
+        return company_types

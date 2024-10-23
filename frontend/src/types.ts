@@ -322,6 +322,17 @@ export interface TopCompaniesInfo {
 	appCats: Promise<CatData>;
 }
 
+export interface companyType {
+	name:string,
+	url_slug:string
+}
+
+export interface CompaniesLayoutResponse {
+	appCats: Promise<CatData>;
+	companyTypes: Promise<{types:companyType[]}>
+}
+
+
 export interface AppFullDetail {
 	icon_url_512?: string;
 	name: string;

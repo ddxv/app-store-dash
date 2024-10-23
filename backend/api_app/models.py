@@ -134,6 +134,16 @@ class CategoriesOverview:
     categories: list[CategoryDetail]
 
 
+
+@dataclass
+class CompanyTypes:
+
+    """Holds a list of CategoryDetail objects providing an overview of all categories."""
+
+    types: list[dict]
+
+
+
 @dataclass
 class CompanyPatterns:
 

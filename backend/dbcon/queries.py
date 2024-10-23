@@ -47,6 +47,9 @@ QUERY_STORE_COLLECTION_CATEGORY_MAP = load_sql_file(
 QUERY_ADTECH_CATEGORIES = load_sql_file(
     "query_adtech_categories.sql",
 )
+QUERY_ADTECH_CATEGORY_TYPE = load_sql_file(
+    "query_adtech_category_type.sql",
+)
 QUERY_TOP_COMPANIES_MONTH = load_sql_file("query_top_companies_month.sql")
 QUERY_TOP_PARENT_COMPANIES_MONTH = load_sql_file("query_top_companies_month_parent.sql")
 QUERY_COMPANY_APPS = load_sql_file("query_company_apps.sql")
@@ -145,6 +148,12 @@ def get_store_collection_category_map() -> pd.DataFrame:
 def get_adtech_categories() -> pd.DataFrame:
     """Get the categories for adtech."""
     df = pd.read_sql(QUERY_ADTECH_CATEGORIES, con=DBCON.engine)
+    df = df.sort_values('id')
+    return df
+
+def get_adtech_category_type(type_slug:str):
+    """Get top companies for a category type."""
+    df = pd.read_sql(QUERY_ADTECH_CATEGORY_TYPE, con=DBCON.engine, params={'type_slug':type_slug})
     return df
 
 

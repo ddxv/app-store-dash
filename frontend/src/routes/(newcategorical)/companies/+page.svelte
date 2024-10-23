@@ -7,6 +7,10 @@
 	import CompaniesLayout from '$lib/CompaniesLayout.svelte';
 	import CompaniesTableGrid from '$lib/CompaniesTableGrid.svelte';
 
+	import { TabGroup, TabAnchor } from '@skeletonlabs/skeleton';
+
+	import { page } from '$app/stores';
+
 	function formatNumber(num: number) {
 		return new Intl.NumberFormat('en-US').format(num);
 	}
@@ -41,6 +45,8 @@
 </svelte:head>
 
 <div class="flex items-center mb-2">
+
+
 	<h1 class="text-3xl font-bold text-gray-800">Companies Overview</h1>
 	<div class="h-8 w-px bg-gray-300 mx-2"></div>
 </div>
