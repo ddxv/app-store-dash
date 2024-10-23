@@ -83,7 +83,7 @@ export interface CatData {
 }
 
 export interface CategoriesInfo {
-	mycats: Promise<CatData>;
+	appCats: Promise<CatData>;
 	status?: number;
 	error?: string;
 }
@@ -319,7 +319,7 @@ export interface TopCompaniesInfo {
 		all_companies: CategoriesAdtech;
 		parent_companies: CategoriesAdtech;
 	}>;
-	mycats: Promise<CatData>;
+	appCats: Promise<CatData>;
 }
 
 export interface AppFullDetail {

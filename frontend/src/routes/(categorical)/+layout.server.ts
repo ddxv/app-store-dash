@@ -10,19 +10,19 @@ export const load: LayoutServerLoad = async ({ fetch }) => {
 
 		if (res.status === 200) {
 			const data = await res.json();
-			return { mycats: data };
+			return { appCats: data };
 		} else if (res.status === 404) {
 			console.log('Category Not found');
-			return { mycats: 'Category Not Found' };
+			return { appCats: 'Category Not Found' };
 		} else if (res.status === 500) {
 			console.log('Categories API Server error');
-			return { mycats: 'Backend Error' };
+			return { appCats: 'Backend Error' };
 		} else {
 			console.log(`Unexpected status: ${res.status}`);
-			return { mycats: 'Unexpected Error' };
+			return { appCats: 'Unexpected Error' };
 		}
 	} catch (error) {
 		console.log('Uncaught error', error);
-		return { mycats: 'Uncaught Error' };
+		return { appCats: 'Uncaught Error' };
 	}
 };

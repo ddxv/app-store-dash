@@ -35,14 +35,14 @@
 </script>
 
 <Drawer>
-	{#await data.mycats then data}
+	{#await data.appCats then data}
 		<NewSideBar myCatData={data} />
 	{/await}
 </Drawer>
 
 <AppShell slotSidebarLeft="w-0 lg:w-auto">
 	<svelte:fragment slot="sidebarLeft">
-		{#await data.mycats then myCatData}
+		{#await data.appCats then myCatData}
 			<NewSideBar {myCatData} />
 		{/await}
 	</svelte:fragment>
