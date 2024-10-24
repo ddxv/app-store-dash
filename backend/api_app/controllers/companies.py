@@ -846,7 +846,7 @@ class CompaniesController(Controller):
         return company_types
 
     @get(path="/companies/types/{type_slug:str}", cache=True)
-    async def adtech_type(self: Self, type_slug:str) -> CompaniesOverview:
+    async def adtech_type(self: Self, type_slug:str, category:str|None=None) -> CompaniesOverview:
         """Handle GET request for a list of adtech company categories.
 
         Returns
@@ -855,8 +855,8 @@ class CompaniesController(Controller):
             each with an id, name, type and total of apps
 
         """
-        logger.info("/companies/types/ start")
-        overview = get_overviews(category=None, type_slug=type_slug)
-        logger.info("/companies/types/ return")
+        logger.info(f"/companies/types/{type_slug}?{category=} start")
+        overview = get_overviews(category=category, type_slug=type_slug)
+        logger.info(f"/companies/types/{type_slug}?{category=} return")
 
         return overview
