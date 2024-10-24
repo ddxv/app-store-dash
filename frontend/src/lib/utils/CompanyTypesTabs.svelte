@@ -7,7 +7,7 @@
 <TabGroup>
 	<TabAnchor href="/companies" selected={$page.url.pathname === '/companies'}>All</TabAnchor>
     {#each myTabs as tab}
-	<TabAnchor href='/companies/types/{tab.url_slug}' selected={$page.url.pathname === `/companies/types/${tab.url_slug}`}>{tab.name}</TabAnchor>
+	<TabAnchor href='/companies/types/{tab.url_slug}' selected={$page.url.pathname.startsWith(`/companies/types/${tab.url_slug}`)}>{tab.name}</TabAnchor>
     {/each}
 </TabGroup>
 
