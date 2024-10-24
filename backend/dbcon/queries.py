@@ -151,9 +151,9 @@ def get_adtech_categories() -> pd.DataFrame:
     df = df.sort_values('id')
     return df
 
-def get_adtech_category_type(type_slug:str):
+def get_adtech_category_type(type_slug:str,app_category:str=None):
     """Get top companies for a category type."""
-    df = pd.read_sql(QUERY_ADTECH_CATEGORY_TYPE, con=DBCON.engine, params={'type_slug':type_slug})
+    df = pd.read_sql(QUERY_ADTECH_CATEGORY_TYPE, con=DBCON.engine, params={'type_slug':type_slug, 'app_category':app_category})
     df["store"] = df["store"].replace({1: "Google Play", 2: "Apple App Store"})
     df.loc[df["app_category"].isna(), "app_category"] = "None"
     return df

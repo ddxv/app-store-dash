@@ -111,7 +111,7 @@ def get_overviews(category: str | None = None, type_slug:str=None) -> CompaniesO
     top_df = get_companies_top(app_category=category, limit=5)
     category_totals_df = get_category_totals()
     if type_slug:
-        overview_df = get_adtech_category_type(type_slug)
+        overview_df = get_adtech_category_type(type_slug, app_category=category)
     else:
         overview_df = get_companies_parent_overview(app_category=category)
 
