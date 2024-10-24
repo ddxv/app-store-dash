@@ -6,19 +6,34 @@
 
     import { type CompaniesOverview } from "../../../../../types";
 
-    export let data: CompaniesOverview;
+	import type { PageData } from "../$types";
+
+    export let data: PageData;
 
     function formatNumber(num: number) {
 		return new Intl.NumberFormat('en-US').format(num);
 	}
 
+	$: currentType = data.companyTypes.then(myTypes => 
+        myTypes.types.find((type: { url_slug: string }) => type.url_slug === $page.params.type)
+    );
+
+	
+
 </script>
 
 
+{#await currentType}
+<div><span>Loading...</span></div>
+{:then type}
 <div class="flex items-center mb-2">
-	<h1 class="text-3xl font-bold text-gray-800">{$page.params.type}</h1>
+<h1 class="text-3xl font-bold text-gray-800">
+
+	{type ? type.name : 'Unknown'} / {#if $page.params.category} {$page.params.category} {:else}  All App Categories  {/if} 
+</h1>
 <div class="h-8 w-px bg-gray-300 mx-2"></div>
 </div>
+{/await}
 
 {#await data.companiesOverview}
 	<div><span>Loading...</span></div>

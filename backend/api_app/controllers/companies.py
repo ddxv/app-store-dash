@@ -161,13 +161,18 @@ def get_overviews(category: str | None = None, type_slug:str=None) -> CompaniesO
         )[["app_count", "total_app_count"]]
         .sum()
         .reset_index()
-    ).sort_values(by=["app_count"], ascending=False)
+    )
 
     
     overview_df['percentage'] = overview_df['app_count'] / overview_df['total_app_count']
     overview_df['store_tag'] = np.where(overview_df['store'].str.contains('Google'), 'google', 'apple')
     overview_df['store_tag_source'] = overview_df['store_tag'] + '_' + overview_df['tag_source']
+    
+    # NOTE: This is crucial for SDK to be first since it has more than just advertising data
     store_tag_source_values = overview_df['store_tag_source'].unique().tolist()
+    sdk_values = [x for x in store_tag_source_values if 'sdk' in x]
+    store_tag_source_values = sdk_values + [x for x in store_tag_source_values if x not in sdk_values]
+
     overview_df = overview_df.pivot(index=['company_name', 'company_domain'], columns=["store_tag_source"], values="percentage").reset_index()
     overview_df = overview_df.sort_values(by=store_tag_source_values, ascending=False).head(1000)
 

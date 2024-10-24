@@ -10,4 +10,4 @@ FROM
 WHERE
     (app_category = :app_category OR :app_category IS NULL)
 GROUP BY company_domain, company_name, store, app_category, tag_source
-ORDER BY app_count DESC;
+;
