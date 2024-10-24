@@ -2,13 +2,20 @@
 	import CompaniesOverviewTable from "$lib/CompaniesOverviewTable.svelte";
 	import CompaniesTableGrid from "$lib/CompaniesTableGrid.svelte";
 
+	import CompaniesLayout from "$lib/CompaniesLayout.svelte";
+	import WhiteCard from "$lib/WhiteCard.svelte";
+	import CompaniesBarChart from "$lib/CompaniesBarChart.svelte";
+
     import { page } from '$app/stores';
 
     import { type CompaniesOverview } from "../../../../../types";
 
-	import type { PageData } from "../$types";
+	import type { PageData as ParentPageData } from "../$types";
 
-    export let data: PageData;
+	type CombinedPageData = ParentPageData & { companiesOverview: CompaniesOverview };
+
+
+    export let data: CombinedPageData;
 
     function formatNumber(num: number) {
 		return new Intl.NumberFormat('en-US').format(num);
@@ -34,6 +41,43 @@
 <div class="h-8 w-px bg-gray-300 mx-2"></div>
 </div>
 {/await}
+
+
+{#await data.companiesOverview}
+	<div><span>Loading...</span></div>
+{:then myData}
+	{#if typeof myData == 'string'}
+		<p class="text-red-500 text-center">Failed to load company details.</p>
+	{:else if myData && myData.categories}
+		<CompaniesLayout>
+			<WhiteCard slot="card1">
+				<div class="bg-white p-6 rounded-lg shadow-md">
+					<h2 class="text-xl font-bold text-gray-800 mb-4">Total Ad Tech Companies</h2>
+					<p class="text-lg text-gray-700">
+						<span class="font-semibold text-gray-900"
+							>{formatNumber(myData.categories.categories.all.total_apps)}</span
+						>
+					</p>
+				</div>
+			</WhiteCard>
+
+			<WhiteCard slot="card2"
+				><CompaniesBarChart plotData={myData.sdk.top} plotTitle="Top SDK Companies" /></WhiteCard
+			>
+			<WhiteCard slot="card3"
+				><CompaniesBarChart
+					plotData={myData.adstxt_direct.top}
+					plotTitle="Top Adstxt Companies"
+				/></WhiteCard
+			>
+		</CompaniesLayout>
+	{/if}
+{:catch error}
+	<p class="text-red-500 text-center">{error.message}</p>
+{/await}
+
+
+
 
 {#await data.companiesOverview}
 	<div><span>Loading...</span></div>

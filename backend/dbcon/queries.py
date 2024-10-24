@@ -58,6 +58,7 @@ QUERY_PARENT_COMPANY_APPS = load_sql_file("query_parent_company_apps.sql")
 QUERY_COMPANIES_OVERVIEW = load_sql_file("query_companies_overview.sql")
 QUERY_COMPANIES_PARENT_OVERVIEW = load_sql_file("query_companies_parent_overview.sql")
 QUERY_COMPANIES_PARENT_TOP = load_sql_file("query_companies_parent_top.sql")
+QUERY_COMPANIES_CATEGORY_TYPE_TOP = load_sql_file("query_companies_category_type_top.sql")
 QUERY_COMPANY_OVERVIEW = load_sql_file("query_company_overview.sql")
 QUERY_COMPANY_PARENT_OVERVIEW = load_sql_file("query_company_parent_overview.sql")
 QUERY_COMPANY_TREE = load_sql_file("query_company_tree.sql")
@@ -266,14 +267,21 @@ def get_companies_parent_overview(app_category: str | None = None) -> pd.DataFra
     return df
 
 
-def get_companies_top(app_category: str | None = None, limit: int = 10) -> pd.DataFrame:
+def get_companies_top(type_slug: str | None = None, app_category: str | None = None, limit: int = 10) -> pd.DataFrame:
     """Get overview of companies from multiple types like sdk and app-ads.txt."""
     logger.info("query companies parent top start")
-    df = pd.read_sql(
-        QUERY_COMPANIES_PARENT_TOP,
-        DBCON.engine,
-        params={"app_category": app_category, "mylimit": limit},
-    )
+    if type_slug:
+        df = pd.read_sql(
+            QUERY_COMPANIES_CATEGORY_TYPE_TOP,
+            DBCON.engine,
+            params={"type_slug": type_slug, "app_category": app_category, "mylimit": limit},
+        )
+    else:
+        df = pd.read_sql(
+            QUERY_COMPANIES_PARENT_TOP,
+            DBCON.engine,
+            params={"app_category": app_category, "mylimit": limit},
+        )
     logger.info("query companies parent top return")
     return df
 

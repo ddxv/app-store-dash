@@ -108,11 +108,12 @@ def get_company_apps_new(
 
 def get_overviews(category: str | None = None, type_slug:str=None) -> CompaniesOverview:
     """Get the overview data from the database."""
-    top_df = get_companies_top(app_category=category, limit=5)
     category_totals_df = get_category_totals()
     if type_slug:
         overview_df = get_adtech_category_type(type_slug, app_category=category)
+        top_df = get_companies_top(type_slug=type_slug, app_category=category, limit=5)
     else:
+        top_df = get_companies_top(app_category=category, limit=5)
         overview_df = get_companies_parent_overview(app_category=category)
 
     overview_df = overview_df.merge(
