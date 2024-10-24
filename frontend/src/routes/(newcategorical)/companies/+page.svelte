@@ -7,9 +7,6 @@
 	import CompaniesLayout from '$lib/CompaniesLayout.svelte';
 	import CompaniesTableGrid from '$lib/CompaniesTableGrid.svelte';
 
-	import { TabGroup, TabAnchor } from '@skeletonlabs/skeleton';
-
-	import { page } from '$app/stores';
 
 	function formatNumber(num: number) {
 		return new Intl.NumberFormat('en-US').format(num);

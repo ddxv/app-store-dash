@@ -106,13 +106,14 @@ def get_company_apps_new(
     return results
 
 
-def get_overviews(category: str | None = None) -> CompaniesOverview:
+def get_overviews(category: str | None = None, type_slug:str=None) -> CompaniesOverview:
     """Get the overview data from the database."""
-    overview_df = get_companies_parent_overview(app_category=category)
-
     top_df = get_companies_top(app_category=category, limit=5)
-
     category_totals_df = get_category_totals()
+    if type_slug:
+        overview_df = get_adtech_category_type(type_slug)
+    else:
+        overview_df = get_companies_parent_overview(app_category=category)
 
     overview_df = overview_df.merge(
         category_totals_df,
@@ -166,8 +167,9 @@ def get_overviews(category: str | None = None) -> CompaniesOverview:
     overview_df['percentage'] = overview_df['app_count'] / overview_df['total_app_count']
     overview_df['store_tag'] = np.where(overview_df['store'].str.contains('Google'), 'google', 'apple')
     overview_df['store_tag_source'] = overview_df['store_tag'] + '_' + overview_df['tag_source']
+    store_tag_source_values = overview_df['store_tag_source'].unique().tolist()
     overview_df = overview_df.pivot(index=['company_name', 'company_domain'], columns=["store_tag_source"], values="percentage").reset_index()
-    overview_df = overview_df.sort_values(by=['google_sdk', 'apple_sdk', 'google_app_ads_direct', 'apple_app_ads_direct'], ascending=False).head(1000)
+    overview_df = overview_df.sort_values(by=store_tag_source_values, ascending=False).head(1000)
 
 
     results = CompaniesOverview(
@@ -533,7 +535,7 @@ class CompaniesController(Controller):
 
         Returns:
         -------
-        CompaniesOverview
+        CategoryOverview
             An overview of companies, filtered for the specified company and category.
 
         """
@@ -854,14 +856,7 @@ class CompaniesController(Controller):
 
         """
         logger.info("/companies/types/ start")
-        top_companies = get_adtech_category_type(type_slug)
+        overview = get_overviews(category=None, type_slug=type_slug)
         logger.info("/companies/types/ return")
 
-
-        CompaniesOverview
-
-
-
-        company_types = CompanyTypes(types=company_types_df.to_dict(orient='records'))
-
-        return company_types
+        return overview
