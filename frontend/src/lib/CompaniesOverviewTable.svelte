@@ -5,6 +5,8 @@
 	import ThSort from './clientside/ThSort.svelte';
 	// import ThFilter from './clientside/ThFilter.svelte';
 
+	import { page } from "$app/stores";
+
 	export let entries_table: CompaniesOverviewEntries[];
 
 	const totalRows = entries_table.length;
@@ -29,8 +31,10 @@
 					<ThSort {handler} orderBy="company_name">Company</ThSort>
                 	<ThSort {handler} orderBy="google_sdk">Android SDK</ThSort>
                 	<ThSort {handler} orderBy="apple_sdk">iOS SDK</ThSort>
-                	<ThSort {handler} orderBy="google_app_ads_direct">Android AdsTxt</ThSort>
-                	<ThSort {handler} orderBy="apple_app_ads_direct">iOS AdsTxt</ThSort>
+					{#if ( !$page.params.type || $page.params.type == 'ad-networks')}
+						<ThSort {handler} orderBy="google_app_ads_direct">Android AdsTxt</ThSort>
+						<ThSort {handler} orderBy="apple_app_ads_direct">iOS AdsTxt</ThSort>
+					{/if}
 				</tr>
 				
 			</thead>
@@ -57,13 +61,15 @@
 								{(row.apple_sdk * 100).toFixed(2)}%
 							</td>
 
-							<td class="table-cell-fit">
+							{#if ( !$page.params.type || $page.params.type == 'ad-networks')}
+								<td class="table-cell-fit">
 								{(row.google_app_ads_direct * 100).toFixed(2)}%
 							</td>
 
 							<td class="table-cell-fit">
-								{(row.apple_app_ads_direct * 100).toFixed(2)}%
-							</td>
+									{(row.apple_app_ads_direct * 100).toFixed(2)}%
+								</td>
+							{/if}
 						</a></tr
 					>
 				{/each}

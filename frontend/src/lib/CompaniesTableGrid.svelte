@@ -1,3 +1,8 @@
+<script lange='ts'>
+
+	import { page } from "$app/stores";
+</script>
+
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-6">
 
 
@@ -34,6 +39,7 @@
 		</div>
 	</div>
 
+	{#if ( !$page.params.type || $page.params.type == 'ad-networks')}
 	<!-- App Ads.txt Section -->
 	<div class="bg-white p-6 rounded-lg shadow-md">
 		<h2 class="text-xl font-bold text-gray-800">App Ads.txt</h2>
@@ -66,7 +72,7 @@
 			</div>
 		</div>
 	</div>
-
+	{/if}
 </div>
 <div class="grid grid-cols-1 gap-8 mt-6">
 	<!-- MAIN TABLE -->
