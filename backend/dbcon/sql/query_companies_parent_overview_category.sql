@@ -4,7 +4,7 @@ SELECT
     store,
     app_category,
     tag_source,
-    app_count
+    SUM(app_count) AS app_count
 FROM
     adtech.companies_parent_app_counts
 WHERE

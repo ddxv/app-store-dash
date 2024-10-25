@@ -31,8 +31,6 @@ from dbcon.queries import (
     get_adtech_categories,
     get_adtech_category_type,
     get_apps_for_company,
-    get_types_category_totals,
-    get_types_totals,
     get_companies_parent_overview,
     get_companies_top,
     get_company_overview,
@@ -40,6 +38,8 @@ from dbcon.queries import (
     get_company_sdks,
     get_company_tree,
     get_top_companies,
+    get_types_category_totals,
+    get_types_totals,
     new_get_top_apps_for_company,
 )
 
