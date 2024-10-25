@@ -12,7 +12,7 @@
 
 	import type { PageData as ParentPageData } from '../$types';
 
-	type CombinedPageData = ParentPageData & { companiesOverview: CompaniesOverview };
+	type CombinedPageData = ParentPageData & CompaniesOverview;
 
 	export let data: CombinedPageData;
 

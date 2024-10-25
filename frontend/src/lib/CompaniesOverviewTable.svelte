@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Pagination from './Pagination.svelte';
+	import Pagination from './clientside/Pagination.svelte';
 	import { DataHandler } from '@vincjo/datatables';
 	import type { CompaniesOverviewEntries } from '../types';
 	import ThSort from './clientside/ThSort.svelte';
