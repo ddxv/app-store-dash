@@ -21,14 +21,17 @@ from api_app.models import (
     CompanyPatterns,
     CompanyPatternsDict,
     CompanyPlatformOverview,
+    CompanyTypes,
     ParentCompanyTree,
     PlatformCompanies,
     TopCompanies,
-    CompanyTypes
 )
 from config import get_logger
 from dbcon.queries import (
+    get_adtech_categories,
+    get_adtech_category_type,
     get_apps_for_company,
+    get_category_totals,
     get_companies_parent_overview,
     get_companies_top,
     get_company_overview,
@@ -37,9 +40,6 @@ from dbcon.queries import (
     get_company_tree,
     get_top_companies,
     new_get_top_apps_for_company,
-    get_category_totals,
-    get_adtech_categories,
-    get_adtech_category_type
 )
 
 logger = get_logger(__name__)
@@ -164,17 +164,17 @@ def get_overviews(category: str | None = None, type_slug:str=None) -> CompaniesO
         .reset_index()
     )
 
-    
-    overview_df['percentage'] = overview_df['app_count'] / overview_df['total_app_count']
-    overview_df['store_tag'] = np.where(overview_df['store'].str.contains('Google'), 'google', 'apple')
-    overview_df['store_tag_source'] = overview_df['store_tag'] + '_' + overview_df['tag_source']
-    
+
+    overview_df["percentage"] = overview_df["app_count"] / overview_df["total_app_count"]
+    overview_df["store_tag"] = np.where(overview_df["store"].str.contains("Google"), "google", "apple")
+    overview_df["store_tag_source"] = overview_df["store_tag"] + "_" + overview_df["tag_source"]
+
     # NOTE: This is crucial for SDK to be first since it has more than just advertising data
-    store_tag_source_values = overview_df['store_tag_source'].unique().tolist()
-    sdk_values = [x for x in store_tag_source_values if 'sdk' in x]
+    store_tag_source_values = overview_df["store_tag_source"].unique().tolist()
+    sdk_values = [x for x in store_tag_source_values if "sdk" in x]
     store_tag_source_values = sdk_values + [x for x in store_tag_source_values if x not in sdk_values]
 
-    overview_df = overview_df.pivot(index=['company_name', 'company_domain'], columns=["store_tag_source"], values="percentage").reset_index()
+    overview_df = overview_df.pivot(index=["company_name", "company_domain"], columns=["store_tag_source"], values="percentage").reset_index()
     overview_df = overview_df.sort_values(by=store_tag_source_values, ascending=False).head(1000)
 
 
@@ -847,7 +847,7 @@ class CompaniesController(Controller):
         company_types_df = get_adtech_categories()
         logger.info(f"{self.path} return")
 
-        company_types = CompanyTypes(types=company_types_df.to_dict(orient='records'))
+        company_types = CompanyTypes(types=company_types_df.to_dict(orient="records"))
 
         return company_types
 

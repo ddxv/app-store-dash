@@ -2,6 +2,7 @@
 
 import datetime
 import pathlib
+from functools import lru_cache
 
 import numpy as np
 import pandas as pd
@@ -9,9 +10,6 @@ from sqlalchemy import text
 
 from config import MODULE_DIR, get_logger
 from dbcon.connections import get_db_connection
-
-from functools import lru_cache
-
 
 logger = get_logger(__name__)
 
@@ -149,12 +147,12 @@ def get_store_collection_category_map() -> pd.DataFrame:
 def get_adtech_categories() -> pd.DataFrame:
     """Get the categories for adtech."""
     df = pd.read_sql(QUERY_ADTECH_CATEGORIES, con=DBCON.engine)
-    df = df.sort_values('id')
+    df = df.sort_values("id")
     return df
 
 def get_adtech_category_type(type_slug:str,app_category:str=None):
     """Get top companies for a category type."""
-    df = pd.read_sql(QUERY_ADTECH_CATEGORY_TYPE, con=DBCON.engine, params={'type_slug':type_slug, 'app_category':app_category})
+    df = pd.read_sql(QUERY_ADTECH_CATEGORY_TYPE, con=DBCON.engine, params={"type_slug":type_slug, "app_category":app_category})
     df["store"] = df["store"].replace({1: "Google Play", 2: "Apple App Store"})
     df.loc[df["app_category"].isna(), "app_category"] = "None"
     return df

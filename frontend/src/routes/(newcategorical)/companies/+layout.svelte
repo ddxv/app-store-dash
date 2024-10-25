@@ -36,12 +36,11 @@
 </Breadcrumbs>
 
 {#await data.companyTypes}
-Loading company types	...
-{:then myTabs} 
-{#if myTabs && myTabs.types.length>0}
-<CompanyTypesTabs myTabs={myTabs.types}></CompanyTypesTabs>
-{/if}
-	
+	Loading company types ...
+{:then myTabs}
+	{#if myTabs && myTabs.types.length > 0}
+		<CompanyTypesTabs myTabs={myTabs.types}></CompanyTypesTabs>
+	{/if}
 {/await}
 
 <div class="card-content p-6 bg-white shadow-md rounded-lg mt-2">

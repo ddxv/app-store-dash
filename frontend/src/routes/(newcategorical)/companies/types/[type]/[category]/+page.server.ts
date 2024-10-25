@@ -5,7 +5,9 @@ export const ssr: boolean = true;
 export const csr: boolean = true;
 
 export const load: PageServerLoad = async ({ params }) => {
-	const res = fetch(`http://localhost:8000/api/companies/types/${params.type}?category=${params.category}`);
+	const res = fetch(
+		`http://localhost:8000/api/companies/types/${params.type}?category=${params.category}`
+	);
 	try {
 		return {
 			companiesOverview: res

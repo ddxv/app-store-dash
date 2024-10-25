@@ -7,7 +7,6 @@
 	import CompaniesLayout from '$lib/CompaniesLayout.svelte';
 	import CompaniesTableGrid from '$lib/CompaniesTableGrid.svelte';
 
-
 	function formatNumber(num: number) {
 		return new Intl.NumberFormat('en-US').format(num);
 	}
@@ -42,8 +41,6 @@
 </svelte:head>
 
 <div class="flex items-center mb-2">
-
-
 	<h1 class="text-3xl font-bold text-gray-800">Companies Overview</h1>
 	<div class="h-8 w-px bg-gray-300 mx-2"></div>
 </div>
@@ -88,15 +85,12 @@
 	{#if typeof tableData == 'string'}
 		Failed to load companies.
 	{:else if tableData.categories}
-			<CompaniesTableGrid>
-
-
+		<CompaniesTableGrid>
 			<div slot="main-table">
 				{#if tableData && tableData.companies_overview.length > 0}
 					<CompaniesOverviewTable entries_table={tableData.companies_overview} />
 				{/if}
 			</div>
-
 
 			<span slot="sdk-android-total-apps"
 				>Android Companies:
@@ -115,8 +109,6 @@
 					tableData.categories.categories.all.adstxt_direct_ios_total_apps
 				)}
 			</span>
-
-			
-			</CompaniesTableGrid>
+		</CompaniesTableGrid>
 	{/if}
 {/await}

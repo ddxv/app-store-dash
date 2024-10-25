@@ -12,7 +12,11 @@ LEFT JOIN
     store_apps AS sa ON ar.store_app = sa.id
 WHERE
     ar.crawled_date
-    = (SELECT max(arr.crawled_date) FROM app_rankings arr WHERE arr.store = :store)
+    = (
+        SELECT max(arr.crawled_date)
+        FROM app_rankings AS arr
+        WHERE arr.store = :store
+    )
     AND ar.store = :store
     AND ar.store_collection = :collection_id
     AND ar.store_category = :category_id

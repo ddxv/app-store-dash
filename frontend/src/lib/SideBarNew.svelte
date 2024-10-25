@@ -9,13 +9,12 @@
 		if (type) {
 			// This is working on /companies/types/[type]
 			// returns current url as baseUrl
-			
-			 if (parts.length == 4) {
+
+			if (parts.length == 4) {
 				// This is working on /companies/types/[type]/[category]
 				newUrl = `/companies/types/${parts[2]}`;
-			 }
-		}
-		else if (parts[0] === 'companies') {
+			}
+		} else if (parts[0] === 'companies') {
 			if (parts.length == 1) {
 				// This triggers on /companies
 				// console.log("newURL hardcoded");

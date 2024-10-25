@@ -5,7 +5,7 @@
 	import ThSort from './clientside/ThSort.svelte';
 	// import ThFilter from './clientside/ThFilter.svelte';
 
-	import { page } from "$app/stores";
+	import { page } from '$app/stores';
 
 	export let entries_table: CompaniesOverviewEntries[];
 
@@ -14,7 +14,7 @@
 	const rowsPerPage = 100;
 
 	const handler = new DataHandler<CompaniesOverviewEntries>(entries_table, {
-		rowsPerPage: rowsPerPage,
+		rowsPerPage: rowsPerPage
 	});
 
 	const rows = handler.getRows();
@@ -29,14 +29,13 @@
 				<tr>
 					<th class="table-cell-fit"></th>
 					<ThSort {handler} orderBy="company_name">Company</ThSort>
-                	<ThSort {handler} orderBy="google_sdk">Android SDK</ThSort>
-                	<ThSort {handler} orderBy="apple_sdk">iOS SDK</ThSort>
-					{#if ( !$page.params.type || $page.params.type == 'ad-networks')}
+					<ThSort {handler} orderBy="google_sdk">Android SDK</ThSort>
+					<ThSort {handler} orderBy="apple_sdk">iOS SDK</ThSort>
+					{#if !$page.params.type || $page.params.type == 'ad-networks'}
 						<ThSort {handler} orderBy="google_app_ads_direct">Android AdsTxt</ThSort>
 						<ThSort {handler} orderBy="apple_app_ads_direct">iOS AdsTxt</ThSort>
 					{/if}
 				</tr>
-				
 			</thead>
 			<tbody>
 				{#each $rows as row, index}
@@ -45,14 +44,14 @@
 							<td class="table-cell-fit">
 								{index + 1}
 							</td>
-								<td class="table-cell-fit">
-							{#if row.company_name}
+							<td class="table-cell-fit">
+								{#if row.company_name}
 									{row.company_name}
 									({row.company_domain})
-							{:else}
+								{:else}
 									{row.company_domain}
-							{/if}
-								</td>
+								{/if}
+							</td>
 							<td class="table-cell-fit">
 								{(row.google_sdk * 100).toFixed(2)}%
 							</td>
@@ -61,12 +60,12 @@
 								{(row.apple_sdk * 100).toFixed(2)}%
 							</td>
 
-							{#if ( !$page.params.type || $page.params.type == 'ad-networks')}
+							{#if !$page.params.type || $page.params.type == 'ad-networks'}
 								<td class="table-cell-fit">
-								{(row.google_app_ads_direct * 100).toFixed(2)}%
-							</td>
+									{(row.google_app_ads_direct * 100).toFixed(2)}%
+								</td>
 
-							<td class="table-cell-fit">
+								<td class="table-cell-fit">
 									{(row.apple_app_ads_direct * 100).toFixed(2)}%
 								</td>
 							{/if}
