@@ -64,12 +64,14 @@
 			<WhiteCard slot="card2"
 				><CompaniesBarChart plotData={myData.sdk.top} plotTitle="Top SDK Companies" /></WhiteCard
 			>
+			{#if $page.params.type != 'ad-networks'}
 			<WhiteCard slot="card3"
 				><CompaniesBarChart
 					plotData={myData.adstxt_direct.top}
 					plotTitle="Top Adstxt Companies"
 				/></WhiteCard
 			>
+			{/if}
 		</CompaniesLayout>
 	{/if}
 {:catch error}
