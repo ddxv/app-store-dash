@@ -31,7 +31,8 @@ from dbcon.queries import (
     get_adtech_categories,
     get_adtech_category_type,
     get_apps_for_company,
-    get_category_totals,
+    get_types_category_totals,
+    get_types_totals,
     get_companies_parent_overview,
     get_companies_top,
     get_company_overview,
@@ -113,13 +114,25 @@ def get_overviews(
     type_slug: str | None = None,
 ) -> CompaniesOverview:
     """Get the overview data from the database."""
-    category_totals_df = get_category_totals()
     if type_slug:
+        logger.info("Getting adtech category type")
         overview_df = get_adtech_category_type(type_slug, app_category=category)
+        logger.info("Getting companies top")
         top_df = get_companies_top(type_slug=type_slug, app_category=category, limit=5)
     else:
+        logger.info("Getting companies top")
         top_df = get_companies_top(app_category=category, limit=5)
+        logger.info("Getting companies parent overview")
         overview_df = get_companies_parent_overview(app_category=category)
+
+    if category:
+        logger.info("Getting category totals")
+        category_totals_df = get_types_category_totals()
+        logger.info("Getting category totals FINSIHED")
+    else:
+        logger.info("Getting category totals")
+        category_totals_df = get_types_totals()
+        logger.info("Getting category totals FINSIHED")
 
     overview_df = overview_df.merge(
         category_totals_df,
