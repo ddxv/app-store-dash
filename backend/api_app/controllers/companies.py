@@ -83,7 +83,8 @@ def get_company_apps_new(
                 title=company_name,
             ),
             ios=AppGroup(
-                apps=ios_adstxt_reseller.to_dict(orient="records"), title=company_name,
+                apps=ios_adstxt_reseller.to_dict(orient="records"),
+                title=company_name,
             ),
         ),
         adstxt_direct=CompanyPlatformOverview(
@@ -92,7 +93,8 @@ def get_company_apps_new(
                 title=company_name,
             ),
             ios=AppGroup(
-                apps=ios_adstxt_direct.to_dict(orient="records"), title=company_name,
+                apps=ios_adstxt_direct.to_dict(orient="records"),
+                title=company_name,
             ),
         ),
         sdk=CompanyPlatformOverview(
@@ -106,7 +108,10 @@ def get_company_apps_new(
     return results
 
 
-def get_overviews(category: str | None = None, type_slug:str=None) -> CompaniesOverview:
+def get_overviews(
+    category: str | None = None,
+    type_slug: str | None = None,
+) -> CompaniesOverview:
     """Get the overview data from the database."""
     category_totals_df = get_category_totals()
     if type_slug:
@@ -121,7 +126,6 @@ def get_overviews(category: str | None = None, type_slug:str=None) -> CompaniesO
         on=["app_category", "store", "tag_source"],
         validate="m:1",
     )
-
 
     top_sdk_df = top_df[top_df["tag_source"] == "sdk"].copy()
     top_adstxt_direct_df = top_df[top_df["tag_source"] == "app_ads_direct"].copy()
@@ -164,19 +168,35 @@ def get_overviews(category: str | None = None, type_slug:str=None) -> CompaniesO
         .reset_index()
     )
 
+    overview_df["percentage"] = (
+        overview_df["app_count"] / overview_df["total_app_count"]
+    )
+    overview_df["store_tag"] = np.where(
+        overview_df["store"].str.contains("Google"),
+        "google",
+        "apple",
+    )
+    overview_df["store_tag_source"] = (
+        overview_df["store_tag"] + "_" + overview_df["tag_source"]
+    )
 
-    overview_df["percentage"] = overview_df["app_count"] / overview_df["total_app_count"]
-    overview_df["store_tag"] = np.where(overview_df["store"].str.contains("Google"), "google", "apple")
-    overview_df["store_tag_source"] = overview_df["store_tag"] + "_" + overview_df["tag_source"]
-
-    # NOTE: This is crucial for SDK to be first since it has more than just advertising data
+    # NOTE: This is crucial for SDK to be first
+    # since it has more than just advertising data
     store_tag_source_values = overview_df["store_tag_source"].unique().tolist()
     sdk_values = [x for x in store_tag_source_values if "sdk" in x]
-    store_tag_source_values = sdk_values + [x for x in store_tag_source_values if x not in sdk_values]
+    store_tag_source_values = sdk_values + [
+        x for x in store_tag_source_values if x not in sdk_values
+    ]
 
-    overview_df = overview_df.pivot(index=["company_name", "company_domain"], columns=["store_tag_source"], values="percentage").reset_index()
-    overview_df = overview_df.sort_values(by=store_tag_source_values, ascending=False).head(1000)
-
+    overview_df = overview_df.pivot(
+        index=["company_name", "company_domain"],
+        columns=["store_tag_source"],
+        values="percentage",
+    ).reset_index()
+    overview_df = overview_df.sort_values(
+        by=store_tag_source_values,
+        ascending=False,
+    ).head(1000)
 
     results = CompaniesOverview(
         companies_overview=overview_df.to_dict(orient="records"),
@@ -487,7 +507,6 @@ def make_category_sums(df: pd.DataFrame) -> CategoryOverview:
 
 
 class CompaniesController(Controller):
-
     """API EndPoint return for all ad tech companies."""
 
     path = "/api/"
@@ -808,7 +827,7 @@ class CompaniesController(Controller):
         Returns
         -------
         TopCompanies
-            A representation of the top networks across different platforms and categories.
+            A representation of the top networks.
 
         """
         logger.info("GET /api/networks start")
@@ -824,7 +843,7 @@ class CompaniesController(Controller):
         Returns
         -------
         TopCompanies
-            A representation of the top trackers across different platforms and categories.
+            A representation of the top trackers.
 
         """
         logger.info("GET /api/trackers start")
@@ -852,7 +871,11 @@ class CompaniesController(Controller):
         return company_types
 
     @get(path="/companies/types/{type_slug:str}", cache=True)
-    async def adtech_type(self: Self, type_slug:str, category:str|None=None) -> CompaniesOverview:
+    async def adtech_type(
+        self: Self,
+        type_slug: str,
+        category: str | None = None,
+    ) -> CompaniesOverview:
         """Handle GET request for a list of adtech company categories.
 
         Returns

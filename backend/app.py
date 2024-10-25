@@ -1,4 +1,5 @@
 """Main start point for LiteStar API."""
+
 import logging
 
 from litestar import Litestar
@@ -19,7 +20,6 @@ cors_config = CORSConfig(
 
 
 class MyOpenAPIController(OpenAPIController):
-
     """Set Path for API docs."""
 
     path = "/api/docs"

@@ -58,7 +58,6 @@ def ranking_map() -> RankingOverview:
 
 
 class RankingsController(Controller):
-
     """Controller returns all ranking related API endpoints."""
 
     path = "/api/rankings/"

@@ -1,4 +1,5 @@
 """Init functions for whole app."""
+
 import logging
 import pathlib
 import sys

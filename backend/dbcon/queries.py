@@ -14,7 +14,6 @@ from dbcon.connections import get_db_connection
 logger = get_logger(__name__)
 
 
-
 SQL_DIR = pathlib.Path(MODULE_DIR, "dbcon/sql/")
 
 
@@ -56,7 +55,9 @@ QUERY_PARENT_COMPANY_APPS = load_sql_file("query_parent_company_apps.sql")
 QUERY_COMPANIES_OVERVIEW = load_sql_file("query_companies_overview.sql")
 QUERY_COMPANIES_PARENT_OVERVIEW = load_sql_file("query_companies_parent_overview.sql")
 QUERY_COMPANIES_PARENT_TOP = load_sql_file("query_companies_parent_top.sql")
-QUERY_COMPANIES_CATEGORY_TYPE_TOP = load_sql_file("query_companies_category_type_top.sql")
+QUERY_COMPANIES_CATEGORY_TYPE_TOP = load_sql_file(
+    "query_companies_category_type_top.sql",
+)
 QUERY_COMPANY_OVERVIEW = load_sql_file("query_company_overview.sql")
 QUERY_COMPANY_PARENT_OVERVIEW = load_sql_file("query_company_parent_overview.sql")
 QUERY_COMPANY_TREE = load_sql_file("query_company_tree.sql")
@@ -99,7 +100,8 @@ def get_recent_apps(collection: str, limit: int = 20) -> pd.DataFrame:
                         {my_cols},
                         ROW_NUMBER() OVER (PARTITION BY store, mapped_category
                     ORDER BY 
-                        CASE WHEN store = 1 THEN installs ELSE rating_count END DESC NULLS LAST
+                        CASE WHEN store = 1 THEN installs ELSE rating_count 
+                            END DESC NULLS LAST
                 ) AS rn
                 FROM {table_name}
             )
@@ -137,11 +139,13 @@ def get_appstore_categories() -> pd.DataFrame:
     df = df.sort_values("total_apps", ascending=False)
     return df
 
+
 @lru_cache(maxsize=1)
 def get_store_collection_category_map() -> pd.DataFrame:
     """Get store collection and category map."""
     df = pd.read_sql(QUERY_STORE_COLLECTION_CATEGORY_MAP, con=DBCON.engine)
     return df
+
 
 @lru_cache(maxsize=1)
 def get_adtech_categories() -> pd.DataFrame:
@@ -150,13 +154,20 @@ def get_adtech_categories() -> pd.DataFrame:
     df = df.sort_values("id")
     return df
 
-def get_adtech_category_type(type_slug:str,app_category:str=None):
+
+def get_adtech_category_type(
+    type_slug: str,
+    app_category: str | None = None,
+) -> pd.DataFrame:
     """Get top companies for a category type."""
-    df = pd.read_sql(QUERY_ADTECH_CATEGORY_TYPE, con=DBCON.engine, params={"type_slug":type_slug, "app_category":app_category})
+    df = pd.read_sql(
+        QUERY_ADTECH_CATEGORY_TYPE,
+        con=DBCON.engine,
+        params={"type_slug": type_slug, "app_category": app_category},
+    )
     df["store"] = df["store"].replace({1: "Google Play", 2: "Apple App Store"})
     df.loc[df["app_category"].isna(), "app_category"] = "None"
     return df
-
 
 
 def get_ranks_for_app(store_id: str, days: int = 30) -> pd.DataFrame:
@@ -217,7 +228,6 @@ def get_history_top_ranks(
     return df
 
 
-
 def get_category_top_apps_by_installs(category: str, limit: int = 10) -> pd.DataFrame:
     """Get category top apps sorted by installs."""
     logger.info(f"Query {category=} for top installs")
@@ -265,14 +275,22 @@ def get_companies_parent_overview(app_category: str | None = None) -> pd.DataFra
     return df
 
 
-def get_companies_top(type_slug: str | None = None, app_category: str | None = None, limit: int = 10) -> pd.DataFrame:
+def get_companies_top(
+    type_slug: str | None = None,
+    app_category: str | None = None,
+    limit: int = 10,
+) -> pd.DataFrame:
     """Get overview of companies from multiple types like sdk and app-ads.txt."""
     logger.info("query companies parent top start")
     if type_slug:
         df = pd.read_sql(
             QUERY_COMPANIES_CATEGORY_TYPE_TOP,
             DBCON.engine,
-            params={"type_slug": type_slug, "app_category": app_category, "mylimit": limit},
+            params={
+                "type_slug": type_slug,
+                "app_category": app_category,
+                "mylimit": limit,
+            },
         )
     else:
         df = pd.read_sql(
@@ -341,6 +359,7 @@ def get_company_parent_categories(company_domain: str) -> pd.DataFrame:
         )
     df.loc[df["app_category"].isna(), "app_category"] = "None"
     return df
+
 
 def get_category_totals() -> pd.DataFrame:
     """Get category totals."""

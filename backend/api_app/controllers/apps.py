@@ -202,7 +202,6 @@ def get_app_overview_dict(collection: str) -> Collection:
 
 
 class AppController(Controller):
-
     """Controller holding all API endpoints for an app."""
 
     path = "/api/apps"
@@ -420,7 +419,8 @@ class AppController(Controller):
     async def get_developer_adstxt(self: Self, store_id: str) -> AdsTxtEntries:
         """Handle GET request for a store_id's related ads txt entries.
 
-        Note these IDs are only connected to the app's developer's URL and thus are not app specific.
+        Note these IDs are only connected to the app's developer's URL
+        and thus are not app specific.
 
         Args:
         ----
@@ -459,7 +459,8 @@ class AppController(Controller):
 
         Args:
         ----
-            search_term: str the search term to search for. Can search packages, developers and app names.
+            search_term: str the search term to search for.
+                Can search packages, developers and app names.
 
         """
         logger.info(f"{self.path} term={search_term}")
@@ -473,7 +474,8 @@ class AppController(Controller):
 
         Args:
         ----
-            search_term: str the search term to search for. Can search packages, developers and app names.
+            search_term: str the search term to search for.
+                Can search packages, developers and app names.
 
         """
         logger.info(f"{self.path} term={search_term} for playstore")
@@ -493,7 +495,8 @@ class AppController(Controller):
 
         Args:
         ----
-            search_term: str the search term to search for. Can search packages, developers and app names.
+            search_term: str the search term to search for.
+                Can search packages, developers and app names.
 
         """
         logger.info(f"{self.path} term={search_term} for apple store")
