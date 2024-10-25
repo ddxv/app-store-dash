@@ -2,6 +2,7 @@
 
 import datetime
 import pathlib
+from functools import lru_cache
 
 import numpy as np
 import pandas as pd
@@ -10,9 +11,7 @@ from sqlalchemy import text
 from config import MODULE_DIR, get_logger
 from dbcon.connections import get_db_connection
 
-
 logger = get_logger(__name__)
-
 
 
 SQL_DIR = pathlib.Path(MODULE_DIR, "dbcon/sql/")
@@ -42,21 +41,34 @@ QUERY_APP_PACKAGE_DETAILS = load_sql_file("query_app_package_details.sql")
 QUERY_STORE_COLLECTION_CATEGORY_MAP = load_sql_file(
     "query_store_collection_category_map.sql",
 )
+QUERY_ADTECH_CATEGORIES = load_sql_file(
+    "query_adtech_categories.sql",
+)
+QUERY_ADTECH_CATEGORY_TYPE = load_sql_file(
+    "query_adtech_category_type.sql",
+)
+QUERY_ADTECH_TYPE = load_sql_file("query_adtech_type.sql")
 QUERY_TOP_COMPANIES_MONTH = load_sql_file("query_top_companies_month.sql")
 QUERY_TOP_PARENT_COMPANIES_MONTH = load_sql_file("query_top_companies_month_parent.sql")
 QUERY_COMPANY_APPS = load_sql_file("query_company_apps.sql")
 QUERY_COMPANY_TOP_APPS = load_sql_file("query_company_top_apps.sql")
 QUERY_PARENT_COMPANY_APPS = load_sql_file("query_parent_company_apps.sql")
-QUERY_COMPANIES_OVERVIEW = load_sql_file("query_companies_overview.sql")
 QUERY_COMPANIES_PARENT_OVERVIEW = load_sql_file("query_companies_parent_overview.sql")
+QUERY_COMPANIES_PARENT_OVERVIEW_CATEGORY = load_sql_file(
+    "query_companies_parent_overview_category.sql"
+)
 QUERY_COMPANIES_PARENT_TOP = load_sql_file("query_companies_parent_top.sql")
+QUERY_COMPANIES_CATEGORY_TYPE_TOP = load_sql_file(
+    "query_companies_category_type_top.sql",
+)
 QUERY_COMPANY_OVERVIEW = load_sql_file("query_company_overview.sql")
 QUERY_COMPANY_PARENT_OVERVIEW = load_sql_file("query_company_parent_overview.sql")
 QUERY_COMPANY_TREE = load_sql_file("query_company_tree.sql")
 QUERY_COMPANY_SDKS = load_sql_file("query_company_sdks.sql")
 QUERY_PARENT_COMPANY_CATEGORIES = load_sql_file("query_company_parent_category.sql")
 QUERY_COMPANY_CATEGORIES = load_sql_file("query_company_category.sql")
-QUERY_CATEGORY_TOTALS = load_sql_file("query_category_totals.sql")
+QUERY_CATEGORY_TYPES_TOTALS = load_sql_file("query_category_totals.sql")
+QUERY_TYPE_TOTALS = load_sql_file("query_type_totals.sql")
 
 
 def get_recent_apps(collection: str, limit: int = 20) -> pd.DataFrame:
@@ -92,7 +104,8 @@ def get_recent_apps(collection: str, limit: int = 20) -> pd.DataFrame:
                         {my_cols},
                         ROW_NUMBER() OVER (PARTITION BY store, mapped_category
                     ORDER BY 
-                        CASE WHEN store = 1 THEN installs ELSE rating_count END DESC NULLS LAST
+                        CASE WHEN store = 1 THEN installs ELSE rating_count 
+                            END DESC NULLS LAST
                 ) AS rn
                 FROM {table_name}
             )
@@ -114,6 +127,7 @@ def get_recent_apps(collection: str, limit: int = 20) -> pd.DataFrame:
     return df
 
 
+@lru_cache(maxsize=1)
 def get_appstore_categories() -> pd.DataFrame:
     """Get categories for both appstores."""
     df = pd.read_sql(QUERY_APPSTORE_CATEGORIES, DBCON.engine)
@@ -127,6 +141,41 @@ def get_appstore_categories() -> pd.DataFrame:
     ).reset_index()
     df["total_apps"] = df["android"] + df["ios"]
     df = df.sort_values("total_apps", ascending=False)
+    return df
+
+
+@lru_cache(maxsize=1)
+def get_store_collection_category_map() -> pd.DataFrame:
+    """Get store collection and category map."""
+    df = pd.read_sql(QUERY_STORE_COLLECTION_CATEGORY_MAP, con=DBCON.engine)
+    return df
+
+
+@lru_cache(maxsize=1)
+def get_adtech_categories() -> pd.DataFrame:
+    """Get the categories for adtech."""
+    df = pd.read_sql(QUERY_ADTECH_CATEGORIES, con=DBCON.engine)
+    df = df.sort_values("id")
+    return df
+
+
+def get_adtech_category_type(
+    type_slug: str,
+    app_category: str | None = None,
+) -> pd.DataFrame:
+    """Get top companies for a category type."""
+    if app_category:
+        df = pd.read_sql(
+            QUERY_ADTECH_CATEGORY_TYPE,
+            con=DBCON.engine,
+            params={"type_slug": type_slug, "app_category": app_category},
+        )
+    else:
+        df = pd.read_sql(
+            QUERY_ADTECH_TYPE, con=DBCON.engine, params={"type_slug": type_slug}
+        )
+    df["store"] = df["store"].replace({1: "Google Play", 2: "Apple App Store"})
+    df.loc[df["app_category"].isna(), "app_category"] = "None"
     return df
 
 
@@ -188,12 +237,6 @@ def get_history_top_ranks(
     return df
 
 
-def get_store_collection_category_map() -> pd.DataFrame:
-    """Get store collection and category map."""
-    df = pd.read_sql(QUERY_STORE_COLLECTION_CATEGORY_MAP, con=DBCON.engine)
-    return df
-
-
 def get_category_top_apps_by_installs(category: str, limit: int = 10) -> pd.DataFrame:
     """Get category top apps sorted by installs."""
     logger.info(f"Query {category=} for top installs")
@@ -230,25 +273,43 @@ def get_app_package_details(store_id: str) -> pd.DataFrame:
 def get_companies_parent_overview(app_category: str | None = None) -> pd.DataFrame:
     """Get overview of companies from multiple types like sdk and app-ads.txt."""
     logger.info("query companies parent overview start")
-    df = pd.read_sql(
-        QUERY_COMPANIES_PARENT_OVERVIEW,
-        DBCON.engine,
-        params={"app_category": app_category},
-    )
+    if app_category:
+        df = pd.read_sql(
+            QUERY_COMPANIES_PARENT_OVERVIEW_CATEGORY,
+            DBCON.engine,
+            params={"app_category": app_category},
+        )
+    else:
+        df = pd.read_sql(QUERY_COMPANIES_PARENT_OVERVIEW, DBCON.engine)
+    logger.info("query companies parent overview return")
     df["store"] = df["store"].replace({1: "Google Play", 2: "Apple App Store"})
     df.loc[df["app_category"].isna(), "app_category"] = "None"
-    logger.info("query companies parent overview return")
     return df
 
 
-def get_companies_top(app_category: str | None = None, limit: int = 10) -> pd.DataFrame:
+def get_companies_top(
+    type_slug: str | None = None,
+    app_category: str | None = None,
+    limit: int = 10,
+) -> pd.DataFrame:
     """Get overview of companies from multiple types like sdk and app-ads.txt."""
     logger.info("query companies parent top start")
-    df = pd.read_sql(
-        QUERY_COMPANIES_PARENT_TOP,
-        DBCON.engine,
-        params={"app_category": app_category, "mylimit": limit},
-    )
+    if type_slug:
+        df = pd.read_sql(
+            QUERY_COMPANIES_CATEGORY_TYPE_TOP,
+            DBCON.engine,
+            params={
+                "type_slug": type_slug,
+                "app_category": app_category,
+                "mylimit": limit,
+            },
+        )
+    else:
+        df = pd.read_sql(
+            QUERY_COMPANIES_PARENT_TOP,
+            DBCON.engine,
+            params={"app_category": app_category, "mylimit": limit},
+        )
     logger.info("query companies parent top return")
     return df
 
@@ -311,9 +372,18 @@ def get_company_parent_categories(company_domain: str) -> pd.DataFrame:
     df.loc[df["app_category"].isna(), "app_category"] = "None"
     return df
 
-def get_category_totals() -> pd.DataFrame:
+
+def get_types_category_totals() -> pd.DataFrame:
     """Get category totals."""
-    df = pd.read_sql(QUERY_CATEGORY_TOTALS, DBCON.engine)
+    df = pd.read_sql(QUERY_CATEGORY_TYPES_TOTALS, DBCON.engine)
+    df = df.rename(columns={"app_count": "total_app_count"})
+    df["store"] = df["store"].replace({1: "Google Play", 2: "Apple App Store"})
+    return df
+
+
+def get_types_totals() -> pd.DataFrame:
+    """Get types totals."""
+    df = pd.read_sql(QUERY_TYPE_TOTALS, DBCON.engine)
     df = df.rename(columns={"app_count": "total_app_count"})
     df["store"] = df["store"].replace({1: "Google Play", 2: "Apple App Store"})
     return df

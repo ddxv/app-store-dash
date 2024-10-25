@@ -27,7 +27,7 @@ lint.select = ["ALL"]
 target-version = 'py312'
 
 lint.ignore = [
-    "E501",   # line length
+    # "E501",   # line length
     "W291",   # trailing space at end of line
     "G",      # Ignore pyflake logging as it does not like f-strings in log messages.
     "RET504", # Unnecessary assignment to variable before return, but I prefer for readability.
@@ -35,7 +35,11 @@ lint.ignore = [
     "PD010",  # avoid pivot instead use pivot_table, great but also applies to unstack which is much more complicated
     "D211",   # Suppress ruff internal conflict
     "D213",   # Suppress ruff internal conflict
+    "COM812", # ruff-format requested ignore to avoid conflict
+    "D203",   # ruff-format requested ignore to avoid conflict
+    "ISC001"  # ruff-format requested ignore to avoid conflict
 ]
+
 
 # Avoid trying to fix flake8-bugbear (`B`) violations.
 lint.unfixable = ["B"]
@@ -43,6 +47,9 @@ lint.unfixable = ["B"]
 lint.fixable = ["ALL"]
 
 exclude = ["tests/*"]
+
+[tool.ruff.format]
+docstring-code-format = true
 
 [tool.mypy]
 warn_return_any = true

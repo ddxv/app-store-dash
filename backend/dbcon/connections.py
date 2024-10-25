@@ -26,7 +26,6 @@ def open_ssh_tunnel(server_name: str):  # noqa: ANN201
 
 
 class PostgresCon:
-
     """Class for managing the connection to postgres.
 
     Parameters

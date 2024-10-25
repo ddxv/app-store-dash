@@ -51,7 +51,6 @@ def category_overview() -> CategoriesOverview:
 
 
 class CategoryController(Controller):
-
     """App Store Categories API."""
 
     path = "/api/categories"

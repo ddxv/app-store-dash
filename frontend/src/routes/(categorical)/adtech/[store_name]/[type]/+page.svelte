@@ -114,7 +114,7 @@
 
 	<AdtechNav></AdtechNav>
 
-	{#await data.mycats}
+	{#await data.appCats}
 		waiting for data...
 	{:then cats}
 		{#each Object.entries(cats.categories) as [_prop, values]}

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { DataHandler } from '@vincjo/datatables';
-    import { check } from '@vincjo/datatables'
+	import { check } from '@vincjo/datatables';
 	export let handler: DataHandler;
 	export let filterBy: string;
 	let value: string;

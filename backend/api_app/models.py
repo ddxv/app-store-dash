@@ -5,7 +5,6 @@ from dataclasses import dataclass, field
 
 @dataclass
 class AppDetail:
-
     """All app details, mostly from store_app table.
 
     NOTE: not all details are listed in the class.
@@ -18,7 +17,6 @@ class AppDetail:
 
 @dataclass
 class AppHistory:
-
     """All app history details.
 
     NOTE: not all details are listed in the class.
@@ -31,7 +29,6 @@ class AppHistory:
 
 @dataclass
 class AdsTxtEntries:
-
     """App ads txt entries."""
 
     direct_entries: dict
@@ -40,7 +37,6 @@ class AdsTxtEntries:
 
 @dataclass
 class PackageDetails:
-
     """Lists of Package permissions, trackers etc from Manifest."""
 
     permissions: list[str]
@@ -52,7 +48,6 @@ class PackageDetails:
 
 @dataclass
 class AppGroup:
-
     """A Group of Apps by Platform."""
 
     title: str  # iOS or Google
@@ -61,7 +56,6 @@ class AppGroup:
 
 @dataclass
 class Category:
-
     """A Category for apps with ios and google separated."""
 
     key: str  # mapped id like game_puzzle
@@ -71,7 +65,6 @@ class Category:
 
 @dataclass
 class DeveloperApps:
-
     """A developer's list of apps.
 
     Note: This is platform specific.
@@ -84,7 +77,6 @@ class DeveloperApps:
 
 @dataclass
 class CompanyApps:
-
     """A company's list of apps."""
 
     title: str
@@ -93,8 +85,7 @@ class CompanyApps:
 
 @dataclass
 class Collection:
-
-    """A single Collection as defined by us to combine ios and Google collections."""
+    """A single Collection to combine ios and Google collections."""
 
     title: str  # Title like "Weekly by Downloads"
     categories: list[Category]  # Dict of category_id to Category
@@ -102,7 +93,6 @@ class Collection:
 
 @dataclass
 class AppsOverview:
-
     """All collections together for the frontend."""
 
     new_weekly: Collection
@@ -113,10 +103,10 @@ class AppsOverview:
 
 @dataclass
 class CategoryDetail:
-
     """Represents detailed information about a category.
 
-    Includes its identifier, name, and app counts for both Android and iOS platforms, along with its type.
+    Includes its identifier, name, and app counts for
+    both Android and iOS platforms, along with its type.
     """
 
     id: str
@@ -128,15 +118,26 @@ class CategoryDetail:
 
 @dataclass
 class CategoriesOverview:
+    """Holds a list of CategoryDetail objects.
 
-    """Holds a list of CategoryDetail objects providing an overview of all categories."""
+    Providing an overview of all categories.
+    """
 
     categories: list[CategoryDetail]
 
 
 @dataclass
-class CompanyPatterns:
+class CompanyTypes:
+    """Holds a list of CategoryDetail objects.
 
+    Providing an overview of all categories.
+    """
+
+    types: list[dict]
+
+
+@dataclass
+class CompanyPatterns:
     """Holds a list of package patterns and paths for a company."""
 
     package_patterns: list[str]
@@ -145,7 +146,6 @@ class CompanyPatterns:
 
 @dataclass
 class CompanyPatternsDict:
-
     """Holds a list of package patterns and paths for a company."""
 
     companies: dict[str, CompanyPatterns]
@@ -153,7 +153,6 @@ class CompanyPatternsDict:
 
 @dataclass
 class ChildrenCompanyTree:
-
     """A company tree with parent companies and domains."""
 
     company_name: str
@@ -162,7 +161,6 @@ class ChildrenCompanyTree:
 
 @dataclass
 class ParentCompanyTree:
-
     """A company tree with parent companies and domains."""
 
     parent_company_name: str | None
@@ -174,7 +172,6 @@ class ParentCompanyTree:
 
 @dataclass
 class CompanyDetail:
-
     """Describes details of a tracker.
 
     Includes its db identifier, name, and the count of its occurrences.
@@ -187,7 +184,6 @@ class CompanyDetail:
 
 @dataclass
 class PlatformCompanies:
-
     """Represents companies for a specific platform."""
 
     top: list[dict]
@@ -195,8 +191,10 @@ class PlatformCompanies:
 
 @dataclass
 class CategoryAppStats:
+    """Contains a list of CompanyDetail objects.
 
-    """Contains a list of CompanyDetail objects representing the top networks identified."""
+    Representing the top networks identified.
+    """
 
     total_apps: int = 0
     adstxt_direct_ios_total_apps: int = 0
@@ -209,7 +207,6 @@ class CategoryAppStats:
 
 @dataclass
 class CategoryOverview:
-
     """Contains a dictionary of categories, each with their associated statistics."""
 
     categories: dict[str, CategoryAppStats] = field(default_factory=dict)
@@ -230,8 +227,10 @@ class CategoryOverview:
 
 @dataclass
 class CompaniesOverview:
+    """Contains a list of CompanyDetail objects.
 
-    """Contains a list of CompanyDetail objects representing the top networks identified."""
+    Representing the top networks identified.
+    """
 
     companies_overview: list[CompanyDetail]
     sdk: PlatformCompanies
@@ -242,7 +241,6 @@ class CompaniesOverview:
 
 @dataclass
 class CompanyPlatformOverview:
-
     """Represents companies for a specific platform."""
 
     ios: AppGroup
@@ -251,7 +249,6 @@ class CompanyPlatformOverview:
 
 @dataclass
 class CompanyAppsOverview:
-
     """Overview of a company's apps on different platforms."""
 
     sdk: CompanyPlatformOverview
@@ -261,8 +258,10 @@ class CompanyAppsOverview:
 
 @dataclass
 class TopCompanies:
+    """Contains a list of CompanyDetail objects.
 
-    """Contains a list of CompanyDetail objects representing the top networks identified."""
+    Representing the top networks identified.
+    """
 
     all_companies: list[CompanyDetail]
     parent_companies: list[CompanyDetail]
@@ -270,7 +269,6 @@ class TopCompanies:
 
 @dataclass
 class StoreCategoryDetail:
-
     """Describes details of a store category, including its identifier and name."""
 
     category_id: int
@@ -279,7 +277,6 @@ class StoreCategoryDetail:
 
 @dataclass
 class StoreCollections:
-
     """Represents a collection within a store.
 
     Including its identifier, name, and the categories it contains.
@@ -293,10 +290,10 @@ class StoreCollections:
 
 @dataclass
 class StoreRankings:
-
     """Holds information about a store's rankings.
 
-    Including its identifier, name, and the collections it contains. Collections are optional and can be added as a list.
+    Including its identifier, name, and the collections it contains.
+    Collections are optional and can be added as a list.
     """
 
     store_id: int
@@ -306,16 +303,20 @@ class StoreRankings:
 
 @dataclass
 class RankingOverview:
+    """Provides an overview of rankings across different stores.
 
-    """Provides an overview of rankings across different stores, containing a list of StoreRankings objects."""
+    Containing a list of StoreRankings objects.
+    """
 
     stores_rankings: list[StoreRankings] = field(default_factory=list)
 
 
 @dataclass
 class AppRank:
+    """Represents the ranking details of an app.
 
-    """Represents the ranking details of an app, including its latest rankings and historical rankings data as dictionaries."""
+    Including its latest rankings and historical rankings data as dictionaries.
+    """
 
     latest: dict
     history: dict

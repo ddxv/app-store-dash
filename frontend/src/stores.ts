@@ -9,7 +9,7 @@ export const idStoreSelection = writable(1);
 export const idCollectionSelection = writable(1);
 export const idCategorySelection = writable(1);
 
-export const homeCategoryMap = writable<CategoriesInfo>({ mycats: { categories: {} } });
+export const homeCategoryMap = writable<CategoriesInfo>({ appCats: { categories: {} } });
 
 const myStoreRankingsMap = {
 	stores_rankings: [

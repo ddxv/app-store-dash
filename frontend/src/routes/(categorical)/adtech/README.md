@@ -16,7 +16,7 @@ NEW:
 /categories/{category}/                # List all apps in category
 /companies/{company-id}/categories/{category}/  # List company's apps in category
 /companies/types/{type}/categories/{category}/  # List apps from companies of type in category
-
+/
 
 OLD ROUTE (included the android/ios breakout of "Google" which i'm removing):
 /adtech/companies/UA/Google/Education

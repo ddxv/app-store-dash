@@ -2,7 +2,10 @@
 	import { page } from '$app/stores';
 	import type { Crumb } from '../../../types';
 	import Breadcrumbs from '$lib/Breadcrumbs.svelte';
-	import type { MyCrumbMetadata } from '../../../types';
+	import type { MyCrumbMetadata, CompaniesLayoutResponse } from '../../../types';
+	import CompanyTypesTabs from '$lib/utils/CompanyTypesTabs.svelte';
+
+	export let data: CompaniesLayoutResponse;
 
 	$: pageDataCrumbs = $page.data.crumbs as Crumb<MyCrumbMetadata>[] | undefined;
 </script>
@@ -31,6 +34,15 @@
 		{/each}
 	</div>
 </Breadcrumbs>
+
+{#await data.companyTypes}
+	Loading company types ...
+{:then myTabs}
+	{#if myTabs && myTabs.types.length > 0}
+		<CompanyTypesTabs myTabs={myTabs.types}></CompanyTypesTabs>
+	{/if}
+{/await}
+
 <div class="card-content p-6 bg-white shadow-md rounded-lg mt-2">
 	<slot />
 </div>

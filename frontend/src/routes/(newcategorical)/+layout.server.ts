@@ -1,34 +1,52 @@
-import type { PageServerLoad } from './$types';
+import type { LayoutServerLoad } from './$types';
 
 export const ssr = true;
 export const csr = true;
 
-export const load: PageServerLoad = async ({ fetch, setHeaders }) => {
+export const load: LayoutServerLoad = async ({ fetch }) => {
 	console.log(`load categories start`);
-	try {
-		const res = await fetch(`http://localhost:8000/api/categories`);
 
-		// Set cache headers
-		setHeaders({
-			age: res.headers.get('age') || '0',
-			'cache-control': res.headers.get('cache-control') || 'no-store'
-		});
+	const res = fetch(`http://localhost:8000/api/categories`);
+	const company_types = fetch(`http://localhost:8000/api/companies/types`);
 
-		if (res.status === 200) {
-			const data = await res.json();
-			return { mycats: data };
-		} else if (res.status === 404) {
-			console.log('Category Not found');
-			return { mycats: 'Category Not Found' };
-		} else if (res.status === 500) {
-			console.log('Categories API Server error');
-			return { mycats: 'Backend Error' };
-		} else {
-			console.log(`Unexpected status: ${res.status}`);
-			return { mycats: 'Unexpected Error' };
-		}
-	} catch (error) {
-		console.log('Uncaught error', error);
-		return { mycats: 'Uncaught Error' };
-	}
+	return {
+		appCats: res
+			.then((resp) => {
+				if (resp.status === 200) {
+					return resp.json();
+				} else if (resp.status === 404) {
+					console.log('Categories API Not found');
+					return 'Categories API Not Found';
+				} else if (resp.status === 500) {
+					console.log('Categories API Server error');
+					return 'Backend Error';
+				}
+			})
+			.then(
+				(json) => json,
+				(error) => {
+					console.log('Uncaught error', error);
+					return 'Uncaught Error';
+				}
+			),
+		companyTypes: company_types
+			.then((resp) => {
+				if (resp.status === 200) {
+					return resp.json();
+				} else if (resp.status === 404) {
+					console.log('Company Tree Not found');
+					return 'Company Tree Not Found';
+				} else if (resp.status === 500) {
+					console.log('API Server error');
+					return 'Backend Error';
+				}
+			})
+			.then(
+				(json) => json,
+				(error) => {
+					console.log('Uncaught error', error);
+					return 'Uncaught Error';
+				}
+			)
+	};
 };

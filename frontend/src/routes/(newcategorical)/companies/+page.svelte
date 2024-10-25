@@ -85,15 +85,12 @@
 	{#if typeof tableData == 'string'}
 		Failed to load companies.
 	{:else if tableData.categories}
-			<CompaniesTableGrid>
-
-
+		<CompaniesTableGrid>
 			<div slot="main-table">
 				{#if tableData && tableData.companies_overview.length > 0}
 					<CompaniesOverviewTable entries_table={tableData.companies_overview} />
 				{/if}
 			</div>
-
 
 			<span slot="sdk-android-total-apps"
 				>Android Companies:
@@ -112,8 +109,6 @@
 					tableData.categories.categories.all.adstxt_direct_ios_total_apps
 				)}
 			</span>
-
-			
-			</CompaniesTableGrid>
+		</CompaniesTableGrid>
 	{/if}
 {/await}
