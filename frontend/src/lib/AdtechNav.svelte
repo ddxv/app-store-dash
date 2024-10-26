@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { preventDefault } from 'svelte/legacy';
 
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
@@ -41,8 +40,10 @@
 						<a
 							href={currentPath}
 							class={paramMetricClassesActive('metric', metricInstalls)}
-							onclick={preventDefault(() =>
-								navigateWithParams(currentPath, 'metric', metricInstalls))}
+							onclick={((event) => {
+								navigateWithParams(currentPath, 'metric', metricInstalls)
+								event.preventDefault();
+							})}
 						>
 							<span class="flex-auto">Installs Past 30 Days</span>
 						</a>
@@ -51,8 +52,10 @@
 						<a
 							href={currentPath}
 							class={paramMetricClassesActive('metric', metricAppCount)}
-							onclick={preventDefault(() =>
-								navigateWithParams(currentPath, 'metric', metricAppCount))}
+							onclick={((event) => {
+								navigateWithParams(currentPath, 'metric', metricAppCount)
+								event.preventDefault();
+							})}
 						>
 							<span class="flex-auto">Count of Apps</span>
 						</a>
@@ -69,8 +72,10 @@
 						<a
 							href={currentPath}
 							class={paramClassesActive('groupby', groupByBrands)}
-							onclick={preventDefault(() =>
-								navigateWithParams(currentPath, 'groupby', groupByBrands))}
+							onclick={((event) => {
+								navigateWithParams(currentPath, 'groupby', groupByBrands)
+								event.preventDefault();
+							})}
 						>
 							<span class="flex-auto">Group by SubCompany or Brand</span>
 						</a>
@@ -79,8 +84,12 @@
 						<a
 							href={currentPath}
 							class={paramClassesActive('groupby', groupByParents)}
-							onclick={preventDefault(() =>
-								navigateWithParams(currentPath, 'groupby', groupByParents))}
+							onclick={((event) => {
+								navigateWithParams(currentPath, 'groupby', groupByParents)
+								event.preventDefault();
+							}
+							)
+								}
 						>
 							<span class="flex-auto">Group by Parent Company</span>
 						</a>

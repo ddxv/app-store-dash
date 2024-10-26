@@ -14,7 +14,7 @@
 	"type": "module",
 	"devDependencies": {
 		"@carbon/charts-svelte": "^1.22.0",
-		"@skeletonlabs/skeleton": "2.10.2",
+		"@skeletonlabs/skeleton": "2.10.3",
 		"@skeletonlabs/tw-plugin": "0.4.0",
 		"@sveltejs/adapter-auto": "^3.0.0",
 		"@sveltejs/adapter-node": "^5.2.6",
@@ -24,7 +24,7 @@
 		"@types/node": "^22.7.5",
 		"@typescript-eslint/eslint-plugin": "^8.8.1",
 		"@typescript-eslint/parser": "^8.8.1",
-		"@vincjo/datatables": "^1.14.10",
+		"@vincjo/datatables": "^2.0.5",
 		"autoprefixer": "10.4.20",
 		"eslint": "^9.12.0",
 		"eslint-config-prettier": "^9.1.0",

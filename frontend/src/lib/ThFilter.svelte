@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { DataHandler } from '@vincjo/datatables/remote';
+	import type { DataHandler } from '@vincjo/datatables/legacy/remote';
 	interface Props {
 		handler: DataHandler;
 		filterBy: string;

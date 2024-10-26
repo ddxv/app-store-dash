@@ -1,6 +1,5 @@
 import type { ChartTabularData } from '@carbon/charts-svelte';
-import type { Row } from '@vincjo/datatables/remote';
-import type { Row as ClientRow } from '@vincjo/datatables';
+import type { Row } from '@vincjo/datatables/legacy';
 
 export type Crumb<M = any> = {
 	title?: string;
@@ -157,7 +156,7 @@ export interface AdsTxtEntries extends Row {
 	developer_domain_crawled_at: number;
 }
 
-export interface CompaniesOverviewEntries extends ClientRow {
+export interface CompaniesOverviewEntries extends Row {
 	company_domain: string;
 	company_name: string;
 	tag_source: string;

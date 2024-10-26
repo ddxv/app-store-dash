@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { run } from 'svelte/legacy';
 
 	import type { TopCompaniesInfo } from '../../../../../types';
 	import AdtechNav from '$lib/AdtechNav.svelte';
@@ -12,9 +11,6 @@
 
 	let { data }: Props = $props();
 
-	run(() => {
-		console.log('homeCategorySelection:', $homeCategorySelection);
-	});
 
 	// TODO: This categorySelection is shared with the numerical one used on other pages!
 	function isNumeric(value: string | number): boolean {

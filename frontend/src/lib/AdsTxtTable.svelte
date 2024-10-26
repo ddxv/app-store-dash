@@ -1,8 +1,8 @@
 <script lang="ts">
 	import Pagination from './Pagination.svelte';
 
-	import { DataHandler } from '@vincjo/datatables/remote';
-	import type { State } from '@vincjo/datatables/remote';
+	import { DataHandler } from '@vincjo/datatables/legacy/remote';
+	import type { State } from '@vincjo/datatables/legacy/remote';
 	import type { AdsTxtEntries } from '../types';
 	import CompanyButton from './CompanyButton.svelte';
 

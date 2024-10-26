@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { run } from 'svelte/legacy';
 
 	import { page } from '$app/stores';
 	import { ListBox } from '@skeletonlabs/skeleton';
@@ -8,27 +7,27 @@
 
 
 	import { homeCollectionSelection } from '../stores';
-	let localHomeCollectionSelect = $homeCollectionSelection;
+	let localHomeCollectionSelect = $state($homeCollectionSelection);
 	// Reactive statement to update the store when localValue changes
-	run(() => {
+	$effect(() => {
 		homeCollectionSelection.set(localHomeCollectionSelect);
 	});
 
 	import { homeStoreSelection } from '../stores';
-	let localHomeStoreSelect = $homeStoreSelection;
-	run(() => {
+	let localHomeStoreSelect = $state($homeStoreSelection);
+	$effect(() => {
 		homeStoreSelection.set(localHomeStoreSelect);
 	});
 
 	import { homeCategorySelection } from '../stores';
 	let localHomeCategorySelect = $state($homeCategorySelection);
-	run(() => {
+	$effect(() => {
 		homeCategorySelection.set(localHomeCategorySelect);
 	});
 
 	import type { CatData } from '../types';
 
-	run(() => {
+	$effect(() => {
 		if ($page.params.category) {
 			localHomeCategorySelect = $page.params.category;
 		}

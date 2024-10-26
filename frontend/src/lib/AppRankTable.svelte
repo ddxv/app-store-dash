@@ -2,8 +2,8 @@
 	import type { RankedAppList, RankedApps } from '../types';
 	import Pagination from './Pagination.svelte';
 	import ThFilter from './ThFilter.svelte';
-	import { DataHandler } from '@vincjo/datatables/remote';
-	import type { State } from '@vincjo/datatables/remote';
+	import { DataHandler } from '@vincjo/datatables/legacy/remote';
+	import type { State } from '@vincjo/datatables/legacy/remote';
 
 	interface Props {
 		tableData: RankedAppList;

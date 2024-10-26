@@ -1,7 +1,7 @@
 <!-- @migration-task Error while migrating Svelte code: `<a>` is invalid inside `<tr>` -->
 <script lang="ts">
 	import Pagination from './clientside/Pagination.svelte';
-	import { DataHandler } from '@vincjo/datatables';
+	import { DataHandler } from '@vincjo/datatables/legacy';
 	import type { CompaniesOverviewEntries } from '../types';
 	import ThSort from './clientside/ThSort.svelte';
 	// import ThFilter from './clientside/ThFilter.svelte';
@@ -41,17 +41,19 @@
 			<tbody>
 				{#each $rows as row, index}
 					<tr style="cursor: pointer;" class="px-0">
-						<a href="/companies/{row.company_domain}" class="table-row-link">
 							<td class="table-cell-fit">
 								{index + 1}
 							</td>
 							<td class="table-cell-fit">
+								<!-- TODO: This is supposed to be just inside TR for whole row -->
+						<a href="/companies/{row.company_domain}" class="table-row-link">
 								{#if row.company_name}
 									{row.company_name}
 									({row.company_domain})
 								{:else}
 									{row.company_domain}
 								{/if}
+						</a>
 							</td>
 							<td class="table-cell-fit">
 								{(row.google_sdk * 100).toFixed(2)}%
@@ -70,7 +72,7 @@
 									{(row.apple_app_ads_direct * 100).toFixed(2)}%
 								</td>
 							{/if}
-						</a></tr
+						</tr
 					>
 				{/each}
 			</tbody>

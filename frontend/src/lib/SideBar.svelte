@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { run } from 'svelte/legacy';
 
 	import { page } from '$app/stores';
 	import { ListBox, ListBoxItem } from '@skeletonlabs/skeleton';
@@ -65,18 +64,18 @@
 	let classesActive = $derived((href: string) =>
 		$page.url.pathname.startsWith(href) ? buttonSelectedColor : '');
 	// Reactive statement to update the store when localValue changes
-	run(() => {
+	$effect(() => {
 		homeCollectionSelection.set(localHomeCollectionSelect);
 	});
-	run(() => {
+	$effect(() => {
 		homeStoreSelection.set(localHomeStoreSelect);
 	});
-	run(() => {
+	$effect(() => {
 		if ($page.params.category) {
 			localHomeCategorySelect = $page.params.category;
 		}
 	});
-	run(() => {
+	$effect(() => {
 		homeCategorySelection.set(localHomeCategorySelect);
 	});
 	// For adtech
@@ -84,20 +83,20 @@
 	let adtech_category = $derived($page.params.type);
 	let company_category = $derived($page.params.category);
 	let company_name = $derived($page.params.name);
-	let store;
-	run(() => {
+	let store=$state(1);
+	$effect(() => {
 		store = +$page.params.store;
 	});
-	let collection;
-	run(() => {
+	let collection=$state(1);
+	$effect(() => {
 		collection = +$page.params.collection;
 	});
-	let category;
-	run(() => {
+	let category=$state(1);
+	$effect(() => {
 		category = +$page.params.category;
 	});
 	// Logic to adjust collection and category based on the store's value
-	run(() => {
+	$effect(() => {
 		// If store is not a number (NaN), default it to 1
 		if (isNaN(store)) {
 			store = 1;

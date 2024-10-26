@@ -1,6 +1,6 @@
 <script lang="ts">
-	import type { DataHandler } from '@vincjo/datatables';
-	import { check } from '@vincjo/datatables';
+	import type { DataHandler } from '@vincjo/datatables/legacy';
+	import { check } from '@vincjo/datatables/legacy';
 	interface Props {
 		handler: DataHandler;
 		filterBy: string;

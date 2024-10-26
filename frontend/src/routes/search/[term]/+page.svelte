@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { run } from 'svelte/legacy';
 
 	import { page } from '$app/stores';
 	import type { SearchResponse } from '../../../types';
@@ -11,11 +10,8 @@
 	}
 
 	let { data }: Props = $props();
-	let searchTerm: string | null = $state('');
+	let searchTerm: string | null = $state($page.params.term || '');
 
-	run(() => {
-		searchTerm = $page.params.term;
-	});
 
 	function searchGooglePlay() {
 		if (searchTerm) {

@@ -2,8 +2,8 @@
 <script lang="ts">
 	import Pagination from './Pagination.svelte';
 
-	import { DataHandler } from '@vincjo/datatables/remote';
-	import type { State } from '@vincjo/datatables/remote';
+	import { DataHandler } from '@vincjo/datatables/legacy/remote';
+	import type { State } from '@vincjo/datatables/legacy/remote';
 	import type { CompanyOverviewApps } from '../types';
 
 	export let entries_table: CompanyOverviewApps[];
@@ -56,12 +56,14 @@
 			<tbody>
 				{#each $rows as row, index}
 					<tr style="cursor: pointer;" class="px-0">
-						<a href="/apps/{row.store_id}" class="table-row-link">
 							<td class="table-cell-fit">
 								{index + 1}
 							</td>
 							<td class="table-cell-fit">
+								<!-- TODO: This is supposed to be just inside TR for whole row -->
+						<a href="/apps/{row.store_id}" class="table-row-link">
 								{row.name}
+						</a>
 							</td>
 
 							<td class="table-cell-fit">
@@ -71,7 +73,6 @@
 									{row.rating_count}
 								{/if}
 							</td>
-						</a>
 					</tr>
 				{/each}
 			</tbody>

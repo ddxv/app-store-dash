@@ -42,12 +42,13 @@
 		<tbody class="px-0">
 			{#each Object.entries(tabledata) as [_prop, values]}
 				<tr style="cursor: pointer;" class="px-0">
-					<a href={`/companies/${values.name}`} class="table-row-link">
 						<td class="px-0">
 							<div class="inline-flex">
+					<a href={`/companies/${values.name}`} class="table-row-link">
 								<h3 class="h7 md:h5">
 									{values.name}
 								</h3>
+					</a>
 							</div>
 						</td>
 						{#if tableType == 'appcount'}
@@ -86,7 +87,6 @@
 								</div>
 							</td>
 						{/if}
-					</a>
 				</tr>
 			{/each}
 		</tbody>
