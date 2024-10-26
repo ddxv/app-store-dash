@@ -1,10 +1,21 @@
+<script>
+	/**
+	 * @typedef {Object} Props
+	 * @property {import('svelte').Snippet} [title]
+	 * @property {import('svelte').Snippet} [children]
+	 */
+
+	/** @type {Props} */
+	let { title, children } = $props();
+</script>
+
 <div class="card bg-white rounded-lg overflow-hidden">
-	{#if $$slots.title}
+	{#if title}
 		<div class="card-header text-2xl bg-surface-50 border-b border-gray-200">
-			<slot name="title" />
+			{@render title?.()}
 		</div>
 	{/if}
 	<div class="card-content">
-		<slot />
+		{@render children?.()}
 	</div>
 </div>

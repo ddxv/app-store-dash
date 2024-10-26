@@ -2,7 +2,11 @@
 	import AppRankTableShort from '$lib/AppRankTableShort.svelte';
 	import type { HomeData } from '../types';
 
-	export let data: HomeData;
+	interface Props {
+		data: HomeData;
+	}
+
+	let { data }: Props = $props();
 </script>
 
 <svelte:head>

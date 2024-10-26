@@ -1,6 +1,6 @@
 <script lang="ts">
 	import AdtechNav from '$lib/AdtechNav.svelte';
-	$: entityGroup = 'networks';
+	let entityGroup = $derived('networks');
 </script>
 
 <svelte:head>

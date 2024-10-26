@@ -5,7 +5,11 @@
 	import { DataHandler } from '@vincjo/datatables/remote';
 	import type { State } from '@vincjo/datatables/remote';
 
-	export let tableData: RankedAppList;
+	interface Props {
+		tableData: RankedAppList;
+	}
+
+	let { tableData }: Props = $props();
 	const totalRows = tableData.ranks.length; // Calculate totalRows based on the length of the history_table array
 	const rowsPerPage = 10;
 

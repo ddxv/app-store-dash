@@ -1,12 +1,16 @@
 <script lang="ts">
 	import type { CompaniesOverview } from '../../../../../types';
-	export let data: CompaniesOverview;
 	import CompaniesBarChart from '$lib/CompaniesBarChart.svelte';
 	import CompaniesOverviewTable from '$lib/CompaniesOverviewTable.svelte';
 
 	import WhiteCard from '$lib/WhiteCard.svelte';
 	import CompaniesLayout from '$lib/CompaniesLayout.svelte';
 	import CompaniesTableGrid from '$lib/CompaniesTableGrid.svelte';
+	interface Props {
+		data: CompaniesOverview;
+	}
+
+	let { data }: Props = $props();
 
 	function formatNumber(num: number) {
 		return new Intl.NumberFormat('en-US').format(num);
@@ -27,26 +31,32 @@
 		<p class="text-red-500 text-center">Failed to load company details.</p>
 	{:else if myData.categories.categories}
 		<CompaniesLayout>
-			<WhiteCard slot="card1">
-				<div class="bg-white p-6 rounded-lg shadow-md">
-					<h2 class="text-xl font-bold text-gray-800 mb-4">Total Apps</h2>
-					<p class="text-lg text-gray-700">
-						<span class="font-semibold text-gray-900"
-							>{formatNumber(myData.categories.categories.all.total_apps)}</span
-						>
-					</p>
-				</div>
-			</WhiteCard>
+			{#snippet card1()}
+								<WhiteCard >
+					<div class="bg-white p-6 rounded-lg shadow-md">
+						<h2 class="text-xl font-bold text-gray-800 mb-4">Total Apps</h2>
+						<p class="text-lg text-gray-700">
+							<span class="font-semibold text-gray-900"
+								>{formatNumber(myData.categories.categories.all.total_apps)}</span
+							>
+						</p>
+					</div>
+				</WhiteCard>
+							{/snippet}
 
-			<WhiteCard slot="card2">
-				<CompaniesBarChart plotData={myData.sdk.top} plotTitle="Top SDK Companies" />
-			</WhiteCard>
-			<WhiteCard slot="card3"
-				><CompaniesBarChart
-					plotData={myData.adstxt_direct.top}
-					plotTitle="Top Adstxt Companies"
-				/></WhiteCard
-			>
+			{#snippet card2()}
+								<WhiteCard >
+					<CompaniesBarChart plotData={myData.sdk.top} plotTitle="Top SDK Companies" />
+				</WhiteCard>
+							{/snippet}
+			{#snippet card3()}
+								<WhiteCard 
+					><CompaniesBarChart
+						plotData={myData.adstxt_direct.top}
+						plotTitle="Top Adstxt Companies"
+					/></WhiteCard
+				>
+							{/snippet}
 		</CompaniesLayout>
 	{/if}
 {:catch error}
@@ -60,25 +70,30 @@
 		Failed to load companies.
 	{:else}
 		<CompaniesTableGrid>
-			<div slot="main-table">
+			<!-- @migration-task: migrate this slot by hand, `main-table` is an invalid identifier -->
+	<div slot="main-table">
 				{#if tableData && tableData.companies_overview.length > 0}
 					<CompaniesOverviewTable entries_table={tableData.companies_overview} />
 				{/if}
 			</div>
 
-			<span slot="sdk-android-total-apps">
+			<!-- @migration-task: migrate this slot by hand, `sdk-android-total-apps` is an invalid identifier -->
+	<span slot="sdk-android-total-apps">
 				Android Companies: {formatNumber(
 					tableData.categories.categories.all.sdk_android_total_apps
 				)}
 			</span>
-			<span slot="sdk-ios-total-apps">
+			<!-- @migration-task: migrate this slot by hand, `sdk-ios-total-apps` is an invalid identifier -->
+	<span slot="sdk-ios-total-apps">
 				iOS Companies: {formatNumber(tableData.categories.categories.all.sdk_ios_total_apps)}
 			</span>
-			<span slot="adstxt-android-total-apps">
+			<!-- @migration-task: migrate this slot by hand, `adstxt-android-total-apps` is an invalid identifier -->
+	<span slot="adstxt-android-total-apps">
 				Android Companies:
 				{formatNumber(tableData.categories.categories.all.adstxt_direct_android_total_apps)}
 			</span>
-			<span slot="adstxt-ios-total-apps">
+			<!-- @migration-task: migrate this slot by hand, `adstxt-ios-total-apps` is an invalid identifier -->
+	<span slot="adstxt-ios-total-apps">
 				iOS Companies: {formatNumber(
 					tableData.categories.categories.all.adstxt_direct_ios_total_apps
 				)}

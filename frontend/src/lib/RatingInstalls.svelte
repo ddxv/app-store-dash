@@ -4,7 +4,11 @@
 	import type { AppFullDetail } from '../types';
 	import IconGoogle from './svg/IconGoogle.svelte';
 	import IconiOs from './svg/IconiOS.svelte';
-	export let app: AppFullDetail; // Accept the app object as a prop
+	interface Props {
+		app: AppFullDetail;
+	}
+
+	let { app }: Props = $props();
 </script>
 
 <div class="flex flex-1">

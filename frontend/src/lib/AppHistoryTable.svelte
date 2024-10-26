@@ -5,7 +5,6 @@
 	import type { State } from '@vincjo/datatables/remote';
 	import type { AppHistoryInfo } from '../types';
 
-	export let history_table: AppHistoryInfo[];
 
 	const totalRows = history_table.length;
 	const rowsPerPage = 10;
@@ -29,7 +28,12 @@
 
 	handler.invalidate();
 
-	export let os: string = 'google';
+	interface Props {
+		history_table: AppHistoryInfo[];
+		os?: string;
+	}
+
+	let { history_table, os = $bindable('google') }: Props = $props();
 	if (os.includes('google')) {
 		os = 'google';
 	} else if (os.includes('apple')) {

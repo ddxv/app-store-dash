@@ -2,13 +2,17 @@
 	import ExternalLinkSvg from '$lib/svg/ExternalLinkSVG.svelte';
 	import ManifestItemList from '$lib/ManifestItemList.svelte';
 	import type { AppFullDetails } from '../../../types';
-	export let data: AppFullDetails;
 	import AppDetails from '$lib/RatingInstallsLarge.svelte';
 	import AppPlot from '$lib/AppPlot.svelte';
 	import AvailableOniOs from '$lib/svg/AvailableOniOS.svelte';
 	import RankChart from '$lib/RankChart.svelte';
 	import AppHistoryTable from '$lib/AppHistoryTable.svelte';
 	import AdsTxtTable from '$lib/AdsTxtTable.svelte';
+	interface Props {
+		data: AppFullDetails;
+	}
+
+	let { data }: Props = $props();
 	let sum = (arr: number[]) => arr.reduce((acc, curr) => acc + curr, 0);
 </script>
 
@@ -99,7 +103,7 @@
 					</div>
 				</div>
 
-				<div class="block md:hidden" />
+				<div class="block md:hidden"></div>
 				{#if myapp.developer_id}
 					<div class="p-2 md:py-2">
 						<a
@@ -183,7 +187,7 @@
 									class="bar"
 									style="width: {(count / sum(histdata.histogram)) * 100}%"
 									title="{index + 1} star: {count} ratings"
-								/>
+								></div>
 							</div>
 						</div>
 					{/each}

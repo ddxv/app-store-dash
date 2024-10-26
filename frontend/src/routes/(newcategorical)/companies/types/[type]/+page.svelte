@@ -1,3 +1,4 @@
+<!-- @migration-task Error while migrating Svelte code: Element with a slot='...' attribute must be a child of a component or a descendant of a custom element -->
 <script lang="ts">
 	import CompaniesOverviewTable from '$lib/CompaniesOverviewTable.svelte';
 	import CompaniesTableGrid from '$lib/CompaniesTableGrid.svelte';

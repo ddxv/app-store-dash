@@ -2,10 +2,14 @@
 	import type { Networks } from '../types';
 	import type { Trackers } from '../types';
 
-	export let title: string;
-	export let items: Record<string, string[]> | Trackers | Networks = {};
 
 	import CompanyButton from './CompanyButton.svelte';
+	interface Props {
+		title: string;
+		items?: Record<string, string[]> | Trackers | Networks;
+	}
+
+	let { title, items = {} }: Props = $props();
 
 	const androidNameFont = 'h6 px-8 md:px-16';
 	const xmlPathFont = 'h5 px-4 md:px-8';

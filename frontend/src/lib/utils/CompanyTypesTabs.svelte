@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { TabGroup, TabAnchor } from '@skeletonlabs/skeleton';
 	import { page } from '$app/stores';
-	export let myTabs;
+	let { myTabs } = $props();
 </script>
 
 <TabGroup>

@@ -38,10 +38,14 @@
 		return newUrl;
 	}
 
-	$: baseUrl = getBaseUrl($page.url.pathname.toString(), $page.params.category, $page.params.type);
+	let baseUrl = $derived(getBaseUrl($page.url.pathname.toString(), $page.params.category, $page.params.type));
 
 	import type { CatData } from '../types';
-	export let myCatData: CatData;
+	interface Props {
+		myCatData: CatData;
+	}
+
+	let { myCatData }: Props = $props();
 </script>
 
 <SideBarCats {myCatData} {baseUrl} />

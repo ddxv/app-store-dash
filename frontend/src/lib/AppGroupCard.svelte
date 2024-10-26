@@ -1,9 +1,13 @@
 <script lang="ts">
 	import type { AppGroup } from '../types';
 	import type { AppFullDetail } from '../types';
-	export let apps: AppGroup;
 
 	import AppInfo from './RatingInstalls.svelte';
+	interface Props {
+		apps: AppGroup;
+	}
+
+	let { apps }: Props = $props();
 
 	function getClass(app: AppFullDetail) {
 		return (app.featured_image_url && app.featured_image_url !== 'null') ||

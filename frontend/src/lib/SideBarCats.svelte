@@ -1,31 +1,45 @@
 <script lang="ts">
+	import { run } from 'svelte/legacy';
+
 	import { page } from '$app/stores';
 	import { ListBox } from '@skeletonlabs/skeleton';
 
 	import SideBarCatsListBoxItem from './SideBarCatsListBoxItem.svelte';
 
-	export let baseUrl: string;
 
 	import { homeCollectionSelection } from '../stores';
 	let localHomeCollectionSelect = $homeCollectionSelection;
 	// Reactive statement to update the store when localValue changes
-	$: homeCollectionSelection.set(localHomeCollectionSelect);
+	run(() => {
+		homeCollectionSelection.set(localHomeCollectionSelect);
+	});
 
 	import { homeStoreSelection } from '../stores';
 	let localHomeStoreSelect = $homeStoreSelection;
-	$: homeStoreSelection.set(localHomeStoreSelect);
+	run(() => {
+		homeStoreSelection.set(localHomeStoreSelect);
+	});
 
 	import { homeCategorySelection } from '../stores';
-	let localHomeCategorySelect = $homeCategorySelection;
-	$: homeCategorySelection.set(localHomeCategorySelect);
+	let localHomeCategorySelect = $state($homeCategorySelection);
+	run(() => {
+		homeCategorySelection.set(localHomeCategorySelect);
+	});
 
 	import type { CatData } from '../types';
 
-	$: if ($page.params.category) {
-		localHomeCategorySelect = $page.params.category;
+	run(() => {
+		if ($page.params.category) {
+			localHomeCategorySelect = $page.params.category;
+		}
+	});
+
+	interface Props {
+		baseUrl: string;
+		myCatData: CatData;
 	}
 
-	export let myCatData: CatData;
+	let { baseUrl, myCatData }: Props = $props();
 </script>
 
 <div class="p-1 md:p-2">

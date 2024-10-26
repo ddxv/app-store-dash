@@ -3,7 +3,11 @@
 
 	import AppGroupCard from '$lib/AppGroupCard.svelte';
 
-	export let data: AppleStoreSearchResponse;
+	interface Props {
+		data: AppleStoreSearchResponse;
+	}
+
+	let { data }: Props = $props();
 </script>
 
 {#await data.results}

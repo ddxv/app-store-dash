@@ -1,6 +1,10 @@
 <script lang="ts">
 	import ExternalLinkSvg from './svg/ExternalLinkSVG.svelte';
-	export let domain: string;
+	interface Props {
+		domain: string;
+	}
+
+	let { domain }: Props = $props();
 </script>
 
 <a

@@ -1,6 +1,10 @@
 <script lang="ts">
-	export let companyName: string;
-	export let companyDomain: string;
+	interface Props {
+		companyName: string;
+		companyDomain: string;
+	}
+
+	let { companyName, companyDomain }: Props = $props();
 	const baseUrl = '/companies';
 </script>
 

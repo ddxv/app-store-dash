@@ -2,7 +2,11 @@
 	import Rating from '$lib/Rating.svelte';
 	import IconDownload from '$lib/svg/IconDownload.svelte';
 	import type { AppFullDetail } from '../types';
-	export let app: AppFullDetail; // Accept the app object as a prop
+	interface Props {
+		app: AppFullDetail;
+	}
+
+	let { app }: Props = $props();
 </script>
 
 <div class="inline-block">

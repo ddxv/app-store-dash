@@ -1,7 +1,11 @@
 <script lang="ts">
 	import type { RankedAppList } from '../types';
 
-	export let myTable: RankedAppList;
+	interface Props {
+		myTable: RankedAppList;
+	}
+
+	let { myTable }: Props = $props();
 </script>
 
 <table class="table table-hover table-compact">

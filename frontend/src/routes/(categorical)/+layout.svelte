@@ -11,7 +11,12 @@
 	import type { CategoriesInfo } from '../../types';
 	import SideBar from '$lib/SideBar.svelte';
 
-	export let data: CategoriesInfo;
+	interface Props {
+		data: CategoriesInfo;
+		children?: import('svelte').Snippet;
+	}
+
+	let { data, children }: Props = $props();
 	homeCategoryMap.set(data);
 
 	initializeStores();
@@ -42,15 +47,17 @@
 </Drawer>
 
 <AppShell slotSidebarLeft="w-0 lg:w-auto">
-	<svelte:fragment slot="sidebarLeft">
-		{#await data.appCats then myCatData}
-			<SideBar {myCatData} />
-		{/await}
-	</svelte:fragment>
-	<slot />
+	{#snippet sidebarLeft()}
+	
+			{#await data.appCats then myCatData}
+				<SideBar {myCatData} />
+			{/await}
+		
+	{/snippet}
+	{@render children?.()}
 	<button
 		class="lg:hidden btn variant-filled-primary absolute right-[20px] bottom-[50px]"
-		on:click={drawerOpen}
+		onclick={drawerOpen}
 	>
 		<h4 class="h4">FILTERS</h4>
 		<span>

@@ -2,7 +2,11 @@
 	import type { CompanyPatternsDict } from '../types';
 	import WhiteCard from './WhiteCard.svelte';
 
-	export let mySdks: CompanyPatternsDict;
+	interface Props {
+		mySdks: CompanyPatternsDict;
+	}
+
+	let { mySdks }: Props = $props();
 
 	const uniquePaths = [
 		...new Set(
@@ -22,7 +26,9 @@
 		{#each Object.entries(mySdks.companies) as [companyName, patterns]}
 			<div class="col-span-1">
 				<WhiteCard>
-					<span slot="title" class="text-sm font-semibold">{companyName}</span>
+					{#snippet title()}
+										<span  class="text-sm font-semibold">{companyName}</span>
+									{/snippet}
 					<div class="p-4 text-xs">
 						<h4 class="font-medium text-gray-500 uppercase tracking-wider mb-1">
 							Package Patterns

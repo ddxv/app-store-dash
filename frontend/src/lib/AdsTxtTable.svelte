@@ -6,7 +6,11 @@
 	import type { AdsTxtEntries } from '../types';
 	import CompanyButton from './CompanyButton.svelte';
 
-	export let entries_table: AdsTxtEntries[];
+	interface Props {
+		entries_table: AdsTxtEntries[];
+	}
+
+	let { entries_table }: Props = $props();
 
 	const totalRows = entries_table.length;
 

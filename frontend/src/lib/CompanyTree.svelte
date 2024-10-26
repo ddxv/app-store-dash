@@ -3,7 +3,11 @@
 	import CompanyButton from './CompanyButton.svelte';
 	import ExternalLink from './ExternalLink.svelte';
 
-	export let myTree: ParentCompanyTree;
+	interface Props {
+		myTree: ParentCompanyTree;
+	}
+
+	let { myTree }: Props = $props();
 </script>
 
 <div class="bg-white shadow-sm rounded-lg overflow-hidden">

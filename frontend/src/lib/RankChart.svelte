@@ -1,18 +1,24 @@
 <script lang="ts">
+	import { run } from 'svelte/legacy';
+
 	import { onMount } from 'svelte';
 	import * as echarts from 'echarts';
 
 	import { plotColors } from '../stores';
 
-	export let plotData;
 
-	export let maxValue: number | undefined = undefined;
 
 	let myInterval;
 	let topPadding;
 	let rightPadding;
 
-	export let narrowBool: boolean = false;
+	interface Props {
+		plotData: any;
+		maxValue?: number | undefined;
+		narrowBool?: boolean;
+	}
+
+	let { plotData, maxValue = undefined, narrowBool = false }: Props = $props();
 
 	const dimensions = ['crawled_date'];
 
@@ -45,8 +51,8 @@
 
 	const plotSeries = makeSeries(plotData);
 
-	let myChartDiv: HTMLDivElement;
-	let myChart: echarts.ECharts;
+	let myChartDiv: HTMLDivElement = $state();
+	let myChart: echarts.ECharts = $state();
 	if (narrowBool) {
 		// Legend at top!
 		topPadding = 40;
@@ -65,7 +71,7 @@
 		// containLabel: true
 	};
 
-	let chartoption: echarts.EChartsOption = {
+	let chartoption: echarts.EChartsOption = $state({
 		color: plotColors,
 		dataset: { source: plotData },
 		dimensions: dimensions,
@@ -98,7 +104,7 @@
 			max: maxValue
 		},
 		series: plotSeries
-	};
+	});
 
 	if (narrowBool) {
 		// Legend at top!
@@ -131,15 +137,17 @@
 		};
 	});
 
-	$: if (myChart) {
-		// Create the echarts instance
-		myChart.dispose();
-		// myChart = echarts.init(myChartDiv, null, { renderer: 'svg' });
-		myChart = echarts.init(myChartDiv);
-		// Draw the chart
-		myChart.setOption(chartoption);
-		myChart.resize();
-	}
+	run(() => {
+		if (myChart) {
+			// Create the echarts instance
+			myChart.dispose();
+			// myChart = echarts.init(myChartDiv, null, { renderer: 'svg' });
+			myChart = echarts.init(myChartDiv);
+			// Draw the chart
+			myChart.setOption(chartoption);
+			myChart.resize();
+		}
+	});
 </script>
 
-<div class="w-full h-96" bind:this={myChartDiv} />
+<div class="w-full h-96" bind:this={myChartDiv}></div>

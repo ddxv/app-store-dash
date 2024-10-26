@@ -1,6 +1,10 @@
 <script lang="ts">
 	import type { DataHandler } from '@vincjo/datatables';
-	export let handler: DataHandler;
+	interface Props {
+		handler: DataHandler;
+	}
+
+	let { handler }: Props = $props();
 	const pageNumber = handler.getPageNumber();
 	const pageCount = handler.getPageCount();
 	const pages = handler.getPages({ ellipsis: true });
@@ -12,7 +16,7 @@
 		type="button"
 		class="hover:variant-soft-primary"
 		class:disabled={$pageNumber === 1}
-		on:click={() => handler.setPage('previous')}
+		onclick={() => handler.setPage('previous')}
 	>
 		←
 	</button>
@@ -22,7 +26,7 @@
 			class="hover:variant-soft-primary"
 			class:active={$pageNumber === page}
 			class:ellipse={page === null}
-			on:click={() => handler.setPage(page)}
+			onclick={() => handler.setPage(page)}
 		>
 			{page ?? '...'}
 		</button>
@@ -31,7 +35,7 @@
 		type="button"
 		class="hover:variant-soft-primary"
 		class:disabled={$pageNumber === $pageCount}
-		on:click={() => handler.setPage('next')}
+		onclick={() => handler.setPage('next')}
 	>
 		→
 	</button>
@@ -43,7 +47,7 @@
 		type="button"
 		class="btn variant-ghost-surface mr-2 mb-2 hover:variant-soft-primary"
 		class:disabled={$pageNumber === 1}
-		on:click={() => handler.setPage('previous')}
+		onclick={() => handler.setPage('previous')}
 	>
 		←
 	</button>
@@ -51,7 +55,7 @@
 		type="button"
 		class="btn variant-ghost-surface mb-2 hover:variant-soft-primary"
 		class:disabled={$pageNumber === $pageCount}
-		on:click={() => handler.setPage('next')}
+		onclick={() => handler.setPage('next')}
 	>
 		→
 	</button>

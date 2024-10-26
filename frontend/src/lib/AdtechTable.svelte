@@ -1,3 +1,4 @@
+<!-- @migration-task Error while migrating Svelte code: `<a>` is invalid inside `<tr>` -->
 <script lang="ts">
 	import { homeCategorySelection } from '../stores';
 	import type { Company } from '../types';

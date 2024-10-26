@@ -3,7 +3,11 @@
 
 	import AppGroupCard from '$lib/AppGroupCard.svelte';
 
-	export let data: PlaystoreSearchResponse;
+	interface Props {
+		data: PlaystoreSearchResponse;
+	}
+
+	let { data }: Props = $props();
 </script>
 
 {#await data.results}
