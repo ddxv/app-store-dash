@@ -46,9 +46,36 @@
 
 <div class="p-2 px-8 md:px-32 lg:px-72">
 	<h1 class="h1">Thanks for checking out this project</h1>
+
+	<br />
+
+	<div class="card p-2 md:p-8">
+		<h2 class="h2 p-2 md:p-4">Marketing Community & Feedback</h2>
+		<div class="p-4">
+			<p>
+				Join our Discord community to discuss app marketing strategies, share AppGoblin product
+				ideas, or get feedback from fellow developers.
+			</p>
+
+			<br />
+			<a
+				class="btn btn-sm variant-ghost-surface"
+				href="https://discord.gg/7jpWEhkXRW"
+				target="_blank"
+				rel="noreferrer"
+			>
+				<p>Join AppGoblin Discord</p>
+				<div class="inline-flex items-center">
+					{@html discordIcon}
+				</div>
+			</a>
+			<br />
+		</div>
+	</div>
+
 	<br />
 	<div class="card p-2 md:p-8">
-		<h3 class="h3 p-2 md:p-4">Background</h3>
+		<h2 class="h2 p-2 md:p-4">Background</h2>
 		<div class="p-4">
 			<p>
 				Originally this came out of a curiosity I had about the IAB app-ads.txt standard in 2022. In
@@ -77,38 +104,8 @@
 	</div>
 	<br />
 
-	<div class="card p-2 md:p-8">
-		<h3 class="h3 p-2 md:p-4">Marketing Community & Feedback</h3>
-		<div class="p-4">
-			<p>
-				I'm happy to help brainstorm if you're looking to do marketing or advertising for iOS or
-				Android. Additionally, I'd love to keep working on features for Android and iOS app
-				marketers. Feel free to join my AppGoblin Discord channel to chat ideas.
-			</p>
-			<a
-				class="btn btn-sm variant-ghost-surface"
-				href="https://discord.gg/7jpWEhkXRW"
-				target="_blank"
-				rel="noreferrer"
-			>
-				<p>Chat on Discord</p>
-				<div class="inline-flex items-center">
-					{@html discordIcon}
-				</div>
-			</a>
-			<br />
-			<br />
-			<br />
-			You can also reach me personally:
-			<a href="https://jamesoclaire.com">
-				<p>https://jamesoclaire.com</p>
-			</a>
-		</div>
-	</div>
-	<br />
-
 	<div class="card p-2 md:p-4">
-		<h3 class="h3 p-2 md:p-4">Open Source Tech Stack</h3>
+		<h2 class="h2 p-2 md:p-4">Open Source Tech Stack</h2>
 		<div class="p-2 md:p-4">
 			<p>
 				First is the underlying data which is collected and maintained from <strong
@@ -128,6 +125,12 @@
 				for CSS. All projects are glued together with systemd and websockets where needed. Everything
 				is hosted on AWS in the small EC2 instances.
 			</p>
+
+			<br />
+			You can also reach me personally:
+			<a href="https://jamesoclaire.com">
+				<p>https://jamesoclaire.com</p>
+			</a>
 		</div>
 	</div>
 </div>

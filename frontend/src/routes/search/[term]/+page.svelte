@@ -40,7 +40,10 @@
 			{#if companiesResults.length > 0}
 				<CompaniesOverviewTable entries_table={companiesResults} />
 			{:else}
-				<h3 class="h3 p-4">No companies found, please try your search again.</h3>
+				<h3 class="h3 p-4">
+					No adtech/business/ development tool companies found, if you expected to see something
+					please let us know by sending a note on Discord or GitHub and we can add it.
+				</h3>
 			{/if}
 		{:else}
 			<p>Search failed please try again ...</p>
@@ -64,7 +67,8 @@
 			<div class="card p-4 mt-4">
 				<h3 class="h3">Didn't see what you're looking for?</h3>
 				<p class="p-2">
-					Try searching on Google Play. Results may take a couple minutes to be live on AppGoblin.
+					Try searching on Google Play. Results will take an hour to be live on AppGoblin. If you
+					still don't see what you're looking for please reach out on GitHub or Discord.
 				</p>
 				<card class="card variant-glass-surface p-4">
 					<button class="btn variant-filled-primary p-2" onclick={searchGooglePlay}>

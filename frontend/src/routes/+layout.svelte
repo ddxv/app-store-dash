@@ -93,7 +93,7 @@
 					rel="noreferrer"
 				>
 					<div class="inline-flex items-center">
-						{@html githubIcon}
+						{@html githubIcon} GitHub
 					</div>
 				</a>
 				<a
@@ -103,7 +103,7 @@
 					rel="noreferrer"
 				>
 					<div class="inline-flex items-center">
-						{@html discordIcon}
+						{@html discordIcon} Discord
 					</div>
 				</a>
 			{/snippet}
