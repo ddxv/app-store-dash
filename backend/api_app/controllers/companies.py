@@ -262,7 +262,7 @@ def append_overall_categories(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
-def companies_overview(categories: list[int]) -> TopCompanies:
+def old_companies_overview(categories: list[int]) -> TopCompanies:
     """Process networks and return TopCompanies class."""
     df = get_top_companies(categories=categories)
     df_parents = get_top_companies(
@@ -844,7 +844,7 @@ class CompaniesController(Controller):
 
         """
         logger.info("GET /api/networks start")
-        overview = companies_overview(categories=[1])
+        overview = old_companies_overview(categories=[1])
         logger.info("GET /api/networks return")
 
         return overview
@@ -860,7 +860,7 @@ class CompaniesController(Controller):
 
         """
         logger.info("GET /api/trackers start")
-        overview = companies_overview(categories=[2, 3])
+        overview = old_companies_overview(categories=[2, 3])
         logger.info("GET /api/trackers return")
 
         return overview

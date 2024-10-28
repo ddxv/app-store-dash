@@ -46,9 +46,10 @@
 {:then myData}
 	{#if typeof myData == 'string'}
 		<p class="text-red-500 text-center">Failed to load company details.</p>
-	{:else if myData && myData.categories}
+	{:else}
 		<CompaniesLayout>
-			<WhiteCard slot="card1">
+		{#snippet card1()}
+			<WhiteCard>
 				<div class="bg-white p-6 rounded-lg shadow-md">
 					<h2 class="text-xl font-bold text-gray-800 mb-4">Total Ad Tech Companies</h2>
 					<p class="text-lg text-gray-700">
@@ -58,8 +59,9 @@
 					</p>
 				</div>
 			</WhiteCard>
-
-			<WhiteCard slot="card2"
+		{/snippet}
+		{#snippet card2()}
+			<WhiteCard
 				><CompaniesBarChart plotData={myData.sdk.top} plotTitle="Top SDK Companies" /></WhiteCard
 			>
 			<!-- {#if $page.params.type != 'ad-networks'} -->
@@ -69,6 +71,7 @@
 					/></WhiteCard
 				>
 			<!-- {/if} -->
+		{/snippet}
 		</CompaniesLayout>
 	{/if}
 {:catch error}
