@@ -6,8 +6,6 @@
 
 	import type { PageData } from './$types';
 
-	import { type CompaniesOverview } from '../../../../../../types';
-
 	interface Props {
 		data: PageData;
 	}

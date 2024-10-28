@@ -97,6 +97,7 @@ export interface HomeData {
 	iOSAppRanks: Promise<{ ranks: RankedApps[] }>;
 	androidGameRanks: Promise<{ ranks: RankedApps[] }>;
 	iOSGameRanks: Promise<{ ranks: RankedApps[] }>;
+	topCompanies: TopCompaniesShort ;
 	status?: number;
 	error?: string;
 }
@@ -172,11 +173,21 @@ export interface CompaniesOverviewPlatforms {
 	}[];
 }
 
+export interface TopCompaniesOverview {
+		sdk: CompaniesOverviewPlatforms;
+		adstxt_direct: CompaniesOverviewPlatforms;
+		adstxt_reseller: CompaniesOverviewPlatforms;
+	};
+
+export interface TopCompaniesShort {
+	adnetworks: TopCompaniesOverview;
+	attribution: TopCompaniesOverview;
+	analytics: TopCompaniesOverview;
+}
+
 export interface CompaniesOverviewSections {
 	companies_overview: CompaniesOverviewEntries[];
-	sdk: CompaniesOverviewPlatforms;
-	adstxt_direct: CompaniesOverviewPlatforms;
-	adstxt_reseller: CompaniesOverviewPlatforms;
+	top: TopCompaniesOverview;
 	categories: CompanyCategoryOverview;
 }
 

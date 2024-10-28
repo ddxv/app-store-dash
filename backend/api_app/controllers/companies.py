@@ -23,8 +23,9 @@ from api_app.models import (
     CompanyPlatformOverview,
     CompanyTypes,
     ParentCompanyTree,
-    PlatformCompanies,
     TopCompanies,
+    TopCompaniesShort,
+    TopCompaniesOverviewShort,
 )
 from config import get_logger
 from dbcon.queries import (
@@ -108,6 +109,47 @@ def get_company_apps_new(
     )
     return results
 
+def make_top_companies(top_df: pd.DataFrame) -> TopCompaniesShort:
+    top_sdk_df = top_df[top_df["tag_source"] == "sdk"].copy()
+    top_adstxt_direct_df = top_df[top_df["tag_source"] == "app_ads_direct"].copy()
+    top_adstxt_reseller_df = top_df[top_df["tag_source"] == "app_ads_reseller"].copy()
+
+    top_sdk_df["company_title"] = np.where(
+        top_sdk_df["company_name"].isna(),
+        top_sdk_df["company_domain"],
+        top_sdk_df["company_name"],
+    )
+    top_adstxt_direct_df["company_title"] = np.where(
+        top_adstxt_direct_df["company_name"].isna(),
+        top_adstxt_direct_df["company_domain"],
+        top_adstxt_direct_df["company_name"],
+    )
+    top_adstxt_reseller_df["company_title"] = np.where(
+        top_adstxt_reseller_df["company_name"].isna(),
+        top_adstxt_reseller_df["company_domain"],
+        top_adstxt_reseller_df["company_name"],
+    )
+
+    top_sdk_df = top_sdk_df.rename(
+        columns={"company_title": "group", "app_count": "value"},
+    ).sort_values(by=["value"], ascending=True)
+    top_adstxt_direct_df = top_adstxt_direct_df.rename(
+        columns={"company_title": "group", "app_count": "value"},
+    ).sort_values(by=["value"], ascending=True)
+    top_adstxt_reseller_df = top_adstxt_reseller_df.rename(
+        columns={"company_title": "group", "app_count": "value"},
+    ).sort_values(by=["value"], ascending=True)
+
+    top_companies_short = TopCompaniesShort(
+        sdk=top_sdk_df.to_dict(orient="records"),
+        adstxt_direct=top_adstxt_direct_df.to_dict(orient="records"),
+        adstxt_reseller=top_adstxt_reseller_df.to_dict(orient="records"),
+    )
+    return top_companies_short
+    
+
+
+
 
 def get_overviews(
     category: str | None = None,
@@ -139,36 +181,6 @@ def get_overviews(
         on=["app_category", "store", "tag_source"],
         validate="m:1",
     )
-
-    top_sdk_df = top_df[top_df["tag_source"] == "sdk"].copy()
-    top_adstxt_direct_df = top_df[top_df["tag_source"] == "app_ads_direct"].copy()
-    top_adstxt_reseller_df = top_df[top_df["tag_source"] == "app_ads_reseller"].copy()
-
-    top_sdk_df["company_title"] = np.where(
-        top_sdk_df["company_name"].isna(),
-        top_sdk_df["company_domain"],
-        top_sdk_df["company_name"],
-    )
-    top_adstxt_direct_df["company_title"] = np.where(
-        top_adstxt_direct_df["company_name"].isna(),
-        top_adstxt_direct_df["company_domain"],
-        top_adstxt_direct_df["company_name"],
-    )
-    top_adstxt_reseller_df["company_title"] = np.where(
-        top_adstxt_reseller_df["company_name"].isna(),
-        top_adstxt_reseller_df["company_domain"],
-        top_adstxt_reseller_df["company_name"],
-    )
-
-    top_sdk_df = top_sdk_df.rename(
-        columns={"company_title": "group", "app_count": "value"},
-    ).sort_values(by=["value"], ascending=True)
-    top_adstxt_direct_df = top_adstxt_direct_df.rename(
-        columns={"company_title": "group", "app_count": "value"},
-    ).sort_values(by=["value"], ascending=True)
-    top_adstxt_reseller_df = top_adstxt_reseller_df.rename(
-        columns={"company_title": "group", "app_count": "value"},
-    ).sort_values(by=["value"], ascending=True)
 
     category_overview = make_category_uniques(df=overview_df)
 
@@ -211,17 +223,11 @@ def get_overviews(
         ascending=False,
     ).head(1000)
 
+    top_companies_short = make_top_companies(top_df)
+
     results = CompaniesOverview(
         companies_overview=overview_df.to_dict(orient="records"),
-        sdk=PlatformCompanies(
-            top=top_sdk_df.to_dict(orient="records"),
-        ),
-        adstxt_direct=PlatformCompanies(
-            top=top_adstxt_direct_df.to_dict(orient="records"),
-        ),
-        adstxt_reseller=PlatformCompanies(
-            top=top_adstxt_reseller_df.to_dict(orient="records"),
-        ),
+        top = top_companies_short,
         categories=category_overview,
     )
 
@@ -902,3 +908,31 @@ class CompaniesController(Controller):
         logger.info(f"/companies/types/{type_slug}?{category=} return")
 
         return overview
+
+    @get(path="/companies/topshort/", cache=True)
+    async def get_companies_shortlist_top(self: Self) -> TopCompaniesOverviewShort:
+        """Handle GET request for a list of adtech company categories.
+
+        Returns
+        -------
+            A dictionary representation of the list of categories
+            each with an id, name, type and total of apps
+
+        """
+        logger.info(f"{self.path} start")
+        adnetworks = get_companies_top(type_slug='ad-networks', app_category=None, limit=5)
+        mmps = get_companies_top(type_slug='ad-attribution', app_category=None, limit=5)
+        analytics = get_companies_top(type_slug='analytics', app_category=None, limit=5)
+        top_ad_networks = make_top_companies(adnetworks)
+        top_mmps = make_top_companies(mmps)
+        top_analytics = make_top_companies(analytics)
+        logger.info(f"{self.path} return")
+
+        top_companies = TopCompaniesOverviewShort(
+            adnetworks=top_ad_networks,
+            attribution=top_mmps,
+            analytics=top_analytics,
+        )
+
+        return top_companies
+

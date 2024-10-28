@@ -62,11 +62,11 @@
 		{/snippet}
 		{#snippet card2()}
 			<WhiteCard
-				><CompaniesBarChart plotData={myData.sdk.top} plotTitle="Top SDK Companies" /></WhiteCard
+				><CompaniesBarChart plotData={myData.top.sdk} plotTitle="Top SDK Companies" /></WhiteCard
 			>
 			<!-- {#if $page.params.type != 'ad-networks'} -->
 				<WhiteCard slot="card3"><CompaniesBarChart
-						plotData={myData.adstxt_direct.top}
+						plotData={myData.top.adstxt_direct}
 						plotTitle="Top Adstxt Companies"
 					/></WhiteCard
 				>

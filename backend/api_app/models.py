@@ -184,9 +184,24 @@ class CompanyDetail:
 
 @dataclass
 class PlatformCompanies:
-    """Represents companies for a specific platform."""
+    """Companies data for a specific platform (iOS/Android)."""
+    ios: list[dict]
+    android: list[dict]
 
-    top: list[dict]
+@dataclass
+class TopCompaniesShort:
+    """Represents top companies across different categories."""
+    sdk: PlatformCompanies
+    adstxt_direct: PlatformCompanies
+    adstxt_reseller: PlatformCompanies
+
+@dataclass
+class TopCompaniesOverviewShort:
+    """Represents top companies across different categories."""
+    adnetworks: TopCompaniesShort
+    attribution: TopCompaniesShort
+    analytics: TopCompaniesShort
+
 
 
 @dataclass
@@ -233,9 +248,7 @@ class CompaniesOverview:
     """
 
     companies_overview: list[CompanyDetail]
-    sdk: PlatformCompanies
-    adstxt_direct: PlatformCompanies
-    adstxt_reseller: PlatformCompanies
+    top: TopCompaniesShort
     categories: CategoryOverview
 
 
@@ -320,3 +333,4 @@ class AppRank:
 
     latest: dict
     history: dict
+
