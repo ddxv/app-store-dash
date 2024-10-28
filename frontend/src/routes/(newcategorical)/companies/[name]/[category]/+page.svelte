@@ -59,7 +59,7 @@
 
 <CompaniesLayout>
 	{#snippet card1()}
-		<WhiteCard >
+		<WhiteCard>
 			{#await data.companyDetails}
 				<div class="bg-white p-6 rounded-lg shadow-md flex justify-center items-center h-40">
 					<span class="text-lg text-gray-600">Loading...</span>
@@ -95,24 +95,24 @@
 		{:else}
 			<CompanyTableGrid>
 				<!-- @migration-task: migrate this slot by hand, `sdk-android-total-apps` is an invalid identifier -->
-	<span slot="sdk-android-total-apps">
+				<span slot="sdk-android-total-apps">
 					{formatNumber(myData.categories[company_category].sdk_android_total_apps)}
 				</span>
 				<!-- @migration-task: migrate this slot by hand, `sdk-ios-total-apps` is an invalid identifier -->
-	<span slot="sdk-ios-total-apps">
+				<span slot="sdk-ios-total-apps">
 					{formatNumber(myData.categories[company_category].sdk_ios_total_apps)}
 				</span>
 				<!-- @migration-task: migrate this slot by hand, `adstxt-android-total-apps` is an invalid identifier -->
-	<span slot="adstxt-android-total-apps">
+				<span slot="adstxt-android-total-apps">
 					{formatNumber(myData.categories[company_category].adstxt_direct_android_total_apps)}
 				</span>
 				<!-- @migration-task: migrate this slot by hand, `adstxt-ios-total-apps` is an invalid identifier -->
-	<span slot="adstxt-ios-total-apps">
+				<span slot="adstxt-ios-total-apps">
 					{formatNumber(myData.categories[company_category].adstxt_direct_ios_total_apps)}
 				</span>
 
 				<!-- @migration-task: migrate this slot by hand, `sdk-android` is an invalid identifier -->
-	<div slot="sdk-android">
+				<div slot="sdk-android">
 					{#if typeof tableData == 'string'}
 						Failed to load company's apps.
 					{:else if tableData.sdk.android.apps}
@@ -122,19 +122,19 @@
 					{/if}
 				</div>
 				<!-- @migration-task: migrate this slot by hand, `sdk-ios` is an invalid identifier -->
-	<div slot="sdk-ios">
+				<div slot="sdk-ios">
 					{#if tableData.sdk.ios.apps}
 						<CompanyOverviewTable entries_table={tableData.sdk.ios.apps} />
 					{/if}
 				</div>
 				<!-- @migration-task: migrate this slot by hand, `adstxt-android` is an invalid identifier -->
-	<div slot="adstxt-android">
+				<div slot="adstxt-android">
 					{#if tableData.adstxt_direct.android.apps}
 						<CompanyOverviewTable entries_table={tableData.adstxt_direct.android.apps} />
 					{/if}
 				</div>
 				<!-- @migration-task: migrate this slot by hand, `adstxt-ios` is an invalid identifier -->
-	<div slot="adstxt-ios">
+				<div slot="adstxt-ios">
 					{#if tableData.adstxt_direct.ios.apps}
 						<CompanyOverviewTable entries_table={tableData.adstxt_direct.ios.apps} />
 					{/if}

@@ -1,10 +1,8 @@
 <script lang="ts">
-
 	import { page } from '$app/stores';
 	import { ListBox } from '@skeletonlabs/skeleton';
 
 	import SideBarCatsListBoxItem from './SideBarCatsListBoxItem.svelte';
-
 
 	import { homeCollectionSelection } from '../stores';
 	let localHomeCollectionSelect = $state($homeCollectionSelection);

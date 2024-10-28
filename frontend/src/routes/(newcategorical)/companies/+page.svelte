@@ -58,7 +58,7 @@
 	{:else if myData && myData.categories}
 		<CompaniesLayout>
 			{#snippet card1()}
-								<WhiteCard >
+				<WhiteCard>
 					<div class="bg-white p-6 rounded-lg shadow-md">
 						<h2 class="text-xl font-bold text-gray-800 mb-4">Total Ad Tech Companies</h2>
 						<p class="text-lg text-gray-700">
@@ -68,21 +68,21 @@
 						</p>
 					</div>
 				</WhiteCard>
-							{/snippet}
+			{/snippet}
 
 			{#snippet card2()}
-								<WhiteCard 
+				<WhiteCard
 					><CompaniesBarChart plotData={myData.top.sdk} plotTitle="Top SDK Companies" /></WhiteCard
 				>
-							{/snippet}
+			{/snippet}
 			{#snippet card3()}
-								<WhiteCard 
+				<WhiteCard
 					><CompaniesBarChart
 						plotData={myData.top.adstxt_direct}
 						plotTitle="Top Adstxt Companies"
 					/></WhiteCard
 				>
-							{/snippet}
+			{/snippet}
 		</CompaniesLayout>
 	{/if}
 {:catch error}
@@ -97,29 +97,29 @@
 	{:else if tableData.categories}
 		<CompaniesTableGrid>
 			<!-- @migration-task: migrate this slot by hand, `main-table` is an invalid identifier -->
-	<div slot="main-table">
+			<div slot="main-table">
 				{#if tableData && tableData.companies_overview.length > 0}
 					<CompaniesOverviewTable entries_table={tableData.companies_overview} />
 				{/if}
 			</div>
 
 			<!-- @migration-task: migrate this slot by hand, `sdk-android-total-apps` is an invalid identifier -->
-	<span slot="sdk-android-total-apps"
+			<span slot="sdk-android-total-apps"
 				>Android Companies:
 				{formatNumber(tableData.categories.categories.all.sdk_android_total_apps)}
 			</span>
 			<!-- @migration-task: migrate this slot by hand, `sdk-ios-total-apps` is an invalid identifier -->
-	<span slot="sdk-ios-total-apps">
+			<span slot="sdk-ios-total-apps">
 				iOS Companies: {formatNumber(tableData.categories.categories.all.sdk_ios_total_apps)}
 			</span>
 			<!-- @migration-task: migrate this slot by hand, `adstxt-android-total-apps` is an invalid identifier -->
-	<span slot="adstxt-android-total-apps">
+			<span slot="adstxt-android-total-apps">
 				Android Companies: {formatNumber(
 					tableData.categories.categories.all.adstxt_direct_android_total_apps
 				)}
 			</span>
 			<!-- @migration-task: migrate this slot by hand, `adstxt-ios-total-apps` is an invalid identifier -->
-	<span slot="adstxt-ios-total-apps">
+			<span slot="adstxt-ios-total-apps">
 				iOS Companies: {formatNumber(
 					tableData.categories.categories.all.adstxt_direct_ios_total_apps
 				)}

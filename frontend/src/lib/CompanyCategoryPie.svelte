@@ -2,8 +2,6 @@
 	import { DonutChart, type DonutChartOptions, type ChartTabularData } from '@carbon/charts-svelte';
 	import '@carbon/charts-svelte/styles.css';
 
-	
-
 	interface Props {
 		plotData: ChartTabularData;
 		// export let plotType: string;
@@ -11,16 +9,20 @@
 		categoryPieOptions?: DonutChartOptions;
 	}
 
-	let { plotData, plotHeightPx = '300px', categoryPieOptions = {
-		title: 'Apps by Category',
-		resizable: true,
-		donut: {
-			center: {
-				label: 'Apps'
-			}
-		},
-		height: plotHeightPx
-	} }: Props = $props();
+	let {
+		plotData,
+		plotHeightPx = '300px',
+		categoryPieOptions = {
+			title: 'Apps by Category',
+			resizable: true,
+			donut: {
+				center: {
+					label: 'Apps'
+				}
+			},
+			height: plotHeightPx
+		}
+	}: Props = $props();
 
 	// const plotData = [
 	// 	{ group: 'education', value: 29288 },

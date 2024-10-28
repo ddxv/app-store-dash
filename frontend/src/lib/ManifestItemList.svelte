@@ -2,7 +2,6 @@
 	import type { Networks } from '../types';
 	import type { Trackers } from '../types';
 
-
 	import CompanyButton from './CompanyButton.svelte';
 	interface Props {
 		title: string;

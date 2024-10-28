@@ -47,11 +47,9 @@
 
 <AppShell slotSidebarLeft="w-0 lg:w-auto">
 	{#snippet sidebarLeft()}
-	
-			{#await data.appCats then myCatData}
-				<NewSideBar {myCatData} />
-			{/await}
-		
+		{#await data.appCats then myCatData}
+			<NewSideBar {myCatData} />
+		{/await}
 	{/snippet}
 	{@render children?.()}
 	<button

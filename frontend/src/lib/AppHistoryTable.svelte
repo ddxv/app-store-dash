@@ -5,7 +5,6 @@
 	import type { State } from '@vincjo/datatables/legacy/remote';
 	import type { AppHistoryInfo } from '../types';
 
-
 	const totalRows = history_table.length;
 	const rowsPerPage = 10;
 

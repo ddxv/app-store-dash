@@ -7,7 +7,6 @@
 	} from '@carbon/charts-svelte';
 	import '@carbon/charts-svelte/styles.css';
 
-
 	interface Props {
 		plotData: ChartTabularData;
 		plotTitle: string;
@@ -20,18 +19,18 @@
 		plotTitle,
 		plotHeightPx = '300px',
 		chartOptions = {
-		title: plotTitle,
-		axes: {
-			left: {
-				mapsTo: 'group',
-				scaleType: ScaleTypes.LABELS
+			title: plotTitle,
+			axes: {
+				left: {
+					mapsTo: 'group',
+					scaleType: ScaleTypes.LABELS
+				},
+				bottom: {
+					mapsTo: 'value'
+				}
 			},
-			bottom: {
-				mapsTo: 'value'
-			}
-		},
-		height: plotHeightPx
-	}
+			height: plotHeightPx
+		}
 	}: Props = $props();
 
 	// export let plotData: ChartTabularData = [

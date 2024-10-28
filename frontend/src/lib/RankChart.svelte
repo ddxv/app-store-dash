@@ -6,8 +6,6 @@
 
 	import { plotColors } from '../stores';
 
-
-
 	let myInterval;
 	let topPadding;
 	let rightPadding;

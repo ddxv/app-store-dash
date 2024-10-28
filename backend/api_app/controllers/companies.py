@@ -5,6 +5,7 @@
 /trackers/ returns list of top trackers.
 """
 
+import urllib
 from typing import Self
 
 import numpy as np
@@ -12,23 +13,21 @@ import pandas as pd
 from litestar import Controller, get
 from litestar.exceptions import NotFoundException
 
-import urllib
-
 from api_app.models import (
     AppGroup,
     CategoryOverview,
     CompaniesOverview,
     CompanyApps,
     CompanyAppsOverview,
+    CompanyDetail,
     CompanyPatterns,
     CompanyPatternsDict,
     CompanyPlatformOverview,
     CompanyTypes,
     ParentCompanyTree,
     TopCompanies,
-    TopCompaniesShort,
     TopCompaniesOverviewShort,
-    CompanyDetail
+    TopCompaniesShort,
 )
 from config import get_logger
 from dbcon.queries import (
@@ -50,13 +49,13 @@ from dbcon.queries import (
 
 logger = get_logger(__name__)
 
+
 def get_search_results(search_term: str) -> pd.DataFrame:
     """Parse search term and return resulting APpGroup."""
     decoded_input = urllib.parse.unquote(search_term)
     df = search_companies(search_input=decoded_input, limit=20)
     logger.info(f"{decoded_input=} returned rows: {df.shape[0]}")
     return df
-
 
 
 def get_company_apps_new(
@@ -121,6 +120,7 @@ def get_company_apps_new(
     )
     return results
 
+
 def make_top_companies(top_df: pd.DataFrame) -> TopCompaniesShort:
     top_sdk_df = top_df[top_df["tag_source"] == "sdk"].copy()
     top_adstxt_direct_df = top_df[top_df["tag_source"] == "app_ads_direct"].copy()
@@ -158,9 +158,11 @@ def make_top_companies(top_df: pd.DataFrame) -> TopCompaniesShort:
         adstxt_reseller=top_adstxt_reseller_df.to_dict(orient="records"),
     )
     return top_companies_short
-    
 
-def prep_overview_df(overview_df: pd.DataFrame, category_totals_df: pd.DataFrame) -> tuple[pd.DataFrame, CategoryOverview]:
+
+def prep_overview_df(
+    overview_df: pd.DataFrame, category_totals_df: pd.DataFrame
+) -> tuple[pd.DataFrame, CategoryOverview]:
     overview_df = overview_df.merge(
         category_totals_df,
         on=["app_category", "store", "tag_source"],
@@ -210,8 +212,6 @@ def prep_overview_df(overview_df: pd.DataFrame, category_totals_df: pd.DataFrame
     return overview_df, category_overview
 
 
-
-
 def get_overviews(
     category: str | None = None,
     type_slug: str | None = None,
@@ -237,14 +237,13 @@ def get_overviews(
         category_totals_df = get_types_totals()
         logger.info("Getting category totals FINSIHED")
 
-
     top_companies_short = make_top_companies(top_df)
 
     overview_df, category_overview = prep_overview_df(overview_df, category_totals_df)
 
     results = CompaniesOverview(
         companies_overview=overview_df.to_dict(orient="records"),
-        top = top_companies_short,
+        top=top_companies_short,
         categories=category_overview,
     )
 
@@ -937,8 +936,10 @@ class CompaniesController(Controller):
 
         """
         logger.info(f"{self.path} start")
-        adnetworks = get_companies_top(type_slug='ad-networks', app_category=None, limit=5)
-        mmps = get_companies_top(type_slug='ad-attribution', app_category=None, limit=5)
+        adnetworks = get_companies_top(
+            type_slug="ad-networks", app_category=None, limit=5
+        )
+        mmps = get_companies_top(type_slug="ad-attribution", app_category=None, limit=5)
         # analytics = get_companies_top(type_slug='analytics', app_category=None, limit=5)
         top_ad_networks = make_top_companies(adnetworks)
         top_mmps = make_top_companies(mmps)
@@ -965,7 +966,7 @@ class CompaniesController(Controller):
         logger.info(f"{self.path}/{search_term} start")
         results = get_search_results(search_term=search_term)
 
-        results['app_category'] = 'all'
+        results["app_category"] = "all"
 
         category_totals_df = get_types_totals()
 
@@ -975,4 +976,3 @@ class CompaniesController(Controller):
         logger.info(f"{self.path}/{search_term} return")
 
         return overview_df.to_dict(orient="records")
-

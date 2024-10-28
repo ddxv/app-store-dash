@@ -15,13 +15,7 @@
 	let pageDataCrumbs = $derived($page.data.crumbs as Crumb<MyCrumbMetadata>[] | undefined);
 </script>
 
-<Breadcrumbs
-	url={$page.url}
-	routeId={$page.route.id}
-	pageData={$page.data}
-	crumbs={pageDataCrumbs}
-	
->
+<Breadcrumbs url={$page.url} routeId={$page.route.id} pageData={$page.data} crumbs={pageDataCrumbs}>
 	{#snippet children({ crumbs })}
 		<div>
 			<span><a href="/">Home</a></span>

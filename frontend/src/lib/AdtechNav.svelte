@@ -1,9 +1,6 @@
 <script lang="ts">
-
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
-
-
 
 	const buttonSelectedColor =
 		'radio-item text-base text-center cursor-pointer px-4 py-1 rounded-token variant-filled-primary active:';
@@ -24,9 +21,11 @@
 	const metricAppCount: string = 'appcount';
 
 	let paramClassesActive = $derived((pkey: string, pvalue: string) =>
-		$page.url.searchParams.get(pkey) == pvalue ? buttonSelectedColor : groupByParents);
+		$page.url.searchParams.get(pkey) == pvalue ? buttonSelectedColor : groupByParents
+	);
 	let paramMetricClassesActive = $derived((pkey: string, pvalue: string) =>
-		$page.url.searchParams.get(pkey) == pvalue ? buttonSelectedColor : metricInstalls);
+		$page.url.searchParams.get(pkey) == pvalue ? buttonSelectedColor : metricInstalls
+	);
 	let currentPath = $derived($page.url.pathname);
 </script>
 
@@ -40,10 +39,10 @@
 						<a
 							href={currentPath}
 							class={paramMetricClassesActive('metric', metricInstalls)}
-							onclick={((event) => {
-								navigateWithParams(currentPath, 'metric', metricInstalls)
+							onclick={(event) => {
+								navigateWithParams(currentPath, 'metric', metricInstalls);
 								event.preventDefault();
-							})}
+							}}
 						>
 							<span class="flex-auto">Installs Past 30 Days</span>
 						</a>
@@ -52,10 +51,10 @@
 						<a
 							href={currentPath}
 							class={paramMetricClassesActive('metric', metricAppCount)}
-							onclick={((event) => {
-								navigateWithParams(currentPath, 'metric', metricAppCount)
+							onclick={(event) => {
+								navigateWithParams(currentPath, 'metric', metricAppCount);
 								event.preventDefault();
-							})}
+							}}
 						>
 							<span class="flex-auto">Count of Apps</span>
 						</a>
@@ -72,10 +71,10 @@
 						<a
 							href={currentPath}
 							class={paramClassesActive('groupby', groupByBrands)}
-							onclick={((event) => {
-								navigateWithParams(currentPath, 'groupby', groupByBrands)
+							onclick={(event) => {
+								navigateWithParams(currentPath, 'groupby', groupByBrands);
 								event.preventDefault();
-							})}
+							}}
 						>
 							<span class="flex-auto">Group by SubCompany or Brand</span>
 						</a>
@@ -84,12 +83,10 @@
 						<a
 							href={currentPath}
 							class={paramClassesActive('groupby', groupByParents)}
-							onclick={((event) => {
-								navigateWithParams(currentPath, 'groupby', groupByParents)
+							onclick={(event) => {
+								navigateWithParams(currentPath, 'groupby', groupByParents);
 								event.preventDefault();
-							}
-							)
-								}
+							}}
 						>
 							<span class="flex-auto">Group by Parent Company</span>
 						</a>

@@ -27,8 +27,8 @@
 			<div class="col-span-1">
 				<WhiteCard>
 					{#snippet title()}
-										<span  class="text-sm font-semibold">{companyName}</span>
-									{/snippet}
+						<span class="text-sm font-semibold">{companyName}</span>
+					{/snippet}
 					<div class="p-4 text-xs">
 						<h4 class="font-medium text-gray-500 uppercase tracking-wider mb-1">
 							Package Patterns

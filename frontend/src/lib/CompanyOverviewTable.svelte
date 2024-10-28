@@ -56,23 +56,23 @@
 			<tbody>
 				{#each $rows as row, index}
 					<tr style="cursor: pointer;" class="px-0">
-							<td class="table-cell-fit">
-								{index + 1}
-							</td>
-							<td class="table-cell-fit">
-								<!-- TODO: This is supposed to be just inside TR for whole row -->
-						<a href="/apps/{row.store_id}" class="table-row-link">
+						<td class="table-cell-fit">
+							{index + 1}
+						</td>
+						<td class="table-cell-fit">
+							<!-- TODO: This is supposed to be just inside TR for whole row -->
+							<a href="/apps/{row.store_id}" class="table-row-link">
 								{row.name}
-						</a>
-							</td>
+							</a>
+						</td>
 
-							<td class="table-cell-fit">
-								{#if row.installs && typeof row.installs === 'string' && row.installs != 'N/A'}
-									{row.installs}
-								{:else}
-									{row.rating_count}
-								{/if}
-							</td>
+						<td class="table-cell-fit">
+							{#if row.installs && typeof row.installs === 'string' && row.installs != 'N/A'}
+								{row.installs}
+							{:else}
+								{row.rating_count}
+							{/if}
+						</td>
 					</tr>
 				{/each}
 			</tbody>

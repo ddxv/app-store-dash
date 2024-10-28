@@ -9,10 +9,6 @@
 	} from '@carbon/charts-svelte';
 	import '@carbon/charts-svelte/styles.css';
 
-
-
-
-
 	interface Props {
 		plotdata: ChartTabularData;
 		plotType: string;
@@ -28,122 +24,122 @@
 		plotType,
 		plotHeightPx = '300px',
 		changeOptions = {
-		toolbar: { enabled: false },
-		axes: {
-			bottom: {
-				title: 'Date',
-				mapsTo: 'crawled_date',
-				scaleType: ScaleTypes.TIME
-			},
-			left: {
-				title: 'Rate of Change from Previous Week',
-				mapsTo: 'value',
-				// percentage: true,
-				ticks: {
-					formatter: (x: number | Date) => `${x}%`
+			toolbar: { enabled: false },
+			axes: {
+				bottom: {
+					title: 'Date',
+					mapsTo: 'crawled_date',
+					scaleType: ScaleTypes.TIME
 				},
-				scaleType: ScaleTypes.LINEAR,
-				correspondingDatasets: ['Rating Rate of Change']
-			}
+				left: {
+					title: 'Rate of Change from Previous Week',
+					mapsTo: 'value',
+					// percentage: true,
+					ticks: {
+						formatter: (x: number | Date) => `${x}%`
+					},
+					scaleType: ScaleTypes.LINEAR,
+					correspondingDatasets: ['Rating Rate of Change']
+				}
+			},
+			// curve: 'curveMonotoneX',
+			height: '400px',
+			comboChartTypes: [
+				{
+					type: 'grouped-bar',
+					correspondingDatasets: [
+						'Rating Rate of Change',
+						'Installs Rate of Change',
+						'Rating Count Rate of Change',
+						'Review Count Rate of Change'
+					]
+					// 	options: {
+					// 		points: {
+					// 			radius: 5
+					// 		}
+					// 	}
+				}
+			]
 		},
-		// curve: 'curveMonotoneX',
-		height: '400px',
-		comboChartTypes: [
-			{
-				type: 'grouped-bar',
-				correspondingDatasets: [
-					'Rating Rate of Change',
-					'Installs Rate of Change',
-					'Rating Count Rate of Change',
-					'Review Count Rate of Change'
-				]
-				// 	options: {
-				// 		points: {
-				// 			radius: 5
-				// 		}
-				// 	}
-			}
-		]
-	},
 		installOptions = {
-		toolbar: { enabled: false },
-		axes: {
-			bottom: {
-				title: 'Date',
-				mapsTo: 'crawled_date',
-				scaleType: ScaleTypes.TIME
+			toolbar: { enabled: false },
+			axes: {
+				bottom: {
+					title: 'Date',
+					mapsTo: 'crawled_date',
+					scaleType: ScaleTypes.TIME
+				},
+				left: {
+					mapsTo: 'value',
+					title: 'Installs',
+					scaleType: ScaleTypes.LINEAR,
+					correspondingDatasets: ['Installs Daily Average']
+				}
 			},
-			left: {
-				mapsTo: 'value',
-				title: 'Installs',
-				scaleType: ScaleTypes.LINEAR,
-				correspondingDatasets: ['Installs Daily Average']
-			}
+			// curve: 'curveMonotoneX',
+			height: '400px'
+			// comboChartTypes: [
+			// 	{
+			// 		type: 'grouped-bar',
+			// 		correspondingDatasets: ['Installs Daily Average'],
+			// 		options: {
+			// 			points: {
+			// 				radius: 5
+			// 			}
+			// 		}
+			// 	}
+			// ]
 		},
-		// curve: 'curveMonotoneX',
-		height: '400px'
-		// comboChartTypes: [
-		// 	{
-		// 		type: 'grouped-bar',
-		// 		correspondingDatasets: ['Installs Daily Average'],
-		// 		options: {
-		// 			points: {
-		// 				radius: 5
-		// 			}
-		// 		}
-		// 	}
-		// ]
-	},
 		numberOptions = {
-		toolbar: { enabled: false },
-		axes: {
-			bottom: {
-				title: 'Date',
-				mapsTo: 'crawled_date',
-				scaleType: ScaleTypes.TIME
+			toolbar: { enabled: false },
+			axes: {
+				bottom: {
+					title: 'Date',
+					mapsTo: 'crawled_date',
+					scaleType: ScaleTypes.TIME
+				},
+				left: {
+					mapsTo: 'value',
+					title: 'Count',
+					scaleType: ScaleTypes.LINEAR,
+					correspondingDatasets: ['Installs Daily Average', 'Rating Count Daily Average']
+				}
 			},
-			left: {
-				mapsTo: 'value',
-				title: 'Count',
-				scaleType: ScaleTypes.LINEAR,
-				correspondingDatasets: ['Installs Daily Average', 'Rating Count Daily Average']
-			}
-		},
-		// curve: 'curveMonotoneX',
-		height: '400px',
-		comboChartTypes: [
-			{
-				type: 'stacked-bar',
-				correspondingDatasets: [
-					'Installs Daily Average',
-					'Rating Count Daily Average',
-					'Review Count Daily Average'
-				],
-				options: {
-					points: {
-						radius: 5
+			// curve: 'curveMonotoneX',
+			height: '400px',
+			comboChartTypes: [
+				{
+					type: 'stacked-bar',
+					correspondingDatasets: [
+						'Installs Daily Average',
+						'Rating Count Daily Average',
+						'Review Count Daily Average'
+					],
+					options: {
+						points: {
+							radius: 5
+						}
 					}
 				}
-			}
-		]
-	},
-		appRankOptions = {
-		title: 'Step (discrete)',
-		axes: {
-			bottom: {
-				title: 'Date',
-				mapsTo: 'crawled_date',
-				scaleType: ScaleTypes.TIME
-			},
-			left: {
-				mapsTo: 'rank',
-				title: 'Conversion rate',
-				scaleType: ScaleTypes.LINEAR
-			}
+			]
 		},
-		curve: 'curveStepAfter',
-		height: plotHeightPx
-	}
+		appRankOptions = {
+			title: 'Step (discrete)',
+			axes: {
+				bottom: {
+					title: 'Date',
+					mapsTo: 'crawled_date',
+					scaleType: ScaleTypes.TIME
+				},
+				left: {
+					mapsTo: 'rank',
+					title: 'Conversion rate',
+					scaleType: ScaleTypes.LINEAR
+				}
+			},
+			curve: 'curveStepAfter',
+			height: plotHeightPx
+		}
 	}: Props = $props();
 </script>
 

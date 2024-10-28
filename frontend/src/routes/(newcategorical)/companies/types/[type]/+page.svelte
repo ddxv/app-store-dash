@@ -48,30 +48,31 @@
 		<p class="text-red-500 text-center">Failed to load company details.</p>
 	{:else}
 		<CompaniesLayout>
-		{#snippet card1()}
-			<WhiteCard>
-				<div class="bg-white p-6 rounded-lg shadow-md">
-					<h2 class="text-xl font-bold text-gray-800 mb-4">Total Ad Tech Companies</h2>
-					<p class="text-lg text-gray-700">
-						<span class="font-semibold text-gray-900"
-							>{formatNumber(myData.categories.categories.all.total_apps)}</span
-						>
-					</p>
-				</div>
-			</WhiteCard>
-		{/snippet}
-		{#snippet card2()}
-			<WhiteCard
-				><CompaniesBarChart plotData={myData.top.sdk} plotTitle="Top SDK Companies" /></WhiteCard
-			>
-			<!-- {#if $page.params.type != 'ad-networks'} -->
-				<WhiteCard slot="card3"><CompaniesBarChart
+			{#snippet card1()}
+				<WhiteCard>
+					<div class="bg-white p-6 rounded-lg shadow-md">
+						<h2 class="text-xl font-bold text-gray-800 mb-4">Total Ad Tech Companies</h2>
+						<p class="text-lg text-gray-700">
+							<span class="font-semibold text-gray-900"
+								>{formatNumber(myData.categories.categories.all.total_apps)}</span
+							>
+						</p>
+					</div>
+				</WhiteCard>
+			{/snippet}
+			{#snippet card2()}
+				<WhiteCard
+					><CompaniesBarChart plotData={myData.top.sdk} plotTitle="Top SDK Companies" /></WhiteCard
+				>
+				<!-- {#if $page.params.type != 'ad-networks'} -->
+				<WhiteCard slot="card3"
+					><CompaniesBarChart
 						plotData={myData.top.adstxt_direct}
 						plotTitle="Top Adstxt Companies"
 					/></WhiteCard
 				>
-			<!-- {/if} -->
-		{/snippet}
+				<!-- {/if} -->
+			{/snippet}
 		</CompaniesLayout>
 	{/if}
 {:catch error}

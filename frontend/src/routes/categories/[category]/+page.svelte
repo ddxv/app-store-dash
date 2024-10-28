@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { CategoryResponse } from '../../../types';
-	
+
 	import AppsCard from '$lib/AppGroupCard.svelte';
 	interface Props {
 		/** @type {import('../[category]/$types').PageData} */

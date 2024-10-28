@@ -11,7 +11,7 @@ SELECT
     cac.company_name,
     sum(app_count) AS app_count
 FROM
-    adtech.companies_categories_types_app_counts cac
+    adtech.companies_categories_types_app_counts AS cac
 WHERE
     cac.company_name ILIKE '%' || :searchinput || '%'
     OR cac.company_domain ILIKE '%' || :searchinput || '%'
@@ -23,4 +23,3 @@ GROUP BY
 ORDER BY
     app_count DESC
 LIMIT :mylimit;
-

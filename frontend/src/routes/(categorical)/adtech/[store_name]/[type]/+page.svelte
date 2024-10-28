@@ -1,5 +1,4 @@
 <script lang="ts">
-
 	import type { TopCompaniesInfo } from '../../../../../types';
 	import AdtechNav from '$lib/AdtechNav.svelte';
 	import { page } from '$app/stores';
@@ -10,7 +9,6 @@
 	}
 
 	let { data }: Props = $props();
-
 
 	// TODO: This categorySelection is shared with the numerical one used on other pages!
 	function isNumeric(value: string | number): boolean {
@@ -23,10 +21,11 @@
 		return !isNaN(parseFloat(value)) && isFinite(parseFloat(value));
 	}
 	// Set categorySelection based on whether the value is numeric or null
-	let categorySelection =
-		$derived(isNumeric($homeCategorySelection) || $homeCategorySelection === null
+	let categorySelection = $derived(
+		isNumeric($homeCategorySelection) || $homeCategorySelection === null
 			? 'overall'
-			: $homeCategorySelection);
+			: $homeCategorySelection
+	);
 
 	let store_name = $derived($page.params.store_name || 'Google');
 	let store_id = $derived($page.params.store_name === 'Google' || !$page.params.store_name ? 1 : 2);

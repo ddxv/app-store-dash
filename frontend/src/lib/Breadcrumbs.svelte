@@ -4,8 +4,6 @@
 	import type { Crumb, ModuleData } from '.././types';
 	import { onMount } from 'svelte';
 
-	
-	
 	export function titleSanitizer(title: string) {
 		return title.replace(/([A-Z])/g, ' $1').replace(/^./, (str) => str.toUpperCase());
 	}
@@ -118,4 +116,4 @@
 	});
 </script>
 
-{@render children?.({ crumbs: _crumbs, routeModules, })}
+{@render children?.({ crumbs: _crumbs, routeModules })}

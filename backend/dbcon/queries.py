@@ -521,7 +521,6 @@ def get_apps_for_company(
     return df
 
 
-
 def search_companies(search_input: str, limit: int = 10) -> pd.DataFrame:
     """Search companies by term in database."""
     logger.info(f"Company search: {search_input=}")
@@ -532,6 +531,7 @@ def search_companies(search_input: str, limit: int = 10) -> pd.DataFrame:
     )
     df["store"] = df["store"].replace({1: "Google Play", 2: "Apple App Store"})
     return df
+
 
 def search_apps(search_input: str, limit: int = 100) -> pd.DataFrame:
     """Search apps by term in database."""

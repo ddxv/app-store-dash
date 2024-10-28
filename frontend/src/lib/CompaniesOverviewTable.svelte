@@ -41,39 +41,38 @@
 			<tbody>
 				{#each $rows as row, index}
 					<tr style="cursor: pointer;" class="px-0">
-							<td class="table-cell-fit">
-								{index + 1}
-							</td>
-							<td class="table-cell-fit">
-								<!-- TODO: This is supposed to be just inside TR for whole row -->
-						<a href="/companies/{row.company_domain}" class="table-row-link">
+						<td class="table-cell-fit">
+							{index + 1}
+						</td>
+						<td class="table-cell-fit">
+							<!-- TODO: This is supposed to be just inside TR for whole row -->
+							<a href="/companies/{row.company_domain}" class="table-row-link">
 								{#if row.company_name}
 									{row.company_name}
 									({row.company_domain})
 								{:else}
 									{row.company_domain}
 								{/if}
-						</a>
-							</td>
+							</a>
+						</td>
+						<td class="table-cell-fit">
+							{(row.google_sdk * 100).toFixed(2)}%
+						</td>
+
+						<td class="table-cell-fit">
+							{(row.apple_sdk * 100).toFixed(2)}%
+						</td>
+
+						{#if !$page.params.type || $page.params.type == 'ad-networks'}
 							<td class="table-cell-fit">
-								{(row.google_sdk * 100).toFixed(2)}%
+								{(row.google_app_ads_direct * 100).toFixed(2)}%
 							</td>
 
 							<td class="table-cell-fit">
-								{(row.apple_sdk * 100).toFixed(2)}%
+								{(row.apple_app_ads_direct * 100).toFixed(2)}%
 							</td>
-
-							{#if !$page.params.type || $page.params.type == 'ad-networks'}
-								<td class="table-cell-fit">
-									{(row.google_app_ads_direct * 100).toFixed(2)}%
-								</td>
-
-								<td class="table-cell-fit">
-									{(row.apple_app_ads_direct * 100).toFixed(2)}%
-								</td>
-							{/if}
-						</tr
-					>
+						{/if}
+					</tr>
 				{/each}
 			</tbody>
 		</table>

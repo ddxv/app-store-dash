@@ -4,7 +4,6 @@
 	import generateId from './utils/generateIds.js';
 	import type { ComponentType } from 'svelte';
 
-	
 	interface Props {
 		// export let divClass: string = 'flex items-center';
 		size?: number;

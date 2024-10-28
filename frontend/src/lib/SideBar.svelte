@@ -1,10 +1,8 @@
 <script lang="ts">
-
 	import { page } from '$app/stores';
 	import { ListBox, ListBoxItem } from '@skeletonlabs/skeleton';
 
 	import { goto } from '$app/navigation';
-
 
 	import IconGoogle from '$lib/svg/IconGoogle.svelte';
 	import IconiOS from '$lib/svg/IconiOS.svelte';
@@ -36,8 +34,6 @@
 		}
 	};
 
-
-
 	// Function to generate a URL with existing query parameters
 	function generateAdtechLink(storeName: string, adtechCategory: string) {
 		const searchParams = $page.url.searchParams.toString();
@@ -60,9 +56,9 @@
 
 	let { myCatData }: Props = $props();
 
-
 	let classesActive = $derived((href: string) =>
-		$page.url.pathname.startsWith(href) ? buttonSelectedColor : '');
+		$page.url.pathname.startsWith(href) ? buttonSelectedColor : ''
+	);
 	// Reactive statement to update the store when localValue changes
 	$effect(() => {
 		homeCollectionSelection.set(localHomeCollectionSelect);
@@ -83,15 +79,15 @@
 	let adtech_category = $derived($page.params.type);
 	let company_category = $derived($page.params.category);
 	let company_name = $derived($page.params.name);
-	let store=$state(1);
+	let store = $state(1);
 	$effect(() => {
 		store = +$page.params.store;
 	});
-	let collection=$state(1);
+	let collection = $state(1);
 	$effect(() => {
 		collection = +$page.params.collection;
 	});
-	let category=$state(1);
+	let category = $state(1);
 	$effect(() => {
 		category = +$page.params.category;
 	});

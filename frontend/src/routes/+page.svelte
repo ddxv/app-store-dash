@@ -154,9 +154,7 @@
 				party services which likely collect app data. You can also help expand these lists.
 			</p>
 		</a>
-		<div
-			class="flex flex-col-2 gap-4"
-		>
+		<div class="flex flex-col-2 gap-4">
 			<a href="/companies/types/ad-networks">
 				<div class="card variant-ghost-surface md:p-4">
 					<div class="card-header">
@@ -164,44 +162,44 @@
 					</div>
 					<div class="card-content">
 						Checkout the top SDK advertising networks.
-{#await data.topCompanies}
-				Loading ...
-			{:then myTops}
-			{#if myTops.adnetworks}
-				<WhiteCard>
-				<CompaniesBarChart plotData={myTops.adnetworks.sdk} plotTitle="Top SDK Ad Networks Companies" />
-			</WhiteCard>
-			{/if}
-			
-			{/await}
+						{#await data.topCompanies}
+							Loading ...
+						{:then myTops}
+							{#if myTops.adnetworks}
+								<WhiteCard>
+									<CompaniesBarChart
+										plotData={myTops.adnetworks.sdk}
+										plotTitle="Top SDK Ad Networks Companies"
+									/>
+								</WhiteCard>
+							{/if}
+						{/await}
 					</div>
-
 				</div>
 			</a>
-			
-			
+
 			<a href="/companies/types/ad-attribution">
 				<div class="card variant-ghost-surface md:p-4">
 					<div class="card-header">
 						<h3 class="h3">Top iOS MMPs & Ad Tracking</h3>
 					</div>
 					<div class="card-content">
-			Checkout the top MMPs and tracking companies.
-			{#await data.topCompanies}
-				Loading ...
-			{:then myTops}
-			
-			{#if myTops.attribution}
-			<WhiteCard>
-					<CompaniesBarChart
-						plotData={myTops.attribution.sdk}
-						plotTitle="Top MMPs & Attribution Companies"
-					/>
-			</WhiteCard>
-				{/if}
-			{/await}
+						Checkout the top MMPs and tracking companies.
+						{#await data.topCompanies}
+							Loading ...
+						{:then myTops}
+							{#if myTops.attribution}
+								<WhiteCard>
+									<CompaniesBarChart
+										plotData={myTops.attribution.sdk}
+										plotTitle="Top MMPs & Attribution Companies"
+									/>
+								</WhiteCard>
+							{/if}
+						{/await}
 					</div>
-	</div>
+				</div>
+			</a>
 		</div>
 	</div>
 

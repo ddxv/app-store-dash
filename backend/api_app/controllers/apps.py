@@ -49,9 +49,10 @@ def search_both_stores(search_term: str) -> None:
         process_search_results(google_full_results)
     apple_ids = apple.search_app_store_for_ids(search_term)
     if len(apple_ids) > 0:
-        apple_full_results = [{"store_id": store_id, "store": 2} for store_id in apple_ids]
+        apple_full_results = [
+            {"store_id": store_id, "store": 2} for store_id in apple_ids
+        ]
         process_search_results(apple_full_results)
-    return
 
 
 def get_search_results(search_term: str) -> AppGroup:

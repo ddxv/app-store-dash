@@ -7,7 +7,6 @@
 
 	import type { StoreCategoryRanks } from '../../../../../../../../../types.js';
 
-
 	import { page } from '$app/stores';
 	import RankChart from '$lib/RankChart.svelte';
 	import AppRankTable from '$lib/AppRankTable.svelte';

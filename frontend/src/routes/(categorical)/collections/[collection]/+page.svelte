@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Collections } from '../../../../types';
-	
+
 	import AppsCard from '$lib/AppGroupCard.svelte';
 
 	import { homeStoreSelection } from '../../../../stores';

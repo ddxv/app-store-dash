@@ -8,12 +8,7 @@
 	 */
 
 	/** @type {Props} */
-	let {
-		card1,
-		card2,
-		card3,
-		card4
-	} = $props();
+	let { card1, card2, card3, card4 } = $props();
 </script>
 
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
