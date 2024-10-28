@@ -12,6 +12,8 @@ import pandas as pd
 from litestar import Controller, get
 from litestar.exceptions import NotFoundException
 
+import urllib
+
 from api_app.models import (
     AppGroup,
     CategoryOverview,
@@ -26,6 +28,7 @@ from api_app.models import (
     TopCompanies,
     TopCompaniesShort,
     TopCompaniesOverviewShort,
+    CompanyDetail
 )
 from config import get_logger
 from dbcon.queries import (
@@ -42,9 +45,18 @@ from dbcon.queries import (
     get_types_category_totals,
     get_types_totals,
     new_get_top_apps_for_company,
+    search_companies,
 )
 
 logger = get_logger(__name__)
+
+def get_search_results(search_term: str) -> pd.DataFrame:
+    """Parse search term and return resulting APpGroup."""
+    decoded_input = urllib.parse.unquote(search_term)
+    df = search_companies(search_input=decoded_input, limit=20)
+    logger.info(f"{decoded_input=} returned rows: {df.shape[0]}")
+    return df
+
 
 
 def get_company_apps_new(
@@ -148,34 +160,7 @@ def make_top_companies(top_df: pd.DataFrame) -> TopCompaniesShort:
     return top_companies_short
     
 
-
-
-
-def get_overviews(
-    category: str | None = None,
-    type_slug: str | None = None,
-) -> CompaniesOverview:
-    """Get the overview data from the database."""
-    if type_slug:
-        logger.info("Getting adtech category type")
-        overview_df = get_adtech_category_type(type_slug, app_category=category)
-        logger.info("Getting companies top")
-        top_df = get_companies_top(type_slug=type_slug, app_category=category, limit=5)
-    else:
-        logger.info("Getting companies top")
-        top_df = get_companies_top(app_category=category, limit=5)
-        logger.info("Getting companies parent overview")
-        overview_df = get_companies_parent_overview(app_category=category)
-
-    if category:
-        logger.info("Getting category totals")
-        category_totals_df = get_types_category_totals()
-        logger.info("Getting category totals FINSIHED")
-    else:
-        logger.info("Getting category totals")
-        category_totals_df = get_types_totals()
-        logger.info("Getting category totals FINSIHED")
-
+def prep_overview_df(overview_df: pd.DataFrame, category_totals_df: pd.DataFrame) -> tuple[pd.DataFrame, CategoryOverview]:
     overview_df = overview_df.merge(
         category_totals_df,
         on=["app_category", "store", "tag_source"],
@@ -222,8 +207,40 @@ def get_overviews(
         by=store_tag_source_values,
         ascending=False,
     ).head(1000)
+    return overview_df, category_overview
+
+
+
+
+def get_overviews(
+    category: str | None = None,
+    type_slug: str | None = None,
+) -> CompaniesOverview:
+    """Get the overview data from the database."""
+    if type_slug:
+        logger.info("Getting adtech category type")
+        overview_df = get_adtech_category_type(type_slug, app_category=category)
+        logger.info("Getting companies top")
+        top_df = get_companies_top(type_slug=type_slug, app_category=category, limit=5)
+    else:
+        logger.info("Getting companies top")
+        top_df = get_companies_top(app_category=category, limit=5)
+        logger.info("Getting companies parent overview")
+        overview_df = get_companies_parent_overview(app_category=category)
+
+    if category:
+        logger.info("Getting category totals")
+        category_totals_df = get_types_category_totals()
+        logger.info("Getting category totals FINSIHED")
+    else:
+        logger.info("Getting category totals")
+        category_totals_df = get_types_totals()
+        logger.info("Getting category totals FINSIHED")
+
 
     top_companies_short = make_top_companies(top_df)
+
+    overview_df, category_overview = prep_overview_df(overview_df, category_totals_df)
 
     results = CompaniesOverview(
         companies_overview=overview_df.to_dict(orient="records"),
@@ -910,7 +927,7 @@ class CompaniesController(Controller):
         return overview
 
     @get(path="/companies/topshort/", cache=True)
-    async def get_companies_shortlist_top(self: Self) -> TopCompaniesOverviewShort:
+    async def get_companies_shortlist_top(self: Self) -> list[CompanyDetail]:
         """Handle GET request for a list of adtech company categories.
 
         Returns
@@ -935,4 +952,27 @@ class CompaniesController(Controller):
         )
 
         return top_companies
+
+    @get(path="/companies/search/{search_term:str}", cache=True)
+    async def get_companies_search(self: Self, search_term: str) -> list[CompanyDetail]:
+        """Handle GET request for a list of adtech company categories.
+
+        Returns
+        -------
+            A list of CompanyDetail objects
+
+        """
+        logger.info(f"{self.path}/{search_term} start")
+        results = get_search_results(search_term=search_term)
+
+        results['app_category'] = 'all'
+
+        category_totals_df = get_types_totals()
+
+        # cagetory_totals_df['app_category'] = 'all'
+
+        overview_df, _category_overview = prep_overview_df(results, category_totals_df)
+        logger.info(f"{self.path}/{search_term} return")
+
+        return overview_df.to_dict(orient="records")
 

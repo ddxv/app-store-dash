@@ -32,6 +32,7 @@ QUERY_MOST_RECENT_TOP_RANKS = load_sql_file("query_most_recent_top_ranks.sql")
 QUERY_HISTORY_TOP_RANKS = load_sql_file("query_history_top_ranks.sql")
 QUERY_APPSTORE_CATEGORIES = load_sql_file("query_appstore_categories.sql")
 QUERY_SEARCH_APPS = load_sql_file("query_search_apps.sql")
+QUERY_SEARCH_COMPANIES = load_sql_file("query_search_companies.sql")
 QUERY_SEARCH_DEVS = load_sql_file("query_search_devs.sql")
 QUERY_SINGLE_DEVELOPER = load_sql_file("query_single_developer.sql")
 QUERY_SINGLE_DEVELOPER_ADSTXT = load_sql_file("query_single_developer_adstxt.sql")
@@ -519,6 +520,18 @@ def get_apps_for_company(
         df = clean_app_df(df)
     return df
 
+
+
+def search_companies(search_input: str, limit: int = 10) -> pd.DataFrame:
+    """Search companies by term in database."""
+    logger.info(f"Company search: {search_input=}")
+    df = pd.read_sql(
+        QUERY_SEARCH_COMPANIES,
+        DBCON.engine,
+        params={"searchinput": search_input, "mylimit": limit},
+    )
+    df["store"] = df["store"].replace({1: "Google Play", 2: "Apple App Store"})
+    return df
 
 def search_apps(search_input: str, limit: int = 100) -> pd.DataFrame:
     """Search apps by term in database."""

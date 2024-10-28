@@ -45,6 +45,7 @@ export interface CompanyApps {
 }
 export interface SearchResponse {
 	results: AppGroup;
+	companiesResults: CompaniesOverviewEntries[];
 	status?: number;
 	error?: string;
 }

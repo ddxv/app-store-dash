@@ -5,6 +5,8 @@
 	import AppGroupCard from '$lib/AppGroupCard.svelte';
 	import { goto } from '$app/navigation';
 
+	import CompaniesOverviewTable from '$lib/CompaniesOverviewTable.svelte';
+
 	interface Props {
 		data: SearchResponse;
 	}
@@ -29,6 +31,31 @@
 	}
 </script>
 
+<h1 class="h1">Search Results for {searchTerm}</h1>
+
+<div class="p-4">
+
+{#await data.companiesResults}
+	Loading ...
+{:then companiesResults}
+	{#if typeof companiesResults != 'string'}
+		<h2 class="h2 p-4">Companies </h2>
+		{#if companiesResults.length > 0}
+			<CompaniesOverviewTable entries_table={companiesResults} />
+		{:else}
+			<h3 class="h3 p-4">No companies found, please try your search again.</h3>
+		{/if}
+		
+	{:else}
+		<p>Search failed please try again ... </p>
+	{/if}
+{:catch error}
+	<p>Search failed please try again ... {error.message}</p>
+{/await}
+</div>
+
+<div class="p-4">
+
 {#await data.results}
 	Loading ...
 {:then results}
@@ -36,6 +63,7 @@
 		{#if results.apps.length > 0}
 			<AppGroupCard apps={results} />
 		{:else}
+			<h2 class="h2 p-4">Apps </h2>
 			<h3 class="h3">No apps found, please try your search again.</h3>
 		{/if}
 		<div class="card p-4 mt-4">
@@ -60,3 +88,4 @@
 {:catch error}
 	<p>Search failed please try again ... {error.message}</p>
 {/await}
+</div>

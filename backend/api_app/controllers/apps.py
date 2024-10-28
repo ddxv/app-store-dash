@@ -44,12 +44,13 @@ logger = get_logger(__name__)
 
 def search_both_stores(search_term: str) -> None:
     """Search both stores and return resulting AppGroup."""
-    google_results = google.search_play_store(search_term)
-    if len(google_results) > 0:
-        process_search_results(google_results)
-    apple_results = apple.search_app_store_for_ids(search_term)
-    if len(apple_results) > 0:
-        process_search_results(apple_results)
+    google_full_results = google.search_play_store(search_term)
+    if len(google_full_results) > 0:
+        process_search_results(google_full_results)
+    apple_ids = apple.search_app_store_for_ids(search_term)
+    if len(apple_ids) > 0:
+        apple_full_results = [{"store_id": store_id, "store": 2} for store_id in apple_ids]
+        process_search_results(apple_full_results)
     return
 
 
