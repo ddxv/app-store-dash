@@ -42,6 +42,17 @@ from dbcon.queries import (
 logger = get_logger(__name__)
 
 
+def search_both_stores(search_term: str) -> None:
+    """Search both stores and return resulting AppGroup."""
+    google_results = google.search_play_store(search_term)
+    if len(google_results) > 0:
+        process_search_results(google_results)
+    apple_results = apple.search_app_store_for_ids(search_term)
+    if len(apple_results) > 0:
+        process_search_results(apple_results)
+    return
+
+
 def get_search_results(search_term: str) -> AppGroup:
     """Parse search term and return resulting APpGroup."""
     decoded_input = urllib.parse.unquote(search_term)
@@ -466,7 +477,10 @@ class AppController(Controller):
         logger.info(f"{self.path} term={search_term}")
 
         apps_dict = get_search_results(search_term)
-        return apps_dict
+        return Response(
+            apps_dict,
+            background=BackgroundTask(search_both_stores, search_term),
+        )
 
     @get(path="/search/{search_term:str}/playstore", cache=3600)
     async def search_playstore(self: Self, search_term: str) -> AppGroup:
