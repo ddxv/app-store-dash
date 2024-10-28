@@ -2,10 +2,14 @@
 	import type { RankedAppList, RankedApps } from '../types';
 	import Pagination from './Pagination.svelte';
 	import ThFilter from './ThFilter.svelte';
-	import { DataHandler } from '@vincjo/datatables/remote';
-	import type { State } from '@vincjo/datatables/remote';
+	import { DataHandler } from '@vincjo/datatables/legacy/remote';
+	import type { State } from '@vincjo/datatables/legacy/remote';
 
-	export let tableData: RankedAppList;
+	interface Props {
+		tableData: RankedAppList;
+	}
+
+	let { tableData }: Props = $props();
 	const totalRows = tableData.ranks.length; // Calculate totalRows based on the length of the history_table array
 	const rowsPerPage = 10;
 

@@ -1,9 +1,13 @@
 <script lang="ts">
-	import type { DataHandler } from '@vincjo/datatables/remote';
-	export let handler: DataHandler;
-	export let filterBy: string;
+	import type { DataHandler } from '@vincjo/datatables/legacy/remote';
+	interface Props {
+		handler: DataHandler;
+		filterBy: string;
+	}
 
-	let value: string;
+	let { handler, filterBy }: Props = $props();
+
+	let value: string = $state();
 	let timeout: any;
 
 	const filter = () => {
@@ -21,6 +25,6 @@
 		type="text"
 		placeholder="Filter"
 		bind:value
-		on:input={filter}
+		oninput={filter}
 	/>
 </th>

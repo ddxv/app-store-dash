@@ -2,7 +2,6 @@
 	import type { CompanyCategoryDetails } from '../../../../../types';
 	import { page } from '$app/stores';
 	const { name } = $page.params;
-	export let data: CompanyCategoryDetails;
 	import CompanyOverviewTable from '$lib/CompanyOverviewTable.svelte';
 
 	import CompaniesLayout from '$lib/CompaniesLayout.svelte';
@@ -11,8 +10,13 @@
 	import CompanyTableGrid from '$lib/CompanyTableGrid.svelte';
 	import ExternalLink from '$lib/ExternalLink.svelte';
 	import CompanyButton from '$lib/CompanyButton.svelte';
+	interface Props {
+		data: CompanyCategoryDetails;
+	}
 
-	$: company_category = $page.params.category;
+	let { data }: Props = $props();
+
+	let company_category = $derived($page.params.category);
 
 	function formatNumber(num: number) {
 		return new Intl.NumberFormat('en-US').format(num);
@@ -54,28 +58,30 @@
 {/await}
 
 <CompaniesLayout>
-	<WhiteCard slot="card1">
-		{#await data.companyDetails}
-			<div class="bg-white p-6 rounded-lg shadow-md flex justify-center items-center h-40">
-				<span class="text-lg text-gray-600">Loading...</span>
-			</div>
-		{:then myData}
-			{#if typeof myData == 'string'}
-				<p class="text-red-500 text-center">Failed to load company details.</p>
-			{:else if myData}
-				<div class="bg-white p-6 rounded-lg shadow-md">
-					<h2 class="text-xl font-bold text-gray-800 mb-4">Total Apps</h2>
-					<p class="text-lg text-gray-700">
-						<span class="font-semibold text-gray-900"
-							>{formatNumber(myData.categories[company_category].total_apps)}</span
-						>
-					</p>
+	{#snippet card1()}
+		<WhiteCard >
+			{#await data.companyDetails}
+				<div class="bg-white p-6 rounded-lg shadow-md flex justify-center items-center h-40">
+					<span class="text-lg text-gray-600">Loading...</span>
 				</div>
-			{/if}
-		{:catch error}
-			<p class="text-red-500 text-center">{error.message}</p>
-		{/await}
-	</WhiteCard>
+			{:then myData}
+				{#if typeof myData == 'string'}
+					<p class="text-red-500 text-center">Failed to load company details.</p>
+				{:else if myData}
+					<div class="bg-white p-6 rounded-lg shadow-md">
+						<h2 class="text-xl font-bold text-gray-800 mb-4">Total Apps</h2>
+						<p class="text-lg text-gray-700">
+							<span class="font-semibold text-gray-900"
+								>{formatNumber(myData.categories[company_category].total_apps)}</span
+							>
+						</p>
+					</div>
+				{/if}
+			{:catch error}
+				<p class="text-red-500 text-center">{error.message}</p>
+			{/await}
+		</WhiteCard>
+	{/snippet}
 </CompaniesLayout>
 
 {#await data.companyDetails}
@@ -88,20 +94,25 @@
 			Failed to load company's apps.
 		{:else}
 			<CompanyTableGrid>
-				<span slot="sdk-android-total-apps">
+				<!-- @migration-task: migrate this slot by hand, `sdk-android-total-apps` is an invalid identifier -->
+	<span slot="sdk-android-total-apps">
 					{formatNumber(myData.categories[company_category].sdk_android_total_apps)}
 				</span>
-				<span slot="sdk-ios-total-apps">
+				<!-- @migration-task: migrate this slot by hand, `sdk-ios-total-apps` is an invalid identifier -->
+	<span slot="sdk-ios-total-apps">
 					{formatNumber(myData.categories[company_category].sdk_ios_total_apps)}
 				</span>
-				<span slot="adstxt-android-total-apps">
+				<!-- @migration-task: migrate this slot by hand, `adstxt-android-total-apps` is an invalid identifier -->
+	<span slot="adstxt-android-total-apps">
 					{formatNumber(myData.categories[company_category].adstxt_direct_android_total_apps)}
 				</span>
-				<span slot="adstxt-ios-total-apps">
+				<!-- @migration-task: migrate this slot by hand, `adstxt-ios-total-apps` is an invalid identifier -->
+	<span slot="adstxt-ios-total-apps">
 					{formatNumber(myData.categories[company_category].adstxt_direct_ios_total_apps)}
 				</span>
 
-				<div slot="sdk-android">
+				<!-- @migration-task: migrate this slot by hand, `sdk-android` is an invalid identifier -->
+	<div slot="sdk-android">
 					{#if typeof tableData == 'string'}
 						Failed to load company's apps.
 					{:else if tableData.sdk.android.apps}
@@ -110,17 +121,20 @@
 						Failed to load company overview.
 					{/if}
 				</div>
-				<div slot="sdk-ios">
+				<!-- @migration-task: migrate this slot by hand, `sdk-ios` is an invalid identifier -->
+	<div slot="sdk-ios">
 					{#if tableData.sdk.ios.apps}
 						<CompanyOverviewTable entries_table={tableData.sdk.ios.apps} />
 					{/if}
 				</div>
-				<div slot="adstxt-android">
+				<!-- @migration-task: migrate this slot by hand, `adstxt-android` is an invalid identifier -->
+	<div slot="adstxt-android">
 					{#if tableData.adstxt_direct.android.apps}
 						<CompanyOverviewTable entries_table={tableData.adstxt_direct.android.apps} />
 					{/if}
 				</div>
-				<div slot="adstxt-ios">
+				<!-- @migration-task: migrate this slot by hand, `adstxt-ios` is an invalid identifier -->
+	<div slot="adstxt-ios">
 					{#if tableData.adstxt_direct.ios.apps}
 						<CompanyOverviewTable entries_table={tableData.adstxt_direct.ios.apps} />
 					{/if}

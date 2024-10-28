@@ -7,15 +7,19 @@
 
 	import type { StoreCategoryRanks } from '../../../../../../../../../types.js';
 
-	export let data: StoreCategoryRanks;
 
 	import { page } from '$app/stores';
 	import RankChart from '$lib/RankChart.svelte';
 	import AppRankTable from '$lib/AppRankTable.svelte';
+	interface Props {
+		data: StoreCategoryRanks;
+	}
 
-	$: store = +$page.params.store;
-	$: collection = +$page.params.collection;
-	$: category = +$page.params.category;
+	let { data }: Props = $props();
+
+	let store = $derived(+$page.params.store);
+	let collection = $derived(+$page.params.collection);
+	let category = $derived(+$page.params.category);
 </script>
 
 <svelte:head>
@@ -86,7 +90,7 @@
 		{:catch}
 			Failed to load history
 		{/await}
-		<div class="p-2 md:p-4" />
+		<div class="p-2 md:p-4"></div>
 		<AppRankTable tableData={ranks}></AppRankTable>
 	{:catch}
 		Problem loading data

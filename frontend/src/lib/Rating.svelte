@@ -4,13 +4,29 @@
 	import generateId from './utils/generateIds.js';
 	import type { ComponentType } from 'svelte';
 
-	// export let divClass: string = 'flex items-center';
-	export let size: number = 24;
-	export let total: number = 5;
-	export let rating: number = 4;
-	export let partialId: string = 'partialStar' + generateId();
-	export let icon: ComponentType = Star;
-	export let count: boolean = false;
+	
+	interface Props {
+		// export let divClass: string = 'flex items-center';
+		size?: number;
+		total?: number;
+		rating?: number;
+		partialId?: string;
+		icon?: ComponentType;
+		count?: boolean;
+		children?: import('svelte').Snippet;
+		text?: import('svelte').Snippet;
+	}
+
+	let {
+		size = 24,
+		total = 5,
+		rating = 4,
+		partialId = 'partialStar' + generateId(),
+		icon = Star,
+		count = false,
+		children,
+		text
+	}: Props = $props();
 
 	// generate unique id for full star and gray star
 	const fullStarId: string = generateId();
@@ -24,21 +40,25 @@
 
 <div class="my-rating flex items-center">
 	{#if count}
-		<svelte:component this={icon} fillPercent={100} {size} />
+		{@const SvelteComponent = icon}
+		<SvelteComponent fillPercent={100} {size} />
 		<p class="ml-2 text-sm font-bold text-gray-900 dark:text-white">{rating}</p>
-		<slot />
+		{@render children?.()}
 	{:else}
 		{#each Array(fullStars) as star}
-			<svelte:component this={icon} {size} fillPercent={100} id={fullStarId} />
+			{@const SvelteComponent_1 = icon}
+			<SvelteComponent_1 {size} fillPercent={100} id={fullStarId} />
 		{/each}
 		{#if percentRating}
-			<svelte:component this={icon} {size} fillPercent={percentRating} id={partialId} />
+			{@const SvelteComponent_2 = icon}
+			<SvelteComponent_2 {size} fillPercent={percentRating} id={partialId} />
 		{/if}
 		{#each Array(grayStars) as star}
-			<svelte:component this={icon} {size} fillPercent={0} id={grayStarId} />
+			{@const SvelteComponent_3 = icon}
+			<SvelteComponent_3 {size} fillPercent={0} id={grayStarId} />
 		{/each}
-		{#if $$slots.text}
-			<slot name="text" />
+		{#if text}
+			{@render text?.()}
 		{/if}
 	{/if}
 </div>

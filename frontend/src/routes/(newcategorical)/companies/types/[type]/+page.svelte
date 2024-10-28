@@ -1,3 +1,4 @@
+<!-- @migration-task Error while migrating Svelte code: Element with a slot='...' attribute must be a child of a component or a descendant of a custom element -->
 <script lang="ts">
 	import CompaniesOverviewTable from '$lib/CompaniesOverviewTable.svelte';
 	import CompaniesTableGrid from '$lib/CompaniesTableGrid.svelte';
@@ -61,14 +62,13 @@
 			<WhiteCard slot="card2"
 				><CompaniesBarChart plotData={myData.sdk.top} plotTitle="Top SDK Companies" /></WhiteCard
 			>
-			{#if $page.params.type != 'ad-networks'}
-				<WhiteCard slot="card3"
-					><CompaniesBarChart
+			<!-- {#if $page.params.type != 'ad-networks'} -->
+				<WhiteCard slot="card3"><CompaniesBarChart
 						plotData={myData.adstxt_direct.top}
 						plotTitle="Top Adstxt Companies"
 					/></WhiteCard
 				>
-			{/if}
+			<!-- {/if} -->
 		</CompaniesLayout>
 	{/if}
 {:catch error}

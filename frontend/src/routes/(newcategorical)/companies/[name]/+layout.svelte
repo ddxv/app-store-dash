@@ -1,9 +1,14 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	interface Props {
+		children?: import('svelte').Snippet;
+	}
+
+	let { children }: Props = $props();
 	const { name, category } = $page.params;
 
-	let category_title: string = category;
-	let rel_link = name;
+	let category_title: string = $state(category);
+	let rel_link = $state(name);
 
 	if (!category) {
 		category_title = ' | ';
@@ -49,4 +54,4 @@
 	<link rel="canonical" href="https://appgoblin.info/companies/{rel_link}" />
 </svelte:head>
 
-<slot></slot>
+{@render children?.()}

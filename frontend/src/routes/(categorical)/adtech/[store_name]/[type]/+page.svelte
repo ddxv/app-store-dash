@@ -1,12 +1,16 @@
 <script lang="ts">
+
 	import type { TopCompaniesInfo } from '../../../../../types';
 	import AdtechNav from '$lib/AdtechNav.svelte';
 	import { page } from '$app/stores';
 	import AdtechTable from '$lib/AdtechTable.svelte';
 	import { homeCategorySelection } from '../../../../../stores';
-	export let data: TopCompaniesInfo;
+	interface Props {
+		data: TopCompaniesInfo;
+	}
 
-	$: console.log('homeCategorySelection:', $homeCategorySelection);
+	let { data }: Props = $props();
+
 
 	// TODO: This categorySelection is shared with the numerical one used on other pages!
 	function isNumeric(value: string | number): boolean {
@@ -19,19 +23,19 @@
 		return !isNaN(parseFloat(value)) && isFinite(parseFloat(value));
 	}
 	// Set categorySelection based on whether the value is numeric or null
-	$: categorySelection =
-		isNumeric($homeCategorySelection) || $homeCategorySelection === null
+	let categorySelection =
+		$derived(isNumeric($homeCategorySelection) || $homeCategorySelection === null
 			? 'overall'
-			: $homeCategorySelection;
+			: $homeCategorySelection);
 
-	$: store_name = $page.params.store_name || 'Google';
-	$: store_id = $page.params.store_name === 'Google' || !$page.params.store_name ? 1 : 2;
+	let store_name = $derived($page.params.store_name || 'Google');
+	let store_id = $derived($page.params.store_name === 'Google' || !$page.params.store_name ? 1 : 2);
 
-	$: entityGroup = $page.params.type || 'networks';
+	let entityGroup = $derived($page.params.type || 'networks');
 
 	// React to changes in query parameters
-	$: granularityGroup = $page.url.searchParams.get('groupby') || 'parents';
-	$: metricName = $page.url.searchParams.get('metric') || 'installs';
+	let granularityGroup = $derived($page.url.searchParams.get('groupby') || 'parents');
+	let metricName = $derived($page.url.searchParams.get('metric') || 'installs');
 </script>
 
 <svelte:head>

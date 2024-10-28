@@ -1,31 +1,25 @@
 <script lang="ts">
+
 	import { page } from '$app/stores';
 	import { ListBox, ListBoxItem } from '@skeletonlabs/skeleton';
 
 	import { goto } from '$app/navigation';
 
-	$: classesActive = (href: string) =>
-		$page.url.pathname.startsWith(href) ? buttonSelectedColor : '';
 
 	import IconGoogle from '$lib/svg/IconGoogle.svelte';
 	import IconiOS from '$lib/svg/IconiOS.svelte';
 
 	import { homeCollectionSelection } from '../stores';
 	let localHomeCollectionSelect = $homeCollectionSelection;
-	// Reactive statement to update the store when localValue changes
-	$: homeCollectionSelection.set(localHomeCollectionSelect);
 
 	import { homeStoreSelection } from '../stores';
-	let localHomeStoreSelect = $homeStoreSelection;
-	$: homeStoreSelection.set(localHomeStoreSelect);
+	let localHomeStoreSelect = $state($homeStoreSelection);
 
 	import { homeCategorySelection } from '../stores';
-	let localHomeCategorySelect = $homeCategorySelection;
+	let localHomeCategorySelect = $state($homeCategorySelection);
 	const buttonSelectedColor = 'variant-filled-primary';
-	$: homeCategorySelection.set(localHomeCategorySelect);
 
 	import type { CatData } from '../types';
-	export let myCatData: CatData;
 
 	const handleCompanyCategoryClick = (categoryName: string) => {
 		if (categoryName == 'overall') {
@@ -42,15 +36,7 @@
 		}
 	};
 
-	// For adtech
-	$: store_name = $page.params.store_name;
-	$: adtech_category = $page.params.type;
-	$: company_category = $page.params.category;
-	$: company_name = $page.params.name;
 
-	$: if ($page.params.category) {
-		localHomeCategorySelect = $page.params.category;
-	}
 
 	// Function to generate a URL with existing query parameters
 	function generateAdtechLink(storeName: string, adtechCategory: string) {
@@ -68,13 +54,49 @@
 
 	import { storeIDLookup, collectionIDLookup, categoryIDLookup } from '../stores';
 	import IconiOs from '$lib/svg/IconiOS.svelte';
+	interface Props {
+		myCatData: CatData;
+	}
 
-	$: store = +$page.params.store;
-	$: collection = +$page.params.collection;
-	$: category = +$page.params.category;
+	let { myCatData }: Props = $props();
 
+
+	let classesActive = $derived((href: string) =>
+		$page.url.pathname.startsWith(href) ? buttonSelectedColor : '');
+	// Reactive statement to update the store when localValue changes
+	$effect(() => {
+		homeCollectionSelection.set(localHomeCollectionSelect);
+	});
+	$effect(() => {
+		homeStoreSelection.set(localHomeStoreSelect);
+	});
+	$effect(() => {
+		if ($page.params.category) {
+			localHomeCategorySelect = $page.params.category;
+		}
+	});
+	$effect(() => {
+		homeCategorySelection.set(localHomeCategorySelect);
+	});
+	// For adtech
+	let store_name = $derived($page.params.store_name);
+	let adtech_category = $derived($page.params.type);
+	let company_category = $derived($page.params.category);
+	let company_name = $derived($page.params.name);
+	let store=$state(1);
+	$effect(() => {
+		store = +$page.params.store;
+	});
+	let collection=$state(1);
+	$effect(() => {
+		collection = +$page.params.collection;
+	});
+	let category=$state(1);
+	$effect(() => {
+		category = +$page.params.category;
+	});
 	// Logic to adjust collection and category based on the store's value
-	$: {
+	$effect(() => {
 		// If store is not a number (NaN), default it to 1
 		if (isNaN(store)) {
 			store = 1;
@@ -91,7 +113,7 @@
 				category = 1;
 				break;
 		}
-	}
+	});
 </script>
 
 {#if $page.url.pathname.startsWith('/collections')}

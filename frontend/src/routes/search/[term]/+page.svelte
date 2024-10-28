@@ -1,13 +1,17 @@
 <script lang="ts">
+
 	import { page } from '$app/stores';
 	import type { SearchResponse } from '../../../types';
 	import AppGroupCard from '$lib/AppGroupCard.svelte';
 	import { goto } from '$app/navigation';
 
-	export let data: SearchResponse;
-	let searchTerm: string | null = '';
+	interface Props {
+		data: SearchResponse;
+	}
 
-	$: searchTerm = $page.params.term;
+	let { data }: Props = $props();
+	let searchTerm: string | null = $state($page.params.term || '');
+
 
 	function searchGooglePlay() {
 		if (searchTerm) {
@@ -40,12 +44,12 @@
 				Try searching on Google Play. Results may take a couple minutes to be live on AppGoblin.
 			</p>
 			<card class="card variant-glass-surface p-4">
-				<button class="btn variant-filled-primary p-2" on:click={searchGooglePlay}>
+				<button class="btn variant-filled-primary p-2" onclick={searchGooglePlay}>
 					Search Google Play Store
 				</button>
 			</card>
 			<card class="card variant-glass-surface p-4">
-				<button class="btn variant-filled-primary p-2" on:click={searchAppleStore}>
+				<button class="btn variant-filled-primary p-2" onclick={searchAppleStore}>
 					Search Apple App Store
 				</button>
 			</card>

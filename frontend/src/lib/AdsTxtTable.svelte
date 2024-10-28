@@ -1,12 +1,16 @@
 <script lang="ts">
 	import Pagination from './Pagination.svelte';
 
-	import { DataHandler } from '@vincjo/datatables/remote';
-	import type { State } from '@vincjo/datatables/remote';
+	import { DataHandler } from '@vincjo/datatables/legacy/remote';
+	import type { State } from '@vincjo/datatables/legacy/remote';
 	import type { AdsTxtEntries } from '../types';
 	import CompanyButton from './CompanyButton.svelte';
 
-	export let entries_table: AdsTxtEntries[];
+	interface Props {
+		entries_table: AdsTxtEntries[];
+	}
+
+	let { entries_table }: Props = $props();
 
 	const totalRows = entries_table.length;
 

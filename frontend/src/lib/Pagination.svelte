@@ -1,6 +1,10 @@
 <script lang="ts">
-	import type { DataHandler } from '@vincjo/datatables/remote';
-	export let handler: DataHandler;
+	import type { DataHandler } from '@vincjo/datatables/legacy/remote';
+	interface Props {
+		handler: DataHandler;
+	}
+
+	let { handler }: Props = $props();
 
 	const pageNumber = handler.getPageNumber();
 	const pageCount = handler.getPageCount();
@@ -18,7 +22,7 @@
 		type="button"
 		class="hover:variant-soft-secondary"
 		class:disabled={$pageNumber === 1}
-		on:click={() => setPage('previous')}
+		onclick={() => setPage('previous')}
 	>
 		←
 	</button>
@@ -28,7 +32,7 @@
 			class="hover:variant-soft-secondary"
 			class:active={$pageNumber === page}
 			class:ellipse={page === null}
-			on:click={() => setPage(page)}
+			onclick={() => setPage(page)}
 		>
 			{page ?? '...'}
 		</button>
@@ -37,7 +41,7 @@
 		type="button"
 		class="hover:variant-soft-secondary"
 		class:disabled={$pageNumber === $pageCount}
-		on:click={() => setPage('next')}
+		onclick={() => setPage('next')}
 	>
 		→
 	</button>
@@ -49,7 +53,7 @@
 		type="button"
 		class="btn variant-ghost-surface mr-2 mb-2 hover:variant-soft-secondary"
 		class:disabled={$pageNumber === 1}
-		on:click={() => setPage('previous')}
+		onclick={() => setPage('previous')}
 	>
 		←
 	</button>
@@ -57,7 +61,7 @@
 		type="button"
 		class="btn variant-ghost-surface mb-2 hover:variant-soft-secondary"
 		class:disabled={$pageNumber === $pageCount}
-		on:click={() => setPage('next')}
+		onclick={() => setPage('next')}
 	>
 		→
 	</button>

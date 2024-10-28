@@ -1,11 +1,16 @@
 <script lang="ts">
 	import type { Collections } from '../../../../types';
-	/** @type {import('../[collection]/$types').PageData} */
-	export let data: Collections;
+	
 	import AppsCard from '$lib/AppGroupCard.svelte';
 
 	import { homeStoreSelection } from '../../../../stores';
 	import { homeCategorySelection } from '../../../../stores';
+	interface Props {
+		/** @type {import('../[collection]/$types').PageData} */
+		data: Collections;
+	}
+
+	let { data }: Props = $props();
 </script>
 
 <svelte:head>
@@ -38,7 +43,7 @@
 		{#each Object.entries(myapps.categories) as [_key, cat]}
 			{#if cat.key == $homeCategorySelection}
 				<AppsCard apps={cat[$homeStoreSelection]} />
-				<p class="p-2" />
+				<p class="p-2"></p>
 			{/if}
 		{/each}
 	{:else}

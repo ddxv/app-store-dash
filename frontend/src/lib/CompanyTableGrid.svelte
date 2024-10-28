@@ -1,3 +1,4 @@
+<!-- @migration-task Error while migrating Svelte code: This migration would change the name of a slot making the component unusable -->
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-6">
 	<!-- SDK Section -->
 	<div class="bg-white p-6 rounded-lg shadow-md">

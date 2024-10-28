@@ -7,11 +7,19 @@
 	} from '@carbon/charts-svelte';
 	import '@carbon/charts-svelte/styles.css';
 
-	export let plotData: ChartTabularData;
-	export let plotTitle: string;
-	export let plotHeightPx: string = '300px';
 
-	export let chartOptions: BarChartOptions = {
+	interface Props {
+		plotData: ChartTabularData;
+		plotTitle: string;
+		plotHeightPx?: string;
+		chartOptions?: BarChartOptions;
+	}
+
+	let {
+		plotData,
+		plotTitle,
+		plotHeightPx = '300px',
+		chartOptions = {
 		title: plotTitle,
 		axes: {
 			left: {
@@ -23,7 +31,8 @@
 			}
 		},
 		height: plotHeightPx
-	};
+	}
+	}: Props = $props();
 
 	// export let plotData: ChartTabularData = [
 	//   {

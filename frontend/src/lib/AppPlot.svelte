@@ -9,11 +9,25 @@
 	} from '@carbon/charts-svelte';
 	import '@carbon/charts-svelte/styles.css';
 
-	export let plotdata: ChartTabularData;
-	export let plotType: string;
-	export let plotHeightPx: string = '300px';
 
-	export let changeOptions: ComboChartOptions = {
+
+
+
+	interface Props {
+		plotdata: ChartTabularData;
+		plotType: string;
+		plotHeightPx?: string;
+		changeOptions?: ComboChartOptions;
+		installOptions?: LineChartOptions;
+		numberOptions?: ComboChartOptions;
+		appRankOptions?: LineChartOptions;
+	}
+
+	let {
+		plotdata,
+		plotType,
+		plotHeightPx = '300px',
+		changeOptions = {
 		toolbar: { enabled: false },
 		axes: {
 			bottom: {
@@ -50,9 +64,8 @@
 				// 	}
 			}
 		]
-	};
-
-	export let installOptions: LineChartOptions = {
+	},
+		installOptions = {
 		toolbar: { enabled: false },
 		axes: {
 			bottom: {
@@ -80,9 +93,8 @@
 		// 		}
 		// 	}
 		// ]
-	};
-
-	export let numberOptions: ComboChartOptions = {
+	},
+		numberOptions = {
 		toolbar: { enabled: false },
 		axes: {
 			bottom: {
@@ -114,9 +126,8 @@
 				}
 			}
 		]
-	};
-
-	export let appRankOptions: LineChartOptions = {
+	},
+		appRankOptions = {
 		title: 'Step (discrete)',
 		axes: {
 			bottom: {
@@ -132,7 +143,8 @@
 		},
 		curve: 'curveStepAfter',
 		height: plotHeightPx
-	};
+	}
+	}: Props = $props();
 </script>
 
 {#if plotType == 'rank'}

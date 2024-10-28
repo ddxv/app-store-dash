@@ -1,18 +1,35 @@
 <script lang="ts" generics="Metadata = any">
+	import { run } from 'svelte/legacy';
+
 	import type { Crumb, ModuleData } from '.././types';
 	import { onMount } from 'svelte';
 
-	// Relative path to the routes folder for the glob import
-	export let relPathToRoutes: string = '/src/routes/';
-	// The route from the routers perspective, e.g. $page.route.id
-	export let routeId: string | null;
-	export let url: URL;
-	export let crumbs: Crumb<Metadata>[] | undefined = undefined;
+	
+	
 	export function titleSanitizer(title: string) {
 		return title.replace(/([A-Z])/g, ' $1').replace(/^./, (str) => str.toUpperCase());
 	}
-	export let routeModules: Record<string, ModuleData> | undefined = undefined;
-	export let pageData: any;
+	interface Props {
+		// Relative path to the routes folder for the glob import
+		relPathToRoutes?: string;
+		// The route from the routers perspective, e.g. $page.route.id
+		routeId: string | null;
+		url: URL;
+		crumbs?: Crumb<Metadata>[] | undefined;
+		routeModules?: Record<string, ModuleData> | undefined;
+		pageData: any;
+		children?: import('svelte').Snippet<[any]>;
+	}
+
+	let {
+		relPathToRoutes = '/src/routes/',
+		routeId,
+		url,
+		crumbs = undefined,
+		routeModules = $bindable(undefined),
+		pageData,
+		children
+	}: Props = $props();
 
 	onMount(async () => {
 		// If nothing is passed to routeModules, populate it
@@ -35,8 +52,8 @@
 		return undefined;
 	}
 
-	let _crumbs = [] as Crumb<Metadata>[];
-	$: {
+	let _crumbs = $state([] as Crumb<Metadata>[]);
+	run(() => {
 		_crumbs = [] as Crumb<Metadata>[];
 		if (crumbs != undefined) {
 			// If crumbs array is passed in always use that with highest priority
@@ -98,7 +115,7 @@
 
 			_crumbs = _crumbs;
 		}
-	}
+	});
 </script>
 
-<slot crumbs={_crumbs} {routeModules} />
+{@render children?.({ crumbs: _crumbs, routeModules, })}

@@ -1,7 +1,11 @@
 <script lang="ts">
 	import type { DeveloperResponse } from '../../../types';
-	export let data: DeveloperResponse;
 	import AppsCard from '$lib/AppGroupCard.svelte';
+	interface Props {
+		data: DeveloperResponse;
+	}
+
+	let { data }: Props = $props();
 </script>
 
 <div>
@@ -15,7 +19,7 @@
 		{:else}
 			<h1 class="h1 p-2">Apps: {devs.title}</h1>
 			<AppsCard apps={devs} />
-			<p class="p-2" />
+			<p class="p-2"></p>
 		{/if}
 	{:catch error}
 		<p style="color: red">{error.message}</p>

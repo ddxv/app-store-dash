@@ -3,10 +3,17 @@
 	import '@carbon/charts-svelte/styles.css';
 
 	// export let plotData: ChartTabularData;
-	// export let plotType: string;
-	export let plotHeightPx: string = '300px';
+	
 
-	export let chartOptions = {
+
+	interface Props {
+		// export let plotType: string;
+		plotHeightPx?: string;
+		chartOptions?: any;
+		plotData?: ChartTabularData;
+	}
+
+	let { plotHeightPx = '300px', chartOptions = {
 		title: 'Top Ten Companies by App Count',
 		circlePack: {
 			depth: 2
@@ -15,9 +22,7 @@
 			enabled: true
 		},
 		height: plotHeightPx
-	};
-
-	export let plotData: ChartTabularData = [
+	}, plotData = [
 		{
 			name: 'North America',
 			children: [
@@ -134,7 +139,7 @@
 				}
 			]
 		}
-	];
+	] }: Props = $props();
 </script>
 
 <div class="p-4">

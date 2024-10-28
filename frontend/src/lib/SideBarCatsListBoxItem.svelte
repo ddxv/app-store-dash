@@ -5,8 +5,12 @@
 
 	const buttonSelectedColor = 'variant-filled-primary';
 
-	export let values: any;
-	export let localHomeCategorySelect: string;
+	interface Props {
+		values: any;
+		localHomeCategorySelect: string;
+	}
+
+	let { values, localHomeCategorySelect = $bindable() }: Props = $props();
 </script>
 
 <ListBoxItem
