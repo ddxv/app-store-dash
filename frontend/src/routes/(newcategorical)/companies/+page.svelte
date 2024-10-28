@@ -72,13 +72,13 @@
 
 			{#snippet card2()}
 								<WhiteCard 
-					><CompaniesBarChart plotData={myData.sdk.top} plotTitle="Top SDK Companies" /></WhiteCard
+					><CompaniesBarChart plotData={myData.top.sdk} plotTitle="Top SDK Companies" /></WhiteCard
 				>
 							{/snippet}
 			{#snippet card3()}
 								<WhiteCard 
 					><CompaniesBarChart
-						plotData={myData.adstxt_direct.top}
+						plotData={myData.top.adstxt_direct}
 						plotTitle="Top Adstxt Companies"
 					/></WhiteCard
 				>

@@ -2,6 +2,9 @@
 	import AppRankTableShort from '$lib/AppRankTableShort.svelte';
 	import type { HomeData } from '../types';
 
+	import CompaniesBarChart from '$lib/CompaniesBarChart.svelte';
+	import WhiteCard from '$lib/WhiteCard.svelte';
+
 	interface Props {
 		data: HomeData;
 	}
@@ -152,36 +155,53 @@
 			</p>
 		</a>
 		<div
-			class="snap-x scroll-px-4 snap-mandatory scroll-smooth flex gap-4 overflow-x-auto px-4 py-10"
+			class="flex flex-col-2 gap-4"
 		>
-			<a href="/adtech/Google/networks?groupby=brands&metric=appcount">
-				<div class="snap-center shrink-0 card variant-ghost-surface w-48 md:w-56 md:p-4">
-					<div class="table-container card-header">
-						<h3 class="h3">Top Android Ad Networks</h3>
+			<a href="/companies/types/ad-networks">
+				<div class="card variant-ghost-surface md:p-4">
+					<div class="card-header">
+						<h3 class="h3">Top SDK Advertising Networks</h3>
 					</div>
+					<div class="card-content">
+						Checkout the top SDK advertising networks.
+{#await data.topCompanies}
+				Loading ...
+			{:then myTops}
+			{#if myTops.adnetworks}
+				<WhiteCard>
+				<CompaniesBarChart plotData={myTops.adnetworks.sdk} plotTitle="Top SDK Ad Networks Companies" />
+			</WhiteCard>
+			{/if}
+			
+			{/await}
+					</div>
+
 				</div>
 			</a>
-			<a href="/adtech/Google/trackers?groupby=brands&metric=appcount">
-				<div class="snap-center shrink-0 card variant-ghost-surface w-48 md:w-56 md:p-4">
-					<div class="table-container card-header">
-						<h3 class="h3">Top Android MMPs & Ad Tracking</h3>
-					</div>
-				</div>
-			</a>
-			<a href="/adtech/Apple/networks?groupby=brands&metric=appcount">
-				<div class="snap-center shrink-0 card variant-ghost-surface w-48 md:w-56 md:p-4">
-					<div class="table-container card-header">
-						<h3 class="h3">Top iOS Ad Networks</h3>
-					</div>
-				</div>
-			</a>
-			<a href="/adtech/Apple/trackers?groupby=brands&metric=appcount">
-				<div class="snap-center shrink-0 card variant-ghost-surface w-48 md:w-56 md:p-4">
-					<div class="table-container card-header">
+			
+			
+			<a href="/companies/types/ad-attribution">
+				<div class="card variant-ghost-surface md:p-4">
+					<div class="card-header">
 						<h3 class="h3">Top iOS MMPs & Ad Tracking</h3>
 					</div>
-				</div>
-			</a>
+					<div class="card-content">
+			Checkout the top MMPs and tracking companies.
+			{#await data.topCompanies}
+				Loading ...
+			{:then myTops}
+			
+			{#if myTops.attribution}
+			<WhiteCard>
+					<CompaniesBarChart
+						plotData={myTops.attribution.sdk}
+						plotTitle="Top MMPs & Attribution Companies"
+					/>
+			</WhiteCard>
+				{/if}
+			{/await}
+					</div>
+	</div>
 		</div>
 	</div>
 
