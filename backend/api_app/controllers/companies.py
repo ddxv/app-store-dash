@@ -922,16 +922,16 @@ class CompaniesController(Controller):
         logger.info(f"{self.path} start")
         adnetworks = get_companies_top(type_slug='ad-networks', app_category=None, limit=5)
         mmps = get_companies_top(type_slug='ad-attribution', app_category=None, limit=5)
-        analytics = get_companies_top(type_slug='analytics', app_category=None, limit=5)
+        # analytics = get_companies_top(type_slug='analytics', app_category=None, limit=5)
         top_ad_networks = make_top_companies(adnetworks)
         top_mmps = make_top_companies(mmps)
-        top_analytics = make_top_companies(analytics)
+        # top_analytics = make_top_companies(analytics)
         logger.info(f"{self.path} return")
 
         top_companies = TopCompaniesOverviewShort(
             adnetworks=top_ad_networks,
             attribution=top_mmps,
-            analytics=top_analytics,
+            analytics=list(),
         )
 
         return top_companies
