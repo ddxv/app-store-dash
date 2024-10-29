@@ -91,7 +91,5 @@
 		text-decoration: none;
 		color: inherit;
 	}
-	.table-row-link:hover td {
-		background-color: #f5f5f5;
-	}
+	
 </style>
