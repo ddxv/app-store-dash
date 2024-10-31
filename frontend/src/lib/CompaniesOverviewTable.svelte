@@ -25,16 +25,23 @@
 
 <div class="table-container space-y-4">
 	<div class="overflow-x-auto pl-0">
-		<table class="table table-hover table-compact table-auto w-full">
+		<table class="md:table table-hover md:table-compact table-auto w-full">
 			<thead>
 				<tr>
-					<th class="table-cell-fit"></th>
-					<ThSort {handler} orderBy="company_name">Company</ThSort>
-					<ThSort {handler} orderBy="google_sdk">Android SDK</ThSort>
-					<ThSort {handler} orderBy="apple_sdk">iOS SDK</ThSort>
+					<th class="table-cell-fit w-0"></th>
+					<ThSort {handler} orderBy="company_name"><p class="text-xs md:text-lg">Company</p></ThSort
+					>
+					<ThSort {handler} orderBy="google_sdk"
+						><p class="text-xs md:text-lg">Android SDK</p></ThSort
+					>
+					<ThSort {handler} orderBy="apple_sdk"><p class="text-xs md:text-lg">iOS SDK</p></ThSort>
 					{#if !$page.params.type || $page.params.type == 'ad-networks'}
-						<ThSort {handler} orderBy="google_app_ads_direct">Android AdsTxt</ThSort>
-						<ThSort {handler} orderBy="apple_app_ads_direct">iOS AdsTxt</ThSort>
+						<ThSort {handler} orderBy="google_app_ads_direct"
+							><p class="text-xs md:text-lg">Android AdsTxt</p></ThSort
+						>
+						<ThSort {handler} orderBy="apple_app_ads_direct"
+							><p class="text-xs md:text-lg">iOS AdsTxt</p></ThSort
+						>
 					{/if}
 				</tr>
 			</thead>
@@ -42,11 +49,11 @@
 				{#each $rows as row, index}
 					<tr style="cursor: pointer;" class="px-0">
 						<td class="table-cell-fit">
-							{index + 1}
+							<p class="text-xs md:text-lg">{index + 1}</p>
 						</td>
-						<td class="table-cell-fit">
+						<td class="w-0">
 							<!-- TODO: This is supposed to be just inside TR for whole row -->
-							<a href="/companies/{row.company_domain}" class="table-row-link">
+							<a href="/companies/{row.company_domain}" class="table-row-link text-xs md:text-lg">
 								{#if row.company_name}
 									{row.company_name}
 									({row.company_domain})
@@ -56,20 +63,28 @@
 							</a>
 						</td>
 						<td class="table-cell-fit">
-							{(row.google_sdk * 100).toFixed(2)}%
+							<p class="text-xs md:text-lg">
+								{(row.google_sdk * 100).toFixed(2)}%
+							</p>
 						</td>
 
 						<td class="table-cell-fit">
-							{(row.apple_sdk * 100).toFixed(2)}%
+							<p class="text-xs md:text-lg">
+								{(row.apple_sdk * 100).toFixed(2)}%
+							</p>
 						</td>
 
 						{#if !$page.params.type || $page.params.type == 'ad-networks'}
 							<td class="table-cell-fit">
-								{(row.google_app_ads_direct * 100).toFixed(2)}%
+								<p class="text-xs md:text-lg">
+									{(row.google_app_ads_direct * 100).toFixed(2)}%
+								</p>
 							</td>
 
 							<td class="table-cell-fit">
-								{(row.apple_app_ads_direct * 100).toFixed(2)}%
+								<p class="text-xs md:text-lg">
+									{(row.apple_app_ads_direct * 100).toFixed(2)}%
+								</p>
 							</td>
 						{/if}
 					</tr>
@@ -91,5 +106,4 @@
 		text-decoration: none;
 		color: inherit;
 	}
-	
 </style>

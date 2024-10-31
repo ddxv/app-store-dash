@@ -39,7 +39,7 @@
 
 <div class="table-container space-y-4">
 	<div class="overflow-x-auto pl-0">
-		<table class="table table-hover table-compact table-auto w-full">
+		<table class="md:table table-hover md:table-compact table-auto w-full text-xs">
 			<thead>
 				<tr>
 					<th class="table-cell-fit"></th>
@@ -92,5 +92,4 @@
 		text-decoration: none;
 		color: inherit;
 	}
-	
 </style>

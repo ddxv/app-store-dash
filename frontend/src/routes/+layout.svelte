@@ -60,11 +60,11 @@
 					<a class="flex" href="/">
 						<!-- <img class="h-8 m w-8 md:h-12 md:w-12" src="/cute_eyes_250.png" alt="Goblin Icon" /> -->
 						<img
-							class="ml-2 h-8 m w-8 md:h-12 md:w-12"
+							class="ml-1 md:ml-2 h-8 m w-8 md:h-12 md:w-12"
 							src="/goblin_purple_hat_250.png"
 							alt="Goblin Icon"
 						/>
-						<strong class="text-xl ml-2 md:text-3xl uppercase">AppGoblin</strong>
+						<strong class="text-xl ml-1 md:ml-2 md:text-3xl uppercase">AppGoblin</strong>
 					</a>
 				</div>
 			{/snippet}
@@ -74,38 +74,42 @@
 			</div>
 
 			{#snippet trail()}
-				<div class="input-group grid-cols-2 sm:grid-cols-[50px_auto]">
-					<div class="input-group-shim p-1 md:p-3">
-						<IconSearch />
+				<div>
+					<div class="input-group grid-cols-2 sm:grid-cols-[50px_auto]">
+						<div class="input-group-shim p-0 md:p-3">
+							<IconSearch />
+						</div>
+						<input
+							type="search"
+							bind:value={searchTerm}
+							onkeydown={navigateToSearch}
+							placeholder="Search"
+							class="p-0 md:p-3"
+						/>
 					</div>
-					<input
-						type="search"
-						bind:value={searchTerm}
-						onkeydown={navigateToSearch}
-						placeholder="Search"
-						class="p-1 md:p-3"
-					/>
+					<div class="flex items-center p-1">
+						<a
+							class="btn btn-sm variant-ghost-surface"
+							href="https://github.com/ddxv/app-store-dash"
+							target="_blank"
+							rel="noreferrer"
+						>
+							<div class="inline-flex items-center text-xs md:text-lg">
+								{@html githubIcon} GitHub
+							</div>
+						</a>
+						<a
+							class="btn btn-sm variant-ghost-surface"
+							href="https://discord.gg/7jpWEhkXRW"
+							target="_blank"
+							rel="noreferrer"
+						>
+							<div class="inline-flex items-center text-xs md:text-lg">
+								{@html discordIcon} Discord
+							</div>
+						</a>
+					</div>
 				</div>
-				<a
-					class="btn btn-sm variant-ghost-surface"
-					href="https://github.com/ddxv/app-store-dash"
-					target="_blank"
-					rel="noreferrer"
-				>
-					<div class="inline-flex items-center">
-						{@html githubIcon} GitHub
-					</div>
-				</a>
-				<a
-					class="btn btn-sm variant-ghost-surface"
-					href="https://discord.gg/7jpWEhkXRW"
-					target="_blank"
-					rel="noreferrer"
-				>
-					<div class="inline-flex items-center">
-						{@html discordIcon} Discord
-					</div>
-				</a>
 			{/snippet}
 		</AppBar>
 	{/snippet}

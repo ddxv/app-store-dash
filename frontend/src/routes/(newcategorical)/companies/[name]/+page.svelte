@@ -63,7 +63,7 @@
 				{#if typeof myData == 'string'}
 					<p class="text-red-500 text-center">Failed to load company details.</p>
 				{:else if myData.categories.all}
-					<div class="bg-white p-6 rounded-lg shadow-md">
+					<div class="bg-white p-2 rounded-lg shadow-md">
 						<h2 class="text-xl font-bold text-gray-800 mb-4">Total Apps</h2>
 						<p class="text-lg text-gray-700">
 							<span class="font-semibold text-gray-900"

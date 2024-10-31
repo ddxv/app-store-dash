@@ -13,9 +13,6 @@
 	class="w-full p-0"
 	padding="px-1 py-2 md:px-4"
 >
-	<TabAnchor class="p-0 px-0" href="/" selected={$page.url.pathname == '/'}>
-		<h3 class={topBarFont}>HOME</h3>
-	</TabAnchor>
 	<TabAnchor
 		href="/collections/new_monthly"
 		selected={$page.url.pathname.startsWith('/collections')}

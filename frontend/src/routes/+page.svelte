@@ -154,7 +154,7 @@
 				party services which likely collect app data. You can also help expand these lists.
 			</p>
 		</a>
-		<div class="flex flex-col-2 gap-4">
+		<div class="flex flex-col md:flex-col-2 gap-4">
 			<a href="/companies/types/ad-networks">
 				<div class="card variant-ghost-surface md:p-4">
 					<div class="card-header">
@@ -212,7 +212,7 @@
 			</p>
 		</a>
 		<div
-			class="snap-x scroll-px-4 snap-mandatory scroll-smooth flex gap-4 overflow-x-auto px-4 py-10"
+			class="snap-x scroll-px-4 snap-mandatory scroll-smooth flex gap-4 md:flex-row flex-col px-4 py-10"
 		>
 			<a href="/collections/new_weekly">
 				<div class="snap-center shrink-0 card variant-ghost-surface w-48 md:w-56 md:p-4">
