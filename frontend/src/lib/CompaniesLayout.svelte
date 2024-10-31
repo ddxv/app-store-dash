@@ -11,16 +11,17 @@
 	let { card1, card2, card3, card4 } = $props();
 </script>
 
-<div class="flex flex-col md:flex-row gap-4 md:gap-6">
-	{@render card1?.()}
-	{@render card2?.()}
-	{#if card3}
-		<!-- This is always true? -->
-		{@render card3?.()}
-		<div class="col-span-3">
+<div class="flex flex-col gap-4 md:gap-6">
+	<div class="grid grid-cols-3 gap-4 md:gap-6">
+		{@render card1?.()}
+		{@render card2?.()}
+		{#if card3}
+			{@render card3?.()}
+			<div class="col-span-3 flex gap-4">
+				{@render card4?.()}
+			</div>
+		{:else}
 			{@render card4?.()}
-		</div>
-	{:else}
-		{@render card4?.()}
-	{/if}
+		{/if}
+	</div>
 </div>

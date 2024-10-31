@@ -154,7 +154,7 @@
 				party services which likely collect app data. You can also help expand these lists.
 			</p>
 		</a>
-		<div class="flex flex-col md:flex-col-2 gap-4">
+		<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
 			<a href="/companies/types/ad-networks">
 				<div class="card variant-ghost-surface md:p-4">
 					<div class="card-header">
@@ -193,6 +193,29 @@
 									<CompaniesBarChart
 										plotData={myTops.attribution.sdk}
 										plotTitle="Top MMPs & Attribution Companies"
+									/>
+								</WhiteCard>
+							{/if}
+						{/await}
+					</div>
+				</div>
+			</a>
+
+			<a href="/companies/types/product-analytics">
+				<div class="card variant-ghost-surface md:p-4">
+					<div class="card-header">
+						<h3 class="h3">Top Product Analytics</h3>
+					</div>
+					<div class="card-content">
+						Checkout the top product analytics companies.
+						{#await data.topCompanies}
+							Loading ...
+						{:then myTops}
+							{#if myTops.analytics}
+								<WhiteCard>
+									<CompaniesBarChart
+										plotData={myTops.analytics.sdk}
+										plotTitle="Top Product Analytics Companies"
 									/>
 								</WhiteCard>
 							{/if}

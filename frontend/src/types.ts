@@ -236,9 +236,10 @@ export interface ChildrenCompanyTree {
 }
 
 export interface ParentCompanyTree {
-	parent_company_name: string | null;
-	parent_company_domain: string | null;
-	company_name: string;
+	parent_company_name: string;
+	parent_company_domain: string;
+	queried_company_domain: string;
+	queried_company_name: string;
 	domains: string[];
 	children_companies: ChildrenCompanyTree[];
 }

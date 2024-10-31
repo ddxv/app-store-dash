@@ -689,18 +689,18 @@ class CompaniesController(Controller):
         return df.to_dict(orient="records")
 
     @get(
-        path="/companies/{company_name:str}/tree",
+        path="/companies/{queried_domain:str}/tree",
         cache=3600,
     )
     async def company_tree(
         self: Self,
-        company_name: str,
+        queried_domain: str,
     ) -> ParentCompanyTree:
         """Handle GET request for company tree.
 
         Args:
         ----
-        company_name : str
+        queried_domain : str
             The name of the company to retrieve apps for.
 
         Returns:
@@ -709,20 +709,25 @@ class CompaniesController(Controller):
             An overview of companies, filtered for the specified company and category.
 
         """
-        logger.info(f"GET /api/companies/{company_name}/tree start")
+        logger.info(f"GET /api/companies/{queried_domain}/tree start")
 
-        df = get_company_tree(company_domain=company_name)
+        df = get_company_tree(company_domain=queried_domain)
 
         parent_company = df["parent_company_name"].tolist()[0]
         parent_company_domain = df["parent_company_domain"].tolist()[0]
 
-        if parent_company == company_name:
+        queried_company_name = df[(queried_domain == df["company_domain"])][
+            "company_name"
+        ].tolist()[0]
+
+        if parent_company == queried_domain:
             parent_company = None
 
         domains = (
             df[
                 ~(parent_company == df["company_name"])
-                & (company_name == df["company_name"])
+                # & (queried_domain == df["company_name"])
+                & (queried_domain == df["company_domain"])
             ]["company_domain"]
             .unique()
             .tolist()
@@ -731,7 +736,7 @@ class CompaniesController(Controller):
         children_companies = (
             df[
                 ~(parent_company == df["company_name"])
-                & (company_name != df["company_name"])
+                & (queried_domain != df["company_domain"])
             ]
             .rename(columns={"company_domain": "domains"})
             .groupby(["company_name"])["domains"]
@@ -743,7 +748,8 @@ class CompaniesController(Controller):
         tree = ParentCompanyTree(
             parent_company_name=parent_company,
             parent_company_domain=parent_company_domain,
-            company_name=company_name,
+            queried_company_domain=queried_domain,
+            queried_company_name=queried_company_name,
             domains=domains,
             children_companies=children_companies,
         )
@@ -926,7 +932,7 @@ class CompaniesController(Controller):
         return overview
 
     @get(path="/companies/topshort/", cache=True)
-    async def get_companies_shortlist_top(self: Self) -> list[CompanyDetail]:
+    async def get_companies_shortlist_top(self: Self) -> TopCompaniesOverviewShort:
         """Handle GET request for a list of adtech company categories.
 
         Returns
@@ -940,16 +946,18 @@ class CompaniesController(Controller):
             type_slug="ad-networks", app_category=None, limit=5
         )
         mmps = get_companies_top(type_slug="ad-attribution", app_category=None, limit=5)
-        # analytics = get_companies_top(type_slug='analytics', app_category=None, limit=5)
+        analytics = get_companies_top(
+            type_slug="product-analytics", app_category=None, limit=5
+        )
         top_ad_networks = make_top_companies(adnetworks)
         top_mmps = make_top_companies(mmps)
-        # top_analytics = make_top_companies(analytics)
+        top_analytics = make_top_companies(analytics)
         logger.info(f"{self.path} return")
 
         top_companies = TopCompaniesOverviewShort(
             adnetworks=top_ad_networks,
             attribution=top_mmps,
-            analytics=list(),
+            analytics=top_analytics,
         )
 
         return top_companies
@@ -969,8 +977,6 @@ class CompaniesController(Controller):
         results["app_category"] = "all"
 
         category_totals_df = get_types_totals()
-
-        # cagetory_totals_df['app_category'] = 'all'
 
         overview_df, _category_overview = prep_overview_df(results, category_totals_df)
         logger.info(f"{self.path}/{search_term} return")

@@ -165,7 +165,8 @@ class ParentCompanyTree:
 
     parent_company_name: str | None
     parent_company_domain: str | None
-    company_name: str
+    queried_company_domain: str
+    queried_company_name: str
     domains: list[str]
     children_companies: list[ChildrenCompanyTree]
 
