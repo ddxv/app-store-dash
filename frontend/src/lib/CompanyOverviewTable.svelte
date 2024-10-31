@@ -55,13 +55,13 @@
 			</thead>
 			<tbody>
 				{#each $rows as row, index}
-					<tr style="cursor: pointer;" class="px-0">
+					<tr class="px-0">
 						<td class="table-cell-fit">
 							{index + 1}
 						</td>
 						<td class="table-cell-fit">
 							<!-- TODO: This is supposed to be just inside TR for whole row -->
-							<a href="/apps/{row.store_id}" class="table-row-link">
+							<a href="/apps/{row.store_id}" style="cursor: pointer;" class="table-row-link">
 								{row.name}
 							</a>
 						</td>

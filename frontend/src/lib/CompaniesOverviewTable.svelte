@@ -47,13 +47,17 @@
 			</thead>
 			<tbody>
 				{#each $rows as row, index}
-					<tr style="cursor: pointer;" class="px-0">
+					<tr class="px-0">
 						<td class="table-cell-fit">
 							<p class="text-xs md:text-lg">{index + 1}</p>
 						</td>
 						<td class="w-0">
 							<!-- TODO: This is supposed to be just inside TR for whole row -->
-							<a href="/companies/{row.company_domain}" class="table-row-link text-xs md:text-lg">
+							<a
+								href="/companies/{row.company_domain}"
+								style="cursor: pointer;"
+								class="table-row-link text-xs md:text-lg"
+							>
 								{#if row.company_name}
 									{row.company_name}
 									({row.company_domain})
