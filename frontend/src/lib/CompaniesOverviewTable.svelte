@@ -1,4 +1,3 @@
-<!-- @migration-task Error while migrating Svelte code: `<a>` is invalid inside `<tr>` -->
 <script lang="ts">
 	import Pagination from './clientside/Pagination.svelte';
 	import { DataHandler } from '@vincjo/datatables/legacy';

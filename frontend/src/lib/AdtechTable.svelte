@@ -1,4 +1,3 @@
-<!-- @migration-task Error while migrating Svelte code: `<a>` is invalid inside `<tr>` -->
 <script lang="ts">
 	import { homeCategorySelection } from '../stores';
 	import type { Company } from '../types';
@@ -7,13 +6,10 @@
 	export let tableType: string = 'appcount';
 	export let storeId: number = 1;
 	export let store_name: string;
-	// export let category_name: string;
 
 	$: category_name = $homeCategorySelection;
 
-	function navigate(name: string) {
-		window.location.href = `/adtech/companies/${name}/${store_name}/${category_name}`;
-	}
+	
 
 	function formatNumber(num: number) {
 		if (num >= 1000000000000) return (num / 1000000000000).toFixed(1).replace(/\.0$/, '') + 'T';
