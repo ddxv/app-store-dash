@@ -5,18 +5,38 @@ export const csr: boolean = true;
 
 export const load: PageServerLoad = async ({ parent, params }) => {
 	const networkName = params.name;
+
+	const res_parent_categories = fetch(
+		`http://localhost:8000/api/companies/${networkName}/parentcategories`
+	);
 	const res_apps = fetch(`http://localhost:8000/api/companies/${networkName}/topapps`);
 	const res_sdks = fetch(`http://localhost:8000/api/companies/${networkName}/sdks`);
 
 	const { companyDetails, companyTree } = await parent();
 
-	const res_parent_categories = fetch(
-		`http://localhost:8000/api/companies/${networkName}/parentcategories`
-	);
 	console.log(`start load overview for company=${networkName}`);
 	try {
 		return {
 			companyDetails: companyDetails,
+			companyParentCategories: res_parent_categories
+				.then((resp) => {
+					if (resp.status === 200) {
+						return resp.json();
+					} else if (resp.status === 404) {
+						console.log('Company Parent Categories Not found');
+						return 'Company Parent Categories Not Found';
+					} else if (resp.status === 500) {
+						console.log('API Server error');
+						return 'Backend Error';
+					}
+				})
+				.then(
+					(json) => json,
+					(error) => {
+						console.log('Uncaught error', error);
+						return 'Uncaught Error';
+					}
+				),
 			companyTree: companyTree,
 			companyTopApps: res_apps
 				.then((resp) => {
@@ -44,25 +64,6 @@ export const load: PageServerLoad = async ({ parent, params }) => {
 					} else if (resp.status === 404) {
 						console.log('Company SDKs Not found');
 						return 'Company SDKs Not Found';
-					} else if (resp.status === 500) {
-						console.log('API Server error');
-						return 'Backend Error';
-					}
-				})
-				.then(
-					(json) => json,
-					(error) => {
-						console.log('Uncaught error', error);
-						return 'Uncaught Error';
-					}
-				),
-			companyParentCategories: res_parent_categories
-				.then((resp) => {
-					if (resp.status === 200) {
-						return resp.json();
-					} else if (resp.status === 404) {
-						console.log('Company Parent Categories Not found');
-						return 'Company Parent Categories Not Found';
 					} else if (resp.status === 500) {
 						console.log('API Server error');
 						return 'Backend Error';

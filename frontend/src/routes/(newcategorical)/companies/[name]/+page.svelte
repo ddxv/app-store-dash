@@ -64,17 +64,17 @@
 <CompaniesLayout>
 	{#snippet card1()}
 		<WhiteCard>
-			{#await data.companyDetails}
+			{#await data.companyParentCategories}
 				<span class="text-lg text-gray-600">Loading...</span>
 			{:then myData}
 				{#if typeof myData == 'string'}
 					<p class="text-red-500 text-center">Failed to load company details.</p>
-				{:else if myData.categories.all}
+				{:else if myData && myData.length > 0}
 					<div class="bg-white p-2 rounded-lg shadow-md">
 						<h2 class="text-xl font-bold text-gray-800 mb-4">Total Apps</h2>
 						<p class="text-lg text-gray-700">
 							<span class="font-semibold text-gray-900"
-								>{formatNumber(myData.categories.all.total_apps)}</span
+								>{formatNumber(myData.map((d) => d.value).reduce((a, b) => a + b, 0))}</span
 							>
 						</p>
 					</div>

@@ -60,7 +60,7 @@
 			{#snippet card1()}
 				<WhiteCard>
 					<div class="bg-white p-6 rounded-lg shadow-md">
-						<h2 class="text-xl font-bold text-gray-800 mb-4">Total Ad Tech Companies</h2>
+						<h2 class="text-xl font-bold text-gray-800 mb-4">Total Companies</h2>
 						<p class="text-lg text-gray-700">
 							<span class="font-semibold text-gray-900"
 								>{formatNumber(myData.categories.categories.all.total_apps)}</span
