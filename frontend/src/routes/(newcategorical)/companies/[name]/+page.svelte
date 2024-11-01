@@ -159,21 +159,25 @@
 			<CompanyTableGrid>
 				<!-- @migration-task: migrate this slot by hand, `sdk-android-total-apps` is an invalid identifier -->
 				<span slot="sdk-android-total-apps">
-					Android Apps: {formatNumber(detailsData.categories.all.sdk_android_total_apps)}
+					{name} total Android apps: {formatNumber(
+						detailsData.categories.all.sdk_android_total_apps
+					)}
 				</span>
 				<!-- @migration-task: migrate this slot by hand, `sdk-ios-total-apps` is an invalid identifier -->
 				<span slot="sdk-ios-total-apps">
-					iOS Apps: {formatNumber(detailsData.categories.all.sdk_ios_total_apps)}
+					{name} total iOS apps: {formatNumber(detailsData.categories.all.sdk_ios_total_apps)}
 				</span>
 				<!-- @migration-task: migrate this slot by hand, `adstxt-android-total-apps` is an invalid identifier -->
 				<span slot="adstxt-android-total-apps">
-					Android Companies: {formatNumber(
+					{name} total Android apps: {formatNumber(
 						detailsData.categories.all.adstxt_direct_android_total_apps
 					)}
 				</span>
 				<!-- @migration-task: migrate this slot by hand, `adstxt-ios-total-apps` is an invalid identifier -->
 				<span slot="adstxt-ios-total-apps">
-					iOS Companies: {formatNumber(detailsData.categories.all.adstxt_direct_ios_total_apps)}
+					{name} totaliOS apps: {formatNumber(
+						detailsData.categories.all.adstxt_direct_ios_total_apps
+					)}
 				</span>
 
 				<!-- @migration-task: migrate this slot by hand, `sdk-android` is an invalid identifier -->
