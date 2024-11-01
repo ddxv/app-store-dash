@@ -189,7 +189,7 @@ export interface TopCompaniesShort {
 export interface CompaniesOverviewSections {
 	companies_overview: CompaniesOverviewEntries[];
 	top: TopCompaniesOverview;
-	categories: CompanyCategoryOverview;
+	categories: CompaniesCategoryOverview;
 }
 
 export interface CompaniesOverview {
@@ -218,6 +218,16 @@ export interface CompanyOverviewSections {
 	sdk: CompanyOverviewPlatforms;
 	adstxt_direct: CompanyOverviewPlatforms;
 	adstxt_reseller: CompanyOverviewPlatforms;
+}
+
+export interface CategoryCompaniesStats {
+	sdk_ios_total_companies: number;
+	sdk_android_total_companies: number;
+	adstxt_direct_ios_total_companies: number;
+	adstxt_direct_android_total_companies: number;
+	adstxt_reseller_ios_total_companies: number;
+	adstxt_reseller_android_total_companies: number;
+	total_companies: number;
 }
 
 export interface CategoryAppStats {
@@ -258,6 +268,12 @@ export interface CompanyPatternsDict {
 export interface CompanyCategoryOverview {
 	categories: {
 		[key: string]: CategoryAppStats;
+	};
+}
+
+export interface CompaniesCategoryOverview {
+	categories: {
+		[key: string]: CategoryCompaniesStats;
 	};
 }
 

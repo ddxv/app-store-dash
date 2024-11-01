@@ -63,7 +63,7 @@
 						<h2 class="text-xl font-bold text-gray-800 mb-4">Total Companies</h2>
 						<p class="text-lg text-gray-700">
 							<span class="font-semibold text-gray-900"
-								>{formatNumber(myData.categories.categories.all.total_apps)}</span
+								>{formatNumber(myData.categories.categories.all.total_companies)}</span
 							>
 						</p>
 					</div>
@@ -103,20 +103,21 @@
 			{/snippet}
 
 			{#snippet sdkAndroidTotalApps()}
-				>Android Companies:
-				{formatNumber(tableData.categories.categories.all.sdk_android_total_apps)}
+				Android Companies: {formatNumber(
+					tableData.categories.categories.all.sdk_android_total_companies
+				)}
 			{/snippet}
 			{#snippet sdkIosTotalApps()}
-				iOS Companies: {formatNumber(tableData.categories.categories.all.sdk_ios_total_apps)}
+				iOS Companies: {formatNumber(tableData.categories.categories.all.sdk_ios_total_companies)}
 			{/snippet}
 			{#snippet adstxtAndroidTotalApps()}
 				Android Companies: {formatNumber(
-					tableData.categories.categories.all.adstxt_direct_android_total_apps
+					tableData.categories.categories.all.adstxt_direct_android_total_companies
 				)}
 			{/snippet}
 			{#snippet adstxtIosTotalApps()}
 				iOS Companies: {formatNumber(
-					tableData.categories.categories.all.adstxt_direct_ios_total_apps
+					tableData.categories.categories.all.adstxt_direct_ios_total_companies
 				)}
 			{/snippet}
 		</CompaniesTableGrid>

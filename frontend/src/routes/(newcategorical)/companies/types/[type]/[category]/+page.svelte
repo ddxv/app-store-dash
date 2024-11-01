@@ -10,17 +10,20 @@
 		data: PageData;
 	}
 
+	let appCategory = $derived($page.params.category);
+	let companyType = $derived($page.params.type);
+
 	let { data }: Props = $props();
 
 	let currentType = $derived(
 		data.companyTypes.then((myTypes) =>
-			myTypes.types.find((type: { url_slug: string }) => type.url_slug === $page.params.type)
+			myTypes.types.find((type: { url_slug: string }) => type.url_slug === companyType)
 		)
 	);
 
 	let currentCategory = $derived(
 		data.appCats.then((catsData) =>
-			catsData.categories.find((cat: { id: string }) => cat.id == $page.params.category)
+			catsData.categories.find((cat: { id: string }) => cat.id == appCategory)
 		)
 	);
 
@@ -55,20 +58,23 @@
 				{/if}
 			{/snippet}
 			{#snippet sdkAndroidTotalApps()}
-				>Android Companies:
-				{formatNumber(tableData.categories.categories.all.sdk_android_total_apps)}
+				Android Companies: {formatNumber(
+					tableData.categories.categories.companies.sdk_android_total_companies
+				)}
 			{/snippet}
 			{#snippet sdkIosTotalApps()}
-				iOS Companies: {formatNumber(tableData.categories.categories.all.sdk_ios_total_apps)}
+				iOS Companies: {formatNumber(
+					tableData.categories.categories.companies.sdk_ios_total_companies
+				)}
 			{/snippet}
 			{#snippet adstxtAndroidTotalApps()}
 				Android Companies: {formatNumber(
-					tableData.categories.categories.all.adstxt_direct_android_total_apps
+					tableData.categories.categories.companies.adstxt_direct_android_total_companies
 				)}
 			{/snippet}
 			{#snippet adstxtIosTotalApps()}
 				iOS Companies: {formatNumber(
-					tableData.categories.categories.all.adstxt_direct_ios_total_apps
+					tableData.categories.categories.companies.adstxt_direct_ios_total_companies
 				)}
 			{/snippet}
 		</CompaniesTableGrid>

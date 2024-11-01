@@ -1,15 +1,9 @@
 <script lang="ts">
-	import { homeCategorySelection } from '../stores';
 	import type { Company } from '../types';
 	export let tabledata: Company[];
 
 	export let tableType: string = 'appcount';
 	export let storeId: number = 1;
-	export let store_name: string;
-
-	$: category_name = $homeCategorySelection;
-
-	
 
 	function formatNumber(num: number) {
 		if (num >= 1000000000000) return (num / 1000000000000).toFixed(1).replace(/\.0$/, '') + 'T';

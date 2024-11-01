@@ -210,7 +210,23 @@ class TopCompaniesOverviewShort:
 
 
 @dataclass
-class CategoryAppStats:
+class CategoryCompaniesStats:
+    """Contains a list of CompanyDetail objects.
+
+    Representing the top networks identified.
+    """
+
+    total_companies: int = 0
+    adstxt_direct_ios_total_companies: int = 0
+    adstxt_direct_android_total_companies: int = 0
+    adstxt_reseller_ios_total_companies: int = 0
+    adstxt_reseller_android_total_companies: int = 0
+    sdk_ios_total_companies: int = 0
+    sdk_android_total_companies: int = 0
+
+
+@dataclass
+class CategoryCompanyStats:
     """Contains a list of CompanyDetail objects.
 
     Representing the top networks identified.
@@ -226,15 +242,35 @@ class CategoryAppStats:
 
 
 @dataclass
-class CategoryOverview:
+class CompaniesCategoryOverview:
     """Contains a dictionary of categories, each with their associated statistics."""
 
-    categories: dict[str, CategoryAppStats] = field(default_factory=dict)
+    categories: dict[str, CategoryCompaniesStats] = field(default_factory=dict)
 
     def add_category(self, category: str) -> None:
         """Add a category to the overview."""
         if category not in self.categories:
-            self.categories[category] = CategoryAppStats()
+            self.categories[category] = CategoryCompaniesStats()
+
+    def update_stats(self, category: str, **kwargs: int) -> None:
+        """Update the stats for a category."""
+        if category not in self.categories:
+            self.add_category(category)
+        for key, value in kwargs.items():
+            if hasattr(self.categories[category], key):
+                setattr(self.categories[category], key, value)
+
+
+@dataclass
+class CompanyCategoryOverview:
+    """Contains a dictionary of categories, each with their associated statistics."""
+
+    categories: dict[str, CategoryCompanyStats] = field(default_factory=dict)
+
+    def add_category(self, category: str) -> None:
+        """Add a category to the overview."""
+        if category not in self.categories:
+            self.categories[category] = CategoryCompanyStats()
 
     def update_stats(self, category: str, **kwargs: int) -> None:
         """Update the stats for a category."""
@@ -254,7 +290,7 @@ class CompaniesOverview:
 
     companies_overview: list[CompanyDetail]
     top: TopCompaniesShort
-    categories: CategoryOverview
+    categories: CompaniesCategoryOverview
 
 
 @dataclass

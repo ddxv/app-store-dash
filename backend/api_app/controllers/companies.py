@@ -15,10 +15,11 @@ from litestar.exceptions import NotFoundException
 
 from api_app.models import (
     AppGroup,
-    CategoryOverview,
+    CompaniesCategoryOverview,
     CompaniesOverview,
     CompanyApps,
     CompanyAppsOverview,
+    CompanyCategoryOverview,
     CompanyDetail,
     CompanyPatterns,
     CompanyPatternsDict,
@@ -160,9 +161,9 @@ def make_top_companies(top_df: pd.DataFrame) -> TopCompaniesShort:
     return top_companies_short
 
 
-def prep_overview_df(
+def prep_companies_overview_df(
     overview_df: pd.DataFrame, category_totals_df: pd.DataFrame
-) -> tuple[pd.DataFrame, CategoryOverview]:
+) -> tuple[pd.DataFrame, CompaniesCategoryOverview]:
     overview_df = overview_df.merge(
         category_totals_df,
         on=["app_category", "store", "tag_source"],
@@ -239,7 +240,9 @@ def get_overviews(
 
     top_companies_short = make_top_companies(top_df)
 
-    overview_df, category_overview = prep_overview_df(overview_df, category_totals_df)
+    overview_df, category_overview = prep_companies_overview_df(
+        overview_df, category_totals_df
+    )
 
     results = CompaniesOverview(
         companies_overview=overview_df.to_dict(orient="records"),
@@ -355,9 +358,9 @@ def old_companies_overview(categories: list[int]) -> TopCompanies:
     return top
 
 
-def make_category_uniques(df: pd.DataFrame) -> CategoryOverview:
+def make_category_uniques(df: pd.DataFrame) -> CompaniesCategoryOverview:
     """Make category sums for overview."""
-    overview = CategoryOverview()
+    overview = CompaniesCategoryOverview()
 
     # Precompute boolean masks
     is_apple = df["store"].str.contains("Apple")
@@ -367,45 +370,51 @@ def make_category_uniques(df: pd.DataFrame) -> CategoryOverview:
     is_app_ads_direct = df["tag_source"] == "app_ads_direct"
 
     # Function to calculate unique counts
-    def get_unique_counts(mask: pd.Series) -> int:
+    def get_unique_company_counts(mask: pd.Series) -> int:
         return df.loc[mask, "company_domain"].nunique()
 
     # Calculate overall stats
     overall_stats = {
-        "total_apps": df["company_domain"].nunique(),
-        "sdk_ios_total_apps": get_unique_counts(is_apple & is_sdk),
-        "sdk_android_total_apps": get_unique_counts(is_google & is_sdk),
-        "adstxt_direct_ios_total_apps": get_unique_counts(is_apple & is_app_ads_direct),
-        "adstxt_direct_android_total_apps": get_unique_counts(
+        "total_companies": df["company_domain"].nunique(),
+        "sdk_ios_total_companies": get_unique_company_counts(is_apple & is_sdk),
+        "sdk_android_total_companies": get_unique_company_counts(is_google & is_sdk),
+        "adstxt_direct_ios_total_companies": get_unique_company_counts(
+            is_apple & is_app_ads_direct
+        ),
+        "adstxt_direct_android_total_companies": get_unique_company_counts(
             is_google & is_app_ads_direct,
         ),
-        "adstxt_reseller_ios_total_apps": get_unique_counts(
+        "adstxt_reseller_ios_total_companies": get_unique_company_counts(
             is_apple & is_app_ads_reseller,
         ),
-        "adstxt_reseller_android_total_apps": get_unique_counts(
+        "adstxt_reseller_android_total_companies": get_unique_company_counts(
             is_google & is_app_ads_reseller,
         ),
     }
-    overview.update_stats("all", **overall_stats)
+    overview.update_stats("companies", **overall_stats)
 
     # Calculate stats for each category
     categories = df["app_category"].unique()
     for cat in categories:
         cat_mask = df["app_category"] == cat
         cat_stats = {
-            "total_apps": get_unique_counts(cat_mask),
-            "sdk_ios_total_apps": get_unique_counts(cat_mask & is_apple & is_sdk),
-            "sdk_android_total_apps": get_unique_counts(cat_mask & is_google & is_sdk),
-            "adstxt_direct_ios_total_apps": get_unique_counts(
+            "total_companies": get_unique_company_counts(cat_mask),
+            "sdk_ios_total_companies": get_unique_company_counts(
+                cat_mask & is_apple & is_sdk
+            ),
+            "sdk_android_total_companies": get_unique_company_counts(
+                cat_mask & is_google & is_sdk
+            ),
+            "adstxt_direct_ios_total_companies": get_unique_company_counts(
                 cat_mask & is_apple & is_app_ads_direct,
             ),
-            "adstxt_direct_android_total_apps": get_unique_counts(
+            "adstxt_direct_android_total_companies": get_unique_company_counts(
                 cat_mask & is_google & is_app_ads_direct,
             ),
-            "adstxt_reseller_ios_total_apps": get_unique_counts(
+            "adstxt_reseller_ios_total_companies": get_unique_company_counts(
                 cat_mask & is_apple & is_app_ads_reseller,
             ),
-            "adstxt_reseller_android_total_apps": get_unique_counts(
+            "adstxt_reseller_android_total_companies": get_unique_company_counts(
                 cat_mask & is_google & is_app_ads_reseller,
             ),
         }
@@ -414,9 +423,9 @@ def make_category_uniques(df: pd.DataFrame) -> CategoryOverview:
     return overview
 
 
-def make_category_sums(df: pd.DataFrame) -> CategoryOverview:
+def make_company_category_sums(df: pd.DataFrame) -> CompanyCategoryOverview:
     """Make category sums for overview."""
-    overview = CategoryOverview()
+    overview = CompanyCategoryOverview()
     conditions = {
         "sdk_ios": (df["store"].str.contains("Apple")) & (df["tag_source"] == "sdk"),
         "sdk_android": (df["store"].str.contains("Google"))
@@ -585,7 +594,7 @@ class CompaniesController(Controller):
     async def company_overview(
         self: Self,
         company_name: str,
-    ) -> CategoryOverview:
+    ) -> CompaniesCategoryOverview:
         """Handle GET request for a specific company.
 
         Args:
@@ -603,7 +612,7 @@ class CompaniesController(Controller):
 
         df = get_company_overview(company_domain=company_name)
 
-        overview = make_category_sums(df=df)
+        overview = make_company_category_sums(df=df)
 
         return overview
 
@@ -978,7 +987,9 @@ class CompaniesController(Controller):
 
         category_totals_df = get_types_totals()
 
-        overview_df, _category_overview = prep_overview_df(results, category_totals_df)
+        overview_df, _category_overview = prep_companies_overview_df(
+            results, category_totals_df
+        )
         logger.info(f"{self.path}/{search_term} return")
 
         return overview_df.to_dict(orient="records")
