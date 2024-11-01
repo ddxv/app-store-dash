@@ -54,11 +54,6 @@
 						/>
 					{/if}
 				{/if}
-				<!-- {#if myTree.domains.length > 0}
-					{#each myTree.domains as domain}
-						<ExternalLink {domain} />
-					{/each}
-				{/if} -->
 			</div>
 		{/if}
 	{:catch error}
@@ -157,53 +152,45 @@
 			Failed to load company's apps.
 		{:else}
 			<CompanyTableGrid>
-				<!-- @migration-task: migrate this slot by hand, `sdk-android-total-apps` is an invalid identifier -->
-				<span slot="sdk-android-total-apps">
+				{#snippet sdkAndroidTotalApps()}
 					{name} total Android apps: {formatNumber(
 						detailsData.categories.all.sdk_android_total_apps
 					)}
-				</span>
-				<!-- @migration-task: migrate this slot by hand, `sdk-ios-total-apps` is an invalid identifier -->
-				<span slot="sdk-ios-total-apps">
+				{/snippet}
+				{#snippet sdkIosTotalApps()}
 					{name} total iOS apps: {formatNumber(detailsData.categories.all.sdk_ios_total_apps)}
-				</span>
-				<!-- @migration-task: migrate this slot by hand, `adstxt-android-total-apps` is an invalid identifier -->
-				<span slot="adstxt-android-total-apps">
+				{/snippet}
+				{#snippet adstxtAndroidTotalApps()}
 					{name} total Android apps: {formatNumber(
 						detailsData.categories.all.adstxt_direct_android_total_apps
 					)}
-				</span>
-				<!-- @migration-task: migrate this slot by hand, `adstxt-ios-total-apps` is an invalid identifier -->
-				<span slot="adstxt-ios-total-apps">
-					{name} totaliOS apps: {formatNumber(
+				{/snippet}
+				{#snippet adstxtIosTotalApps()}
+					{name} total iOS apps: {formatNumber(
 						detailsData.categories.all.adstxt_direct_ios_total_apps
 					)}
-				</span>
+				{/snippet}
 
-				<!-- @migration-task: migrate this slot by hand, `sdk-android` is an invalid identifier -->
-				<div slot="sdk-android">
+				{#snippet sdkAndroid()}
 					{#if tableData && tableData.sdk.android.apps.length > 0}
 						<CompanyOverviewTable entries_table={tableData.sdk.android.apps} />
 					{/if}
-				</div>
-				<!-- @migration-task: migrate this slot by hand, `sdk-ios` is an invalid identifier -->
-				<div slot="sdk-ios">
+				{/snippet}
+				{#snippet sdkIos()}
 					{#if tableData && tableData.sdk.ios.apps.length > 0}
 						<CompanyOverviewTable entries_table={tableData.sdk.ios.apps} />
 					{/if}
-				</div>
-				<!-- @migration-task: migrate this slot by hand, `adstxt-android` is an invalid identifier -->
-				<div slot="adstxt-android">
+				{/snippet}
+				{#snippet adstxtAndroid()}
 					{#if tableData && tableData.adstxt_direct.android.apps.length > 0}
 						<CompanyOverviewTable entries_table={tableData.adstxt_direct.android.apps} />
 					{/if}
-				</div>
-				<!-- @migration-task: migrate this slot by hand, `adstxt-ios` is an invalid identifier -->
-				<div slot="adstxt-ios">
+				{/snippet}
+				{#snippet adstxtIos()}
 					{#if tableData && tableData.adstxt_direct.ios.apps.length > 0}
 						<CompanyOverviewTable entries_table={tableData.adstxt_direct.ios.apps} />
 					{/if}
-				</div>
+				{/snippet}
 			</CompanyTableGrid>
 		{/if}
 	{:catch error}

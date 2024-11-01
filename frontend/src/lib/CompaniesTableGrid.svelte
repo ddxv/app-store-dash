@@ -1,6 +1,19 @@
-<!-- @migration-task Error while migrating Svelte code: This migration would change the name of a slot making the component unusable -->
-<script lange="ts">
+<script lang="ts">
 	import { page } from '$app/stores';
+	import type { Snippet } from 'svelte';
+	let {
+		sdkAndroidTotalApps,
+		sdkIosTotalApps,
+		adstxtAndroidTotalApps,
+		adstxtIosTotalApps,
+		mainTable
+	}: {
+		sdkAndroidTotalApps: Snippet;
+		sdkIosTotalApps: Snippet;
+		adstxtAndroidTotalApps: Snippet;
+		adstxtIosTotalApps: Snippet;
+		mainTable: Snippet;
+	} = $props();
 </script>
 
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-6">
@@ -18,7 +31,7 @@
 			<div class="card variant-glass-surface">
 				<div class="card-header">
 					<p class="text-sm md:text-lg text-gray-700">
-						<slot name="sdk-android-total-apps">Android Apps:</slot>
+						{@render sdkAndroidTotalApps()}
 					</p>
 				</div>
 				<div class="card-content"></div>
@@ -27,7 +40,7 @@
 			<div class="card variant-glass-surface">
 				<div class="card-header">
 					<p class="text-sm md:text-lg text-gray-700">
-						<slot name="sdk-ios-total-apps">iOS Apps:</slot>
+						{@render sdkIosTotalApps()}
 					</p>
 				</div>
 				<div class="card-content"></div>
@@ -50,7 +63,7 @@
 				<div class="card variant-glass-surface">
 					<div class="card-header">
 						<p class="text-sm md:text-lg text-gray-700">
-							<slot name="adstxt-android-total-apps">Android Apps:</slot>
+							{@render adstxtAndroidTotalApps()}
 						</p>
 					</div>
 					<div class="card-content"></div>
@@ -59,7 +72,7 @@
 				<div class="card variant-glass-surface">
 					<div class="card-header">
 						<p class="text-sm md:text-lg text-gray-700">
-							<slot name="adstxt-ios-total-apps">iOS Apps:</slot>
+							{@render adstxtIosTotalApps()}
 						</p>
 					</div>
 					<div class="card-content"></div>
@@ -72,7 +85,7 @@
 	<!-- MAIN TABLE -->
 	<div class="card variant-glass-surface">
 		<div class="card-content">
-			<slot name="main-table" />
+			{@render mainTable()}
 		</div>
 	</div>
 </div>

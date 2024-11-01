@@ -1,4 +1,27 @@
-<!-- @migration-task Error while migrating Svelte code: This migration would change the name of a slot making the component unusable -->
+<script lang="ts">
+	import type { Snippet } from 'svelte';
+
+	let {
+		sdkAndroidTotalApps,
+		sdkIosTotalApps,
+		adstxtAndroidTotalApps,
+		adstxtIosTotalApps,
+		sdkAndroid,
+		sdkIos,
+		adstxtAndroid,
+		adstxtIos
+	}: {
+		sdkAndroidTotalApps: Snippet;
+		sdkIosTotalApps: Snippet;
+		adstxtAndroidTotalApps: Snippet;
+		adstxtIosTotalApps: Snippet;
+		sdkAndroid: Snippet;
+		sdkIos: Snippet;
+		adstxtAndroid: Snippet;
+		adstxtIos: Snippet;
+	} = $props();
+</script>
+
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-6">
 	<!-- SDK Section -->
 	<div class="bg-white p-2 md:p-6 rounded-lg shadow-md">
@@ -14,22 +37,22 @@
 			<div class="card variant-glass-surface">
 				<div class="card-header">
 					<p class="text-lg text-gray-700">
-						<slot name="sdk-android-total-apps">Android Apps:</slot>
+						{@render sdkAndroidTotalApps()}
 					</p>
 				</div>
 				<div class="card-content">
-					<slot name="sdk-android" />
+					{@render sdkAndroid()}
 				</div>
 			</div>
 			<!-- iOS SDK -->
 			<div class="card variant-glass-surface">
 				<div class="card-header">
 					<p class="text-lg text-gray-700">
-						<slot name="sdk-ios-total-apps">iOS Apps:</slot>
+						{@render sdkIosTotalApps()}
 					</p>
 				</div>
 				<div class="card-content">
-					<slot name="sdk-ios" />
+					{@render sdkIos()}
 				</div>
 			</div>
 		</div>
@@ -49,22 +72,22 @@
 			<div class="card variant-glass-surface">
 				<div class="card-header">
 					<p class="text-sm md:text-lg text-gray-700">
-						<slot name="adstxt-android-total-apps">Android Apps:</slot>
+						{@render adstxtAndroidTotalApps()}
 					</p>
 				</div>
 				<div class="card-content">
-					<slot name="adstxt-android" />
+					{@render adstxtAndroid()}
 				</div>
 			</div>
 			<!-- iOS App Ads.txt -->
 			<div class="card variant-glass-surface">
 				<div class="card-header">
 					<p class="text-sm md:text-lg text-gray-700">
-						<slot name="adstxt-ios-total-apps">iOS Apps:</slot>
+						{@render adstxtIosTotalApps()}
 					</p>
 				</div>
 				<div class="card-content">
-					<slot name="adstxt-ios" />
+					{@render adstxtIos()}
 				</div>
 			</div>
 		</div>

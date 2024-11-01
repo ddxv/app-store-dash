@@ -94,25 +94,20 @@
 			Failed to load company's apps.
 		{:else}
 			<CompanyTableGrid>
-				<!-- @migration-task: migrate this slot by hand, `sdk-android-total-apps` is an invalid identifier -->
-				<span slot="sdk-android-total-apps">
+				{#snippet sdkAndroidTotalApps()}
 					{formatNumber(myData.categories[company_category].sdk_android_total_apps)}
-				</span>
-				<!-- @migration-task: migrate this slot by hand, `sdk-ios-total-apps` is an invalid identifier -->
-				<span slot="sdk-ios-total-apps">
+				{/snippet}
+				{#snippet sdkIosTotalApps()}
 					{formatNumber(myData.categories[company_category].sdk_ios_total_apps)}
-				</span>
-				<!-- @migration-task: migrate this slot by hand, `adstxt-android-total-apps` is an invalid identifier -->
-				<span slot="adstxt-android-total-apps">
+				{/snippet}
+				{#snippet adstxtAndroidTotalApps()}
 					{formatNumber(myData.categories[company_category].adstxt_direct_android_total_apps)}
-				</span>
-				<!-- @migration-task: migrate this slot by hand, `adstxt-ios-total-apps` is an invalid identifier -->
-				<span slot="adstxt-ios-total-apps">
+				{/snippet}
+				{#snippet adstxtIosTotalApps()}
 					{formatNumber(myData.categories[company_category].adstxt_direct_ios_total_apps)}
-				</span>
+				{/snippet}
 
-				<!-- @migration-task: migrate this slot by hand, `sdk-android` is an invalid identifier -->
-				<div slot="sdk-android">
+				{#snippet sdkAndroid()}
 					{#if typeof tableData == 'string'}
 						Failed to load company's apps.
 					{:else if tableData.sdk.android.apps}
@@ -120,25 +115,22 @@
 					{:else}
 						Failed to load company overview.
 					{/if}
-				</div>
-				<!-- @migration-task: migrate this slot by hand, `sdk-ios` is an invalid identifier -->
-				<div slot="sdk-ios">
+				{/snippet}
+				{#snippet sdkIos()}
 					{#if tableData.sdk.ios.apps}
 						<CompanyOverviewTable entries_table={tableData.sdk.ios.apps} />
 					{/if}
-				</div>
-				<!-- @migration-task: migrate this slot by hand, `adstxt-android` is an invalid identifier -->
-				<div slot="adstxt-android">
+				{/snippet}
+				{#snippet adstxtAndroid()}
 					{#if tableData.adstxt_direct.android.apps}
 						<CompanyOverviewTable entries_table={tableData.adstxt_direct.android.apps} />
 					{/if}
-				</div>
-				<!-- @migration-task: migrate this slot by hand, `adstxt-ios` is an invalid identifier -->
-				<div slot="adstxt-ios">
+				{/snippet}
+				{#snippet adstxtIos()}
 					{#if tableData.adstxt_direct.ios.apps}
 						<CompanyOverviewTable entries_table={tableData.adstxt_direct.ios.apps} />
 					{/if}
-				</div>
+				{/snippet}
 			</CompanyTableGrid>
 		{/if}
 	{:catch error}

@@ -1,4 +1,3 @@
-<!-- @migration-task Error while migrating Svelte code: Element with a slot='...' attribute must be a child of a component or a descendant of a custom element -->
 <script lang="ts">
 	import CompaniesOverviewTable from '$lib/CompaniesOverviewTable.svelte';
 	import CompaniesTableGrid from '$lib/CompaniesTableGrid.svelte';
@@ -61,17 +60,14 @@
 				</WhiteCard>
 			{/snippet}
 			{#snippet card2()}
-				<WhiteCard
-					><CompaniesBarChart plotData={myData.top.sdk} plotTitle="Top SDK Companies" /></WhiteCard
+				<WhiteCard>
+					<CompaniesBarChart plotData={myData.top.sdk} plotTitle="Top SDK Companies" /></WhiteCard
 				>
-				<!-- {#if $page.params.type != 'ad-networks'} -->
-				<WhiteCard slot="card3"
-					><CompaniesBarChart
-						plotData={myData.top.adstxt_direct}
-						plotTitle="Top Adstxt Companies"
-					/></WhiteCard
-				>
-				<!-- {/if} -->
+			{/snippet}
+			{#snippet card3()}
+				<WhiteCard>
+					<CompaniesBarChart plotData={myData.top.adstxt_direct} plotTitle="Top Adstxt Companies" />
+				</WhiteCard>
 			{/snippet}
 		</CompaniesLayout>
 	{/if}
@@ -86,28 +82,34 @@
 		Failed to load companies.
 	{:else if tableData.categories}
 		<CompaniesTableGrid>
-			<div slot="main-table">
+			{#snippet mainTable()}
 				{#if tableData && tableData.companies_overview.length > 0}
 					<CompaniesOverviewTable entries_table={tableData.companies_overview} />
 				{/if}
-			</div>
-			<span slot="sdk-android-total-apps"
-				>Android Companies:
-				{formatNumber(tableData.categories.categories.all.sdk_android_total_apps)}
-			</span>
-			<span slot="sdk-ios-total-apps">
-				iOS Companies: {formatNumber(tableData.categories.categories.all.sdk_ios_total_apps)}
-			</span>
-			<span slot="adstxt-android-total-apps">
+			{/snippet}
+			{#snippet sdkAndroidTotalApps()}
+				<span
+					>Android Companies:
+					{formatNumber(tableData.categories.categories.all.sdk_android_total_apps)}
+				</span>
+			{/snippet}
+			{#snippet sdkIosTotalApps()}
+				<span
+					>iOS Companies: {formatNumber(
+						tableData.categories.categories.all.sdk_ios_total_apps
+					)}</span
+				>
+			{/snippet}
+			{#snippet adstxtAndroidTotalApps()}
 				Android Companies: {formatNumber(
 					tableData.categories.categories.all.adstxt_direct_android_total_apps
 				)}
-			</span>
-			<span slot="adstxt-ios-total-apps">
+			{/snippet}
+			{#snippet adstxtIosTotalApps()}
 				iOS Companies: {formatNumber(
 					tableData.categories.categories.all.adstxt_direct_ios_total_apps
 				)}
-			</span>
+			{/snippet}
 		</CompaniesTableGrid>
 	{/if}
 {/await}

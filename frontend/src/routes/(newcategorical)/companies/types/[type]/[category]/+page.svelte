@@ -49,33 +49,28 @@
 		Failed to load companies.
 	{:else if tableData.categories}
 		<CompaniesTableGrid>
-			<!-- @migration-task: migrate this slot by hand, `main-table` is an invalid identifier -->
-			<div slot="main-table">
+			{#snippet mainTable()}
 				{#if tableData && tableData.companies_overview.length > 0}
 					<CompaniesOverviewTable entries_table={tableData.companies_overview} />
 				{/if}
-			</div>
-			<!-- @migration-task: migrate this slot by hand, `sdk-android-total-apps` is an invalid identifier -->
-			<span slot="sdk-android-total-apps"
+			{/snippet}
+			{#snippet sdkAndroidTotalApps()}
 				>Android Companies:
 				{formatNumber(tableData.categories.categories.all.sdk_android_total_apps)}
-			</span>
-			<!-- @migration-task: migrate this slot by hand, `sdk-ios-total-apps` is an invalid identifier -->
-			<span slot="sdk-ios-total-apps">
+			{/snippet}
+			{#snippet sdkIosTotalApps()}
 				iOS Companies: {formatNumber(tableData.categories.categories.all.sdk_ios_total_apps)}
-			</span>
-			<!-- @migration-task: migrate this slot by hand, `adstxt-android-total-apps` is an invalid identifier -->
-			<span slot="adstxt-android-total-apps">
+			{/snippet}
+			{#snippet adstxtAndroidTotalApps()}
 				Android Companies: {formatNumber(
 					tableData.categories.categories.all.adstxt_direct_android_total_apps
 				)}
-			</span>
-			<!-- @migration-task: migrate this slot by hand, `adstxt-ios-total-apps` is an invalid identifier -->
-			<span slot="adstxt-ios-total-apps">
+			{/snippet}
+			{#snippet adstxtIosTotalApps()}
 				iOS Companies: {formatNumber(
 					tableData.categories.categories.all.adstxt_direct_ios_total_apps
 				)}
-			</span>
+			{/snippet}
 		</CompaniesTableGrid>
 	{/if}
 {/await}

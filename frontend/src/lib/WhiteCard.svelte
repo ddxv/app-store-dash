@@ -1,12 +1,6 @@
-<script>
-	/**
-	 * @typedef {Object} Props
-	 * @property {import('svelte').Snippet} [title]
-	 * @property {import('svelte').Snippet} [children]
-	 */
-
-	/** @type {Props} */
-	let { title, children } = $props();
+<script lang="ts">
+	import type { Snippet } from 'svelte';
+	let { title, children }: { title?: Snippet; children: Snippet } = $props();
 </script>
 
 <div class="card bg-white rounded-lg overflow-hidden">
@@ -16,6 +10,6 @@
 		</div>
 	{/if}
 	<div class="card-content">
-		{@render children?.()}
+		{@render children()}
 	</div>
 </div>

@@ -1,14 +1,11 @@
-<script>
-	/**
-	 * @typedef {Object} Props
-	 * @property {import('svelte').Snippet} [card1]
-	 * @property {import('svelte').Snippet} [card2]
-	 * @property {import('svelte').Snippet} [card3]
-	 * @property {import('svelte').Snippet} [card4]
-	 */
-
-	/** @type {Props} */
-	let { card1, card2, card3, card4 } = $props();
+<script lang="ts">
+	import type { Snippet } from 'svelte';
+	let {
+		card1,
+		card2,
+		card3,
+		card4
+	}: { card1?: Snippet; card2?: Snippet; card3?: Snippet; card4?: Snippet } = $props();
 </script>
 
 <div class="flex flex-col gap-4 md:gap-6">
