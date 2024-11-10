@@ -13,15 +13,14 @@
 	},
 	"type": "module",
 	"devDependencies": {
-		"@carbon/charts-svelte": "^1.22.0",
-		"@skeletonlabs/skeleton": "2.10.3",
-		"@skeletonlabs/tw-plugin": "0.4.0",
+		"@skeletonlabs/skeleton": "^3.0.0-next.7",
+		"@skeletonlabs/skeleton-svelte": "^1.0.0-next.12",
 		"@sveltejs/adapter-auto": "^3.0.0",
 		"@sveltejs/adapter-node": "^5.2.6",
 		"@sveltejs/kit": "^2.5.27",
 		"@sveltejs/vite-plugin-svelte": "^4.0.0",
 		"@types/eslint": "^9.6.1",
-		"@types/node": "^22.7.5",
+		"@types/node": "^22.9.0",
 		"@typescript-eslint/eslint-plugin": "^8.8.1",
 		"@typescript-eslint/parser": "^8.8.1",
 		"@vincjo/datatables": "^2.0.5",
@@ -42,6 +41,7 @@
 		"vite-plugin-tailwind-purgecss": "0.3.3"
 	},
 	"dependencies": {
+		"@carbon/charts-svelte": "^1.22.0",
 		"echarts": "^5.5.1"
 	}
 }

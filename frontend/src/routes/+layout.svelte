@@ -1,7 +1,9 @@
 <script lang="ts">
 	import '../app.postcss';
-	import { AppShell, AppBar } from '@skeletonlabs/skeleton';
 	import IconSearch from '$lib/svg/IconSearch.svelte';
+
+	import { AppBar } from '@skeletonlabs/skeleton-svelte';
+
 	import type { AfterNavigate } from '@sveltejs/kit';
 	import { afterNavigate } from '$app/navigation';
 
@@ -39,22 +41,9 @@
 	});
 </script>
 
-<!-- App Shell -->
-<AppShell
-	regionPage="p-2 md:p-8"
-	slotSidebarLeft="w-0 lg:w-auto"
-	slotPageHeader="hidden lg:inline-flex"
->
-	{#snippet header()}
-		<!-- App Bar -->
-		<AppBar
-			gridColumns="grid-cols-[1fr_0_1fr] md:grid-cols-[0.4fr_1fr_0.3fr]"
-			slotLead="p-2"
-			slotTrail="p-2"
-			spacing="space-y-0"
-			padding="p-0"
-			class="bg-gradient-to-br {bgBarColor}"
-		>
+<header class="bg-red-500 p-4">
+	<div class="grid-cols-[1fr_0_1fr] md:grid-cols-[0.4fr_1fr_0.3fr] bg-gradient-to-br {bgBarColor}">
+		<AppBar headlineClasses="sm:hidden" centerClasses="hidden sm:block">
 			{#snippet lead()}
 				<div class="flex items-center">
 					<a class="flex" href="/">
@@ -69,9 +58,11 @@
 				</div>
 			{/snippet}
 
-			<div class="hidden lg:inline-flex">
-				<NavTabs />
-			</div>
+			{#snippet headline()}
+				<div class="hidden lg:inline-flex">
+					<NavTabs />
+				</div>
+			{/snippet}
 
 			{#snippet trail()}
 				<div>
@@ -112,26 +103,17 @@
 				</div>
 			{/snippet}
 		</AppBar>
-	{/snippet}
+	</div>
+</header>
+
+<footer class="bg-blue-500 p-4">
 	{#snippet footer()}
-		<AppBar
-			slotLead="p-0"
-			slotTrail="p-2"
-			spacing="space-y-0"
-			padding="p-0"
-			gap="gap-0"
-			class="bg-gradient-to-tl {bgBarColor} lg:hidden"
-			gridColumns="grid-cols-[auto_1fr_auto]"
-		>
-			{#snippet lead()}
-				<div class="inline-flex">
-					<NavTabs />
-				</div>
-			{/snippet}
-		</AppBar>
+		{#snippet lead()}
+			<div class="inline-flex">
+				<NavTabs />
+			</div>
+		{/snippet}
 	{/snippet}
+</footer>
 
-	{@render children?.()}
-
-	<!-- Page Route Content -->
-</AppShell>
+{@render children?.()}

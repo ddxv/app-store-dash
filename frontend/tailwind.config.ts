@@ -2,7 +2,8 @@ import { join } from 'path';
 import type { Config } from 'tailwindcss';
 
 // 1. Import the Skeleton plugin
-import { skeleton } from '@skeletonlabs/tw-plugin';
+import { skeleton } from '@skeletonlabs/skeleton/plugin';
+import * as themes from '@skeletonlabs/skeleton/themes';
 
 import { myCustomTheme } from './appgoblin-theme';
 
@@ -12,7 +13,7 @@ const config = {
 	content: [
 		'./src/**/*.{html,js,svelte,ts}',
 		// 3. Append the path to the Skeleton package
-		join(require.resolve('@skeletonlabs/skeleton'), '../**/*.{html,js,svelte,ts}')
+		join(require.resolve('@skeletonlabs/skeleton-svelte'), '../**/*.{html,js,svelte,ts}')
 	],
 	theme: {
 		extend: {}
@@ -20,16 +21,7 @@ const config = {
 	plugins: [
 		// 4. Append the Skeleton plugin (after other plugins)
 		skeleton({
-			themes: {
-				preset: [
-					{ name: 'skeleton', enhancements: true },
-					{ name: 'vintage', enhancements: true },
-					{ name: 'wintry', enhancements: true },
-					{ name: 'modern', enhancements: true },
-					{ name: 'gold-nouveau', enhancements: true }
-				],
-				custom: [myCustomTheme]
-			}
+			themes: [themes.nouveau]
 		})
 	]
 } satisfies Config;
