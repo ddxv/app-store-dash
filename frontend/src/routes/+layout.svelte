@@ -41,79 +41,83 @@
 	});
 </script>
 
-<header class="bg-red-500 p-4">
-	<div class="grid-cols-[1fr_0_1fr] md:grid-cols-[0.4fr_1fr_0.3fr] bg-gradient-to-br {bgBarColor}">
-		<AppBar headlineClasses="sm:hidden" centerClasses="hidden sm:block">
-			{#snippet lead()}
-				<div class="flex items-center">
-					<a class="flex" href="/">
-						<!-- <img class="h-8 m w-8 md:h-12 md:w-12" src="/cute_eyes_250.png" alt="Goblin Icon" /> -->
-						<img
-							class="ml-1 md:ml-2 h-8 m w-8 md:h-12 md:w-12"
-							src="/goblin_purple_hat_250.png"
-							alt="Goblin Icon"
-						/>
-						<strong class="text-xl ml-1 md:ml-2 md:text-3xl uppercase">AppGoblin</strong>
-					</a>
-				</div>
-			{/snippet}
+<div class="h-screen grid grid-rows-[auto_1fr_auto]">
+	<header class="bg-red-500">
+		<div
+			class="grid-cols-[1fr_0_1fr] md:grid-cols-[0.4fr_1fr_0.3fr] bg-gradient-to-br {bgBarColor}"
+		>
+			<AppBar headlineClasses="sm:hidden" centerClasses="hidden sm:block">
+				{#snippet lead()}
+					<div class="flex items-center">
+						<a class="flex" href="/">
+							<!-- <img class="h-8 m w-8 md:h-12 md:w-12" src="/cute_eyes_250.png" alt="Goblin Icon" /> -->
+							<img
+								class="ml-1 md:ml-2 h-8 m w-8 md:h-12 md:w-12"
+								src="/goblin_purple_hat_250.png"
+								alt="Goblin Icon"
+							/>
+							<strong class="text-xl ml-1 md:ml-2 md:text-3xl uppercase">AppGoblin</strong>
+						</a>
+					</div>
+				{/snippet}
 
-			{#snippet headline()}
 				<div class="hidden lg:inline-flex">
 					<NavTabs />
 				</div>
-			{/snippet}
 
-			{#snippet trail()}
-				<div>
-					<div class="input-group grid-cols-2 sm:grid-cols-[50px_auto]">
-						<div class="input-group-shim p-0 md:p-3">
-							<IconSearch />
+				{#snippet trail()}
+					<div>
+						<div class="input-group grid-cols-2 sm:grid-cols-[50px_auto]">
+							<div class="input-group-shim p-0 md:p-3">
+								<IconSearch />
+							</div>
+							<input
+								type="search"
+								bind:value={searchTerm}
+								onkeydown={navigateToSearch}
+								placeholder="Search"
+								class="p-0 md:p-3"
+							/>
 						</div>
-						<input
-							type="search"
-							bind:value={searchTerm}
-							onkeydown={navigateToSearch}
-							placeholder="Search"
-							class="p-0 md:p-3"
-						/>
+						<div class="flex items-center p-1">
+							<a
+								class="btn btn-sm variant-ghost-surface"
+								href="https://github.com/ddxv/app-store-dash"
+								target="_blank"
+								rel="noreferrer"
+							>
+								<div class="inline-flex items-center text-xs md:text-lg">
+									{@html githubIcon} GitHub
+								</div>
+							</a>
+							<a
+								class="btn btn-sm variant-ghost-surface"
+								href="https://discord.gg/7jpWEhkXRW"
+								target="_blank"
+								rel="noreferrer"
+							>
+								<div class="inline-flex items-center text-xs md:text-lg">
+									{@html discordIcon} Discord
+								</div>
+							</a>
+						</div>
 					</div>
-					<div class="flex items-center p-1">
-						<a
-							class="btn btn-sm variant-ghost-surface"
-							href="https://github.com/ddxv/app-store-dash"
-							target="_blank"
-							rel="noreferrer"
-						>
-							<div class="inline-flex items-center text-xs md:text-lg">
-								{@html githubIcon} GitHub
-							</div>
-						</a>
-						<a
-							class="btn btn-sm variant-ghost-surface"
-							href="https://discord.gg/7jpWEhkXRW"
-							target="_blank"
-							rel="noreferrer"
-						>
-							<div class="inline-flex items-center text-xs md:text-lg">
-								{@html discordIcon} Discord
-							</div>
-						</a>
-					</div>
+				{/snippet}
+			</AppBar>
+		</div>
+	</header>
+
+	<main class="bg-green-500 p-4 space-y-4">
+		{@render children?.()}
+	</main>
+
+	<footer class="bg-blue-500 p-4">
+		{#snippet footer()}
+			{#snippet lead()}
+				<div class="inline-flex">
+					<NavTabs />
 				</div>
 			{/snippet}
-		</AppBar>
-	</div>
-</header>
-
-<footer class="bg-blue-500 p-4">
-	{#snippet footer()}
-		{#snippet lead()}
-			<div class="inline-flex">
-				<NavTabs />
-			</div>
 		{/snippet}
-	{/snippet}
-</footer>
-
-{@render children?.()}
+	</footer>
+</div>
