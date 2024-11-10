@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { ListBox, ListBoxItem } from '@skeletonlabs/skeleton';
+
+	import { Segment } from '@skeletonlabs/skeleton-svelte';
 
 	import { goto } from '$app/navigation';
 
@@ -15,17 +16,10 @@
 
 	import { homeCategorySelection } from '../stores';
 	let localHomeCategorySelect = $state($homeCategorySelection);
-	const buttonSelectedColor = 'variant-filled-primary';
+	const buttonSelectedColor = 'btn preset-filled-primary-500';
 
 	import type { CatData } from '../types';
 
-	const handleCompanyCategoryClick = (categoryName: string) => {
-		if (categoryName == 'overall') {
-			goto(`/adtech/companies/${company_name}/`);
-		} else {
-			goto(`/adtech/companies/${company_name}/${categoryName}`);
-		}
-	};
 
 	const scrollTop = () => {
 		const elemPage = document.querySelector('#page');
@@ -57,7 +51,7 @@
 	let { myCatData }: Props = $props();
 
 	let classesActive = $derived((href: string) =>
-		$page.url.pathname.startsWith(href) ? buttonSelectedColor : ''
+		$page.url.pathname.startsWith(href) ? buttonSelectedColor : 'btn '
 	);
 	// Reactive statement to update the store when localValue changes
 	$effect(() => {
@@ -112,28 +106,19 @@
 	});
 </script>
 
+
 {#if $page.url.pathname.startsWith('/collections')}
 	<div class="p-1 md:p-2">
 		<div class=" card p-4 text-token">
 			<h3 class="h4 md:h3">Stores</h3>
-			<ListBox>
-				<ListBoxItem
-					bind:group={localHomeStoreSelect}
-					name="medium"
-					value="google"
-					padding="p-2 md:p-2"
-					on:click={scrollTop}
-					active={buttonSelectedColor}>Google</ListBoxItem
+			<Segment name="collectionsStores" bind:value={localHomeStoreSelect} orientation="vertical">
+				<Segment.Item
+					value="google">Google</Segment.Item
 				>
-				<ListBoxItem
-					bind:group={localHomeStoreSelect}
-					name="medium"
-					on:click={scrollTop}
-					value="ios"
-					padding="p-2 md:p-2"
-					active={buttonSelectedColor}>Apple</ListBoxItem
+				<Segment.Item
+					value="ios">Apple</Segment.Item
 				>
-			</ListBox>
+			</Segment>
 		</div>
 	</div>
 
@@ -168,17 +153,12 @@
 	<div class="p-1 md:p-2">
 		<div class="card p-4">
 			<h3 class="h3">Categories</h3>
-			<ListBox>
+			<Segment name="collectionsCategories" bind:value={localHomeCategorySelect} orientation="vertical">
 				{#if myCatData}
 					{#each Object.entries(myCatData.categories) as [_prop, values]}
 						{#if values.id}
-							<ListBoxItem
-								bind:group={localHomeCategorySelect}
-								name="medium"
+							<Segment.Item
 								value={values.id}
-								active={buttonSelectedColor}
-								on:click={scrollTop}
-								padding="p-2 md:p-2"
 								><div class="flex w-full justify-between">
 									<div class="flex-grow">
 										{values.name}
@@ -203,11 +183,11 @@
 										</div>
 									{/if}
 								</div>
-							</ListBoxItem>
+							</Segment.Item>
 						{/if}
 					{/each}
 				{/if}
-			</ListBox>
+			</Segment>
 		</div>
 	</div>
 {/if}
@@ -325,17 +305,12 @@
 	<div class="p-1 md:p-2">
 		<div class="card p-4">
 			<h3 class="h4 md:h3">Categories</h3>
-			<ListBox>
+			<Segment name="collectionsCategories" bind:value={localHomeCategorySelect} orientation="vertical">
 				{#if myCatData}
 					{#each Object.entries(myCatData.categories) as [_prop, values]}
 						{#if values.id && (Number(values.android) > 0 || values.name == 'Games')}
-							<ListBoxItem
-								bind:group={localHomeCategorySelect}
-								name="medium"
+							<Segment.Item
 								value={values.id}
-								active={buttonSelectedColor}
-								on:click={scrollTop}
-								padding="p-2 md:p-2"
 								><div class="flex w-full justify-between">
 									<div class="flex-grow">
 										{values.name}
@@ -359,11 +334,11 @@
 										</div>
 									{/if}
 								</div>
-							</ListBoxItem>
+							</Segment.Item>
 						{/if}
 					{/each}
 				{/if}
-			</ListBox>
+			</Segment>
 		</div>
 	</div>
 {/if}
@@ -372,17 +347,12 @@
 	<div class="p-1 md:p-2">
 		<div class="card p-4">
 			<h3 class="h4 md:h3">Categories</h3>
-			<ListBox>
+			<Segment name="collectionsCategories" bind:value={localHomeCategorySelect} orientation="vertical">
 				{#if myCatData}
 					{#each Object.entries(myCatData.categories) as [_prop, values]}
 						{#if values.id && (Number(values.android) > 0 || values.name == 'Games')}
-							<ListBoxItem
-								bind:group={localHomeCategorySelect}
-								name="medium"
+							<Segment.Item
 								value={values.id}
-								active={buttonSelectedColor}
-								on:click={() => handleCompanyCategoryClick(values.id)}
-								padding="p-2 md:p-2"
 							>
 								<div class="flex w-full justify-between">
 									<div class="flex-grow">
@@ -408,11 +378,11 @@
 										</div>
 									{/if}
 								</div>
-							</ListBoxItem>
+							</Segment.Item>
 						{/if}
 					{/each}
 				{/if}
-			</ListBox>
+			</Segment>
 		</div>
 	</div>
 {/if}

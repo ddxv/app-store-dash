@@ -1,9 +1,8 @@
 <script lang="ts">
 	import {
-		AppShell,
-		Drawer,
-		initializeStores,
-		getDrawerStore,
+		// Drawer,
+		// initializeStores,
+		// getDrawerStore,
 		type DrawerSettings
 	} from '@skeletonlabs/skeleton';
 
@@ -19,8 +18,8 @@
 	let { data, children }: Props = $props();
 	homeCategoryMap.set(data);
 
-	initializeStores();
-	const drawerStore = getDrawerStore();
+	// initializeStores();
+	// const drawerStore = getDrawerStore();
 
 	const drawerSettings: DrawerSettings = {
 		id: 'example-3',
@@ -36,22 +35,26 @@
 
 	const drawerOpen = () => {
 		console.log('clicked drawer');
-		drawerStore.open(drawerSettings);
+		// drawerStore.open(drawerSettings);
 	};
 </script>
 
-<Drawer>
+<!-- <Drawer>
 	{#await data.appCats then data}
 		<SideBar myCatData={data} />
 	{/await}
-</Drawer>
+</Drawer> -->
 
-<AppShell slotSidebarLeft="w-0 lg:w-auto">
-	{#snippet sidebarLeft()}
+<div class="grid grid-cols-1 md:grid-cols-[auto_1fr]">
+
+
+
+<aside>
+
 		{#await data.appCats then myCatData}
 			<SideBar {myCatData} />
 		{/await}
-	{/snippet}
+</aside>
 	{@render children?.()}
 	<button
 		class="lg:hidden btn variant-filled-primary absolute right-[20px] bottom-[50px]"
@@ -66,4 +69,5 @@
 			</svg>
 		</span>
 	</button>
-</AppShell>
+
+</div>

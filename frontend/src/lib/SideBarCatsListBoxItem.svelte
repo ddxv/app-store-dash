@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ListBoxItem } from '@skeletonlabs/skeleton';
+	import { Segment } from '@skeletonlabs/skeleton-svelte';
 	import IconiOS from './svg/IconiOS.svelte';
 	import IconGoogle from './svg/IconGoogle.svelte';
 
@@ -13,12 +13,8 @@
 	let { values, localHomeCategorySelect = $bindable() }: Props = $props();
 </script>
 
-<ListBoxItem
-	bind:group={localHomeCategorySelect}
-	name="medium"
+<Segment.Item
 	value={values.id}
-	active={buttonSelectedColor}
-	padding="p-2 md:p-2"
 >
 	<div class="flex w-full justify-between">
 		<div class="flex-grow">
@@ -44,4 +40,4 @@
 			</div>
 		{/if}
 	</div>
-</ListBoxItem>
+</Segment.Item>
