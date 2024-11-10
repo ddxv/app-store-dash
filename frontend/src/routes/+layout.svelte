@@ -42,7 +42,7 @@
 </script>
 
 <div class="h-screen grid grid-rows-[auto_1fr_auto]">
-	<header class="bg-red-500">
+	<header class=" sticky top-0 z-10 bg-red-500">
 		<div
 			class="grid-cols-[1fr_0_1fr] md:grid-cols-[0.4fr_1fr_0.3fr] bg-gradient-to-br {bgBarColor}"
 		>
