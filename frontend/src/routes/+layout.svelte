@@ -107,7 +107,7 @@
 		</div>
 	</header>
 
-	<main >
+	<main>
 		{@render children?.()}
 	</main>
 

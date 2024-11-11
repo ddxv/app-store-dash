@@ -5,7 +5,9 @@
 	import type { MyCrumbMetadata, CompaniesLayoutResponse } from '../../../types';
 
 	function typeTabClass(tab: string) {
-		return $page.url.pathname.startsWith(`/companies/types/${tab}`) ? 'btn variant-filled-primary' : '';
+		return $page.url.pathname.startsWith(`/companies/types/${tab}`)
+			? 'btn variant-filled-primary'
+			: '';
 	}
 
 	interface Props {
@@ -43,17 +45,12 @@
 	Loading company types ...
 {:then myTabs}
 	{#if myTabs && myTabs.types.length > 0}
-
-
-	<div class="flex flex-row">
-		<a href="/companies" class={typeTabClass('all')}>All</a>
-		{#each myTabs.types as tab}
-			<a href="/companies/types/{tab.url_slug}" class={typeTabClass(tab.url_slug)}>{tab.name}</a>
-		{/each}
-	</div>
-
-
-
+		<div class="flex flex-row">
+			<a href="/companies" class={typeTabClass('all')}>All</a>
+			{#each myTabs.types as tab}
+				<a href="/companies/types/{tab.url_slug}" class={typeTabClass(tab.url_slug)}>{tab.name}</a>
+			{/each}
+		</div>
 	{/if}
 {/await}
 

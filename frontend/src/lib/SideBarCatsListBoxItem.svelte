@@ -13,9 +13,7 @@
 	let { values, localHomeCategorySelect = $bindable() }: Props = $props();
 </script>
 
-<Segment.Item
-	value={values.id}
->
+<Segment.Item value={values.id}>
 	<div class="flex w-full justify-between">
 		<div class="flex-grow">
 			{values.name}

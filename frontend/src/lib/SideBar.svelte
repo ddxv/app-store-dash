@@ -20,7 +20,6 @@
 
 	import type { CatData } from '../types';
 
-
 	const scrollTop = () => {
 		const elemPage = document.querySelector('#page');
 		if (elemPage !== null) {
@@ -106,18 +105,13 @@
 	});
 </script>
 
-
 {#if $page.url.pathname.startsWith('/collections')}
 	<div class="p-1 md:p-2">
 		<div class=" card p-4 text-token">
 			<h3 class="h4 md:h3">Stores</h3>
 			<Segment name="collectionsStores" bind:value={localHomeStoreSelect} orientation="vertical">
-				<Segment.Item
-					value="google">Google</Segment.Item
-				>
-				<Segment.Item
-					value="ios">Apple</Segment.Item
-				>
+				<Segment.Item value="google">Google</Segment.Item>
+				<Segment.Item value="ios">Apple</Segment.Item>
 			</Segment>
 		</div>
 	</div>
@@ -153,12 +147,15 @@
 	<div class="p-1 md:p-2">
 		<div class="card p-4">
 			<h3 class="h3">Categories</h3>
-			<Segment name="collectionsCategories" bind:value={localHomeCategorySelect} orientation="vertical">
+			<Segment
+				name="collectionsCategories"
+				bind:value={localHomeCategorySelect}
+				orientation="vertical"
+			>
 				{#if myCatData}
 					{#each Object.entries(myCatData.categories) as [_prop, values]}
 						{#if values.id}
-							<Segment.Item
-								value={values.id}
+							<Segment.Item value={values.id}
 								><div class="flex w-full justify-between">
 									<div class="flex-grow">
 										{values.name}
@@ -305,12 +302,15 @@
 	<div class="p-1 md:p-2">
 		<div class="card p-4">
 			<h3 class="h4 md:h3">Categories</h3>
-			<Segment name="collectionsCategories" bind:value={localHomeCategorySelect} orientation="vertical">
+			<Segment
+				name="collectionsCategories"
+				bind:value={localHomeCategorySelect}
+				orientation="vertical"
+			>
 				{#if myCatData}
 					{#each Object.entries(myCatData.categories) as [_prop, values]}
 						{#if values.id && (Number(values.android) > 0 || values.name == 'Games')}
-							<Segment.Item
-								value={values.id}
+							<Segment.Item value={values.id}
 								><div class="flex w-full justify-between">
 									<div class="flex-grow">
 										{values.name}
@@ -347,13 +347,15 @@
 	<div class="p-1 md:p-2">
 		<div class="card p-4">
 			<h3 class="h4 md:h3">Categories</h3>
-			<Segment name="collectionsCategories" bind:value={localHomeCategorySelect} orientation="vertical">
+			<Segment
+				name="collectionsCategories"
+				bind:value={localHomeCategorySelect}
+				orientation="vertical"
+			>
 				{#if myCatData}
 					{#each Object.entries(myCatData.categories) as [_prop, values]}
 						{#if values.id && (Number(values.android) > 0 || values.name == 'Games')}
-							<Segment.Item
-								value={values.id}
-							>
+							<Segment.Item value={values.id}>
 								<div class="flex w-full justify-between">
 									<div class="flex-grow">
 										{values.name}

@@ -42,7 +42,11 @@
 <div class="p-1 md:p-2">
 	<div class="card p-4">
 		<h3 class="h4 md:h3">Categories</h3>
-		<Segment name="collectionsCategories" bind:value={localHomeCategorySelect} orientation="vertical">
+		<Segment
+			name="collectionsCategories"
+			bind:value={localHomeCategorySelect}
+			orientation="vertical"
+		>
 			{#if myCatData}
 				{#each Object.entries(myCatData.categories) as [_prop, values]}
 					{#if values.id && (Number(values.android) > 0 || values.name == 'Games')}
