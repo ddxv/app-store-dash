@@ -53,7 +53,9 @@
 			{/await}
 		</div>
 	</aside>
-	{@render children?.()}
+	<div>
+		{@render children?.()}
+	</div>
 	<button
 		class="lg:hidden btn variant-filled-primary absolute right-[20px] bottom-[50px]"
 		onclick={drawerOpen}

@@ -28,6 +28,8 @@
 	$effect(() => {
 		if ($page.params.category) {
 			localHomeCategorySelect = $page.params.category;
+		} else {
+			localHomeCategorySelect = 'overall';
 		}
 	});
 
@@ -40,32 +42,29 @@
 </script>
 
 <div class="p-1 md:p-2">
-	<div class="card p-4">
-		<h3 class="h4 md:h3">Categories</h3>
-		<Segment
-			name="collectionsCategories"
-			bind:value={localHomeCategorySelect}
-			orientation="vertical"
-		>
-			{#if myCatData}
-				{#each Object.entries(myCatData.categories) as [_prop, values]}
-					{#if values.id && (Number(values.android) > 0 || values.name == 'Games')}
-						{#if values.id != 'overall'}
-							<a href="{baseUrl}/{values.id}">
-								<SideBarCatsListBoxItem {values} {localHomeCategorySelect} />
-							</a>
-						{:else if baseUrl == '/companies/categories' && values.id == 'overall'}
-							<a href="/companies">
-								<SideBarCatsListBoxItem {values} {localHomeCategorySelect} />
-							</a>
-						{:else}
-							<a href={baseUrl}>
-								<SideBarCatsListBoxItem {values} {localHomeCategorySelect} />
-							</a>
-						{/if}
+	<div class="card p-4 preset-tonal">
+		<header>
+			<h3 class="h5 md:h4">App Categories</h3>
+		</header>
+		<hr class="mb-2 border-surface-200" />
+		{#if myCatData}
+			{#each Object.entries(myCatData.categories) as [_prop, values]}
+				{#if values.id && (Number(values.android) > 0 || values.name == 'Games')}
+					{#if values.id != 'overall'}
+						<a href="{baseUrl}/{values.id}">
+							<SideBarCatsListBoxItem {values} {localHomeCategorySelect} />
+						</a>
+					{:else if baseUrl == '/companies/categories' && values.id == 'overall'}
+						<a href="/companies">
+							<SideBarCatsListBoxItem {values} {localHomeCategorySelect} />
+						</a>
+					{:else}
+						<a href={baseUrl}>
+							<SideBarCatsListBoxItem {values} {localHomeCategorySelect} />
+						</a>
 					{/if}
-				{/each}
-			{/if}
-		</Segment>
+				{/if}
+			{/each}
+		{/if}
 	</div>
 </div>

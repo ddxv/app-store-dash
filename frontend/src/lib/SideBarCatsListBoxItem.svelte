@@ -11,31 +11,41 @@
 	}
 
 	let { values, localHomeCategorySelect = $bindable() }: Props = $props();
+
+	let isSelected = $derived(checkSelected());
+
+	function checkSelected() {
+		return localHomeCategorySelect == values.id;
+	}
+
+	function setSelectedClass(isSelected: boolean) {
+		return isSelected
+			? 'bg-white border-2 border-b-0 border-primary-100 rounded-t-md relative top-[1px]'
+			: '';
+	}
 </script>
 
-<Segment.Item value={values.id}>
-	<div class="flex w-full justify-between">
-		<div class="flex-grow">
-			{values.name}
-		</div>
-
-		{#if Number(values.android) > 0 || values.name == 'Games'}
-			<div class="justify-end mr-2 md:mr-5">
-				<IconGoogle size="10" />
-			</div>
-		{:else}
-			<div class="opacity-20 justify-end mr-2 md:mr-5">
-				<IconGoogle size="10" />
-			</div>
-		{/if}
-		{#if Number(values.ios) > 0}
-			<div class="justify-end mr-2 md:mr-5">
-				<IconiOS size="10" />
-			</div>
-		{:else}
-			<div class="opacity-20 justify-end mr-2 md:mr-5">
-				<IconiOS size="10" />
-			</div>
-		{/if}
+<div class="flex w-full justify-between p-1 {setSelectedClass(isSelected)}">
+	<div class="flex-grow">
+		{values.name}
 	</div>
-</Segment.Item>
+
+	{#if Number(values.android) > 0 || values.name == 'Games'}
+		<div class="justify-end mr-2 md:mr-5">
+			<IconGoogle size="10" />
+		</div>
+	{:else}
+		<div class="opacity-20 justify-end mr-2 md:mr-5">
+			<IconGoogle size="10" />
+		</div>
+	{/if}
+	{#if Number(values.ios) > 0}
+		<div class="justify-end mr-2 md:mr-5">
+			<IconiOS size="10" />
+		</div>
+	{:else}
+		<div class="opacity-20 justify-end mr-2 md:mr-5">
+			<IconiOS size="10" />
+		</div>
+	{/if}
+</div>

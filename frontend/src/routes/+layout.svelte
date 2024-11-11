@@ -79,26 +79,21 @@
 								class="p-0 md:p-3"
 							/>
 						</div>
-						<div class="flex items-center p-1">
-							<a
-								class="btn btn-sm variant-ghost-surface"
-								href="https://github.com/ddxv/app-store-dash"
-								target="_blank"
-								rel="noreferrer"
-							>
-								<div class="inline-flex items-center text-xs md:text-lg">
-									{@html githubIcon} GitHub
-								</div>
+						<div class="flex items-center p-1 gap-2">
+							<a href="https://github.com/ddxv/app-store-dash" target="_blank" rel="noreferrer">
+								<button type="button" class="btn preset-tonal p-2">
+									<div class="inline-flex items-center text-xs md:text-lg gap-2">
+										{@html githubIcon} GitHub
+									</div>
+								</button>
 							</a>
-							<a
-								class="btn btn-sm variant-ghost-surface"
-								href="https://discord.gg/7jpWEhkXRW"
-								target="_blank"
-								rel="noreferrer"
-							>
-								<div class="inline-flex items-center text-xs md:text-lg">
-									{@html discordIcon} Discord
-								</div>
+
+							<a href="https://discord.gg/7jpWEhkXRW" target="_blank" rel="noreferrer">
+								<button type="button" class="btn preset-tonal p-2">
+									<div class="inline-flex items-center text-xs md:text-lg gap-2">
+										{@html discordIcon} Discord
+									</div>
+								</button>
 							</a>
 						</div>
 					</div>
