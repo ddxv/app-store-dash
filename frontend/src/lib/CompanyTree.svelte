@@ -10,7 +10,7 @@
 	let { myTree }: Props = $props();
 </script>
 
-<div class="bg-white shadow-sm rounded-lg overflow-hidden">
+<div class="card preset-tonal shadow-sm rounded-lg overflow-hidden">
 	<div class="p-4 text-xs">
 		<ul class="space-y-2">
 			{#each myTree.children_companies as child}

@@ -3,7 +3,7 @@
 	import IconGoogle from './svg/IconGoogle.svelte';
 
 	const buttonSelectedColor =
-		'bg-white border-2 border-primary-100 rounded-t-md relative top-[1px]';
+		'preset-filled-primary border-2 border-primary-100 rounded-t-md relative top-[1px]';
 
 	const buttonDeselectedColor = 'btn';
 

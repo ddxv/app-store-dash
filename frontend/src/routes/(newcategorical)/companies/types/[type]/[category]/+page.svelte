@@ -36,7 +36,7 @@
 	<div><span>Loading...</span></div>
 {:then type}
 	<div class="flex items-center mb-2">
-		<h1 class="text-3xl font-bold text-gray-800">
+		<h1 class="text-3xl font-bold text-primary-200-800">
 			{type ? type.name : 'Unknown'} -
 			{#await currentCategory then myCategory}
 				{myCategory ? myCategory.name : 'Unknown'}

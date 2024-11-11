@@ -30,12 +30,12 @@
 						<span class="text-sm font-semibold">{companyName}</span>
 					{/snippet}
 					<div class="p-4 text-xs">
-						<h4 class="font-medium text-gray-500 uppercase tracking-wider mb-1">
+						<h4 class="font-medium text-primary-200-800 uppercase tracking-wider mb-1">
 							Package Patterns
 						</h4>
 						<ul class="list-disc list-inside space-y-0.5">
 							{#each truncateList(patterns.package_patterns) as pattern}
-								<li class="text-gray-700">{pattern}</li>
+								<li class="">{pattern}</li>
 							{/each}
 						</ul>
 					</div>
@@ -45,14 +45,14 @@
 
 		<!-- Separate card for unique paths -->
 		{#if uniquePaths.length > 0}
-			<div class="bg-white shadow-sm rounded-lg overflow-hidden">
+			<div class="shadow-sm rounded-lg overflow-hidden">
 				<div class="px-4 py-3 bg-gray-50 border-b border-gray-200">
-					<h3 class="text-sm font-semibold text-gray-900">Unique Path Patterns</h3>
+					<h3 class="text-sm font-semibold text-primary-200-800">Unique Path Patterns</h3>
 				</div>
 				<div class="p-4 text-xs">
 					<ul class="list-disc list-inside space-y-0.5">
 						{#each truncateList(uniquePaths) as path}
-							<li class="text-gray-700">{path}</li>
+							<li class="">{path}</li>
 						{/each}
 					</ul>
 				</div>

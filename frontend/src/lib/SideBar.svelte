@@ -8,12 +8,10 @@
 	import { homeStoreSelection } from '../stores';
 	import { homeCategorySelection } from '../stores';
 
-	import SideBarCatsListBoxItem from './SideBarCatsListBoxItem.svelte';
-
 	import { storeIDLookup, collectionIDLookup, categoryIDLookup } from '../stores';
 
 	const buttonSelectedClass =
-		'bg-white border-2 border-primary-100 rounded-t-md relative top-[1px]';
+		'preset-filled-primary border-2 border-primary-100 rounded-t-md relative top-[1px]';
 	const buttonDeselectedClass = 'btn';
 	const listClass = 'flex flex-col gap-2';
 

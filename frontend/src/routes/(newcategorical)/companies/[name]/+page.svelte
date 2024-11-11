@@ -25,10 +25,10 @@
 </script>
 
 <div class="flex items-center mb-2">
-	<h1 class="text-3xl font-bold text-gray-800">{name}</h1>
+	<h1 class="text-3xl font-bold text-primary-200-800">{name}</h1>
 	<div class="h-8 w-px bg-gray-300 mx-2"></div>
 	{#await data.companyTree}
-		<span class="text-lg text-gray-600">Loading...</span>
+		<span class="text-lg">Loading...</span>
 	{:then myTree}
 		{#if typeof myTree == 'string'}
 			<p class="text-red-500">Failed to load company tree.</p>
@@ -37,17 +37,21 @@
 				{#if myTree.queried_company_domain}
 					{#if myTree.parent_company_domain == myTree.queried_company_domain}
 						<!-- IS PARENT COMPANY -->
-						<h2 class="text-xl font-bold text-gray-800 mr-2">{myTree.parent_company_name}</h2>
+						<h2 class="text-xl font-bold text-primary-200-800 mr-2">
+							{myTree.parent_company_name}
+						</h2>
 						<div class="h-8 w-px bg-gray-300 mx-2"></div>
 						<ExternalLink domain={myTree.parent_company_domain} />
 					{:else}
-						<h2 class="text-xl font-bold text-gray-800 mr-2">{myTree.queried_company_name}</h2>
+						<h2 class="text-xl font-bold text-primary-200-800 mr-2">
+							{myTree.queried_company_name}
+						</h2>
 						<div class="h-8 w-px bg-gray-300 mx-2"></div>
 						<ExternalLink domain={myTree.queried_company_domain} />
 						<div class="h-8 w-px bg-gray-300 mx-2"></div>
 						<!-- HAS PARENT COMPANY -->
-						<!-- <h2 class="text-xl font-bold text-gray-800 mr-2">PARENT: {myTree.queried_company_domain} {myTree.parent_company_name} AA</h2> -->
-						<h2 class="h2 text-xl font-bold text-gray-800 mr-2">Parent Company:</h2>
+						<!-- <h2 class="text-xl font-bold text-primary-200-800 mr-2">PARENT: {myTree.queried_company_domain} {myTree.parent_company_name} AA</h2> -->
+						<h2 class="h2 text-xl font-bold text-primary-200-800 mr-2">Parent Company:</h2>
 						<CompanyButton
 							companyName={myTree.parent_company_name}
 							companyDomain={myTree.parent_company_domain}
@@ -65,15 +69,15 @@
 	{#snippet card1()}
 		<WhiteCard>
 			{#await data.companyParentCategories}
-				<span class="text-lg text-gray-600">Loading...</span>
+				<span class="text-lg">Loading...</span>
 			{:then myData}
 				{#if typeof myData == 'string'}
 					<p class="text-red-500 text-center">Failed to load company details.</p>
 				{:else if myData && myData.length > 0}
-					<div class="bg-white p-2 rounded-lg shadow-md">
-						<h2 class="text-xl font-bold text-gray-800 mb-4">Total Apps</h2>
-						<p class="text-lg text-gray-700">
-							<span class="font-semibold text-gray-900"
+					<div class=" p-2 rounded-lg shadow-md">
+						<h2 class="text-xl font-bold text-primary-200-800 mb-4">Total Apps</h2>
+						<p class="text-lg">
+							<span class="font-semibold text-primary-200-800"
 								>{formatNumber(myData.map((d) => d.value).reduce((a, b) => a + b, 0))}</span
 							>
 						</p>
@@ -89,7 +93,7 @@
 		<WhiteCard>
 			<div>
 				{#await data.companyParentCategories}
-					<span class="text-lg text-gray-600">Loading...</span>
+					<span class="text-lg">Loading...</span>
 				{:then myPieData}
 					{#if typeof myPieData == 'string'}
 						<p class="text-red-500 text-center">Failed to load parent categories.</p>
@@ -109,7 +113,7 @@
 				<span>Subsidiary Companies</span>
 			{/snippet}
 			{#await data.companyTree}
-				<span class="text-lg text-gray-600">Loading...</span>
+				<span class="text-lg">Loading...</span>
 			{:then myTree}
 				{#if typeof myTree == 'string'}
 					<p class="text-red-500 text-center">Failed to load company tree.</p>
@@ -130,7 +134,7 @@
 				<span>Company SDKs</span>
 			{/snippet}
 			{#await data.companySdks}
-				<span class="text-lg text-gray-600">Loading...</span>
+				<span class="text-lg">Loading...</span>
 			{:then mySdks}
 				{#if typeof mySdks == 'string'}
 					<p class="text-red-500 text-center">Failed to load company SDKs.</p>

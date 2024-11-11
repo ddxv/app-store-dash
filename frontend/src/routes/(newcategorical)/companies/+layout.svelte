@@ -44,6 +44,6 @@
 	{/if}
 {/await}
 
-<div class="card-content p-1 md:p-6 bg-white shadow-md rounded-lg">
+<div class="card-content p-1 md:p-6 shadow-md rounded-lg">
 	{@render children?.()}
 </div>
