@@ -20,6 +20,7 @@
 		plotHeightPx = '300px',
 		chartOptions = {
 			title: plotTitle,
+			theme: 'g90', // <- how to set the theme
 			axes: {
 				left: {
 					mapsTo: 'group',

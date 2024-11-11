@@ -43,7 +43,7 @@
 	<div><span>Loading...</span></div>
 {:then type}
 	<div class="flex items-center mb-2">
-		<h1 class="text-3xl font-bold text-primary-200-800">
+		<h1 class="text-3xl font-bold text-primary-900-100">
 			{type ? type.name : 'Unknown'} / All App Categories
 		</h1>
 		<div class="h-8 w-px bg-gray-300 mx-2"></div>
@@ -60,9 +60,9 @@
 			{#snippet card1()}
 				<WhiteCard>
 					<div class="p-6 rounded-lg shadow-md">
-						<h2 class="text-xl font-bold text-primary-200-800 mb-4">Total Companies</h2>
+						<h2 class="text-xl font-bold text-primary-900-100 mb-4">Total Companies</h2>
 						<p class="text-lg">
-							<span class="font-semibold text-primary-200-800"
+							<span class="font-semibold text-primary-900-100"
 								>{formatNumber(myData.categories.categories.companies.total_companies)}</span
 							>
 						</p>

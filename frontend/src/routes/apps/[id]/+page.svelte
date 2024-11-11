@@ -106,17 +106,19 @@
 				<div class="block md:hidden"></div>
 				{#if myapp.developer_id}
 					<div class="p-2 md:py-2">
-						<a
-							href="/developers/{myapp.developer_id}"
-							class="btn preset-tonal hover:preset-tonal-primary"
-							><span>Developer: {myapp.developer_name}</span></a
-						>
+						<a href="/developers/{myapp.developer_id}">
+							<div class="btn preset-tonal hover:preset-tonal-primary">
+								<span>Developer: {myapp.developer_name}</span>
+							</div>
+						</a>
 					</div>
 				{/if}
 				<div class="p-2 md:py-2">
-					<a href="/categories/{myapp.category}" class="btn preset-tonal hover:preset-tonal-primary"
-						><span>Category: {myapp.category}</span></a
-					>
+					<a href="/categories/{myapp.category}">
+						<div class="btn preset-tonal hover:preset-tonal-primary">
+							<span>Category: {myapp.category}</span>
+						</div>
+					</a>
 				</div>
 			{/await}
 		</div>
@@ -206,12 +208,12 @@
 				{:else}
 					{#if ranks.latest && ranks.latest.length > 0}
 						{#each ranks.latest as myrow}
-							<h6 class="h6 px-4">
+							<div class="px-4">
 								#{myrow.rank}
 								in: {myrow.collection}
 								{myrow.category}
 								({myrow.crawled_date})
-							</h6>
+							</div>
 						{/each}
 					{/if}
 					{#if ranks.history && ranks.history.length > 0}

@@ -1,5 +1,6 @@
 <script lang="ts">
-	import '../app.postcss';
+	import '../app.css';
+
 	import IconSearch from '$lib/svg/IconSearch.svelte';
 
 	import { AppBar } from '@skeletonlabs/skeleton-svelte';
@@ -11,8 +12,6 @@
 	import discordIcon from '$lib/svg/discord-mark-black.svg?raw';
 
 	let searchTerm: string = $state();
-
-	const bgBarColor = 'from-purple-500/40 via-white to-white';
 
 	function navigateToSearch(event: any) {
 		if (event.key === 'Enter' && searchTerm.trim() !== '') {
@@ -43,9 +42,7 @@
 
 <div class="h-screen grid grid-rows-[auto_1fr_auto]">
 	<header class=" sticky top-0 z-10 bg-red-500">
-		<div
-			class="grid-cols-[1fr_0_1fr] md:grid-cols-[0.4fr_1fr_0.3fr] bg-gradient-to-br {bgBarColor}"
-		>
+		<div class="grid-cols-[1fr_0_1fr] md:grid-cols-[0.4fr_1fr_0.3fr]">
 			<AppBar headlineClasses="sm:hidden" centerClasses="hidden sm:block">
 				{#snippet lead()}
 					<div class="flex items-center">
@@ -56,7 +53,9 @@
 								src="/goblin_purple_hat_250.png"
 								alt="Goblin Icon"
 							/>
-							<strong class="text-xl ml-1 md:ml-2 md:text-3xl uppercase">AppGoblin</strong>
+							<strong class="text-xl ml-1 md:ml-2 md:text-3xl uppercase text-primary-900-100"
+								>AppGoblin</strong
+							>
 						</a>
 					</div>
 				{/snippet}

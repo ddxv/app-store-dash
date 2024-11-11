@@ -50,15 +50,15 @@
 			{#each Object.entries(myCatData.categories) as [_prop, values]}
 				{#if values.id && (Number(values.android) > 0 || values.name == 'Games')}
 					{#if values.id != 'overall'}
-						<a href="{baseUrl}/{values.id}">
+						<a href="{baseUrl}/{values.id}" class="text-tertiary-900-100 hover:underline">
 							<SideBarCatsListBoxItem {values} {localHomeCategorySelect} />
 						</a>
 					{:else if baseUrl == '/companies/categories' && values.id == 'overall'}
-						<a href="/companies">
+						<a href="/companies" class="text-tertiary-900-100 hover:underline">
 							<SideBarCatsListBoxItem {values} {localHomeCategorySelect} />
 						</a>
 					{:else}
-						<a href={baseUrl}>
+						<a href={baseUrl} class="text-tertiary-900-100 hover:underline">
 							<SideBarCatsListBoxItem {values} {localHomeCategorySelect} />
 						</a>
 					{/if}

@@ -49,7 +49,7 @@
 
 	<br />
 
-	<div class="card p-2 md:p-8">
+	<div class="card preset-filled-surface-100-900 p-2 md:p-8">
 		<h2 class="h2 p-2 md:p-4">Marketing Community & Feedback</h2>
 		<div class="p-4">
 			<p>
@@ -74,7 +74,7 @@
 	</div>
 
 	<br />
-	<div class="card p-2 md:p-8">
+	<div class="card preset-filled-surface-100-900 p-2 md:p-8">
 		<h2 class="h2 p-2 md:p-4">Background</h2>
 		<div class="p-4">
 			<p>
@@ -104,7 +104,7 @@
 	</div>
 	<br />
 
-	<div class="card p-2 md:p-4">
+	<div class="card preset-filled-surface-100-900 p-2 md:p-4">
 		<h2 class="h2 p-2 md:p-4">Open Source Tech Stack</h2>
 		<div class="p-2 md:p-4">
 			<p>

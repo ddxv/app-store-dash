@@ -25,7 +25,7 @@
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-6">
 	<!-- SDK Section -->
 	<div class="p-2 md:p-6 rounded-lg shadow-md">
-		<h2 class="text-xl font-bold text-primary-200-800 mb-4">SDK</h2>
+		<h2 class="text-xl font-bold text-primary-900-100 mb-4">SDK</h2>
 		<p class="text-sm md:text-lg mb-2">
 			SDK data is derived by downloading the app's Android APK or iOS IPA file and unzipped. We then
 			check the app's data for SDK signatures in paths, AndroidManifest.xml and the Info.plist. Many
@@ -60,8 +60,8 @@
 
 	<!-- App Ads.txt Section -->
 	<div class="p-2 md:p-6 rounded-lg shadow-md">
-		<h2 class="text-xl font-bold text-primary-200-800">App Ads.txt</h2>
-		<p class="text-sm md:text-lg font-bold text-primary-200-800 mb-4">('DIRECT')</p>
+		<h2 class="text-xl font-bold text-primary-900-100">App Ads.txt</h2>
+		<p class="text-sm md:text-lg font-bold text-primary-900-100 mb-4">('DIRECT')</p>
 		<p class="text-sm md:text-lg mb-2">
 			App-ads.txt files are an open standard by the IAB to help combat ad fraud. This data was
 			crawled from the URLs on the app's developer pages. Not all apps have app-ads.txt, many do

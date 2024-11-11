@@ -25,7 +25,7 @@
 </script>
 
 <div class="flex items-center mb-2">
-	<h1 class="text-3xl font-bold text-primary-200-800">{name}</h1>
+	<h1 class="text-3xl font-bold text-primary-900-100">{name}</h1>
 	<div class="h-8 w-px bg-gray-300 mx-2"></div>
 	{#await data.companyTree}
 		<span class="text-lg">Loading...</span>
@@ -37,21 +37,21 @@
 				{#if myTree.queried_company_domain}
 					{#if myTree.parent_company_domain == myTree.queried_company_domain}
 						<!-- IS PARENT COMPANY -->
-						<h2 class="text-xl font-bold text-primary-200-800 mr-2">
+						<h2 class="text-xl font-bold text-primary-900-100 mr-2">
 							{myTree.parent_company_name}
 						</h2>
 						<div class="h-8 w-px bg-gray-300 mx-2"></div>
 						<ExternalLink domain={myTree.parent_company_domain} />
 					{:else}
-						<h2 class="text-xl font-bold text-primary-200-800 mr-2">
+						<h2 class="text-xl font-bold text-primary-900-100 mr-2">
 							{myTree.queried_company_name}
 						</h2>
 						<div class="h-8 w-px bg-gray-300 mx-2"></div>
 						<ExternalLink domain={myTree.queried_company_domain} />
 						<div class="h-8 w-px bg-gray-300 mx-2"></div>
 						<!-- HAS PARENT COMPANY -->
-						<!-- <h2 class="text-xl font-bold text-primary-200-800 mr-2">PARENT: {myTree.queried_company_domain} {myTree.parent_company_name} AA</h2> -->
-						<h2 class="h2 text-xl font-bold text-primary-200-800 mr-2">Parent Company:</h2>
+						<!-- <h2 class="text-xl font-bold text-primary-900-100 mr-2">PARENT: {myTree.queried_company_domain} {myTree.parent_company_name} AA</h2> -->
+						<h2 class="h2 text-xl font-bold text-primary-900-100 mr-2">Parent Company:</h2>
 						<CompanyButton
 							companyName={myTree.parent_company_name}
 							companyDomain={myTree.parent_company_domain}
@@ -75,9 +75,9 @@
 					<p class="text-red-500 text-center">Failed to load company details.</p>
 				{:else if myData && myData.length > 0}
 					<div class=" p-2 rounded-lg shadow-md">
-						<h2 class="text-xl font-bold text-primary-200-800 mb-4">Total Apps</h2>
+						<h2 class="text-xl font-bold text-primary-900-100 mb-4">Total Apps</h2>
 						<p class="text-lg">
-							<span class="font-semibold text-primary-200-800"
+							<span class="font-semibold text-primary-900-100"
 								>{formatNumber(myData.map((d) => d.value).reduce((a, b) => a + b, 0))}</span
 							>
 						</p>

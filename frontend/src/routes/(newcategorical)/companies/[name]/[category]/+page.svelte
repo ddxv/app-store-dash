@@ -24,7 +24,7 @@
 </script>
 
 <div class="flex items-center mb-2">
-	<h1 class="text-3xl font-bold text-primary-200-800">{name}</h1>
+	<h1 class="text-3xl font-bold text-primary-900-100">{name}</h1>
 	<div class="h-8 w-px bg-gray-300 mx-2"></div>
 	{#await data.companyTree}
 		<span class="text-lg">Loading...</span>
@@ -43,12 +43,12 @@
 	{/await}
 </div>
 
-<h3 class="text-xl font-bold mb-6 text-primary-200-800">Category: {company_category}</h3>
+<h3 class="text-xl font-bold mb-6 text-primary-900-100">Category: {company_category}</h3>
 
 {#await data.companyTree then myTree}
 	{#if myTree && myTree.parent_company_name && myTree.parent_company_domain}
 		<div class="flex items-center mt-2 ml-4">
-			<p class="text-xl font-bold text-primary-200-800 mr-2">Parent Company:</p>
+			<p class="text-xl font-bold text-primary-900-100 mr-2">Parent Company:</p>
 			<CompanyButton
 				companyName={myTree.parent_company_name}
 				companyDomain={myTree.parent_company_domain}
@@ -69,9 +69,9 @@
 					<p class="text-red-500 text-center">Failed to load company details.</p>
 				{:else if myData}
 					<div class="p-6 rounded-lg shadow-md">
-						<h2 class="text-xl font-bold text-primary-200-800 mb-4">Total Apps</h2>
+						<h2 class="text-xl font-bold text-primary-900-100 mb-4">Total Apps</h2>
 						<p class="text-lg">
-							<span class="font-semibold text-primary-200-800"
+							<span class="font-semibold text-primary-900-100"
 								>{formatNumber(myData.categories[company_category].total_apps)}</span
 							>
 						</p>
