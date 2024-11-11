@@ -70,12 +70,12 @@
 					Try searching on Google Play. Results will take an hour to be live on AppGoblin. If you
 					still don't see what you're looking for please reach out on GitHub or Discord.
 				</p>
-				<card class="card variant-glass-surface p-4">
+				<card class="card preset-tonal p-4">
 					<button class="btn variant-filled-primary p-2" onclick={searchGooglePlay}>
 						Search Google Play Store
 					</button>
 				</card>
-				<card class="card variant-glass-surface p-4">
+				<card class="card preset-tonal p-4">
 					<button class="btn variant-filled-primary p-2" onclick={searchAppleStore}>
 						Search Apple App Store
 					</button>

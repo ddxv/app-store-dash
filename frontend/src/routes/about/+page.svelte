@@ -59,12 +59,12 @@
 
 			<br />
 			<a
-				class="btn btn-sm variant-ghost-surface"
+				class="btn preset-tonal"
 				href="https://discord.gg/7jpWEhkXRW"
 				target="_blank"
 				rel="noreferrer"
 			>
-				<p>Join AppGoblin Discord</p>
+				<p class="text-base">Join AppGoblin Discord</p>
 				<div class="inline-flex items-center">
 					{@html discordIcon}
 				</div>

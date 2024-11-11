@@ -1,5 +1,5 @@
 <script lang="ts">
-	const topBarFont = 'h6 md:h3 hover:text-surface-500';
+	const topBarFont = 'h6 md:h4 hover:text-surface-500';
 </script>
 
 <div class="flex flex-row gap-2 md:gap-6">

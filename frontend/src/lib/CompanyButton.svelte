@@ -9,8 +9,7 @@
 </script>
 
 <p class="h4">
-	<a
-		class="btn hover:bg-primary-hover-token variant-ghost-primary"
-		href={`${baseUrl}/${companyDomain}`}>{companyName}</a
+	<a class="btn preset-tonal hover:preset-tonal-primary" href={`${baseUrl}/${companyDomain}`}
+		>{companyName}</a
 	>
 </p>

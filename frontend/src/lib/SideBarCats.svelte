@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { Segment } from '@skeletonlabs/skeleton-svelte';
 
 	import SideBarCatsListBoxItem from './SideBarCatsListBoxItem.svelte';
 
@@ -39,14 +38,14 @@
 	}
 
 	let { baseUrl, myCatData }: Props = $props();
+	import CardFirst from './CardFirst.svelte';
 </script>
 
 <div class="p-1 md:p-2">
-	<div class="card p-4 preset-tonal">
-		<header>
+	<CardFirst>
+		{#snippet header()}
 			<h3 class="h5 md:h4">App Categories</h3>
-		</header>
-		<hr class="mb-2 border-surface-200" />
+		{/snippet}
 		{#if myCatData}
 			{#each Object.entries(myCatData.categories) as [_prop, values]}
 				{#if values.id && (Number(values.android) > 0 || values.name == 'Games')}
@@ -66,5 +65,5 @@
 				{/if}
 			{/each}
 		{/if}
-	</div>
+	</CardFirst>
 </div>

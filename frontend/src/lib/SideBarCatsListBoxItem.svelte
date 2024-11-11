@@ -1,9 +1,11 @@
 <script lang="ts">
-	import { Segment } from '@skeletonlabs/skeleton-svelte';
 	import IconiOS from './svg/IconiOS.svelte';
 	import IconGoogle from './svg/IconGoogle.svelte';
 
-	const buttonSelectedColor = 'variant-filled-primary';
+	const buttonSelectedColor =
+		'bg-white border-2 border-primary-100 rounded-t-md relative top-[1px]';
+
+	const buttonDeselectedColor = 'btn';
 
 	interface Props {
 		values: any;
@@ -15,13 +17,13 @@
 	let isSelected = $derived(checkSelected());
 
 	function checkSelected() {
+		console.log('localHomeCategorySelect', localHomeCategorySelect);
+		console.log('values.id', values.id);
 		return localHomeCategorySelect == values.id;
 	}
 
 	function setSelectedClass(isSelected: boolean) {
-		return isSelected
-			? 'bg-white border-2 border-b-0 border-primary-100 rounded-t-md relative top-[1px]'
-			: '';
+		return isSelected ? buttonSelectedColor : buttonDeselectedColor;
 	}
 </script>
 

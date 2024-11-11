@@ -34,7 +34,7 @@
 		</p>
 		<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 			<!-- Android SDK -->
-			<div class="card variant-glass-surface">
+			<div class="card preset-tonal">
 				<div class="card-header">
 					<p class="text-lg text-gray-700">
 						{@render sdkAndroidTotalApps()}
@@ -45,7 +45,7 @@
 				</div>
 			</div>
 			<!-- iOS SDK -->
-			<div class="card variant-glass-surface">
+			<div class="card preset-tonal">
 				<div class="card-header">
 					<p class="text-lg text-gray-700">
 						{@render sdkIosTotalApps()}
@@ -69,7 +69,7 @@
 		</p>
 		<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 			<!-- Android App Ads.txt -->
-			<div class="card variant-glass-surface">
+			<div class="card preset-tonal">
 				<div class="card-header">
 					<p class="text-sm md:text-lg text-gray-700">
 						{@render adstxtAndroidTotalApps()}
@@ -80,7 +80,7 @@
 				</div>
 			</div>
 			<!-- iOS App Ads.txt -->
-			<div class="card variant-glass-surface">
+			<div class="card preset-tonal">
 				<div class="card-header">
 					<p class="text-sm md:text-lg text-gray-700">
 						{@render adstxtIosTotalApps()}
