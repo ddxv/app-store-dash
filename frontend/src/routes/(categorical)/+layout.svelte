@@ -48,9 +48,7 @@
 <div class="grid grid-cols-1 md:grid-cols-[auto_1fr]">
 
 
-
 <aside>
-
 		{#await data.appCats then myCatData}
 			<SideBar {myCatData} />
 		{/await}

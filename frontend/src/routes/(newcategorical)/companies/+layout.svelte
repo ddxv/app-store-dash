@@ -3,7 +3,10 @@
 	import type { Crumb } from '../../../types';
 	import Breadcrumbs from '$lib/Breadcrumbs.svelte';
 	import type { MyCrumbMetadata, CompaniesLayoutResponse } from '../../../types';
-	import CompanyTypesTabs from '$lib/utils/CompanyTypesTabs.svelte';
+
+	function typeTabClass(tab: string) {
+		return $page.url.pathname.startsWith(`/companies/types/${tab}`) ? 'btn variant-filled-primary' : '';
+	}
 
 	interface Props {
 		data: CompaniesLayoutResponse;
@@ -40,7 +43,17 @@
 	Loading company types ...
 {:then myTabs}
 	{#if myTabs && myTabs.types.length > 0}
-		<CompanyTypesTabs myTabs={myTabs.types}></CompanyTypesTabs>
+
+
+	<div class="flex flex-row">
+		<a href="/companies" class={typeTabClass('all')}>All</a>
+		{#each myTabs.types as tab}
+			<a href="/companies/types/{tab.url_slug}" class={typeTabClass(tab.url_slug)}>{tab.name}</a>
+		{/each}
+	</div>
+
+
+
 	{/if}
 {/await}
 
