@@ -7,6 +7,7 @@ import * as themes from '@skeletonlabs/skeleton/themes';
 
 const config = {
 	// 2. Opt for dark mode to be handled via the class method
+	// darkMode: 'selector',
 	content: [
 		'./src/**/*.{html,js,svelte,ts}',
 		// 3. Append the path to the Skeleton package

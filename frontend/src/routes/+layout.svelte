@@ -41,13 +41,16 @@
 </script>
 
 <div class="h-screen grid grid-rows-[auto_1fr_auto]">
-	<header class=" sticky top-0 z-10 bg-red-500">
+	<header class="sticky top-0 z-10">
 		<div class="grid-cols-[1fr_0_1fr] md:grid-cols-[0.4fr_1fr_0.3fr]">
-			<AppBar headlineClasses="sm:hidden" centerClasses="hidden sm:block">
+			<AppBar
+				headlineClasses="sm:hidden"
+				centerClasses="hidden sm:block"
+				background="bg-tonal-primary"
+			>
 				{#snippet lead()}
 					<div class="flex items-center">
 						<a class="flex" href="/">
-							<!-- <img class="h-8 m w-8 md:h-12 md:w-12" src="/cute_eyes_250.png" alt="Goblin Icon" /> -->
 							<img
 								class="ml-1 md:ml-2 h-8 m w-8 md:h-12 md:w-12"
 								src="/goblin_purple_hat_250.png"
@@ -80,7 +83,7 @@
 						</div>
 						<div class="flex items-center p-1 gap-2">
 							<a href="https://github.com/ddxv/app-store-dash" target="_blank" rel="noreferrer">
-								<button type="button" class="btn preset-tonal p-2">
+								<button type="button" class="btn preset-tonal hover:preset-tonal-primary p-2">
 									<div class="inline-flex items-center text-xs md:text-lg gap-2">
 										{@html githubIcon} GitHub
 									</div>
@@ -88,7 +91,7 @@
 							</a>
 
 							<a href="https://discord.gg/7jpWEhkXRW" target="_blank" rel="noreferrer">
-								<button type="button" class="btn preset-tonal p-2">
+								<button type="button" class="btn preset-tonal hover:preset-tonal-primary p-2">
 									<div class="inline-flex items-center text-xs md:text-lg gap-2">
 										{@html discordIcon} Discord
 									</div>
@@ -101,7 +104,7 @@
 		</div>
 	</header>
 
-	<main>
+	<main class="bg-surface-100-900">
 		{@render children?.()}
 	</main>
 

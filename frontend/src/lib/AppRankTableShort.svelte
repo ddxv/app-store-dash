@@ -8,22 +8,21 @@
 	let { myTable }: Props = $props();
 </script>
 
+<div class="card preset-filled-surface-100-900 rounded-md">
 <table class="table table-hover table-compact">
 	<thead>
-		<!-- <tr>
-			<th>Rank</th>
-			<th>Name</th>
-		</tr> -->
 	</thead>
 	<tbody>
 		{#each Object.entries(myTable.ranks) as [_prop, values]}
 			<tr>
 				<td
 					><div class="inline-flex">
+						<p class="text-sm md:text-base">
 						#
-						<h3 class="h4 md:h3">
+						</p>
+						<p class="text-xl md:text-xl2">
 							{values.rank}
-						</h3>
+						</p>
 					</div>
 				</td>
 				<td>
@@ -42,3 +41,4 @@
 		{/each}
 	</tbody>
 </table>
+</div>

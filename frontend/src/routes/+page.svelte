@@ -59,24 +59,25 @@
 
 <div class="p-2 md:p-4 px-2 md:px-20 lg:px-48">
 	<br />
-	<div class="card preset-filled-surface-100-900 p-2 md:p-8">
-		<a href="/about">
-			<h1 class="h1 p-2 md:p-4">AppGoblin: Mobile App Store Data and Stats</h1>
+	<div class="card preset-tonal-surface p-2 md:p-8">
+			<h1 class="h1 p-2 md:p-4 text-primary-900-100">AppGoblin: Mobile App Store Data and Stats</h1>
 			<p class="p-2 md:p-4">
 				AppGoblin is an open source project for collecting Google & Apple App Store data and
 				presenting it for developers and marketers. AppGoblin features app store daily ranks and
-				stats about mobile ad networks, data analytics tools, MMPs and app-ads.txt stats.<strong>
+				stats about mobile ad networks, data analytics tools, MMPs and app-ads.txt stats.
+		<a href="/about">
+				<strong>
 					Click here to learn more or request new features.</strong
 				>
-			</p>
 		</a>
+			</p>
 	</div>
 
 	<br />
 
-	<div class="card preset-filled-surface-100-900 p-2 md:p-8">
+	<div class="card preset-tonal-surface p-2 md:p-8">
+			<h2 class="h2 p-2 md:p-4">Latest App Store Ranks</h2>
 		<a href="/rankings/store/1/collection/1/category/1">
-			<h1 class="h1 p-2 md:p-4">Latest App Store Ranks</h1>
 			<p class="p-2 md:p-4">Click through for full app store categories and rankings.</p>
 		</a>
 		<div
@@ -144,16 +145,17 @@
 		</div>
 	</div>
 	<br />
-	<div class="card preset-filled-surface-100-900 p-2 md:p-8">
-		<a href="/collections/new_monthly">
-			<h1 class="h1 p-2 md:p-4">Most Integrated Ad Networks & Trackers</h1>
+	<div class="card preset-tonal-surface p-2 md:p-8">
+			<h2 class="h2 p-2 md:p-4">Most Integrated Ad Networks & Trackers</h2>
 			<p class="p-2 md:p-4">
 				By downloading and opening up the top apps and games from the Google and iOS Appstore we can
 				see which third-party ad networks and trackers are used across the various App Store
 				categories. The lists include various ad networks, MMPs, tracking, analytics and other 3rd
 				party services which likely collect app data. You can also help expand these lists.
-			</p>
+		<a href="/companies">
+			<strong>Check out all the SDKs, Companies and Ad Network rankings.</strong>
 		</a>
+			</p>
 		<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
 			<a href="/companies/types/ad-networks">
 				<div class="card preset-tonal-surface md:p-4">
@@ -227,9 +229,9 @@
 	</div>
 
 	<br />
-	<div class="card preset-filled-surface-100-900 p-2 md:p-8">
+	<div class="card preset-tonal-surface p-2 md:p-8">
 		<a href="/collections/new_monthly">
-			<h1 class="h1 p-2 md:p-4">Explore New Apps</h1>
+			<h2 class="h2 p-2 md:p-4">Explore New Apps</h2>
 			<p class="p-2 md:p-4">
 				<strong> Click here to see explore all categories.</strong>
 			</p>
