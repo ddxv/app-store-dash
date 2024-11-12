@@ -39,6 +39,7 @@ QUERY_SINGLE_DEVELOPER_ADSTXT = load_sql_file("query_single_developer_adstxt.sql
 QUERY_APP_HISTORY = load_sql_file("query_app_history.sql")
 QUERY_SINGLE_APP = load_sql_file("query_single_app.sql")
 QUERY_APP_PACKAGE_DETAILS = load_sql_file("query_app_package_details.sql")
+QUERY_TOTAL_COUNTS = load_sql_file("query_total_counts.sql")
 QUERY_STORE_COLLECTION_CATEGORY_MAP = load_sql_file(
     "query_store_collection_category_map.sql",
 )
@@ -157,6 +158,12 @@ def get_adtech_categories() -> pd.DataFrame:
     """Get the categories for adtech."""
     df = pd.read_sql(QUERY_ADTECH_CATEGORIES, con=DBCON.engine)
     df = df.sort_values("id")
+    return df
+
+
+def get_total_counts() -> pd.DataFrame:
+    """Get total counts."""
+    df = pd.read_sql(QUERY_TOTAL_COUNTS, con=DBCON.engine)
     return df
 
 

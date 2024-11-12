@@ -1,15 +1,15 @@
 <script lang="ts">
 	import AppRankTableShort from '$lib/AppRankTableShort.svelte';
-	import type { HomeData } from '../types';
+	import type { PageData } from './$types';
 
 	import CompaniesBarChart from '$lib/CompaniesBarChart.svelte';
 	import WhiteCard from '$lib/WhiteCard.svelte';
 
-	interface Props {
-		data: HomeData;
-	}
+	let { data }: { data: PageData } = $props();
 
-	let { data }: Props = $props();
+	function formatNumber(num: number) {
+		return num.toLocaleString();
+	}
 </script>
 
 <svelte:head>
@@ -60,23 +60,53 @@
 <div class="p-2 md:p-4 px-2 md:px-20 lg:px-48">
 	<br />
 	<div class="card preset-tonal-surface p-2 md:p-8">
-			<h1 class="h1 p-2 md:p-4 text-primary-900-100">AppGoblin: Mobile App Store Data and Stats</h1>
-			<p class="p-2 md:p-4">
-				AppGoblin is an open source project for collecting Google & Apple App Store data and
-				presenting it for developers and marketers. AppGoblin features app store daily ranks and
-				stats about mobile ad networks, data analytics tools, MMPs and app-ads.txt stats.
-		<a href="/about">
-				<strong>
-					Click here to learn more or request new features.</strong
-				>
+		<h1 class="h1 p-2 md:p-4 text-primary-900-100">AppGoblin: Mobile App Store Data and Stats</h1>
+		<p class="p-2 md:p-4">
+			AppGoblin is an open source project for collecting Google & Apple App Store data and
+			presenting it for developers and marketers. AppGoblin features app store daily ranks and stats
+			about mobile ad networks, data analytics tools, MMPs and app-ads.txt stats.
+		</p>
+		<a href="/about" class="p-2 md:p-4 mb-4">
+			<strong> Click here to learn more or request new features.</strong>
 		</a>
-			</p>
+
+		<WhiteCard>
+			{#snippet title()}
+				App Store Scanned Apps
+			{/snippet}
+			{#await data.appsOverview}
+				Loading Overview...
+			{:then appsOverview}
+				<div class="table-wrap">
+					<table class="table w-full">
+						<thead>
+							<tr class="border-b">
+								<th>Android Apps</th>
+								<th>iOS Apps</th>
+								<th>Android Weekly Scans</th>
+								<th>iOS Weekly Scans</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>{formatNumber(appsOverview.android_apps)}</td>
+								<td>{formatNumber(appsOverview.ios_apps)}</td>
+								<td>{formatNumber(appsOverview.weekly_scanned_android_apps)}</td>
+								<td>{formatNumber(appsOverview.weekly_scanned_ios_apps)}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			{:catch}
+				Error Loading Overview
+			{/await}
+		</WhiteCard>
 	</div>
 
 	<br />
 
 	<div class="card preset-tonal-surface p-2 md:p-8">
-			<h2 class="h2 p-2 md:p-4">Latest App Store Ranks</h2>
+		<h2 class="h2 p-2 md:p-4">Latest App Store Ranks</h2>
 		<a href="/rankings/store/1/collection/1/category/1">
 			<p class="p-2 md:p-4">Click through for full app store categories and rankings.</p>
 		</a>
@@ -146,16 +176,88 @@
 	</div>
 	<br />
 	<div class="card preset-tonal-surface p-2 md:p-8">
-			<h2 class="h2 p-2 md:p-4">Most Integrated Ad Networks & Trackers</h2>
-			<p class="p-2 md:p-4">
-				By downloading and opening up the top apps and games from the Google and iOS Appstore we can
-				see which third-party ad networks and trackers are used across the various App Store
-				categories. The lists include various ad networks, MMPs, tracking, analytics and other 3rd
-				party services which likely collect app data. You can also help expand these lists.
-		<a href="/companies">
-			<strong>Check out all the SDKs, Companies and Ad Network rankings.</strong>
-		</a>
-			</p>
+		<h2 class="h2 p-2 md:p-4">Most Integrated Ad Networks & Trackers</h2>
+		<p class="p-2 md:p-4">
+			By downloading and opening up the top apps and games from the Google and iOS Appstore we can
+			see which third-party ad networks and trackers are used across the various App Store
+			categories. The lists include various ad networks, MMPs, tracking, analytics and other 3rd
+			party services which likely collect app data. You can also help expand these lists.
+			<a href="/companies">
+				<strong>Check out all the SDKs, Companies and Ad Network rankings.</strong>
+			</a>
+		</p>
+		{#await data.appsOverview}
+			Loading Overview...
+		{:then appsOverview}
+			<div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-2 md:p-4">
+				<WhiteCard>
+					{#snippet title()}
+						Apps Checked for SDKs
+					{/snippet}
+
+					<table class="table">
+						<thead>
+							<tr class="border-b">
+								<th>Total Apps</th>
+								<th>Android Apps Scanned This Week</th>
+								<th>iOS Apps Scanned This Week</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>{formatNumber(appsOverview.sdk_android_apps + appsOverview.sdk_ios_apps)}</td>
+								<td>
+									<span class="text-success-900-100">
+										{formatNumber(appsOverview.sdk_weekly_success_android_apps)}
+									</span>
+									/{formatNumber(appsOverview.sdk_weekly_android_apps)}
+								</td>
+								<td>
+									<span class="text-success-900-100">
+										{formatNumber(appsOverview.sdk_weekly_success_ios_apps)}
+									</span>
+									/{formatNumber(appsOverview.sdk_weekly_ios_apps)}
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</WhiteCard>
+
+				<WhiteCard>
+					{#snippet title()}
+						App Ads URLs
+					{/snippet}
+					<table class="table mt-4">
+						<thead>
+							<tr class="border-b">
+								<th>Total URLs</th>
+								<th>URLs Scanned This Week</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>
+									<span class="text-success-900-100">
+										{formatNumber(appsOverview.appads_success_urls)}
+									</span>
+									/{formatNumber(appsOverview.appads_urls)}
+								</td>
+
+								<td>
+									<span class="text-success-900-100">
+										{formatNumber(appsOverview.appads_weekly_success_urls)}
+									</span>
+									/{formatNumber(appsOverview.appads_weekly_urls)}
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</WhiteCard>
+			</div>
+		{:catch}
+			Error Loading Overview
+		{/await}
+
 		<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
 			<a href="/companies/types/ad-networks">
 				<div class="card preset-tonal-surface md:p-4">

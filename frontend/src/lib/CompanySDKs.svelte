@@ -44,10 +44,10 @@
 
 	<!-- Separate card for unique paths -->
 	{#if uniquePaths.length > 0}
-		<div class="shadow-sm rounded-lg overflow-hidden">
-			<div class="px-4 py-3 bg-gray-50 border-b border-gray-200">
+		<WhiteCard>
+			{#snippet title()}
 				<h3 class="text-sm font-semibold text-primary-900-100">Unique Path Patterns</h3>
-			</div>
+			{/snippet}
 			<div class="p-4 text-xs">
 				<ul class="list-disc list-inside space-y-0.5">
 					{#each truncateList(uniquePaths) as path}
@@ -55,6 +55,6 @@
 					{/each}
 				</ul>
 			</div>
-		</div>
+		</WhiteCard>
 	{/if}
 </div>

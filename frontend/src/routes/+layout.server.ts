@@ -4,25 +4,12 @@ export const ssr = true;
 export const csr = true;
 
 export const load: LayoutServerLoad = async ({ fetch }) => {
-	console.log(`load categories start`);
-	try {
-		const res = await fetch(`http://localhost:8000/api/categories`);
+	console.log(`layout load categories start`);
+	const res = await fetch(`http://localhost:8000/api/categories`);
+	const appsOverview = await fetch(`http://localhost:8000/api/apps/overview`);
 
-		if (res.status === 200) {
-			const data = await res.json();
-			return { appCats: data };
-		} else if (res.status === 404) {
-			console.log('Category Not found');
-			return { appCats: 'Category Not Found' };
-		} else if (res.status === 500) {
-			console.log('Categories API Server error');
-			return { appCats: 'Backend Error' };
-		} else {
-			console.log(`Unexpected status: ${res.status}`);
-			return { appCats: 'Unexpected Error' };
-		}
-	} catch (error) {
-		console.log('Uncaught error', error);
-		return { appCats: 'Uncaught Error' };
-	}
+	return {
+		appCats: res.status === 200 ? res.json() : 'Category Not Found',
+		appsOverview: appsOverview.status === 200 ? appsOverview.json() : 'Overview Not Found'
+	};
 };
