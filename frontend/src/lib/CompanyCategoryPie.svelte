@@ -14,6 +14,7 @@
 		plotHeightPx = '300px',
 		categoryPieOptions = {
 			title: 'Apps by Category',
+			theme: 'g90',
 			resizable: true,
 			donut: {
 				center: {
