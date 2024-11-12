@@ -1,8 +1,9 @@
 <script lang="ts">
 	import '../app.css';
+	import { page } from '$app/stores';
 
 	import IconSearch from '$lib/svg/IconSearch.svelte';
-
+	import OpenSideBarDrawer from '$lib/utils/OpenSideBarDrawer.svelte';
 	import SideBar from '$lib/SideBar.svelte';
 
 	import { AppBar } from '@skeletonlabs/skeleton-svelte';
@@ -10,8 +11,6 @@
 	import type { AfterNavigate } from '@sveltejs/kit';
 	import { afterNavigate } from '$app/navigation';
 	import { homeCategoryMap } from '../stores';
-
-	import type { CategoriesInfo } from '../types';
 
 	import githubIcon from '$lib/svg/github-mark.svg?raw';
 	import discordIcon from '$lib/svg/discord-mark-black.svg?raw';
@@ -115,7 +114,7 @@
 	</header>
 
 	<div class="grid grid-cols-1 md:grid-cols-[auto_1fr]">
-		<aside class="bg-yellow-500">
+		<aside class="hidden sm:block bg-yellow-500">
 			<div>
 				{#await data.appCats then myCatData}
 					<SideBar {myCatData} />
@@ -128,13 +127,17 @@
 		</main>
 	</div>
 
-	<footer class="bg-blue-500 p-4">
-		{#snippet footer()}
-			{#snippet lead()}
-				<div class="inline-flex">
-					<NavTabs />
-				</div>
-			{/snippet}
-		{/snippet}
+	<footer class="sticky bottom-0 z-10 bg-surface-50-950">
+	<div class="md:hidden p-2">
+		{#if $page.url.pathname.startsWith('/collections') || $page.url.pathname.startsWith('/rankings') || $page.url.pathname.startsWith('/companies')}
+				{#await data.appCats then myCatData}
+					<OpenSideBarDrawer {myCatData} />
+				{/await}
+				{/if}
+			</div>
+		<div class="inline-flex sm:hidden">
+			<NavTabs />
+		</div>
+
 	</footer>
 </div>

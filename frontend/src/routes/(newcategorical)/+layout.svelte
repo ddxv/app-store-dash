@@ -59,7 +59,7 @@
 		class="lg:hidden btn preset-filled-primary absolute right-[20px] bottom-[50px]"
 		onclick={drawerOpen}
 	>
-		<h4 class="h4">FILTERS</h4>
+		<h4 class="h4">FILTERSnew</h4>
 		<span>
 			<svg viewBox="0 0 100 80" class="fill w-4 h-4">
 				<rect width="100" height="20" />
