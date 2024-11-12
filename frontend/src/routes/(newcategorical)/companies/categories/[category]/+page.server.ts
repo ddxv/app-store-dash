@@ -5,9 +5,12 @@ export const ssr: boolean = true;
 export const csr: boolean = true;
 
 console.log('Script executed');
-export const load: PageServerLoad = async ({ params }) => {
+export const load: PageServerLoad = async ({ params, parent }) => {
 	const res = fetch(`http://localhost:8000/api/companies/categories/${params.category}`);
 	console.log(`start load overview for companies`);
+
+	const { appCats } = await parent();
+
 	try {
 		return {
 			companiesOverview: res
@@ -28,7 +31,8 @@ export const load: PageServerLoad = async ({ params }) => {
 						console.log('Uncaught error', error);
 						return 'Uncaught Error';
 					}
-				)
+				),
+			appCats
 		};
 	} catch (error) {
 		console.error('Failed to load data:', error);

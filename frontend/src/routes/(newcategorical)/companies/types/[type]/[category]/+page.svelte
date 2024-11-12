@@ -22,9 +22,7 @@
 	);
 
 	let currentCategory = $derived(
-		data.appCats.then((catsData) =>
-			catsData.categories.find((cat: { id: string }) => cat.id == appCategory)
-		)
+		data.appCats.categories.find((cat: { id: string }) => cat.id == appCategory)
 	);
 
 	function formatNumber(num: number) {

@@ -3,6 +3,8 @@
 	import CompaniesBarChart from '$lib/CompaniesBarChart.svelte';
 	import CompaniesOverviewTable from '$lib/CompaniesOverviewTable.svelte';
 
+	import type { CategoriesInfo } from '../../../../../types';
+
 	import WhiteCard from '$lib/WhiteCard.svelte';
 	import CompaniesLayout from '$lib/CompaniesLayout.svelte';
 	import CompaniesTableGrid from '$lib/CompaniesTableGrid.svelte';
@@ -10,7 +12,15 @@
 		data: CompaniesOverview;
 	}
 
+	import { page } from '$app/stores';
+
+	let category = $derived($page.params.category);
+
 	let { data }: Props = $props();
+
+	let currentCategoryName = $derived(
+		data.appCats.categories.find((cat: { id: string }) => cat.id == category).name
+	);
 
 	function formatNumber(num: number) {
 		return new Intl.NumberFormat('en-US').format(num);
@@ -18,7 +28,7 @@
 </script>
 
 <div class="flex items-center mb-2">
-	<h1 class="text-3xl font-bold text-primary-900-100">Companies Overview</h1>
+	<h1 class="text-3xl font-bold text-primary-900-100">Companies in {currentCategoryName}</h1>
 	<div class="h-8 w-px bg-gray-300 mx-2"></div>
 </div>
 
@@ -29,7 +39,7 @@
 {:then myData}
 	{#if typeof myData == 'string'}
 		<p class="text-red-500 text-center">Failed to load company details.</p>
-	{:else if myData.categories.categories}
+	{:else if myData.categories.categories.all}
 		<CompaniesLayout>
 			{#snippet card1()}
 				<WhiteCard>
@@ -37,7 +47,7 @@
 						<h2 class="text-xl font-bold text-primary-900-100 mb-4">Total Companies</h2>
 						<p class="text-lg">
 							<span class="font-semibold text-primary-900-100"
-								>{formatNumber(myData.categories.categories.all.total_apps)}</span
+								>{formatNumber(myData.categories.categories.all.total_companies)}</span
 							>
 						</p>
 					</div>
@@ -68,7 +78,7 @@
 {:then tableData}
 	{#if typeof tableData == 'string'}
 		Failed to load companies.
-	{:else}
+	{:else if tableData.categories.categories.all}
 		<CompaniesTableGrid>
 			{#snippet mainTable()}
 				{#if tableData && tableData.companies_overview.length > 0}
@@ -78,21 +88,23 @@
 
 			{#snippet sdkAndroidTotalApps()}
 				Android Companies: {formatNumber(
-					tableData.categories.categories.all.sdk_android_total_apps
+					tableData.categories.categories.all.sdk_android_total_companies
 				)}
 			{/snippet}
 			{#snippet sdkIosTotalApps()}
-				iOS Companies: {formatNumber(tableData.categories.categories.all.sdk_ios_total_apps)}
+				iOS Companies: {formatNumber(tableData.categories.categories.all.sdk_ios_total_companies)}
 			{/snippet}
 			{#snippet adstxtAndroidTotalApps()}
 				Android Companies:
-				{formatNumber(tableData.categories.categories.all.adstxt_direct_android_total_apps)}
+				{formatNumber(tableData.categories.categories.all.adstxt_direct_android_total_companies)}
 			{/snippet}
 			{#snippet adstxtIosTotalApps()}
 				iOS Companies: {formatNumber(
-					tableData.categories.categories.all.adstxt_direct_ios_total_apps
+					tableData.categories.categories.all.adstxt_direct_ios_total_companies
 				)}
 			{/snippet}
 		</CompaniesTableGrid>
+	{:else}
+		<p>categegories.all is missing!</p>
 	{/if}
 {/await}

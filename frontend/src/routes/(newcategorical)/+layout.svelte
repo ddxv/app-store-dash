@@ -9,14 +9,13 @@
 
 	import { homeCategoryMap } from '../../stores';
 	import type { CategoriesInfo } from '../../types';
-	import NewSideBar from '$lib/SideBarNew.svelte';
+	import SideBarCompanies from '$lib/SideBarCompanies.svelte';
 	interface Props {
-		data: CategoriesInfo;
 		children?: import('svelte').Snippet;
 	}
 
-	let { data, children }: Props = $props();
-	homeCategoryMap.set(data);
+	let { children }: Props = $props();
+	// homeCategoryMap.set(data);
 
 	// initializeStores();
 	// const drawerStore = getDrawerStore();
@@ -46,13 +45,13 @@
 </Drawer> -->
 
 <div class="grid grid-cols-1 md:grid-cols-[auto_1fr]">
-	<aside>
+	<!-- <aside>
 		<div>
 			{#await data.appCats then myCatData}
-				<NewSideBar {myCatData} />
+				<SideBarCompanies {myCatData} />
 			{/await}
 		</div>
-	</aside>
+	</aside> -->
 	<div>
 		{@render children?.()}
 	</div>

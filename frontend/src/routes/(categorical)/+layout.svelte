@@ -46,11 +46,11 @@
 </Drawer> -->
 
 <div class="grid grid-cols-1 md:grid-cols-[auto_1fr]">
-	<aside>
+	<!-- <aside>
 		{#await data.appCats then myCatData}
 			<SideBar {myCatData} />
 		{/await}
-	</aside>
+	</aside> -->
 	{@render children?.()}
 	<button
 		class="lg:hidden btn preset-filled-primary absolute right-[20px] bottom-[50px]"

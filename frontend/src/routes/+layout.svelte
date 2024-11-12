@@ -3,10 +3,15 @@
 
 	import IconSearch from '$lib/svg/IconSearch.svelte';
 
+	import SideBar from '$lib/SideBar.svelte';
+
 	import { AppBar } from '@skeletonlabs/skeleton-svelte';
 
 	import type { AfterNavigate } from '@sveltejs/kit';
 	import { afterNavigate } from '$app/navigation';
+	import { homeCategoryMap } from '../stores';
+
+	import type { CategoriesInfo } from '../types';
 
 	import githubIcon from '$lib/svg/github-mark.svg?raw';
 	import discordIcon from '$lib/svg/discord-mark-black.svg?raw';
@@ -25,10 +30,13 @@
 
 	import NavTabs from '$lib/NavTabs.svelte';
 	interface Props {
+		data;
 		children?: import('svelte').Snippet;
 	}
 
-	let { children }: Props = $props();
+	let { data, children }: Props = $props();
+
+	homeCategoryMap.set(data.appCats);
 
 	// Scroll to top after navigation
 	afterNavigate((params: AfterNavigate) => {
@@ -40,73 +48,85 @@
 	});
 </script>
 
-<div class="h-screen grid grid-rows-[auto_1fr_auto]">
+<div class="grid h-screen grid-rows-[auto_1fr_auto]">
 	<header class="sticky top-0 z-10">
-		<div class="grid-cols-[1fr_0_1fr] md:grid-cols-[0.4fr_1fr_0.3fr]">
-			<AppBar
-				headlineClasses="sm:hidden"
-				centerClasses="hidden sm:block"
-				background="bg-tonal-primary"
-			>
-				{#snippet lead()}
-					<div class="flex items-center">
-						<a class="flex" href="/">
-							<img
-								class="ml-1 md:ml-2 h-8 m w-8 md:h-12 md:w-12"
-								src="/goblin_purple_hat_250.png"
-								alt="Goblin Icon"
-							/>
-							<strong class="text-xl ml-1 md:ml-2 md:text-3xl uppercase text-primary-900-100"
-								>AppGoblin</strong
-							>
-						</a>
-					</div>
-				{/snippet}
-
-				<div class="hidden lg:inline-flex">
-					<NavTabs />
+		<AppBar
+			leadBase="mr-2"
+			trailBase="mx-2 my-1"
+			padding="p-1 md:px-2 md:py-1"
+			centerBase="hidden md:block"
+			background="bg-surface-50-950"
+		>
+			{#snippet lead()}
+				<div class="flex items-center">
+					<a class="flex" href="/">
+						<img
+							class="md:ml-2 h-8 md:h-12 w-8 md:w-12"
+							src="/goblin_purple_hat_250.png"
+							alt="Goblin Icon"
+						/>
+						<strong class="text-xl ml-1 md:ml-2 md:text-3xl uppercase text-primary-900-100"
+							>AppGoblin</strong
+						>
+					</a>
 				</div>
+			{/snippet}
 
-				{#snippet trail()}
-					<div>
-						<div class="input-group grid-cols-2 sm:grid-cols-[50px_auto]">
-							<div class="input-group-shim p-0 md:p-3">
-								<IconSearch />
-							</div>
+			<div class="hidden lg:inline-flex">
+				<NavTabs />
+			</div>
+
+			{#snippet trail()}
+				<div>
+					<div class="input-group grid-cols-2 grid-cols-[auto_1fr]">
+						<div class="input-group-shim p-1 md:p-2">
+							<IconSearch />
+						</div>
+						<div class="text-xs md:text-lg p-1">
 							<input
 								type="search"
 								bind:value={searchTerm}
 								onkeydown={navigateToSearch}
-								placeholder="Search"
-								class="p-0 md:p-3"
+								placeholder="Search Apps & Companies"
+								class="p-0"
 							/>
 						</div>
-						<div class="flex items-center p-1 gap-2">
-							<a href="https://github.com/ddxv/app-store-dash" target="_blank" rel="noreferrer">
-								<button type="button" class="btn preset-tonal hover:preset-tonal-primary p-2">
-									<div class="inline-flex items-center text-xs md:text-lg gap-2">
-										{@html githubIcon} GitHub
-									</div>
-								</button>
-							</a>
-
-							<a href="https://discord.gg/7jpWEhkXRW" target="_blank" rel="noreferrer">
-								<button type="button" class="btn preset-tonal hover:preset-tonal-primary p-2">
-									<div class="inline-flex items-center text-xs md:text-lg gap-2">
-										{@html discordIcon} Discord
-									</div>
-								</button>
-							</a>
-						</div>
 					</div>
-				{/snippet}
-			</AppBar>
-		</div>
+					<div class="flex items-center p-1 gap-2">
+						<a href="https://github.com/ddxv/app-store-dash" target="_blank" rel="noreferrer">
+							<button type="button" class="btn preset-tonal hover:preset-tonal-primary p-2">
+								<div class="inline-flex items-center text-xs md:text-lg gap-2">
+									{@html githubIcon} GitHub
+								</div>
+							</button>
+						</a>
+
+						<a href="https://discord.gg/7jpWEhkXRW" target="_blank" rel="noreferrer">
+							<button type="button" class="btn preset-tonal hover:preset-tonal-primary p-2">
+								<div class="inline-flex items-center text-xs md:text-lg gap-2">
+									{@html discordIcon} Discord
+								</div>
+							</button>
+						</a>
+					</div>
+				</div>
+			{/snippet}
+		</AppBar>
 	</header>
 
-	<main class="bg-surface-100-900">
-		{@render children?.()}
-	</main>
+	<div class="grid grid-cols-1 md:grid-cols-[auto_1fr]">
+		<aside class="bg-yellow-500">
+			<div>
+				{#await data.appCats then myCatData}
+					<SideBar {myCatData} />
+				{/await}
+			</div>
+		</aside>
+
+		<main>
+			{@render children?.()}
+		</main>
+	</div>
 
 	<footer class="bg-blue-500 p-4">
 		{#snippet footer()}
