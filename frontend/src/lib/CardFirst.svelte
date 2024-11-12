@@ -1,5 +1,10 @@
-<script>
-	let { header, footer, children } = $props();
+<script lang="ts">
+	interface Props {
+		header?: import('svelte').Snippet;
+		footer?: import('svelte').Snippet;
+		children: import('svelte').Snippet;
+	}
+	let { header, footer, children }: Props = $props();
 </script>
 
 <div class="card p-2 preset-tonal">

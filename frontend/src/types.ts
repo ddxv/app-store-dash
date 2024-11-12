@@ -175,9 +175,9 @@ export interface CompaniesOverviewPlatforms {
 }
 
 export interface TopCompaniesOverview {
-	sdk: CompaniesOverviewPlatforms;
-	adstxt_direct: CompaniesOverviewPlatforms;
-	adstxt_reseller: CompaniesOverviewPlatforms;
+	sdk: CompaniesOverviewPlatforms[];
+	adstxt_direct: CompaniesOverviewPlatforms[];
+	adstxt_reseller: CompaniesOverviewPlatforms[];
 }
 
 export interface TopCompaniesShort {

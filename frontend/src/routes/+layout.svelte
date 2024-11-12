@@ -15,7 +15,7 @@
 	import githubIcon from '$lib/svg/github-mark.svg?raw';
 	import discordIcon from '$lib/svg/discord-mark-black.svg?raw';
 
-	let searchTerm: string = $state();
+	let searchTerm: string = $state('');
 
 	function navigateToSearch(event: any) {
 		if (event.key === 'Enter' && searchTerm.trim() !== '') {
@@ -114,7 +114,7 @@
 	</header>
 
 	<div class="grid grid-cols-1 md:grid-cols-[auto_1fr]">
-		<aside class="hidden sm:block bg-yellow-500">
+		<aside class="hidden sm:block">
 			<div>
 				{#await data.appCats then myCatData}
 					<SideBar {myCatData} />
@@ -128,16 +128,15 @@
 	</div>
 
 	<footer class="sticky bottom-0 z-10 bg-surface-50-950">
-	<div class="md:hidden p-2">
-		{#if $page.url.pathname.startsWith('/collections') || $page.url.pathname.startsWith('/rankings') || $page.url.pathname.startsWith('/companies')}
+		<div class="md:hidden p-2">
+			{#if $page.url.pathname.startsWith('/collections') || $page.url.pathname.startsWith('/rankings') || $page.url.pathname.startsWith('/companies')}
 				{#await data.appCats then myCatData}
 					<OpenSideBarDrawer {myCatData} />
 				{/await}
-				{/if}
-			</div>
+			{/if}
+		</div>
 		<div class="inline-flex sm:hidden">
 			<NavTabs />
 		</div>
-
 	</footer>
 </div>

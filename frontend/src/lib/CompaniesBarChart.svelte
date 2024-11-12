@@ -9,7 +9,7 @@
 
 	interface Props {
 		plotData: ChartTabularData;
-		plotTitle: string;
+		plotTitle?: string | '';
 		plotHeightPx?: string;
 		chartOptions?: BarChartOptions;
 	}
