@@ -49,18 +49,18 @@
 
 	import SideBarCatsListBoxItem from './SideBarCatsListBoxItem.svelte';
 
-	import { homeCollectionSelection } from '../stores';
-	let localHomeCollectionSelect = $state($homeCollectionSelection);
-	// Reactive statement to update the store when localValue changes
-	$effect(() => {
-		homeCollectionSelection.set(localHomeCollectionSelect);
-	});
+	// import { homeCollectionSelection } from '../stores';
+	// let localHomeCollectionSelect = $state($homeCollectionSelection);
+	// // Reactive statement to update the store when localValue changes
+	// $effect(() => {
+	// 	homeCollectionSelection.set(localHomeCollectionSelect);
+	// });
 
-	import { homeStoreSelection } from '../stores';
-	let localHomeStoreSelect = $state($homeStoreSelection);
-	$effect(() => {
-		homeStoreSelection.set(localHomeStoreSelect);
-	});
+	// import { homeStoreSelection } from '../stores';
+	// let localHomeStoreSelect = $state($homeStoreSelection);
+	// $effect(() => {
+	// 	homeStoreSelection.set(localHomeStoreSelect);
+	// });
 
 	import { homeCategorySelection } from '../stores';
 	let localHomeCategorySelect = $state($homeCategorySelection);
@@ -79,14 +79,7 @@
 	import CardFirst from './CardFirst.svelte';
 </script>
 
-<div>
-<p>
-abc abc
-Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam, ab adipisci. Libero cumque sunt quis error veritatis amet, expedita voluptatem. Quos repudiandae consequuntur voluptatem et dicta quas, reprehenderit velit excepturi?Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam, ab adipisci. Libero cumque sunt quis error veritatis amet, expedita voluptatem. Quos repudiandae consequuntur voluptatem et dicta quas, reprehenderit velit excepturi?Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam, ab adipisci. Libero cumque sunt quis error veritatis amet, expedita voluptatem. Quos repudiandae consequuntur voluptatem et dicta quas, reprehenderit velit excepturi?Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam, ab adipisci. Libero cumque sunt quis error veritatis amet, expedita voluptatem. Quos repudiandae consequuntur voluptatem et dicta quas, reprehenderit velit excepturi?Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam, ab adipisci. Libero cumque sunt quis error veritatis amet, expedita voluptatem. Quos repudiandae consequuntur voluptatem et dicta quas, reprehenderit velit excepturi?Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam, ab adipisci. Libero cumque sunt quis error veritatis amet, expedita voluptatem. Quos repudiandae consequuntur voluptatem et dicta quas, reprehenderit velit excepturi?Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam, ab adipisci. Libero cumque sunt quis error veritatis amet, expedita voluptatem. Quos repudiandae consequuntur voluptatem et dicta quas, reprehenderit velit excepturi?Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam, ab adipisci. Libero cumque sunt quis error veritatis amet, expedita voluptatem. Quos repudiandae consequuntur voluptatem et dicta quas, reprehenderit velit excepturi?Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam, ab adipisci. Libero cumque sunt quis error veritatis amet, expedita voluptatem. Quos repudiandae consequuntur voluptatem et dicta quas, reprehenderit velit excepturi?Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam, ab adipisci. Libero cumque sunt quis error veritatis amet, expedita voluptatem. Quos repudiandae consequuntur voluptatem et dicta quas, reprehenderit velit excepturi?Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam, ab adipisci. Libero cumque sunt quis error veritatis amet, expedita voluptatem. Quos repudiandae consequuntur voluptatem et dicta quas, reprehenderit velit excepturi?Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam, ab adipisci. Libero cumque sunt quis error veritatis amet, expedita voluptatem. Quos repudiandae consequuntur voluptatem et dicta quas, reprehenderit velit excepturi?Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam, ab adipisci. Libero cumque sunt quis error veritatis amet, expedita voluptatem. Quos repudiandae consequuntur voluptatem et dicta quas, reprehenderit velit excepturi?Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam, ab adipisci. Libero cumque sunt quis error veritatis amet, expedita voluptatem. Quos repudiandae consequuntur voluptatem et dicta quas, reprehenderit velit excepturi?Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam, ab adipisci. Libero cumque sunt quis error veritatis amet, expedita voluptatem. Quos repudiandae consequuntur voluptatem et dicta quas, reprehenderit velit excepturi?Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam, ab adipisci. Libero cumque sunt quis error veritatis amet, expedita voluptatem. Quos repudiandae consequuntur voluptatem et dicta quas, reprehenderit velit excepturi?Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam, ab adipisci. Libero cumque sunt quis error veritatis amet, expedita voluptatem. Quos repudiandae consequuntur voluptatem et dicta quas, reprehenderit velit excepturi?Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam, ab adipisci. Libero cumque sunt quis error veritatis amet, expedita voluptatem. Quos repudiandae consequuntur voluptatem et dicta quas, reprehenderit velit excepturi?Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam, ab adipisci. Libero cumque sunt quis error veritatis amet, expedita voluptatem. Quos repudiandae consequuntur voluptatem et dicta quas, reprehenderit velit excepturi?Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam, ab adipisci. Libero cumque sunt quis error veritatis amet, expedita voluptatem. Quos repudiandae consequuntur voluptatem et dicta quas, reprehenderit velit excepturi?Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam, ab adipisci. Libero cumque sunt quis error veritatis amet, expedita voluptatem. Quos repudiandae consequuntur voluptatem et dicta quas, reprehenderit velit excepturi?Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam, ab adipisci. Libero cumque sunt quis error veritatis amet, expedita voluptatem. Quos repudiandae consequuntur voluptatem et dicta quas, reprehenderit velit excepturi?Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam, ab adipisci. Libero cumque sunt quis error veritatis amet, expedita voluptatem. Quos repudiandae consequuntur voluptatem et dicta quas, reprehenderit velit excepturi?Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam, ab adipisci. Libero cumque sunt quis error veritatis amet, expedita voluptatem. Quos repudiandae consequuntur voluptatem et dicta quas, reprehenderit velit excepturi?Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam, ab adipisci. Libero cumque sunt quis error veritatis amet, expedita voluptatem. Quos repudiandae consequuntur voluptatem et dicta quas, reprehenderit velit excepturi?Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam, ab adipisci. Libero cumque sunt quis error veritatis amet, expedita voluptatem. Quos repudiandae consequuntur voluptatem et dicta quas, reprehenderit velit excepturi?Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam, ab adipisci. Libero cumque sunt quis error veritatis amet, expedita voluptatem. Quos repudiandae consequuntur voluptatem et dicta quas, reprehenderit velit excepturi?Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam, ab adipisci. Libero cumque sunt quis error veritatis amet, expedita voluptatem. Quos repudiandae consequuntur voluptatem et dicta quas, reprehenderit velit excepturi?
-</p>
-</div>
-
-<!-- <div class="p-1 md:p-2">
+<div class="p-1 md:p-2">
 	<CardFirst>
 		{#snippet header()}
 			<h3 class="h5 md:h4">App Categories</h3>
@@ -112,4 +105,3 @@ Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam, ab adipisci. Liber
 		{/if}
 	</CardFirst>
 </div>
--->
