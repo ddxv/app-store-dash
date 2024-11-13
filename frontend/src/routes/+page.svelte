@@ -225,7 +225,7 @@
 
 				<WhiteCard>
 					{#snippet title()}
-						App Ads URLs
+						App Ads.txt URLs
 					{/snippet}
 					<table class="table mt-4">
 						<thead>
