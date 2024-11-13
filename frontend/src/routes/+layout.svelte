@@ -1,16 +1,19 @@
 <script lang="ts">
-	import '../app.postcss';
-	import { AppShell, AppBar } from '@skeletonlabs/skeleton';
+	import '../app.css';
+	import { page } from '$app/stores';
+
 	import IconSearch from '$lib/svg/IconSearch.svelte';
-	import type { AfterNavigate } from '@sveltejs/kit';
-	import { afterNavigate } from '$app/navigation';
+	import OpenSideBarDrawer from '$lib/utils/OpenSideBarDrawer.svelte';
+	import SideBar from '$lib/SideBar.svelte';
+
+	import { AppBar } from '@skeletonlabs/skeleton-svelte';
+
+	import { homeCategoryMap } from '../stores';
 
 	import githubIcon from '$lib/svg/github-mark.svg?raw';
 	import discordIcon from '$lib/svg/discord-mark-black.svg?raw';
 
-	let searchTerm: string = $state();
-
-	const bgBarColor = 'from-purple-500/40 via-white to-white';
+	let searchTerm: string = $state('');
 
 	function navigateToSearch(event: any) {
 		if (event.key === 'Enter' && searchTerm.trim() !== '') {
@@ -24,114 +27,105 @@
 
 	import NavTabs from '$lib/NavTabs.svelte';
 	interface Props {
+		data;
 		children?: import('svelte').Snippet;
 	}
 
-	let { children }: Props = $props();
+	let { data, children }: Props = $props();
 
-	// Scroll to top after navigation
-	afterNavigate((params: AfterNavigate) => {
-		const isNewPage: boolean = params.from?.route.id !== params.to?.route.id;
-		const elemPage = document.querySelector('#page');
-		if (isNewPage && elemPage !== null) {
-			elemPage.scrollTop = 0;
-		}
-	});
+	homeCategoryMap.set(data.appCats);
 </script>
 
-<!-- App Shell -->
-<AppShell
-	regionPage="p-2 md:p-8"
-	slotSidebarLeft="w-0 lg:w-auto"
-	slotPageHeader="hidden lg:inline-flex"
->
-	{#snippet header()}
-		<!-- App Bar -->
+<div class="grid h-screen grid-rows-[auto_1fr_auto]">
+	<header class="sticky top-0 z-10">
 		<AppBar
-			gridColumns="grid-cols-[1fr_0_1fr] md:grid-cols-[0.4fr_1fr_0.3fr]"
-			slotLead="p-2"
-			slotTrail="p-2"
-			spacing="space-y-0"
-			padding="p-0"
-			class="bg-gradient-to-br {bgBarColor}"
+			leadBase="mr-2"
+			trailBase="mx-2 my-1"
+			padding="p-1 md:px-2 md:py-1"
+			centerBase="hidden md:block"
+			background="bg-surface-50-950"
 		>
 			{#snippet lead()}
 				<div class="flex items-center">
 					<a class="flex" href="/">
-						<!-- <img class="h-8 m w-8 md:h-12 md:w-12" src="/cute_eyes_250.png" alt="Goblin Icon" /> -->
 						<img
-							class="ml-1 md:ml-2 h-8 m w-8 md:h-12 md:w-12"
+							class="md:ml-2 h-8 md:h-12 w-8 md:w-12"
 							src="/goblin_purple_hat_250.png"
 							alt="Goblin Icon"
 						/>
-						<strong class="text-xl ml-1 md:ml-2 md:text-3xl uppercase">AppGoblin</strong>
+						<strong class="text-xl ml-1 md:ml-2 md:text-3xl uppercase text-primary-900-100"
+							>AppGoblin</strong
+						>
 					</a>
 				</div>
 			{/snippet}
 
-			<div class="hidden lg:inline-flex">
+			<div class="hidden md:inline-flex">
 				<NavTabs />
 			</div>
 
 			{#snippet trail()}
 				<div>
-					<div class="input-group grid-cols-2 sm:grid-cols-[50px_auto]">
-						<div class="input-group-shim p-0 md:p-3">
+					<div class="input-group grid-cols-2 grid-cols-[auto_1fr]">
+						<div class="input-group-shim p-1 md:p-2">
 							<IconSearch />
 						</div>
-						<input
-							type="search"
-							bind:value={searchTerm}
-							onkeydown={navigateToSearch}
-							placeholder="Search"
-							class="p-0 md:p-3"
-						/>
+						<div class="text-xs md:text-lg p-1">
+							<input
+								type="search"
+								bind:value={searchTerm}
+								onkeydown={navigateToSearch}
+								placeholder="Search Apps & Companies"
+								class="p-0"
+							/>
+						</div>
 					</div>
-					<div class="flex items-center p-1">
-						<a
-							class="btn btn-sm variant-ghost-surface"
-							href="https://github.com/ddxv/app-store-dash"
-							target="_blank"
-							rel="noreferrer"
-						>
-							<div class="inline-flex items-center text-xs md:text-lg">
-								{@html githubIcon} GitHub
-							</div>
+					<div class="flex items-center p-1 gap-2">
+						<a href="https://github.com/ddxv/app-store-dash" target="_blank" rel="noreferrer">
+							<button type="button" class="btn preset-tonal hover:preset-tonal-primary p-2">
+								<div class="inline-flex items-center text-xs md:text-lg gap-2">
+									{@html githubIcon} GitHub
+								</div>
+							</button>
 						</a>
-						<a
-							class="btn btn-sm variant-ghost-surface"
-							href="https://discord.gg/7jpWEhkXRW"
-							target="_blank"
-							rel="noreferrer"
-						>
-							<div class="inline-flex items-center text-xs md:text-lg">
-								{@html discordIcon} Discord
-							</div>
+
+						<a href="https://discord.gg/7jpWEhkXRW" target="_blank" rel="noreferrer">
+							<button type="button" class="btn preset-tonal hover:preset-tonal-primary p-2">
+								<div class="inline-flex items-center text-xs md:text-lg gap-2">
+									{@html discordIcon} Discord
+								</div>
+							</button>
 						</a>
 					</div>
 				</div>
 			{/snippet}
 		</AppBar>
-	{/snippet}
-	{#snippet footer()}
-		<AppBar
-			slotLead="p-0"
-			slotTrail="p-2"
-			spacing="space-y-0"
-			padding="p-0"
-			gap="gap-0"
-			class="bg-gradient-to-tl {bgBarColor} lg:hidden"
-			gridColumns="grid-cols-[auto_1fr_auto]"
-		>
-			{#snippet lead()}
-				<div class="inline-flex">
-					<NavTabs />
-				</div>
-			{/snippet}
-		</AppBar>
-	{/snippet}
+	</header>
 
-	{@render children?.()}
+	<div class="grid grid-cols-1 md:grid-cols-[auto_1fr]">
+		<aside class="hidden md:block">
+			<div>
+				{#await data.appCats then myCatData}
+					<SideBar {myCatData} />
+				{/await}
+			</div>
+		</aside>
 
-	<!-- Page Route Content -->
-</AppShell>
+		<main>
+			{@render children?.()}
+		</main>
+	</div>
+
+	<footer class="sticky bottom-0 z-10 bg-surface-50-950">
+		<div class="md:hidden p-2">
+			{#if $page.url.pathname.startsWith('/collections') || $page.url.pathname.startsWith('/rankings') || $page.url.pathname.startsWith('/companies')}
+				{#await data.appCats then myCatData}
+					<OpenSideBarDrawer {myCatData} />
+				{/await}
+			{/if}
+		</div>
+		<div class="inline-flex md:hidden">
+			<NavTabs />
+		</div>
+	</footer>
+</div>

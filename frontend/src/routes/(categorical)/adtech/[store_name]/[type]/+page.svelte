@@ -141,14 +141,12 @@
 					tabledata={networks.parent_companies[store_id][categorySelection]}
 					tableType={metricName}
 					storeId={store_id}
-					{store_name}
 				></AdtechTable>
 			{:else}
 				<AdtechTable
 					tabledata={networks.all_companies[store_id][categorySelection]}
 					tableType={metricName}
 					storeId={store_id}
-					{store_name}
 				></AdtechTable>
 			{/if}
 		{:catch}
@@ -164,14 +162,12 @@
 					tabledata={trackers.parent_companies[store_id][categorySelection]}
 					tableType={metricName}
 					storeId={store_id}
-					{store_name}
 				></AdtechTable>
 			{:else}
 				<AdtechTable
 					tabledata={trackers.all_companies[store_id][categorySelection]}
 					tableType={metricName}
 					storeId={store_id}
-					{store_name}
 				></AdtechTable>
 			{/if}
 		{:catch}

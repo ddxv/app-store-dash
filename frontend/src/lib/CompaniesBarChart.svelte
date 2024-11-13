@@ -9,7 +9,7 @@
 
 	interface Props {
 		plotData: ChartTabularData;
-		plotTitle: string;
+		plotTitle?: string | '';
 		plotHeightPx?: string;
 		chartOptions?: BarChartOptions;
 	}
@@ -20,6 +20,7 @@
 		plotHeightPx = '300px',
 		chartOptions = {
 			title: plotTitle,
+			theme: 'g90', // <- how to set the theme
 			axes: {
 				left: {
 					mapsTo: 'group',

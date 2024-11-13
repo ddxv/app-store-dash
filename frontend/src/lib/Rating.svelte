@@ -41,7 +41,7 @@
 	{#if count}
 		{@const SvelteComponent = icon}
 		<SvelteComponent fillPercent={100} {size} />
-		<p class="ml-2 text-sm font-bold text-gray-900 dark:text-white">{rating}</p>
+		<p class="ml-2 text-sm font-bold text-primary-900-100">{rating}</p>
 		{@render children?.()}
 	{:else}
 		{#each Array(fullStars) as star}

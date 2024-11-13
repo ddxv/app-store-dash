@@ -3,7 +3,7 @@
 	import { goto } from '$app/navigation';
 
 	const buttonSelectedColor =
-		'radio-item text-base text-center cursor-pointer px-4 py-1 rounded-token variant-filled-primary active:';
+		'radio-item text-base text-center cursor-pointer px-4 py-1 rounded preset-filled-primary active:';
 
 	// Function to handle navigation and add or update query params
 	function navigateWithParams(path: string, pkey: string, groupBy: string) {
@@ -34,8 +34,8 @@
 		<div class="card ml-2 md:ml-4 p-2 md:p-4">
 			<h3 class="h5 md:h4 p-2">Metric</h3>
 			<nav class="list-nav">
-				<ul class="rounded-md variant-outline-primary">
-					<li class="variant-soft-primary">
+				<ul class="rounded-md preset-outlined-primary-900-100">
+					<li class="preset-tonal-primary">
 						<a
 							href={currentPath}
 							class={paramMetricClassesActive('metric', metricInstalls)}
@@ -47,7 +47,7 @@
 							<span class="flex-auto">Installs Past 30 Days</span>
 						</a>
 					</li>
-					<li class="variant-soft-primary">
+					<li class="preset-tonal-primary">
 						<a
 							href={currentPath}
 							class={paramMetricClassesActive('metric', metricAppCount)}
@@ -66,8 +66,8 @@
 		<div class="card ml-2 md:ml-4 p-2 md:p-4">
 			<h3 class="h5 md:h4 p-2">Granularity</h3>
 			<nav class="list-nav">
-				<ul class="rounded-md variant-outline-primary">
-					<li class="variant-soft-primary">
+				<ul class="rounded-md preset-outlined-primary-900-100">
+					<li class="preset-tonal-primary">
 						<a
 							href={currentPath}
 							class={paramClassesActive('groupby', groupByBrands)}
@@ -79,7 +79,7 @@
 							<span class="flex-auto">Group by SubCompany or Brand</span>
 						</a>
 					</li>
-					<li class="variant-soft-primary">
+					<li class="preset-tonal-primary">
 						<a
 							href={currentPath}
 							class={paramClassesActive('groupby', groupByParents)}

@@ -4,10 +4,13 @@ import type { PageServerLoad } from './$types.js';
 export const ssr: boolean = true;
 export const csr: boolean = true;
 
-export const load: PageServerLoad = async ({ params }) => {
+export const load: PageServerLoad = async ({ params, parent }) => {
 	const res = fetch(
 		`http://localhost:8000/api/companies/types/${params.type}?category=${params.category}`
 	);
+
+	const { appCats } = await parent();
+
 	try {
 		return {
 			companiesOverview: res
@@ -28,7 +31,8 @@ export const load: PageServerLoad = async ({ params }) => {
 						console.log('Uncaught error', error);
 						return 'Uncaught Error';
 					}
-				)
+				),
+			appCats: await appCats
 		};
 	} catch (error) {
 		console.error('Failed to load data:', error);

@@ -28,8 +28,11 @@
 			<thead>
 				<tr>
 					<th class="table-cell-fit w-0"></th>
-					<ThSort {handler} orderBy="company_name"><p class="text-xs md:text-lg">Company</p></ThSort
-					>
+					<th class="w-[50%]">
+						<ThSort {handler} orderBy="company_name"
+							><p class="text-xs md:text-lg">Company</p></ThSort
+						>
+					</th>
 					<ThSort {handler} orderBy="google_sdk"
 						><p class="text-xs md:text-lg">Android SDK</p></ThSort
 					>
@@ -48,14 +51,14 @@
 				{#each $rows as row, index}
 					<tr class="px-0">
 						<td class="table-cell-fit">
-							<p class="text-xs md:text-lg">{index + 1}</p>
+							<p class="text-xs md:text-base">{index + 1}</p>
 						</td>
 						<td class="w-0">
 							<!-- TODO: This is supposed to be just inside TR for whole row -->
 							<a
 								href="/companies/{row.company_domain}"
 								style="cursor: pointer;"
-								class="table-row-link text-xs md:text-lg"
+								class="table-row-link text-xs md:text-sm"
 							>
 								{#if row.company_name}
 									{row.company_name}
@@ -66,26 +69,26 @@
 							</a>
 						</td>
 						<td class="table-cell-fit">
-							<p class="text-xs md:text-lg">
+							<p class="text-xs md:text-sm">
 								{(row.google_sdk * 100).toFixed(2)}%
 							</p>
 						</td>
 
 						<td class="table-cell-fit">
-							<p class="text-xs md:text-lg">
+							<p class="text-xs md:text-sm">
 								{(row.apple_sdk * 100).toFixed(2)}%
 							</p>
 						</td>
 
 						{#if !$page.params.type || $page.params.type == 'ad-networks'}
 							<td class="table-cell-fit">
-								<p class="text-xs md:text-lg">
+								<p class="text-xs md:text-sm">
 									{(row.google_app_ads_direct * 100).toFixed(2)}%
 								</p>
 							</td>
 
 							<td class="table-cell-fit">
-								<p class="text-xs md:text-lg">
+								<p class="text-xs md:text-sm">
 									{(row.apple_app_ads_direct * 100).toFixed(2)}%
 								</p>
 							</td>

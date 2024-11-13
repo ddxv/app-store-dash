@@ -80,9 +80,9 @@
 	{/await}
 </svelte:head>
 
-<section class="grid grid-flow-cols-1 md:grid-cols-2 md:gap-4">
+<section class="grid grid-flow-cols-1 md:grid-cols-2 md:gap-4 p-2">
 	<!-- Column1: App Icon Title & Info -->
-	<div class="card p-0 lg:p-8">
+	<div class="card preset-filled-surface-100-900 p-0 lg:p-8">
 		<div class="card-header p-2 md:p-4">
 			{#await data.myapp}
 				Loading app details...
@@ -106,19 +106,19 @@
 				<div class="block md:hidden"></div>
 				{#if myapp.developer_id}
 					<div class="p-2 md:py-2">
-						<a
-							href="/developers/{myapp.developer_id}"
-							class="btn hover:bg-primary-hover-token variant-ghost-primary"
-							><span>Developer: {myapp.developer_name}</span></a
-						>
+						<a href="/developers/{myapp.developer_id}">
+							<div class="btn preset-tonal hover:preset-tonal-primary">
+								<span>Developer: {myapp.developer_name}</span>
+							</div>
+						</a>
 					</div>
 				{/if}
 				<div class="p-2 md:py-2">
-					<a
-						href="/categories/{myapp.category}"
-						class="btn hover:bg-primary-hover-token variant-ghost-primary"
-						><span>Category: {myapp.category}</span></a
-					>
+					<a href="/categories/{myapp.category}">
+						<div class="btn preset-tonal hover:preset-tonal-primary">
+							<span>Category: {myapp.category}</span>
+						</div>
+					</a>
 				</div>
 			{/await}
 		</div>
@@ -195,7 +195,7 @@
 			</div>
 		</div>
 
-		<div class="card variant-glass-surface p-2 md:p-8 mt-2 md:mt-4">
+		<div class="card preset-tonal p-2 md:p-8 mt-2 md:mt-4">
 			<h4 class="h4 md:h3 p-2">Lastest Store Ranks</h4>
 			{#await data.myranks}
 				Loading app ranks...
@@ -208,16 +208,16 @@
 				{:else}
 					{#if ranks.latest && ranks.latest.length > 0}
 						{#each ranks.latest as myrow}
-							<h6 class="h6 px-4">
+							<div class="px-4">
 								#{myrow.rank}
 								in: {myrow.collection}
 								{myrow.category}
 								({myrow.crawled_date})
-							</h6>
+							</div>
 						{/each}
 					{/if}
 					{#if ranks.history && ranks.history.length > 0}
-						<div class="card variant-glass-surface mt-2 md:mt-4">
+						<div class="card preset-tonal mt-2 md:mt-4">
 							<h4 class="h4 md:h3 p-2 mt-2">Store Ranks Historical</h4>
 							<RankChart plotData={ranks.history} narrowBool={true} />
 						</div>
@@ -238,19 +238,19 @@
 				{/await}
 			{/if}
 			{#if histdata.plot_data && histdata.plot_data.installs && histdata.plot_data.installs.length > 1}
-				<div class="card variant-glass-surface p-2 md:p-8 mt-2 md:mt-4">
+				<div class="card preset-tonal p-2 md:p-8 mt-2 md:mt-4">
 					<h3 class="h4 md:h3 p-2">Average Daily Installs</h3>
 					<AppPlot plotdata={histdata.plot_data.installs} plotType="installs" />
 				</div>
 			{/if}
 			{#if histdata.plot_data && histdata.plot_data.ratings && histdata.plot_data.ratings.length > 1}
-				<div class="card variant-glass-surface p-2 md:p-8 mt-2 md:mt-4">
+				<div class="card preset-tonal p-2 md:p-8 mt-2 md:mt-4">
 					<h3 class="h4 md:h3 p-2">Average Daily Reviews & Ratings</h3>
 					<AppPlot plotdata={histdata.plot_data.ratings} plotType="ratings" />
 				</div>
 			{/if}
 			{#if histdata.plot_data && histdata.plot_data.changes && histdata.plot_data.changes.length > 1}
-				<div class="card variant-glass-surface p-2 md:p-8 mt-2 md:mt-4">
+				<div class="card preset-tonal p-2 md:p-8 mt-2 md:mt-4">
 					<h3 class="h4 md:h3 p-2">Rate of Change Week on Week</h3>
 					<AppPlot plotdata={histdata.plot_data.changes} plotType="change" />
 				</div>
@@ -261,13 +261,13 @@
 			Loading App-Ads.txt data...
 		{:then adstxt}
 			{#if adstxt.direct_entries && adstxt.direct_entries.length >= 1}
-				<div class="card variant-glass-surface mt-2 md:mt-4 md:p-4">
+				<div class="card preset-tonal mt-2 md:mt-4 md:p-4">
 					<h4 class="h4 md:h3 p-2 mt-2">Direct App-Ads.Txt</h4>
 					<AdsTxtTable entries_table={adstxt.direct_entries} />
 				</div>
 			{/if}
 			{#if adstxt.reseller_entries && adstxt.reseller_entries.length >= 1}
-				<div class="card variant-glass-surface mt-2 md:mt-4 md:p-4">
+				<div class="card preset-tonal mt-2 md:mt-4 md:p-4">
 					<h4 class="h4 md:h3 p-2 mt-2">Reseller App-Ads.Txt Entries</h4>
 					<AdsTxtTable entries_table={adstxt.reseller_entries} />
 				</div>
@@ -276,8 +276,8 @@
 	</div>
 
 	<!-- Column2: App Pictures -->
-	<div class="card p-8">
-		<div class="card variant-glass-surface p-2 md:p-8 mt-2 md:mt-4">
+	<div class="card preset-filled-surface-100-900 p-2 md:p-8">
+		<div class="card preset-tonal p-2 md:p-8 mt-2 md:mt-4">
 			<h4 class="h4 md:h3 p-2">Screenshots</h4>
 			{#await data.myapp then myapp}
 				{#if myapp.featured_image_url}
@@ -300,7 +300,7 @@
 				</section>
 			{/await}
 		</div>
-		<div class="card variant-glass-surface p-2 md:p-8 mt-2 md:mt-4">
+		<div class="card preset-tonal p-2 md:p-8 mt-2 md:mt-4">
 			<h4 class="h4 md:h3 p-2">Additional Information</h4>
 			<div class="px-4 md:px-8">
 				{#await data.myapp then myapp}
@@ -320,7 +320,7 @@
 				{/await}
 			</div>
 		</div>
-		<div class="card variant-glass-surface p-2 md:p-8 mt-2 md:mt-4">
+		<div class="card preset-tonal p-2 md:p-8 mt-2 md:mt-4">
 			<h4 class="h4 md:h3 p-2">Ad SDKs & Trackers</h4>
 			{#await data.myPackageInfo}
 				Loading permissions and tracker data...

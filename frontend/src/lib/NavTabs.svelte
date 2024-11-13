@@ -1,39 +1,28 @@
 <script lang="ts">
-	import { page } from '$app/stores';
-	import { TabGroup, TabAnchor } from '@skeletonlabs/skeleton';
-	const topBarFont = 'h6 md:h3';
+	const topBarFont = 'text-base md:h4 hover:text-surface-500';
+	const horizontalDivider = 'h-12 w-px bg-secondary-100-900';
+	const topDivider =
+		'w-full border-t-[1px] md:border-t-0 md:border-b-[1px] border-secondary-100-900 p-2';
 </script>
 
-<TabGroup
-	active="variant-filled-primary"
-	hover="hover:variant-soft-primary"
-	flex="flex"
-	rounded=""
-	border=""
-	class="w-full p-0"
-	padding="px-1 py-2 md:px-4"
->
-	<TabAnchor
-		href="/collections/new_monthly"
-		selected={$page.url.pathname.startsWith('/collections')}
-	>
-		<h3 class={topBarFont}>NEW APPS</h3>
-	</TabAnchor>
-	<TabAnchor
-		href="/rankings/store/1/collection/1/category/1"
-		selected={$page.url.pathname.startsWith('/rankings')}
-	>
-		<h3 class={topBarFont}>APP RANKS</h3>
-	</TabAnchor>
-	<TabAnchor
-		href="/adtech/Google/networks?groupby=brands&metric=appcount"
-		selected={$page.url.pathname.startsWith('/adtech')}
-		><h3 class={topBarFont}>ADTECH RANKS</h3></TabAnchor
-	>
-	<TabAnchor href="/companies" selected={$page.url.pathname.startsWith('/companies')}
-		><h3 class={topBarFont}>COMPANIES</h3></TabAnchor
-	>
-	<TabAnchor href="/about" selected={$page.url.pathname === '/about'}
-		><h3 class={topBarFont}>ABOUT</h3></TabAnchor
-	>
-</TabGroup>
+<div class="flex flex-row gap-2 md:gap-6 text-center items-center {topDivider} mx-2">
+	<a href="/collections/new_monthly">
+		<p class={topBarFont}>NEW APPS</p>
+	</a>
+	<div class={horizontalDivider}></div>
+	<a href="/rankings/store/1/collection/1/category/1" class={topBarFont}>
+		<p class={topBarFont}>APP RANKS</p>
+	</a>
+	<div class={horizontalDivider}></div>
+	<a href="/adtech/Google/networks?groupby=brands&metric=appcount" class={topBarFont}>
+		<p class={topBarFont}>ADTECH RANKS</p>
+	</a>
+	<div class={horizontalDivider}></div>
+	<a href="/companies" class={topBarFont}>
+		<p class={topBarFont}>COMPANIES</p>
+	</a>
+	<div class={horizontalDivider}></div>
+	<a href="/about" class={topBarFont}>
+		<p class={topBarFont}>ABOUT</p>
+	</a>
+</div>

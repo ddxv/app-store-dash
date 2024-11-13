@@ -3,6 +3,7 @@
 	xmlns:xlink="http://www.w3.org/1999/xlink"
 	version="1.1"
 	width="1em"
+	fill="currentColor"
 	height="1em"
 	viewBox="0 0 256 256"
 	xml:space="preserve"

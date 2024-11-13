@@ -8,12 +8,6 @@
 
 	import { page } from '$app/stores';
 
-	import { type CompaniesOverview } from '../../../../../types';
-
-	// import type { PageData as ParentPageData } from '../$types';
-
-	// type CombinedPageData = ParentPageData & CompaniesOverview;
-
 	import type { PageData } from './$types';
 
 	interface Props {
@@ -22,15 +16,9 @@
 
 	let { data }: Props = $props();
 
-	// export let data: PropsnedPageData
-
 	function formatNumber(num: number) {
 		return new Intl.NumberFormat('en-US').format(num);
 	}
-
-	// currentType = data.companyTypes.then((myTypes) =>
-	// 	myTypes.types.find((type: { url_slug: string }) => type.url_slug === $page.params.type)
-	// );
 
 	let currentType = $derived(
 		data.companyTypes.then((myTypes) =>
@@ -43,7 +31,7 @@
 	<div><span>Loading...</span></div>
 {:then type}
 	<div class="flex items-center mb-2">
-		<h1 class="text-3xl font-bold text-gray-800">
+		<h1 class="text-3xl font-bold text-primary-900-100">
 			{type ? type.name : 'Unknown'} / All App Categories
 		</h1>
 		<div class="h-8 w-px bg-gray-300 mx-2"></div>
@@ -59,10 +47,10 @@
 		<CompaniesLayout>
 			{#snippet card1()}
 				<WhiteCard>
-					<div class="bg-white p-6 rounded-lg shadow-md">
-						<h2 class="text-xl font-bold text-gray-800 mb-4">Total Companies</h2>
-						<p class="text-lg text-gray-700">
-							<span class="font-semibold text-gray-900"
+					<div class="p-6 rounded-lg shadow-md">
+						<h2 class="text-xl font-bold text-primary-900-100 mb-4">Total Companies</h2>
+						<p class="text-lg">
+							<span class="font-semibold text-primary-900-100"
 								>{formatNumber(myData.categories.categories.companies.total_companies)}</span
 							>
 						</p>

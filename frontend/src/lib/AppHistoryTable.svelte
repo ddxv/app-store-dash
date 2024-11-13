@@ -5,9 +5,10 @@
 	import type { State } from '@vincjo/datatables/legacy/remote';
 	import type { AppHistoryInfo } from '../types';
 
-	const totalRows = history_table.length;
 	const rowsPerPage = 10;
 
+	let { history_table, os = $bindable('google') }: Props = $props();
+	const totalRows = history_table.length;
 	const handler = new DataHandler<AppHistoryInfo>([], {
 		rowsPerPage: rowsPerPage,
 		totalRows: totalRows
@@ -32,7 +33,6 @@
 		os?: string;
 	}
 
-	let { history_table, os = $bindable('google') }: Props = $props();
 	if (os.includes('google')) {
 		os = 'google';
 	} else if (os.includes('apple')) {
@@ -43,7 +43,7 @@
 </script>
 
 <div class="table-container space-y-4">
-	<div class="card variant-glass-surface mt-2 md:mt-4 md:p-4">
+	<div class="card preset-tonal mt-2 md:mt-4 md:p-4">
 		<h4 class="h4 md:h3 p-2 mt-2">Recent Raw Data</h4>
 		<div class="overflow-x-auto pl-0">
 			<!-- <table class="table md:table-hover table-compact"> -->

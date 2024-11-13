@@ -36,6 +36,7 @@ from dbcon.queries import (
     get_single_app,
     get_single_apps_adstxt,
     get_single_developer,
+    get_total_counts,
     search_apps,
 )
 
@@ -219,6 +220,21 @@ class AppController(Controller):
 
     path = "/api/apps"
 
+    @get(path="/overview", cache=86400)
+    async def get_overview(self: Self) -> dict:
+        """Handle GET request for a list of apps.
+
+        Returns
+        -------
+            A dictionary representation of the total counts
+
+        """
+        logger.info(f"{self.path} start")
+        overview_df = get_total_counts()
+        overview_dict = overview_df.to_dict(orient="records")[0]
+        logger.info(f"{self.path} return")
+        return overview_dict
+
     @get(path="/collections/{collection:str}", cache=3600)
     async def get_apps_overview(self: Self, collection: str) -> Collection:
         """Handle GET request for a list of apps.
@@ -229,7 +245,7 @@ class AppController(Controller):
 
         Returns:
         -------
-            A dictionary representation of the list of apps for homepasge
+            A dictionary representation of the list of apps for homepage
 
         """
         logger.info(f"{self.path} start {collection=}")

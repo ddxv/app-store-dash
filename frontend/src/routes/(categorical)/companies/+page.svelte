@@ -45,12 +45,12 @@
 </svelte:head>
 
 <div class="flex items-center mb-2">
-	<h1 class="text-3xl font-bold text-gray-800">Companies Overview</h1>
+	<h1 class="text-3xl font-bold text-primary-900-100">Companies Overview</h1>
 	<div class="h-8 w-px bg-gray-300 mx-2"></div>
 </div>
 {#await data.companiesOverview}
-	<div class="bg-white p-6 rounded-lg shadow-md flex justify-center items-center h-40">
-		<span class="text-lg text-gray-600">Loading...</span>
+	<div class="card preset-tonal p-6 rounded-lg shadow-md flex justify-center items-center h-40">
+		<span class="text-lg">Loading...</span>
 	</div>
 {:then myData}
 	{#if typeof myData == 'string'}
@@ -59,29 +59,33 @@
 		<CompaniesLayout>
 			{#snippet card1()}
 				<WhiteCard>
-					<div class="bg-white p-6 rounded-lg shadow-md">
-						<h2 class="text-xl font-bold text-gray-800 mb-4">Total Companies</h2>
-						<p class="text-lg text-gray-700">
-							<span class="font-semibold text-gray-900"
-								>{formatNumber(myData.categories.categories.all.total_companies)}</span
-							>
-						</p>
-					</div>
+					{#snippet title()}
+						Total Companies
+					{/snippet}
+					<p class="text-lg p-2 md:p-4">
+						<span class="font-semibold"
+							>{formatNumber(myData.categories.categories.all.total_companies)}</span
+						>
+					</p>
 				</WhiteCard>
 			{/snippet}
 
 			{#snippet card2()}
-				<WhiteCard
-					><CompaniesBarChart plotData={myData.top.sdk} plotTitle="Top SDK Companies" /></WhiteCard
+				<WhiteCard>
+					{#snippet title()}
+						Top SDK Companies
+					{/snippet}
+					<CompaniesBarChart plotData={myData.top.sdk} /></WhiteCard
 				>
 			{/snippet}
 			{#snippet card3()}
-				<WhiteCard
-					><CompaniesBarChart
-						plotData={myData.top.adstxt_direct}
-						plotTitle="Top Adstxt Companies"
-					/></WhiteCard
-				>
+				<WhiteCard>
+					{#snippet title()}
+						Top Adstxt Companies
+					{/snippet}
+
+					<CompaniesBarChart plotData={myData.top.adstxt_direct} />
+				</WhiteCard>
 			{/snippet}
 		</CompaniesLayout>
 	{/if}

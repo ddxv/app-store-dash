@@ -9,6 +9,8 @@
 	} from '@carbon/charts-svelte';
 	import '@carbon/charts-svelte/styles.css';
 
+	const carbonTheme = 'g90';
+
 	interface Props {
 		plotdata: ChartTabularData;
 		plotType: string;
@@ -25,6 +27,7 @@
 		plotHeightPx = '300px',
 		changeOptions = {
 			toolbar: { enabled: false },
+			theme: carbonTheme,
 			axes: {
 				bottom: {
 					title: 'Date',
@@ -63,6 +66,7 @@
 		},
 		installOptions = {
 			toolbar: { enabled: false },
+			theme: carbonTheme,
 			axes: {
 				bottom: {
 					title: 'Date',
@@ -92,6 +96,7 @@
 		},
 		numberOptions = {
 			toolbar: { enabled: false },
+			theme: carbonTheme,
 			axes: {
 				bottom: {
 					title: 'Date',
@@ -125,6 +130,7 @@
 		},
 		appRankOptions = {
 			title: 'Step (discrete)',
+			theme: carbonTheme,
 			axes: {
 				bottom: {
 					title: 'Date',

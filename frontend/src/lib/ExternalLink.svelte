@@ -11,7 +11,7 @@
 	href={`https://${domain}`}
 	target="_blank"
 	rel="noopener noreferrer"
-	class="text-gray-500 hover:text-gray-700 flex items-center"
+	class="preset-tonal-primary hover:preset-tonal flex items-center"
 >
 	<span class="inline-flex items-center gap-1">
 		{domain}

@@ -10,7 +10,7 @@
 </script>
 
 <div class="inline-block">
-	<h5 class="h3 md:h2 p-0 md:p-2">{app.name}</h5>
+	<h1 class="h1 md:h2 p-0 md:p-2 text-primary-900-100">{app.name}</h1>
 	<!-- Installs DownloadIcon 123-->
 	{#if app.installs != '0' && app.installs != 'N/A'}
 		<div class="block p-0 md:p-2 h3">

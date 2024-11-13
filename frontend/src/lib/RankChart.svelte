@@ -140,7 +140,7 @@
 			// Create the echarts instance
 			myChart.dispose();
 			// myChart = echarts.init(myChartDiv, null, { renderer: 'svg' });
-			myChart = echarts.init(myChartDiv);
+			myChart = echarts.init(myChartDiv, 'dark');
 			// Draw the chart
 			myChart.setOption(chartoption);
 			myChart.resize();
