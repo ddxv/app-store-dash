@@ -8,12 +8,6 @@
 
 	import { page } from '$app/stores';
 
-	import { type CompaniesOverview } from '../../../../../types';
-
-	// import type { PageData as ParentPageData } from '../$types';
-
-	// type CombinedPageData = ParentPageData & CompaniesOverview;
-
 	import type { PageData } from './$types';
 
 	interface Props {
@@ -22,15 +16,9 @@
 
 	let { data }: Props = $props();
 
-	// export let data: PropsnedPageData
-
 	function formatNumber(num: number) {
 		return new Intl.NumberFormat('en-US').format(num);
 	}
-
-	// currentType = data.companyTypes.then((myTypes) =>
-	// 	myTypes.types.find((type: { url_slug: string }) => type.url_slug === $page.params.type)
-	// );
 
 	let currentType = $derived(
 		data.companyTypes.then((myTypes) =>

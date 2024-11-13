@@ -30,10 +30,6 @@
 					<span>
 						{#if c.title != 'Types' && c.title != 'Categories'}
 							<a href={c.url} class="text-surface-900-100 hover:text-primary-900-100">
-								<!-- 
-			Pass in the glob import of the route svelte modules as well as
-			any data the routes can use to try to fill in any info.
-			-->
 								{c.title}
 								{c.metadata ? `(${c.metadata.extraValue})` : ''}
 							</a>

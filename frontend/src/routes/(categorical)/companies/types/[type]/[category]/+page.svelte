@@ -6,7 +6,6 @@
 
 	import type { PageData } from './$types';
 
-	let appCategory = $derived($page.params.category);
 	let companyType = $derived($page.params.type);
 
 	let { data }: { data: PageData } = $props();
