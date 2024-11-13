@@ -1,11 +1,11 @@
 <script lang="ts">
 	const topBarFont = 'text-base md:h4 hover:text-surface-500';
-	const horizontalDivider = 'h-12 w-px bg-primary-900-100';
-	const topDivider = 'md:hidden border-t-[1px] border-primary-900-100 p-2';
+	const horizontalDivider = 'h-12 w-px bg-secondary-100-900';
+	const topDivider =
+		'w-full border-t-[1px] md:border-t-0 md:border-b-[1px] border-secondary-100-900 p-2';
 </script>
 
-<div class={topDivider}></div>
-<div class="flex flex-row gap-2 md:gap-6 text-center items-center">
+<div class="flex flex-row gap-2 md:gap-6 text-center items-center {topDivider} mx-2">
 	<a href="/collections/new_monthly">
 		<p class={topBarFont}>NEW APPS</p>
 	</a>

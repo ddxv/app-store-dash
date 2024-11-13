@@ -6,14 +6,10 @@
 
 	import type { PageData } from './$types';
 
-	interface Props {
-		data: PageData;
-	}
-
 	let appCategory = $derived($page.params.category);
 	let companyType = $derived($page.params.type);
 
-	let { data }: Props = $props();
+	let { data }: { data: PageData } = $props();
 
 	let currentType = $derived(
 		data.companyTypes.then((myTypes) =>
@@ -21,9 +17,13 @@
 		)
 	);
 
-	let currentCategory = $derived(
-		data.appCats.categories.find((cat: { id: string }) => cat.id == appCategory)
-	);
+	let currentCategoryName = $derived(getCategoryName($page.params.category));
+
+	function getCategoryName(category: string) {
+		return (
+			data?.appCats?.categories?.find((cat: { id: string }) => cat.id == category)?.name || category
+		);
+	}
 
 	function formatNumber(num: number) {
 		return new Intl.NumberFormat('en-US').format(num);
@@ -36,8 +36,8 @@
 	<div class="flex items-center mb-2">
 		<h1 class="text-3xl font-bold text-primary-900-100">
 			{type ? type.name : 'Unknown'} -
-			{#await currentCategory then myCategory}
-				{myCategory ? myCategory.name : 'Unknown'}
+			{#await currentCategoryName then myCategoryName}
+				{myCategoryName}
 			{/await}
 		</h1>
 	</div>

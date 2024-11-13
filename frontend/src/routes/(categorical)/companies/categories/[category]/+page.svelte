@@ -1,26 +1,23 @@
 <script lang="ts">
-	import type { CompaniesOverview } from '../../../../../types';
+	import { page } from '$app/stores';
 	import CompaniesBarChart from '$lib/CompaniesBarChart.svelte';
 	import CompaniesOverviewTable from '$lib/CompaniesOverviewTable.svelte';
-
-	import type { CategoriesInfo } from '../../../../../types';
 
 	import WhiteCard from '$lib/WhiteCard.svelte';
 	import CompaniesLayout from '$lib/CompaniesLayout.svelte';
 	import CompaniesTableGrid from '$lib/CompaniesTableGrid.svelte';
-	interface Props {
-		data: CompaniesOverview;
+
+	import type { PageData } from './$types';
+
+	let { data }: { data: PageData } = $props();
+
+	let currentCategoryName = $derived(getCategoryName($page.params.category));
+
+	function getCategoryName(category: string) {
+		return (
+			data?.appCats?.categories?.find((cat: { id: string }) => cat.id == category)?.name || category
+		);
 	}
-
-	import { page } from '$app/stores';
-
-	let category = $derived($page.params.category);
-
-	let { data }: Props = $props();
-
-	let currentCategoryName = $derived(
-		data.appCats.categories.find((cat: { id: string }) => cat.id == category).name
-	);
 
 	function formatNumber(num: number) {
 		return new Intl.NumberFormat('en-US').format(num);

@@ -4,7 +4,7 @@ export const ssr = true;
 export const csr = true;
 
 export const load: LayoutServerLoad = async ({ fetch }) => {
-	console.log(`load categories start`);
+	console.log(`Layout load company types start`);
 
 	const company_types = fetch(`http://localhost:8000/api/companies/types`);
 

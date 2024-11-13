@@ -17,8 +17,6 @@
 	let isSelected = $derived(checkSelected());
 
 	function checkSelected() {
-		console.log('localHomeCategorySelect', localHomeCategorySelect);
-		console.log('values.id', values.id);
 		return localHomeCategorySelect == values.id;
 	}
 

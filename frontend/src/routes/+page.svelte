@@ -66,7 +66,7 @@
 			presenting it for developers and marketers. AppGoblin features app store daily ranks and stats
 			about mobile ad networks, data analytics tools, MMPs and app-ads.txt stats.
 		</p>
-		<a href="/about" class="p-2 md:p-4 mb-4">
+		<a href="/about" class="p-2 md:p-4">
 			<strong> Click here to learn more or request new features.</strong>
 		</a>
 

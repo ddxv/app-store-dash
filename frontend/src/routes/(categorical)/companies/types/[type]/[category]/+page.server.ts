@@ -32,7 +32,7 @@ export const load: PageServerLoad = async ({ params, parent }) => {
 						return 'Uncaught Error';
 					}
 				),
-			appCats
+			appCats: await appCats
 		};
 	} catch (error) {
 		console.error('Failed to load data:', error);

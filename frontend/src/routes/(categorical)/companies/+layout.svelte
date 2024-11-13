@@ -15,26 +15,38 @@
 	let pageDataCrumbs = $derived($page.data.crumbs as Crumb<MyCrumbMetadata>[] | undefined);
 </script>
 
-<Breadcrumbs url={$page.url} routeId={$page.route.id} pageData={$page.data} crumbs={pageDataCrumbs}>
-	{#snippet children({ crumbs })}
-		<div>
-			<span><a href="/">Home</a></span>
-			{#each crumbs as c}
-				<span>/</span>
-				<span>
-					<a href={c.url}>
-						<!-- 
+<div class="text-surface-900-100 text-sm p-2 md:p-4">
+	<Breadcrumbs
+		url={$page.url}
+		routeId={$page.route.id}
+		pageData={$page.data}
+		crumbs={pageDataCrumbs}
+	>
+		{#snippet children({ crumbs })}
+			<div>
+				<span><a href="/" class="text-surface-900-100 hover:text-primary-900-100">Home</a></span>
+				{#each crumbs as c}
+					<span>/</span>
+					<span>
+						{#if c.title != 'Types' && c.title != 'Categories'}
+							<a href={c.url} class="text-surface-900-100 hover:text-primary-900-100">
+								<!-- 
 			Pass in the glob import of the route svelte modules as well as
 			any data the routes can use to try to fill in any info.
 			-->
-						{c.title}
-						{c.metadata ? `(${c.metadata.extraValue})` : ''}
-					</a>
-				</span>
-			{/each}
-		</div>
-	{/snippet}
-</Breadcrumbs>
+								{c.title}
+								{c.metadata ? `(${c.metadata.extraValue})` : ''}
+							</a>
+						{:else}
+							{c.title}
+							{c.metadata ? `(${c.metadata.extraValue})` : ''}
+						{/if}
+					</span>
+				{/each}
+			</div>
+		{/snippet}
+	</Breadcrumbs>
+</div>
 
 {#await data.companyTypes}
 	Loading company types ...

@@ -23,7 +23,7 @@ Tips for Drawer modals:
 <Modal
 	bind:open={drawerState}
 	triggerBase="btn preset-tonal-primary"
-	contentBase="bg-surface-100-900 p-4 space-y-4 shadow-xl w-[250px] h-screen"
+	contentBase="bg-surface-100-900 space-y-4 shadow-xl h-screen"
 	positionerJustify="justify-start"
 	positionerAlign=""
 	positionerPadding=""

@@ -8,8 +8,6 @@
 
 	import { AppBar } from '@skeletonlabs/skeleton-svelte';
 
-	import type { AfterNavigate } from '@sveltejs/kit';
-	import { afterNavigate } from '$app/navigation';
 	import { homeCategoryMap } from '../stores';
 
 	import githubIcon from '$lib/svg/github-mark.svg?raw';
@@ -36,15 +34,6 @@
 	let { data, children }: Props = $props();
 
 	homeCategoryMap.set(data.appCats);
-
-	// Scroll to top after navigation
-	afterNavigate((params: AfterNavigate) => {
-		const isNewPage: boolean = params.from?.route.id !== params.to?.route.id;
-		const elemPage = document.querySelector('#page');
-		if (isNewPage && elemPage !== null) {
-			elemPage.scrollTop = 0;
-		}
-	});
 </script>
 
 <div class="grid h-screen grid-rows-[auto_1fr_auto]">
@@ -71,7 +60,7 @@
 				</div>
 			{/snippet}
 
-			<div class="hidden lg:inline-flex">
+			<div class="hidden md:inline-flex">
 				<NavTabs />
 			</div>
 
@@ -114,7 +103,7 @@
 	</header>
 
 	<div class="grid grid-cols-1 md:grid-cols-[auto_1fr]">
-		<aside class="hidden sm:block">
+		<aside class="hidden md:block">
 			<div>
 				{#await data.appCats then myCatData}
 					<SideBar {myCatData} />
@@ -135,7 +124,7 @@
 				{/await}
 			{/if}
 		</div>
-		<div class="inline-flex sm:hidden">
+		<div class="inline-flex md:hidden">
 			<NavTabs />
 		</div>
 	</footer>

@@ -21,7 +21,6 @@
 			} else if (parts.length == 2) {
 				// this is not used
 			} else if (parts.length == 3) {
-				console.log('newValue', pageCategory);
 				if (parts[2] == 'overall') {
 					newUrl = `/companies/${parts[1]}`;
 				} else {
