@@ -14,12 +14,12 @@
 		<p class={topBarFont}>APP RANKS</p>
 	</a>
 	<div class={horizontalDivider}></div>
-	<a href="/adtech/Google/networks?groupby=brands&metric=appcount" class={topBarFont}>
-		<p class={topBarFont}>ADTECH RANKS</p>
+	<a href="/sdks" class={topBarFont}>
+		<p class={topBarFont}>APP SDK</p>
 	</a>
 	<div class={horizontalDivider}></div>
 	<a href="/companies" class={topBarFont}>
-		<p class={topBarFont}>COMPANIES</p>
+		<p class={topBarFont}>COMPANY RANKS</p>
 	</a>
 	<div class={horizontalDivider}></div>
 	<a href="/about" class={topBarFont}>

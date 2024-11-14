@@ -71,6 +71,7 @@ QUERY_PARENT_COMPANY_CATEGORIES = load_sql_file("query_company_parent_category.s
 QUERY_COMPANY_CATEGORIES = load_sql_file("query_company_category.sql")
 QUERY_CATEGORY_TYPES_TOTALS = load_sql_file("query_category_totals.sql")
 QUERY_TYPE_TOTALS = load_sql_file("query_type_totals.sql")
+QUERY_SDKS = load_sql_file("query_sdks.sql")
 
 
 def get_recent_apps(collection: str, limit: int = 20) -> pd.DataFrame:
@@ -583,6 +584,12 @@ def get_top_companies(
 
     df = pd.read_sql(query, DBCON.engine, params={"categories": tuple(categories)})
 
+    return df
+
+
+def get_sdks() -> pd.DataFrame:
+    """Get top sdks."""
+    df = pd.read_sql(QUERY_SDKS, DBCON.engine)
     return df
 
 
