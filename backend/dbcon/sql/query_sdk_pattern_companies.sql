@@ -13,4 +13,5 @@ LEFT JOIN ad_domains AS ad
     ON
         cdm.domain_id = ad.id
 WHERE
-    sp.package_pattern LIKE :value_pattern || '%';
+    sp.package_pattern LIKE :value_pattern || '%'
+    OR :value_pattern ILIKE sp.package_pattern || '%';

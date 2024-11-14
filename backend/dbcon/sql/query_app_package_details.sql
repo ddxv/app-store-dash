@@ -4,7 +4,7 @@ SELECT
     cavd.value_name,
     cavd.company_name,
     cavd.company_domain,
-    cavd.category_name
+    cavd.category_slug
 FROM
     companies_apps_version_details AS cavd
 LEFT JOIN store_apps AS sa

@@ -8,6 +8,7 @@
 	import RankChart from '$lib/RankChart.svelte';
 	import AppHistoryTable from '$lib/AppHistoryTable.svelte';
 	import AdsTxtTable from '$lib/AdsTxtTable.svelte';
+	import WhiteCard from '$lib/WhiteCard.svelte';
 	interface Props {
 		data: AppFullDetails;
 	}
@@ -322,33 +323,42 @@
 			</div>
 		</div>
 		<div class="card preset-tonal p-2 md:p-8 mt-2 md:mt-4">
-			<h4 class="h4 md:h3 p-2">Ad SDKs & Trackers</h4>
+			<h4 class="h4 md:h3 p-2">Ad SDKs, Trackers & Permissions</h4>
 			{#await data.myPackageInfo}
 				Loading permissions and tracker data...
 			{:then packageInfo}
 				{#if typeof packageInfo == 'string'}
 					<p>Permissions, SDKs and trackers info not yet available for this app.</p>
 				{:else}
-					{#await data.myapp then myapp}
-						{#if packageInfo.trackers && Object.keys(packageInfo.trackers).length > 0}
-							<ManifestItemList items={packageInfo.trackers} title="Trackers"></ManifestItemList>
-						{/if}
-						{#if packageInfo.networks && Object.keys(packageInfo.networks).length > 0}
-							<ManifestItemList items={packageInfo.networks} title="Ad Networks"></ManifestItemList>
-						{/if}
-						{#if packageInfo.permissions && packageInfo.permissions.length > 0}
-							<h4 class="h4 md:h3 p-2 md:p-4 mt-4">Permissions</h4>
-							<div class="px-4 md:px-8 max-w-sm md:max-w-md lg:max-w-full overflow-x-scroll">
-								{#each packageInfo.permissions as permission}
-									<p>{permission}</p>
-								{/each}
-							</div>
-						{/if}
-						{#if packageInfo.leftovers && Object.keys(packageInfo.leftovers).length > 0}
-							<ManifestItemList items={packageInfo.leftovers} title="Other Services"
-							></ManifestItemList>
-						{/if}
-					{/await}
+					{#if packageInfo.company_categories && Object.keys(packageInfo.company_categories).length > 0}
+						{#await data.companyTypes}
+							Loading company types...
+						{:then myCompanyTypes}
+							{#each Object.keys(packageInfo.company_categories) as category}
+								<WhiteCard>
+									{#snippet title()}
+										{myCompanyTypes.types.find((x) => x.url_slug === category)?.name || category}
+									{/snippet}
+									<div class="p-2">
+										<ManifestItemList items={packageInfo.company_categories[category]}
+										></ManifestItemList>
+									</div>
+								</WhiteCard>
+							{/each}
+						{/await}
+					{/if}
+					{#if packageInfo.permissions && packageInfo.permissions.length > 0}
+						<h4 class="h4 md:h3 p-2 md:p-4 mt-4">Permissions</h4>
+						<div class="px-4 md:px-8 max-w-sm md:max-w-md lg:max-w-full overflow-x-scroll">
+							{#each packageInfo.permissions as permission}
+								<p>{permission}</p>
+							{/each}
+						</div>
+					{/if}
+					{#if packageInfo.leftovers && Object.keys(packageInfo.leftovers).length > 0}
+						<h4 class="h4 md:h3 p-2 md:p-4 mt-4">Unknown SDKs and Services</h4>
+						<ManifestItemList items={packageInfo.leftovers}></ManifestItemList>
+					{/if}
 				{/if}
 			{/await}
 		</div>
