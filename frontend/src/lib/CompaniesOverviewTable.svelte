@@ -54,11 +54,10 @@
 							<p class="text-xs md:text-base">{index + 1}</p>
 						</td>
 						<td class="w-0">
-							<!-- TODO: This is supposed to be just inside TR for whole row -->
 							<a
 								href="/companies/{row.company_domain}"
 								style="cursor: pointer;"
-								class="table-row-link text-xs md:text-sm"
+								class=" text-xs md:text-sm"
 							>
 								{#if row.company_name}
 									{row.company_name}
@@ -105,11 +104,3 @@
 		</footer>
 	</div>
 </div>
-
-<style>
-	.table-row-link {
-		display: contents;
-		text-decoration: none;
-		color: inherit;
-	}
-</style>
