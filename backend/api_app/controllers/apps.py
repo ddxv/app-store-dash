@@ -324,18 +324,13 @@ class AppController(Controller):
                 status_code=404,
             )
 
-        networks = {
-            k: f.groupby("xml_path")["value_name"].apply(list).to_dict()
-            for k, f in df[
-                df["category_name"].str.contains("etwork", na=False)
-            ].groupby("company_domain")
-        }
-        trackers = {
-            k: f.groupby("xml_path")["value_name"].apply(list).to_dict()
-            for k, f in df[
-                df["category_name"].str.contains("racker", na=False)
-            ].groupby("company_domain")
-        }
+        cats = df.loc[df["category_slug"].notna(), "category_slug"].unique().tolist()
+        company_cats = {}
+        for cat in cats:
+            company_cats[cat] = {
+                k: f.groupby("xml_path")["value_name"].apply(list).to_dict()
+                for k, f in df[df["category_slug"] == cat].groupby("company_domain")
+            }
 
         is_permission = df["xml_path"] == "uses-permission"
         is_matching_packages = df["value_name"].str.startswith(
@@ -360,9 +355,8 @@ class AppController(Controller):
         ]
 
         trackers_dict = PackageDetails(
-            trackers=trackers,
+            company_categories=company_cats,
             permissions=permissions_list,
-            networks=networks,
             leftovers=left_overs_df[["xml_path", "value_name"]]
             .groupby("xml_path")["value_name"]
             .apply(list)

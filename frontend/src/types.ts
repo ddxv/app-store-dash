@@ -314,6 +314,7 @@ export interface CompanyCategoryDetails {
 
 export interface AppFullDetails {
 	myapp: AppFullDetail;
+	companyTypes: { types: companyType[] };
 	status?: number;
 	error?: string;
 	myranks: Promise<{ latest: AppRankDetail[]; history: AppRankDetail[] }>;
@@ -329,8 +330,7 @@ export interface AppFullDetails {
 	}>;
 	myPackageInfo: Promise<{
 		permissions: string[];
-		trackers: Trackers;
-		networks: Networks;
+		company_categories: { [key: string]: { [key: string]: string[] } };
 		android: string[];
 		leftovers: UnknownManifestItems;
 	}>;

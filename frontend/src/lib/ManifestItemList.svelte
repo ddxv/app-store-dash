@@ -1,53 +1,57 @@
 <script lang="ts">
 	import type { Networks } from '../types';
 	import type { Trackers } from '../types';
-
+	import WhiteCard from './WhiteCard.svelte';
 	import CompanyButton from './CompanyButton.svelte';
 	interface Props {
-		title: string;
 		items?: Record<string, string[]> | Trackers | Networks;
 	}
 
-	let { title, items = {} }: Props = $props();
+	let { items = {} }: Props = $props();
 
-	const androidNameFont = 'text-sm md:text-base px-8 md:px-16';
-	const xmlPathFont = 'h5 px-4 md:px-8';
+	const androidNameFont = 'text-xs md:text-sm px-8 md:px-16';
+	const xmlPathFont = 'text-base px-4 md:px-8';
 </script>
 
-<h4 class="h4 md:h3 p-2 md:p-4 mt-4">{title}</h4>
-<div class="px-2 md:px-4 max-w-sm lg:max-w-full overflow-x-scroll">
+<div class="max-w-sm lg:max-w-full overflow-x-scroll">
 	<ul>
-		{#each Object.entries(items) as [key, value]}
-			{#if Array.isArray(value)}
-				<!-- For leftovers -->
-				<li>
-					<p class={xmlPathFont}>{key}</p>
-					<ul>
-						{#each value as androidName}
-							<li><a href={`/sdks/${androidName}`} class={androidNameFont}>{androidName}</a></li>
-						{/each}
-					</ul>
-				</li>
-			{:else}
-				<!-- For trackers and networks -->
-				<div class="mt-4">
-					<CompanyButton companyName={key} companyDomain={key} />
-				</div>
-				{#each Object.entries(value) as [xml_path, androidNames]}
+		<div class="grid grid-cols-2 gap-2 md:gap-4">
+			{#each Object.entries(items) as [key, value]}
+				{#if Array.isArray(value)}
+					<!-- For leftovers -->
 					<li>
-						<p class={xmlPathFont}>{xml_path}</p>
-						{#if Array.isArray(androidNames)}
-							<ul>
-								{#each androidNames as androidName}
-									<li>
-										<a href={`/sdks/${androidName}`} class={androidNameFont}>{androidName}</a>
-									</li>
-								{/each}
-							</ul>
-						{/if}
+						<p class={xmlPathFont}>{key}</p>
+						<ul>
+							{#each value as androidName}
+								<li><a href={`/sdks/${androidName}`} class={androidNameFont}>{androidName}</a></li>
+							{/each}
+						</ul>
 					</li>
-				{/each}
-			{/if}
-		{/each}
+				{:else}
+					<!-- For trackers and networks -->
+					<WhiteCard>
+						{#snippet title()}
+							<div class="text-lg text-bold p-2">
+								<CompanyButton companyName={key} companyDomain={key} />
+							</div>
+						{/snippet}
+						{#each Object.entries(value) as [xml_path, androidNames]}
+							<li>
+								<p class={xmlPathFont}>{xml_path}</p>
+								{#if Array.isArray(androidNames)}
+									<ul>
+										{#each androidNames as androidName}
+											<li>
+												<a href={`/sdks/${androidName}`} class={androidNameFont}>{androidName}</a>
+											</li>
+										{/each}
+									</ul>
+								{/if}
+							</li>
+						{/each}
+					</WhiteCard>
+				{/if}
+			{/each}
+		</div>
 	</ul>
 </div>
