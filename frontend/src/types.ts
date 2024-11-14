@@ -340,10 +340,6 @@ export interface AppFullDetails {
 	}>;
 }
 
-export interface CategoriesAdtech {
-	[store: number]: { [category: string]: Company[] };
-}
-
 export interface Company {
 	name: string;
 	app_count: number;
@@ -352,20 +348,6 @@ export interface Company {
 	installs_percent: number;
 	ratings_percent: number;
 	app_count_percent: number;
-}
-
-export interface TopCompaniesInfo {
-	status?: number;
-	error?: string;
-	networks: Promise<{
-		all_companies: CategoriesAdtech;
-		parent_companies: CategoriesAdtech;
-	}>;
-	trackers: Promise<{
-		all_companies: CategoriesAdtech;
-		parent_companies: CategoriesAdtech;
-	}>;
-	appCats: Promise<CatData>;
 }
 
 export interface companyType {
