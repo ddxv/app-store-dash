@@ -1,4 +1,10 @@
-SELECT *
+SELECT
+    store,
+    company_name,
+    company_domain,
+    xml_path,
+    value_name,
+    app_count
 FROM (
     SELECT
         *,

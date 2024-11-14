@@ -1,10 +1,8 @@
-// import type { PageServerLoad } from '../../$types.js';
 import type { PageServerLoad } from './$types.js';
 
 export const ssr: boolean = true;
 export const csr: boolean = true;
 
-console.log('Script executed');
 export const load: PageServerLoad = async ({}) => {
 	const res = fetch(`http://localhost:8000/api/companies`);
 	console.log(`start load overview for companies`);
@@ -14,7 +12,7 @@ export const load: PageServerLoad = async ({}) => {
 				.then((resp) => {
 					if (resp.status === 200) {
 						return resp.json();
-					} else if (resp.status === 404) {
+					} else if (resp.status === 406) {
 						console.log('Companes overview not found');
 						return 'Company overview not Found';
 					} else if (resp.status === 500) {

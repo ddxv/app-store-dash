@@ -34,7 +34,7 @@
 					</h4>
 					<ul class="list-disc list-inside space-y-0.5">
 						{#each truncateList(patterns.package_patterns) as pattern}
-							<li class="">{pattern}</li>
+							<li class=""><a href={`/sdks/${pattern}`}>{pattern}</a></li>
 						{/each}
 					</ul>
 				</div>

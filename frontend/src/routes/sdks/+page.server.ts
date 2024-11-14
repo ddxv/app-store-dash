@@ -1,24 +1,20 @@
-// import type { PageServerLoad } from '../../$types.js';
 import type { PageServerLoad } from './$types.js';
 
 export const ssr: boolean = true;
 export const csr: boolean = true;
 
-export const load: PageServerLoad = async ({ params, parent }) => {
-	console.log(`start load overview for companies in ${params.category}`);
-	const res = fetch(`http://localhost:8000/api/companies/categories/${params.category}`);
-
-	const { appCats } = await parent();
-
+export const load: PageServerLoad = async ({}) => {
+	const res = fetch(`http://localhost:8000/api/sdks/overview`);
+	console.log('start load overview for sdks');
 	try {
 		return {
-			companiesOverview: res
+			sdksOverview: res
 				.then((resp) => {
 					if (resp.status === 200) {
 						return resp.json();
-					} else if (resp.status === 404) {
-						console.log('Companes overview not found');
-						return 'Company overview not Found';
+					} else if (resp.status === 406) {
+						console.log('Sdks overview not found');
+						return 'Sdks overview not Found';
 					} else if (resp.status === 500) {
 						console.log('API Server error');
 						return 'Backend Error';
@@ -30,15 +26,14 @@ export const load: PageServerLoad = async ({ params, parent }) => {
 						console.log('Uncaught error', error);
 						return 'Uncaught Error';
 					}
-				),
-			appCats: await appCats
+				)
 		};
 	} catch (error) {
 		console.error('Failed to load data:', error);
 		return {
 			results: {},
 			status: 500,
-			error: 'Failed to load trending apps'
+			error: 'Failed to load sdks'
 		};
 	}
 };

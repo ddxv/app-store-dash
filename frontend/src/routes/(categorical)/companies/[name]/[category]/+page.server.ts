@@ -3,17 +3,16 @@ import type { PageServerLoad } from './$types.js';
 export const ssr: boolean = true;
 export const csr: boolean = true;
 
-console.log('Script executed');
 export const load: PageServerLoad = async ({ parent, params }) => {
-	const networkName = params.name;
+	const companyDomain = params.name;
 	const category = params.category;
 	const res_apps = fetch(
-		`http://localhost:8000/api/companies/${networkName}/topapps?category=${category}`
+		`http://localhost:8000/api/companies/${companyDomain}/topapps?category=${category}`
 	);
 
 	const { companyDetails, companyTree } = await parent();
 
-	console.log(`start load overview for company=${networkName}`);
+	console.log(`start load overview for company=${companyDomain}`);
 	try {
 		return {
 			companyDetails: companyDetails,

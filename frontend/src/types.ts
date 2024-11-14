@@ -203,10 +203,28 @@ export interface OverviewAppList {
 }
 
 export interface CompanyOverviewApps extends Row {
-	//del
 	rank: number;
 	name: string;
 	store_id: string;
+}
+
+export interface SdksOverview extends Row {
+	store: string;
+	company_name: string;
+	company_domain: string;
+	xml_path: string;
+	value_name: string;
+	app_count: number;
+}
+
+export interface SdkOverview extends Row {
+	xml_path: string;
+	value_name: string;
+	store: string;
+	store_id: string;
+	app_name: string;
+	installs: number;
+	rating_count: number;
 }
 
 export interface CompanyOverviewPlatforms {

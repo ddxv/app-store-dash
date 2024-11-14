@@ -327,13 +327,13 @@ class AppController(Controller):
         networks = {
             k: f.groupby("xml_path")["value_name"].apply(list).to_dict()
             for k, f in df[
-                df["category_names"].str.contains("etwork", na=False)
+                df["category_name"].str.contains("etwork", na=False)
             ].groupby("company_domain")
         }
         trackers = {
             k: f.groupby("xml_path")["value_name"].apply(list).to_dict()
             for k, f in df[
-                df["category_names"].str.contains("racker", na=False)
+                df["category_name"].str.contains("racker", na=False)
             ].groupby("company_domain")
         }
 
@@ -347,7 +347,6 @@ class AppController(Controller):
         )
 
         permissions_df = df[is_permission]
-        android_services_df = df[is_android_activity]
 
         left_overs_df = df[
             ~is_permission
@@ -364,7 +363,6 @@ class AppController(Controller):
             trackers=trackers,
             permissions=permissions_list,
             networks=networks,
-            android=android_services_df.value_name.tolist(),
             leftovers=left_overs_df[["xml_path", "value_name"]]
             .groupby("xml_path")["value_name"]
             .apply(list)
