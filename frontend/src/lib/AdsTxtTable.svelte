@@ -40,7 +40,6 @@
 			<thead>
 				<tr>
 					<th class="table-cell-fit">Company</th>
-					<th class="table-cell-fit">Ad Domain</th>
 					<th class="table-cell-fit">Publisher ID</th>
 					<th class="table-cell-fit">Crawled At</th>
 				</tr>
@@ -48,20 +47,17 @@
 			<tbody>
 				{#each $rows as row}
 					<tr>
-						<td class="table-cell-fit">
+						<td class="table-cell-fit text-sm md:text-base">
 							{#if row.company_name}
 								<CompanyButton companyName={row.company_name} companyDomain={row.ad_domain_url} />
 							{:else}
 								<CompanyButton companyDomain={row.ad_domain_url} companyName={row.ad_domain_url} />
 							{/if}
 						</td>
-						<td class="table-cell-fit">
-							{row.ad_domain_url}
-						</td>
-						<td class="table-cell-fit">
+						<td class="table-cell-fit text-sm md:text-base max-w-[100px] truncate">
 							{row.publisher_id}
 						</td>
-						<td class="table-cell-fit">
+						<td class="table-cell-fit text-sm md:text-base">
 							{new Date(row.developer_domain_crawled_at).toLocaleDateString('en-CA')}
 						</td>
 					</tr>

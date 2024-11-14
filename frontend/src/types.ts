@@ -203,10 +203,28 @@ export interface OverviewAppList {
 }
 
 export interface CompanyOverviewApps extends Row {
-	//del
 	rank: number;
 	name: string;
 	store_id: string;
+}
+
+export interface SdksOverview extends Row {
+	store: string;
+	company_name: string;
+	company_domain: string;
+	xml_path: string;
+	value_name: string;
+	app_count: number;
+}
+
+export interface SdkOverview extends Row {
+	xml_path: string;
+	value_name: string;
+	store: string;
+	store_id: string;
+	app_name: string;
+	installs: number;
+	rating_count: number;
 }
 
 export interface CompanyOverviewPlatforms {
@@ -322,10 +340,6 @@ export interface AppFullDetails {
 	}>;
 }
 
-export interface CategoriesAdtech {
-	[store: number]: { [category: string]: Company[] };
-}
-
 export interface Company {
 	name: string;
 	app_count: number;
@@ -334,20 +348,6 @@ export interface Company {
 	installs_percent: number;
 	ratings_percent: number;
 	app_count_percent: number;
-}
-
-export interface TopCompaniesInfo {
-	status?: number;
-	error?: string;
-	networks: Promise<{
-		all_companies: CategoriesAdtech;
-		parent_companies: CategoriesAdtech;
-	}>;
-	trackers: Promise<{
-		all_companies: CategoriesAdtech;
-		parent_companies: CategoriesAdtech;
-	}>;
-	appCats: Promise<CatData>;
 }
 
 export interface companyType {

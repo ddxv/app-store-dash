@@ -10,7 +10,7 @@
 
 	let { title, items = {} }: Props = $props();
 
-	const androidNameFont = 'h6 px-8 md:px-16';
+	const androidNameFont = 'text-sm md:text-base px-8 md:px-16';
 	const xmlPathFont = 'h5 px-4 md:px-8';
 </script>
 
@@ -24,7 +24,7 @@
 					<p class={xmlPathFont}>{key}</p>
 					<ul>
 						{#each value as androidName}
-							<li><p class={androidNameFont}>{androidName}</p></li>
+							<li><a href={`/sdks/${androidName}`} class={androidNameFont}>{androidName}</a></li>
 						{/each}
 					</ul>
 				</li>
@@ -39,7 +39,9 @@
 						{#if Array.isArray(androidNames)}
 							<ul>
 								{#each androidNames as androidName}
-									<li><p class={androidNameFont}>{androidName}</p></li>
+									<li>
+										<a href={`/sdks/${androidName}`} class={androidNameFont}>{androidName}</a>
+									</li>
 								{/each}
 							</ul>
 						{/if}

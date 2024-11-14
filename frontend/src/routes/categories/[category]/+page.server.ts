@@ -3,8 +3,6 @@ export const csr: boolean = true;
 
 import type { Category, CategoryResponse } from '../../../types.js';
 
-console.log('Script executed');
-
 /** @type {import('../[category]/$types').PageServerLoad} */
 export async function load({ params }): Promise<CategoryResponse> {
 	const category = params.category;

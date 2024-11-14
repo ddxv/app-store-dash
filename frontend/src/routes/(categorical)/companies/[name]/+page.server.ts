@@ -4,17 +4,17 @@ export const ssr: boolean = true;
 export const csr: boolean = true;
 
 export const load: PageServerLoad = async ({ parent, params }) => {
-	const networkName = params.name;
+	const companyDomain = params.name;
 
 	const res_parent_categories = fetch(
-		`http://localhost:8000/api/companies/${networkName}/parentcategories`
+		`http://localhost:8000/api/companies/${companyDomain}/parentcategories`
 	);
-	const res_apps = fetch(`http://localhost:8000/api/companies/${networkName}/topapps`);
-	const res_sdks = fetch(`http://localhost:8000/api/companies/${networkName}/sdks`);
+	const res_apps = fetch(`http://localhost:8000/api/companies/${companyDomain}/topapps`);
+	const res_sdks = fetch(`http://localhost:8000/api/companies/${companyDomain}/sdks`);
 
 	const { companyDetails, companyTree } = await parent();
 
-	console.log(`start load overview for company=${networkName}`);
+	console.log(`start load overview for company=${companyDomain}`);
 	try {
 		return {
 			companyDetails: companyDetails,

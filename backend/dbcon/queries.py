@@ -52,9 +52,7 @@ QUERY_ADTECH_CATEGORY_TYPE = load_sql_file(
 QUERY_ADTECH_TYPE = load_sql_file("query_adtech_type.sql")
 QUERY_TOP_COMPANIES_MONTH = load_sql_file("query_top_companies_month.sql")
 QUERY_TOP_PARENT_COMPANIES_MONTH = load_sql_file("query_top_companies_month_parent.sql")
-QUERY_COMPANY_APPS = load_sql_file("query_company_apps.sql")
 QUERY_COMPANY_TOP_APPS = load_sql_file("query_company_top_apps.sql")
-QUERY_PARENT_COMPANY_APPS = load_sql_file("query_parent_company_apps.sql")
 QUERY_COMPANIES_PARENT_OVERVIEW = load_sql_file("query_companies_parent_overview.sql")
 QUERY_COMPANIES_PARENT_OVERVIEW_CATEGORY = load_sql_file(
     "query_companies_parent_overview_category.sql"
@@ -71,6 +69,9 @@ QUERY_PARENT_COMPANY_CATEGORIES = load_sql_file("query_company_parent_category.s
 QUERY_COMPANY_CATEGORIES = load_sql_file("query_company_category.sql")
 QUERY_CATEGORY_TYPES_TOTALS = load_sql_file("query_category_totals.sql")
 QUERY_TYPE_TOTALS = load_sql_file("query_type_totals.sql")
+QUERY_SDKS = load_sql_file("query_sdks.sql")
+QUERY_SDK_PATTERN = load_sql_file("query_sdk_pattern.sql")
+QUERY_SDK_PATTERN_COMPANIES = load_sql_file("query_sdk_pattern_companies.sql")
 
 
 def get_recent_apps(collection: str, limit: int = 20) -> pd.DataFrame:
@@ -488,46 +489,6 @@ def new_get_top_apps_for_company(
     return df
 
 
-def get_apps_for_company(
-    company_name: str,
-    store_id: int,
-    mapped_category: str,
-    *,
-    include_parents: bool = False,
-) -> pd.DataFrame:
-    """Get apps for for a network."""
-    logger.info(f"Query: {company_name=} & {include_parents=}")
-
-    if mapped_category == "games":
-        mapped_category = "game%"
-
-    if include_parents:
-        df = pd.read_sql(
-            QUERY_PARENT_COMPANY_APPS,
-            con=DBCON.engine,
-            params={
-                "company_name": company_name,
-                "store_id": store_id,
-                "mapped_category": mapped_category,
-                "mylimit": 20,
-            },
-        )
-    else:
-        df = pd.read_sql(
-            QUERY_COMPANY_APPS,
-            con=DBCON.engine,
-            params={
-                "company_name": company_name,
-                "store_id": store_id,
-                "mapped_category": mapped_category,
-                "mylimit": 20,
-            },
-        )
-    if not df.empty:
-        df = clean_app_df(df)
-    return df
-
-
 def search_companies(search_input: str, limit: int = 10) -> pd.DataFrame:
     """Search companies by term in database."""
     logger.info(f"Company search: {search_input=}")
@@ -583,6 +544,34 @@ def get_top_companies(
 
     df = pd.read_sql(query, DBCON.engine, params={"categories": tuple(categories)})
 
+    return df
+
+
+def get_sdks() -> pd.DataFrame:
+    """Get top sdks."""
+    df = pd.read_sql(QUERY_SDKS, DBCON.engine)
+    df["store"] = df["store"].replace({1: "Google Play", 2: "Apple App Store"})
+    return df
+
+
+def get_sdk_pattern(value_pattern: str) -> pd.DataFrame:
+    """Get sdk pattern."""
+    df = pd.read_sql(
+        QUERY_SDK_PATTERN,
+        DBCON.engine,
+        params={"value_pattern": value_pattern},
+    )
+    df["store"] = df["store"].replace({1: "Google Play", 2: "Apple App Store"})
+    return df
+
+
+def get_sdk_pattern_companies(value_pattern: str) -> pd.DataFrame:
+    """Get sdk pattern companies."""
+    df = pd.read_sql(
+        QUERY_SDK_PATTERN_COMPANIES,
+        DBCON.engine,
+        params={"value_pattern": value_pattern},
+    )
     return df
 
 

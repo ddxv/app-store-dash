@@ -43,7 +43,6 @@ class PackageDetails:
     trackers: dict[str, dict[str, list[str]]]
     networks: dict[str, dict[str, list[str]]]
     leftovers: dict[str, list[str]]
-    android: list[str]
 
 
 @dataclass
@@ -71,14 +70,6 @@ class DeveloperApps:
     """
 
     developer_id: str
-    title: str
-    apps: list[AppDetail]
-
-
-@dataclass
-class CompanyApps:
-    """A company's list of apps."""
-
     title: str
     apps: list[AppDetail]
 
@@ -374,3 +365,29 @@ class AppRank:
 
     latest: dict
     history: dict
+
+
+@dataclass
+class SdksOverview:
+    """Contains a list of SDK objects.
+
+    Representing the top sdks identified.
+    """
+
+    ios_overview: list[dict]
+    android_overview: list[dict]
+
+
+@dataclass
+class SdkOverview:
+    """Contains a list of sdk overview objects."""
+
+    ios_overview: list[dict]
+    android_overview: list[dict]
+
+
+@dataclass
+class SdkCompanies:
+    """Contains a list of sdk companies objects."""
+
+    companies: list[dict]

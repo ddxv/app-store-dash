@@ -3,7 +3,6 @@ import type { PageServerLoad } from './$types.js';
 export const ssr: boolean = true;
 export const csr: boolean = true;
 
-console.log('Script executed');
 export const load: PageServerLoad = async ({ params, locals }) => {
 	const developerValue = params.developer;
 	const res = fetch(`http://localhost:8000/api/apps/developers/${developerValue}`);
