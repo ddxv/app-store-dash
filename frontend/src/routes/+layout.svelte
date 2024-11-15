@@ -47,7 +47,7 @@
 		>
 			{#snippet lead()}
 				<div class="flex items-center">
-					<a class="flex" href="/">
+					<a href="/" class="flex">
 						<img
 							class="md:ml-2 h-8 md:h-12 w-8 md:w-12"
 							src="/goblin_purple_hat_250.png"
