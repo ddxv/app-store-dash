@@ -11,9 +11,7 @@
 	let { data }: { data: PageData } = $props();
 
 	let currentType = $derived(
-		data.companyTypes.then((myTypes) =>
-			myTypes.types.find((type: { url_slug: string }) => type.url_slug === companyType)
-		)
+		data.companyTypes.types.find((type: { url_slug: string }) => type.url_slug === companyType)
 	);
 
 	let currentCategoryName = $derived(getCategoryName($page.params.category));

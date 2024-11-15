@@ -642,6 +642,7 @@ class CompaniesController(Controller):
 
         results = get_company_apps_new(company_domain=company_domain, category=category)
 
+        logger.info(f"GET /api/companies/{company_domain}/topapps {category=} end")
         return results
 
     @get(

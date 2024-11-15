@@ -21,8 +21,8 @@
 	}
 
 	let currentType = $derived(
-		data.companyTypes.then((myTypes) =>
-			myTypes.types.find((type: { url_slug: string }) => type.url_slug === $page.params.type)
+		data.companyTypes.types.find(
+			(type: { url_slug: string }) => type.url_slug === $page.params.type
 		)
 	);
 </script>

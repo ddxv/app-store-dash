@@ -14,7 +14,7 @@
 
 <svelte:head>
 	<title>{sdk_title} Mobile SDKs Libraries and Services | AppGoblin</title>
-	<link rel="canonical" href="https://appgoblin.info/sdks/{pattern}" />
+	<link rel="canonical" href={$page.url.href} />
 	<meta
 		name="description"
 		content="{sdk_title} is a mobile SDKs libraries and services. Explore detailed analytics, market presence, and insights about {sdk_title} in the mobile advertising ecosystem."

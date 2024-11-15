@@ -466,8 +466,6 @@ def new_get_top_apps_for_company(
     mapped_category: str | None = None,
 ) -> pd.DataFrame:
     """Get apps for for a network."""
-    logger.info(f"Query: {company_domain=}")
-
     mylimit = 20
 
     if mapped_category == "games":

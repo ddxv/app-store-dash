@@ -20,10 +20,10 @@
 </script>
 
 <svelte:head>
-	<title>{name} {category_title} Adtech Company Profile & Analytics | AppGoblin</title>
+	<title>{name} {category_title} Company Profile & Analytics | AppGoblin</title>
 	<meta
 		name="description"
-		content="{name} {category_title} is an adtech company with their apps in its network. Explore detailed analytics, market presence, and insights about {name}'s role in the mobile advertising ecosystem."
+		content="{name} {category_title} biggest apps by most users. Explore detailed analytics, market presence, and insights about {name}'s role in the mobile ecosystem."
 	/>
 	<meta
 		name="keywords"
@@ -37,10 +37,7 @@
 		property="og:description"
 		content="Discover {name}'s impact in the {category_title} adtech industry. Analyze data on their apps, market presence, and role in mobile advertising. Powered by AppGoblin's comprehensive adtech research."
 	/>
-	<meta
-		name="twitter:title"
-		content="{name} {category_title} Adtech Profile | AppGoblin Insights"
-	/>
+	<meta name="twitter:title" content="{name} {category_title} Company Apps | AppGoblin Insights" />
 	<meta
 		name="twitter:description"
 		content="Uncover insights on {name}'s {category_title} adtech operations. Explore data on their apps, industry connections, and market influence in mobile advertising and data tracking."
@@ -51,7 +48,7 @@
 	<meta property="og:type" content="website" />
 	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:image" content="https://appgoblin.info/goblin_purple_hat_250.png" />
-	<link rel="canonical" href="https://appgoblin.info/companies/{rel_link}" />
+	<link rel="canonical" href={$page.url.href} />
 </svelte:head>
 
 {@render children?.()}

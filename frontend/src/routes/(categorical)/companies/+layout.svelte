@@ -5,15 +5,82 @@
 	import CompanyTypesTabs from '$lib/utils/CompanyTypesTabs.svelte';
 	import type { MyCrumbMetadata, CompaniesLayoutResponse } from '../../../types';
 
-	interface Props {
-		data: CompaniesLayoutResponse;
-		children?: import('svelte').Snippet;
-	}
+	// interface Props {
+	// 	data: CompaniesLayoutResponse;
+	// 	children?: import('svelte').Snippet;
+	// }
 
-	let { data, children }: Props = $props();
+	let { data, children } = $props();
+
+	let companyTypes = $page.data.companyTypes;
+	let appCats = $page.data.appCats;
 
 	let pageDataCrumbs = $derived($page.data.crumbs as Crumb<MyCrumbMetadata>[] | undefined);
+
+	let rel_link = $state('');
+
+	let type_title: string = $derived(getTypeTitle(companyTypes, $page.params.type));
+	let category_title = $derived(getCategoryName($page.params.category));
+
+	function getTypeTitle(myTypes: CompanyType[], currentType: string) {
+		if (myTypes.types && currentType) {
+			return myTypes.types.find((type: { url_slug: string }) => type.url_slug === currentType).name;
+		}
+		return '';
+	}
+
+	function getCategoryName(category: string) {
+		if (category) {
+			return (
+				data?.appCats?.categories?.find((cat: { id: string }) => cat.id == category)?.name ||
+				category
+			);
+		}
+		return '';
+	}
+
+	if ($page.params.type) {
+		// type_title = companyTypes.types[type].name;
+		if (!$page.params.category) {
+			// page is /companies/types/[type]
+			rel_link = `types/${$page.params.type}`;
+		} else if ($page.params.category) {
+			// page is /companies/types/[type]/[category]
+			rel_link = `types/${$page.params.type}/${$page.params.category}`;
+		}
+	} else if ($page.params.category) {
+		// page is /companies/categores/[category]
+		rel_link = `categories/${$page.params.category}`;
+	} else {
+		// page is /companies
+		rel_link = '';
+	}
+
+	let title = $derived(`${type_title} ${category_title} Top Companies | AppGoblin`);
+	let description = $derived(
+		`Explore ${type_title} ${category_title} biggest companies and user bases. Explore detailed analytics, market presence, and insights about ${type_title}'s role in the mobile ecosystem.`
+	);
+	let keywords = $derived(
+		`${type_title}, ${category_title}, android, ios, adtech, advertising network, data tracking, mobile measurement, programmatic advertising, app-ads.txt, mobile advertising, ad tech analytics, AppGoblin`
+	);
 </script>
+
+<svelte:head>
+	<title>{title}</title>
+	<meta name="description" content={description} />
+	<meta name="keywords" content={keywords} />
+	<meta property="og:title" content={title} />
+	<meta property="og:description" content={description} />
+	<meta name="twitter:title" content={title} />
+	<meta name="twitter:description" content={description} />
+
+	<meta property="og:image" content="https://appgoblin.info/goblin_purple_hat_250.png" />
+	<meta property="og:url" content="https://appgoblin.info/" />
+	<meta property="og:type" content="website" />
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:image" content="https://appgoblin.info/goblin_purple_hat_250.png" />
+	<link rel="canonical" href={$page.url.href} />
+</svelte:head>
 
 <div class="text-surface-900-100 text-sm p-2 md:p-4">
 	<Breadcrumbs
