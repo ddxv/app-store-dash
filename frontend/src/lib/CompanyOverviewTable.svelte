@@ -59,8 +59,7 @@
 							{index + 1}
 						</td>
 						<td class="table-cell-fit">
-							<!-- TODO: This is supposed to be just inside TR for whole row -->
-							<a href="/apps/{row.store_id}" style="cursor: pointer;" class="table-row-link">
+							<a href="/apps/{row.store_id}" style="cursor: pointer;">
 								{row.name}
 							</a>
 						</td>
@@ -84,11 +83,3 @@
 		</footer>
 	</div>
 </div>
-
-<style>
-	.table-row-link {
-		display: contents;
-		text-decoration: none;
-		color: inherit;
-	}
-</style>
