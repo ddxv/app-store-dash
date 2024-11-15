@@ -27,16 +27,16 @@
 	);
 </script>
 
-{#await currentType}
-	<div><span>Loading...</span></div>
-{:then type}
-	<div class="flex items-center mb-2">
-		<h1 class="text-3xl font-bold text-primary-900-100">
+<div class="flex items-center mb-2">
+	<h1 class="text-3xl font-bold text-primary-900-100">
+		{#await currentType}
+			<div><span>Loading...</span></div>
+		{:then type}
 			{type ? type.name : 'Unknown'} / All App Categories
-		</h1>
-		<div class="h-8 w-px bg-gray-300 mx-2"></div>
-	</div>
-{/await}
+		{/await}
+	</h1>
+	<div class="h-8 w-px bg-gray-300 mx-2"></div>
+</div>
 
 {#await data.companiesOverview}
 	<div><span>Loading...</span></div>
