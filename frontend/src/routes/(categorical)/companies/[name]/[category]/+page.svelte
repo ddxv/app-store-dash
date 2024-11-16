@@ -95,16 +95,22 @@
 		{:else}
 			<CompanyTableGrid>
 				{#snippet sdkAndroidTotalApps()}
-					{formatNumber(myData.categories[company_category].sdk_android_total_apps)}
+					Total Android Apps: {formatNumber(
+						myData.categories[company_category].sdk_android_total_apps
+					)}
 				{/snippet}
 				{#snippet sdkIosTotalApps()}
-					{formatNumber(myData.categories[company_category].sdk_ios_total_apps)}
+					Total iOS Apps: {formatNumber(myData.categories[company_category].sdk_ios_total_apps)}
 				{/snippet}
 				{#snippet adstxtAndroidTotalApps()}
-					{formatNumber(myData.categories[company_category].adstxt_direct_android_total_apps)}
+					Total Android Apps: {formatNumber(
+						myData.categories[company_category].adstxt_direct_android_total_apps
+					)}
 				{/snippet}
 				{#snippet adstxtIosTotalApps()}
-					{formatNumber(myData.categories[company_category].adstxt_direct_ios_total_apps)}
+					Total iOS Apps: {formatNumber(
+						myData.categories[company_category].adstxt_direct_ios_total_apps
+					)}
 				{/snippet}
 
 				{#snippet sdkAndroid()}
