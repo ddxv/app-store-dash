@@ -104,7 +104,9 @@
 	</div>
 
 	<div class="card preset-tonal-surface p-2 md:p-8">
-		<h2 class="h2 p-2 md:p-4">Most Popular Ad Networks, MMPs & Analytics</h2>
+		<a href="/companies">
+			<h2 class="h2 p-2 md:p-4">Most Popular Ad Networks, MMPs & Analytics</h2>
+		</a>
 		<p class="p-2 md:p-4">
 			By downloading and opening up the top apps and games from the Google and iOS Appstore we can
 			see which third-party ad networks and trackers are used across the various App Store
@@ -258,7 +260,9 @@
 	</div>
 
 	<div class="card preset-tonal-surface p-2 md:p-8">
-		<h2 class="h2 p-2 md:p-4">Latest App Store Ranks</h2>
+		<a href="/rankings/store/1/collection/1/category/1">
+			<h2 class="h2 p-2 md:p-4">Latest App Store Ranks</h2>
+		</a>
 		<a href="/rankings/store/1/collection/1/category/1">
 			<p class="p-2 md:p-4">Click through for full app store categories and rankings.</p>
 		</a>
