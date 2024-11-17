@@ -57,7 +57,7 @@
 	<link rel="canonical" href="https://appgoblin.info" />
 </svelte:head>
 
-<div class="p-2 md:p-4 px-2 md:px-20 lg:px-48">
+<div class="grid grid-cols-1 gap-4 md:gap-8 p-2 md:p-4 px-2 md:px-20 lg:px-48">
 	<br />
 	<div class="card preset-tonal-surface p-2 md:p-8">
 		<h1 class="h1 p-2 md:p-4 text-primary-900-100">AppGoblin: Mobile App Store Data and Stats</h1>
@@ -103,80 +103,8 @@
 		</WhiteCard>
 	</div>
 
-	<br />
-
 	<div class="card preset-tonal-surface p-2 md:p-8">
-		<h2 class="h2 p-2 md:p-4">Latest App Store Ranks</h2>
-		<a href="/rankings/store/1/collection/1/category/1">
-			<p class="p-2 md:p-4">Click through for full app store categories and rankings.</p>
-		</a>
-		<div
-			class="snap-x scroll-px-4 snap-mandatory scroll-smooth flex gap-4 overflow-x-auto px-4 py-10"
-		>
-			{#await data.androidAppRanks}
-				Loading Android App Ranks...
-			{:then androidApps}
-				<a href="/rankings/store/1/collection/1/category/1">
-					<div class="snap-center shrink-0 card preset-tonal-surface w-48 md:w-56">
-						<div class="table-container card-header">
-							<h3 class="h3">Android Apps</h3>
-							<AppRankTableShort myTable={androidApps} />
-						</div>
-					</div>
-				</a>
-			{:catch}
-				Trouble Loading Android App Ranks.
-			{/await}
-
-			{#await data.iOSAppRanks}
-				Loading iOS App Ranks...
-			{:then iOSApps}
-				<a href="/rankings/store/2/collection/4/category/120">
-					<div class="snap-center shrink-0 card preset-tonal-surface w-48 md:w-56">
-						<div class="table-container card-header">
-							<h3 class="h3">iOS Apps</h3>
-							<AppRankTableShort myTable={iOSApps} />
-						</div>
-					</div>
-				</a>
-			{:catch}
-				Trouble Loading iOS App Ranks.
-			{/await}
-
-			{#await data.androidGameRanks}
-				Loading Android Game Ranks...
-			{:then androidGames}
-				<a href="/rankings/store/1/collection/1/category/36">
-					<div class="snap-center shrink-0 card preset-tonal-surface w-48 md:w-56">
-						<div class="table-container card-header">
-							<h3 class="h3">Android Games</h3>
-							<AppRankTableShort myTable={androidGames} />
-						</div>
-					</div>
-				</a>
-			{:catch}
-				Trouble loading android games
-			{/await}
-
-			{#await data.iOSGameRanks}
-				Loading iOS Game Ranks...
-			{:then iOSGames}
-				<a href="/rankings/store/2/collection/4/category/62	">
-					<div class="snap-center shrink-0 card preset-tonal-surface w-48 md:w-56">
-						<div class="table-container card-header">
-							<h3 class="h3">iOS Games</h3>
-							<AppRankTableShort myTable={iOSGames} />
-						</div>
-					</div>
-				</a>
-			{:catch}
-				Trouble Loading iOS Game Ranks.
-			{/await}
-		</div>
-	</div>
-	<br />
-	<div class="card preset-tonal-surface p-2 md:p-8">
-		<h2 class="h2 p-2 md:p-4">Most Integrated Ad Networks & Trackers</h2>
+		<h2 class="h2 p-2 md:p-4">Most Popular Ad Networks, MMPs & Analytics</h2>
 		<p class="p-2 md:p-4">
 			By downloading and opening up the top apps and games from the Google and iOS Appstore we can
 			see which third-party ad networks and trackers are used across the various App Store
@@ -257,7 +185,6 @@
 		{:catch}
 			Error Loading Overview
 		{/await}
-
 		<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
 			<a href="/companies/types/ad-networks">
 				<div class="card preset-tonal-surface md:p-4">
@@ -330,7 +257,76 @@
 		</div>
 	</div>
 
-	<br />
+	<div class="card preset-tonal-surface p-2 md:p-8">
+		<h2 class="h2 p-2 md:p-4">Latest App Store Ranks</h2>
+		<a href="/rankings/store/1/collection/1/category/1">
+			<p class="p-2 md:p-4">Click through for full app store categories and rankings.</p>
+		</a>
+		<div
+			class="snap-x scroll-px-4 snap-mandatory scroll-smooth flex gap-4 overflow-x-auto px-4 py-10"
+		>
+			{#await data.androidAppRanks}
+				Loading Android App Ranks...
+			{:then androidApps}
+				<a href="/rankings/store/1/collection/1/category/1">
+					<div class="snap-center shrink-0 card preset-tonal-surface w-48 md:w-56">
+						<div class="table-container card-header">
+							<h3 class="h3">Android Apps</h3>
+							<AppRankTableShort myTable={androidApps} />
+						</div>
+					</div>
+				</a>
+			{:catch}
+				Trouble Loading Android App Ranks.
+			{/await}
+
+			{#await data.iOSAppRanks}
+				Loading iOS App Ranks...
+			{:then iOSApps}
+				<a href="/rankings/store/2/collection/4/category/120">
+					<div class="snap-center shrink-0 card preset-tonal-surface w-48 md:w-56">
+						<div class="table-container card-header">
+							<h3 class="h3">iOS Apps</h3>
+							<AppRankTableShort myTable={iOSApps} />
+						</div>
+					</div>
+				</a>
+			{:catch}
+				Trouble Loading iOS App Ranks.
+			{/await}
+
+			{#await data.androidGameRanks}
+				Loading Android Game Ranks...
+			{:then androidGames}
+				<a href="/rankings/store/1/collection/1/category/36">
+					<div class="snap-center shrink-0 card preset-tonal-surface w-48 md:w-56">
+						<div class="table-container card-header">
+							<h3 class="h3">Android Games</h3>
+							<AppRankTableShort myTable={androidGames} />
+						</div>
+					</div>
+				</a>
+			{:catch}
+				Trouble loading android games
+			{/await}
+
+			{#await data.iOSGameRanks}
+				Loading iOS Game Ranks...
+			{:then iOSGames}
+				<a href="/rankings/store/2/collection/4/category/62	">
+					<div class="snap-center shrink-0 card preset-tonal-surface w-48 md:w-56">
+						<div class="table-container card-header">
+							<h3 class="h3">iOS Games</h3>
+							<AppRankTableShort myTable={iOSGames} />
+						</div>
+					</div>
+				</a>
+			{:catch}
+				Trouble Loading iOS Game Ranks.
+			{/await}
+		</div>
+	</div>
+
 	<div class="card preset-tonal-surface p-2 md:p-8">
 		<a href="/collections/new_monthly">
 			<h2 class="h2 p-2 md:p-4">Explore New Apps</h2>
