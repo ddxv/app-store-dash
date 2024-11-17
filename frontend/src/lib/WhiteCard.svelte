@@ -7,7 +7,7 @@
 	{#if title}
 		<div class="card-header bg-surface-100-900 border-b p-1 md:p-2">
 			<div class="text-2xl">
-			{@render title?.()}
+				{@render title?.()}
 			</div>
 		</div>
 	{/if}

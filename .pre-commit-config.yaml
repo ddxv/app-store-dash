@@ -1,7 +1,7 @@
 repos:
   # Ruff
   - repo: https://github.com/charliermarsh/ruff-pre-commit
-    rev: v0.7.1
+    rev: v0.7.4
     hooks:
       - id: ruff
         args: [--fix]
@@ -33,7 +33,7 @@ repos:
           - prettier
           - prettier-plugin-svelte
   - repo: https://github.com/pre-commit/mirrors-eslint
-    rev: v9.13.0
+    rev: v9.15.0
     hooks:
       - id: eslint
         name: eslint
@@ -61,7 +61,7 @@ repos:
         require_serial: true
   ## SQL ##
   - repo: https://github.com/sqlfluff/sqlfluff
-    rev: 3.2.4
+    rev: 3.2.5
     hooks:
       - id: sqlfluff-lint
         args: ['--config', 'backend/pyproject.toml'] # Specify the config file location here

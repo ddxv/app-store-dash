@@ -79,5 +79,3 @@
 {#if $page.url.pathname == '/companies' || $page.url.pathname.startsWith('/companies')}
 	<SideBarCompanies {myCatData} />
 {/if}
-
-
