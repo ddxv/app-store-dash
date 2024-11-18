@@ -40,7 +40,7 @@
 		"vite-plugin-tailwind-purgecss": "0.3.3"
 	},
 	"dependencies": {
-		"@carbon/charts-svelte": "^1.22.0",
+		"@carbon/charts-svelte": "^1.22.3",
 		"echarts": "^5.5.1"
 	}
 }
