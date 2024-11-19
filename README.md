@@ -6,15 +6,7 @@ You can see a production version of the site at [appgoblin.info](https://appgobl
 
 This is the code I use to create [AppGoblin](https://appgoblin.info) for tracking app store ranks and SDKs of mobile companies like ad networks and mobile attribution companies. The goal was simply to have a good source of data for Apps on the Google Play and iOS stores. The code is provided here incase it helps anyone. As this is a project for general fun and learning, please don't hesitate to reach out if you have any questions or suggestions, Discord below.
 
-Features
-
-  1. [Companies](https://appgoblin.info/companies): Ranked by number of apps based on SDKs. Useful for finding the most popular ad networks or mobile attribution companies. For example, see the .
-  2. Company Breakdowns: See the top client apps for each company. For example, see the [top client apps for Salesforce](https://appgoblin.info/companies/salesforce.com) or the [top client apps for AppsFlyer](https://appgoblin.info/companies/appsflyer.com).
-  2. [App Rankings](https://appgoblin.info/rankings/store/1/collection/1/category/1): Scraped from Google Play and Apple App Store. The daily rankings for the top apps in the store.
-  4. [SDKs](https://appgoblin.info/sdks): Detailed list of decompiled Android and iOS Apps and their internally used SDKs. See what tracking SDKs are used in which apps.
-
-
-  ## Features
+## Features
 
 - **[Companies Directory](https://appgoblin.info/companies)**: Rankings based on SDK integration frequency
   - Filter by category 
@@ -27,30 +19,39 @@ Features
 - **[SDK Analysis](https://appgoblin.info/sdks)**: Detailed list of decompiled Android and iOS Apps and their internally used SDKs. See what tracking SDKs are used in which apps.
 
 
-This repo has two parts:
+### Project Structure
 
    1. Python Litestar backend API found in `backend/`
    2. Javascript SvelteKit+Tailwind UI found in `frontend/`
 
-## Data & Database
+### Data & Database
 
 The database referred to in this repository is created by [adscrawler](https://github.com/ddxv/adscrawler), a crawler for scraping the Google & Apple play stores and storing that to a PostgreSQL database. That repo also contains a number of materialized views prepping data for the dashboard. It generally would be difficult to recreate it as it's only ever been managed by me the original creator, but I'm open to sharing data if you have something you need.
 
-## API Service
+### API Service
 
 `litestar run --debug` to start API. Once run, api documentation can be found at `api/docs`
 
-## Setup
+### Setup
 
 - Current setup is based on Python3.12
 - pip install dependencies, found in pyproject.toml: `pip install`
 
-## Running
+### Running
 
 - To run locally for testing use
   - Backend: in `backend/` run `gunicorn -k uvicorn.workers.UvicornWorker app:app` or `litestar run dev`
   - Frontend: in `frontend` run `npm run dev`
 - This repo includes the scripts used to run in production as well. These are located in the steps in `.github/actions` as well as `scripts` for systemd services for frontend and backend.
 - Additionally, you will need a proxy. I used Nginx. This is wherever you have your nginx configuration set, possibly sites-available `/etc/nginx/sites-available/app-store-api` or `/etc/nginx/conf.d/app-store-api.conf`
+
+### AppGoblin Community
+
+**Have questions or suggestions? Let's connect!**
+
+🧙‍♂️ [Join Discord Server](https://discord.gg/7jpWEhkXRW)
+
+
+
 
 
