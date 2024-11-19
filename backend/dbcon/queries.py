@@ -410,7 +410,7 @@ def clean_app_df(df: pd.DataFrame) -> pd.DataFrame:
     df["rating"] = df["rating"].apply(lambda x: round(x, 2) if x else 0)
     ios_link = "https://apps.apple.com/us/app/-/id"
     play_link = "https://play.google.com/store/apps/details?id="
-    play_dev_link = "https://play.google.com/store/apps/dev?id="
+    play_dev_link = "https://play.google.com/store/apps/developer?id="
     ios_dev_link = "https://apps.apple.com/us/developer/-/id"
     df["store_link"] = (
         np.where(df["store"].str.contains("Google"), play_link, ios_link)
