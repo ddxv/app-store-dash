@@ -19,15 +19,13 @@
 	});
 	const rows = handler.getRows();
 
-	handler.onChange(
-		(state: State) =>
-			Promise.resolve(
-				tableData.ranks.slice(
-					0 + (state.pageNumber - 1) * state.rowsPerPage,
-					state.rowsPerPage * state.pageNumber
-				)
+	handler.onChange((state: State) =>
+		Promise.resolve(
+			tableData.ranks.slice(
+				0 + (state.pageNumber - 1) * state.rowsPerPage,
+				state.rowsPerPage * state.pageNumber
 			)
-		// Promise.resolve(history_table.slice(0 + state.offset, 20 + state.offset))
+		)
 	);
 
 	handler.invalidate();

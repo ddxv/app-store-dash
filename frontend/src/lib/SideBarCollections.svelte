@@ -12,9 +12,9 @@
 
 	const listClass = 'flex flex-col';
 
-	let localHomeCollectionSelect = $homeCollectionSelection;
-	let localHomeStoreSelect = $state($homeStoreSelection);
-	let localHomeCategorySelect = $state($homeCategorySelection);
+	let localHomeCollectionSelect = $state('new_weekly');
+	let localHomeStoreSelect = $state('google');
+	let localHomeCategorySelect = $state('overall');
 	import type { CatData } from '../types';
 
 	// FOLOWING IS FOR RANKINGS
