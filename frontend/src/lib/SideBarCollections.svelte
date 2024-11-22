@@ -6,13 +6,15 @@
 	import { homeCategorySelection } from '../stores';
 
 	const buttonSelectedClass =
-		'preset-filled-primary border-2 border-primary-100 rounded-t-md relative top-[1px]';
-	const buttonDeselectedClass = 'btn';
-	const listClass = 'flex flex-col gap-2';
+		'text-left preset-filled-primary relative p-2 md:p-4 text-primary-900-100';
+	const buttonDeselectedClass =
+		'text-left p-2 md:p-4 text-tertiary-900-100 hover:text-primary-900-100';
 
-	let localHomeCollectionSelect = $homeCollectionSelection;
-	let localHomeStoreSelect = $state($homeStoreSelection);
-	let localHomeCategorySelect = $state($homeCategorySelection);
+	const listClass = 'flex flex-col';
+
+	let localHomeCollectionSelect = $state('new_weekly');
+	let localHomeStoreSelect = $state('google');
+	let localHomeCategorySelect = $state('overall');
 	import type { CatData } from '../types';
 
 	// FOLOWING IS FOR RANKINGS

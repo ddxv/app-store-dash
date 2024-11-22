@@ -7,13 +7,8 @@
 	let { domain }: Props = $props();
 </script>
 
-<a
-	href={`https://${domain}`}
-	target="_blank"
-	rel="noopener noreferrer"
-	class="preset-tonal-primary hover:preset-tonal flex items-center"
->
-	<span class="inline-flex items-center gap-1">
+<a href={`https://${domain}`} target="_blank" rel="noopener noreferrer" class="flex items-center">
+	<span class="inline-flex items-center gap-1 text-tertiary-400-600 hover:text-primary-900-100">
 		{domain}
 		<ExternalLinkSvg />
 	</span>

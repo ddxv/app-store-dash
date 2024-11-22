@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { RankedAppList, RankedApps } from '../types';
 	import Pagination from './Pagination.svelte';
-	import ThFilter from './ThFilter.svelte';
+	// import ThFilter from './ThFilter.svelte';
 	import { DataHandler } from '@vincjo/datatables/legacy/remote';
 	import type { State } from '@vincjo/datatables/legacy/remote';
 
@@ -19,15 +19,13 @@
 	});
 	const rows = handler.getRows();
 
-	handler.onChange(
-		(state: State) =>
-			Promise.resolve(
-				tableData.ranks.slice(
-					0 + (state.pageNumber - 1) * state.rowsPerPage,
-					state.rowsPerPage * state.pageNumber
-				)
+	handler.onChange((state: State) =>
+		Promise.resolve(
+			tableData.ranks.slice(
+				0 + (state.pageNumber - 1) * state.rowsPerPage,
+				state.rowsPerPage * state.pageNumber
 			)
-		// Promise.resolve(history_table.slice(0 + state.offset, 20 + state.offset))
+		)
 	);
 
 	handler.invalidate();
@@ -42,7 +40,7 @@
 			</tr>
 			<tr>
 				<th></th>
-				<ThFilter {handler} filterBy="name" />
+				<!-- <ThFilter {handler} filterBy="name" /> -->
 			</tr>
 		</thead>
 		<tbody>

@@ -7,9 +7,8 @@
 
 	import { storeIDLookup, collectionIDLookup, categoryIDLookup } from '../stores';
 
-	const buttonSelectedClass =
-		'preset-filled-primary border-2 border-primary-100 rounded-t-md relative top-[1px]';
-	const buttonDeselectedClass = 'btn';
+	const buttonSelectedClass = 'preset-filled-primary relative p-2 md:p-4 text-primary-900-100';
+	const buttonDeselectedClass = 'p-2 md:p-4 hover:text-primary-900-100';
 
 	let localHomeCollectionSelect = $homeCollectionSelection;
 	let localHomeStoreSelect = $state($homeStoreSelection);
