@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 
-	function getBaseUrl(url: string, pageCategory: string, type: string) {
+	function getBaseUrl(url: string, type: string) {
 		const parts = url.split('/').filter(Boolean);
 		let newUrl = url;
 
@@ -48,19 +48,6 @@
 	let { myCatData }: Props = $props();
 
 	import SideBarCatsListBoxItem from './SideBarCatsListBoxItem.svelte';
-
-	// import { homeCollectionSelection } from '../stores';
-	// let localHomeCollectionSelect = $state($homeCollectionSelection);
-	// // Reactive statement to update the store when localValue changes
-	// $effect(() => {
-	// 	homeCollectionSelection.set(localHomeCollectionSelect);
-	// });
-
-	// import { homeStoreSelection } from '../stores';
-	// let localHomeStoreSelect = $state($homeStoreSelection);
-	// $effect(() => {
-	// 	homeStoreSelection.set(localHomeStoreSelect);
-	// });
 
 	import { homeCategorySelection } from '../stores';
 	let localHomeCategorySelect = $state($homeCategorySelection);
