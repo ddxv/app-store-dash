@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { RankedAppList, RankedApps } from '../types';
 	import Pagination from './Pagination.svelte';
-	import ThFilter from './ThFilter.svelte';
+	// import ThFilter from './ThFilter.svelte';
 	import { DataHandler } from '@vincjo/datatables/legacy/remote';
 	import type { State } from '@vincjo/datatables/legacy/remote';
 
@@ -42,7 +42,7 @@
 			</tr>
 			<tr>
 				<th></th>
-				<ThFilter {handler} filterBy="name" />
+				<!-- <ThFilter {handler} filterBy="name" /> -->
 			</tr>
 		</thead>
 		<tbody>
