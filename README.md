@@ -1,6 +1,6 @@
 # AppGoblin Analytics Dashboard for Mobile App Ecosystem
 
-You can see a production version of the site at [appgoblin.info](https://appgoblin.info)
+You can see a production version of the site at [AppGoblin](https://appgoblin.info)
 
 [<img src="/frontend/static/appgoblin_screenshot.png" width="500"/>](/frontend/static/appgoblin_screenshot.png)
 
