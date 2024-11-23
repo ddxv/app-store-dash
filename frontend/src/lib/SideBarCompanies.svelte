@@ -36,9 +36,7 @@
 		return newUrl;
 	}
 
-	let baseUrl = $derived(
-		getBaseUrl($page.url.pathname.toString(), $page.params.category, $page.params.type)
-	);
+	let baseUrl = $derived(getBaseUrl($page.url.pathname.toString(), $page.params.type));
 
 	import type { CatData } from '../types';
 	interface Props {

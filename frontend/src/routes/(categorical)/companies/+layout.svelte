@@ -3,7 +3,9 @@
 	import type { Crumb } from '../../../types';
 	import Breadcrumbs from '$lib/Breadcrumbs.svelte';
 	import CompanyTypesTabs from '$lib/utils/CompanyTypesTabs.svelte';
-	import type { MyCrumbMetadata, CompaniesLayoutResponse } from '../../../types';
+	import type { MyCrumbMetadata } from '../../../types';
+
+	import type { CompanyTypes } from '../../../types';
 
 	// interface Props {
 	// 	data: CompaniesLayoutResponse;
@@ -13,7 +15,7 @@
 	let { data, children } = $props();
 
 	let companyTypes = $page.data.companyTypes;
-	let appCats = $page.data.appCats;
+	// let appCats = $page.data.appCats;
 
 	let pageDataCrumbs = $derived($page.data.crumbs as Crumb<MyCrumbMetadata>[] | undefined);
 
@@ -22,7 +24,7 @@
 	let type_title: string = $derived(getTypeTitle(companyTypes, $page.params.type));
 	let category_title = $derived(getCategoryName($page.params.category));
 
-	function getTypeTitle(myTypes: CompanyType[], currentType: string) {
+	function getTypeTitle(myTypes: CompanyTypes, currentType: string) {
 		if (myTypes.types && currentType) {
 			return myTypes.types.find((type: { url_slug: string }) => type.url_slug === currentType).name;
 		}
@@ -67,6 +69,7 @@
 
 <svelte:head>
 	<title>{title}</title>
+	<link rel="canonical" href={$page.url.href} />
 	<meta name="description" content={description} />
 	<meta name="keywords" content={keywords} />
 	<meta property="og:title" content={title} />
@@ -79,7 +82,6 @@
 	<meta property="og:type" content="website" />
 	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:image" content="https://appgoblin.info/goblin_purple_hat_250.png" />
-	<link rel="canonical" href={$page.url.href} />
 </svelte:head>
 
 <div class="text-surface-900-100 text-sm p-2 md:p-4">

@@ -1,15 +1,12 @@
 <script lang="ts">
 	import type { CompanyCategoryDetails } from '../../../../../types';
 	import { page } from '$app/stores';
-	const { name } = $page.params;
 	import CompanyOverviewTable from '$lib/CompanyOverviewTable.svelte';
 
 	import CompaniesLayout from '$lib/CompaniesLayout.svelte';
 	import WhiteCard from '$lib/WhiteCard.svelte';
 
 	import CompanyTableGrid from '$lib/CompanyTableGrid.svelte';
-	import ExternalLink from '$lib/ExternalLink.svelte';
-	import CompanyButton from '$lib/CompanyButton.svelte';
 	interface Props {
 		data: CompanyCategoryDetails;
 	}
@@ -22,40 +19,6 @@
 		return new Intl.NumberFormat('en-US').format(num);
 	}
 </script>
-
-<div class="flex items-center mb-2">
-	<h1 class="text-3xl font-bold text-primary-900-100">{name}</h1>
-	<div class="h-8 w-px bg-gray-300 mx-2"></div>
-	{#await data.companyTree}
-		<span class="text-lg">Loading...</span>
-	{:then myTree}
-		{#if typeof myTree == 'string'}
-			<p class="text-red-500">Failed to load company tree.</p>
-		{:else if myTree}
-			<div class="flex items-center">
-				{#each myTree.domains as domain}
-					<ExternalLink {domain} />
-				{/each}
-			</div>
-		{/if}
-	{:catch error}
-		<p class="text-red-500">{error.message}</p>
-	{/await}
-</div>
-
-<h3 class="text-xl font-bold mb-6 text-primary-900-100">Category: {company_category}</h3>
-
-{#await data.companyTree then myTree}
-	{#if myTree && myTree.parent_company_name && myTree.parent_company_domain}
-		<div class="flex items-center mt-2 ml-4">
-			<p class="text-xl font-bold text-primary-900-100 mr-2">Parent Company:</p>
-			<CompanyButton
-				companyName={myTree.parent_company_name}
-				companyDomain={myTree.parent_company_domain}
-			/>
-		</div>
-	{/if}
-{/await}
 
 <CompaniesLayout>
 	{#snippet card1()}

@@ -4,7 +4,7 @@ export const ssr: boolean = true;
 export const csr: boolean = true;
 
 export const load: PageServerLoad = async ({ parent, params }) => {
-	const companyDomain = params.name;
+	const companyDomain = params.domain;
 	const category = params.category;
 	const res_apps = fetch(
 		`http://localhost:8000/api/companies/${companyDomain}/topapps?category=${category}`

@@ -1,7 +1,7 @@
 import type { LayoutServerLoad } from './$types';
 
 export const load: LayoutServerLoad = async ({ params }) => {
-	const companyDomain = params.name;
+	const companyDomain = params.domain;
 
 	const res = fetch(`http://localhost:8000/api/companies/${companyDomain}`);
 	const res_tree = fetch(`http://localhost:8000/api/companies/${companyDomain}/tree`);

@@ -13,11 +13,35 @@
 			return selectedClass;
 		} else return unselectedClass;
 	}
+
+	function getCategoryUrlPart(url: string, tabType: string, category: string) {
+		let newUrl = url;
+
+		if (tabType && category) {
+			newUrl = `/companies/types/${tabType}/${category}`;
+		}
+		if (tabType && !category) {
+			newUrl = `/companies/types/${tabType}`;
+		}
+		if (!tabType && !category) {
+			newUrl = '/companies';
+		}
+		if (!tabType && category) {
+			newUrl = `/companies/categories/${category}`;
+		}
+		return newUrl;
+	}
 </script>
 
 <div class="flex flex-row flex-wrap text-sm md:text-base">
-	<a href="/companies" class={typeTabClass('all')}>All</a>
+	<a
+		href={getCategoryUrlPart($page.url.pathname.toString(), '', $page.params.category)}
+		class={typeTabClass('all')}>All</a
+	>
 	{#each myTabs.types as tab}
-		<a href="/companies/types/{tab.url_slug}" class={typeTabClass(tab.url_slug)}>{tab.name}</a>
+		<a
+			href={getCategoryUrlPart($page.url.pathname.toString(), tab.url_slug, $page.params.category)}
+			class={typeTabClass(tab.url_slug)}>{tab.name}</a
+		>
 	{/each}
 </div>

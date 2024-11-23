@@ -1,8 +1,5 @@
 <script lang="ts">
 	import type { CompanyFullDetails } from '../../../../types';
-	import { page } from '$app/stores';
-
-	let name = $derived($page.params.name);
 
 	import CompanyOverviewTable from '$lib/CompanyOverviewTable.svelte';
 	import CompanyCategoryPie from '$lib/CompanyCategoryPie.svelte';
@@ -10,8 +7,6 @@
 	import CompanyTableGrid from '$lib/CompanyTableGrid.svelte';
 	import CompanyTree from '$lib/CompanyTree.svelte';
 	import CompanySDKs from '$lib/CompanySDKs.svelte';
-	import ExternalLink from '$lib/ExternalLink.svelte';
-	import CompanyButton from '$lib/CompanyButton.svelte';
 	import WhiteCard from '$lib/WhiteCard.svelte';
 	import CompaniesLayout from '../../../../lib/CompaniesLayout.svelte';
 	interface Props {
@@ -23,47 +18,6 @@
 		return new Intl.NumberFormat('en-US').format(num);
 	}
 </script>
-
-<div class="flex items-center mb-2">
-	<h1 class="text-3xl font-bold text-primary-900-100">{name}</h1>
-	<div class="h-8 w-px bg-gray-300 mx-2"></div>
-	{#await data.companyTree}
-		<span class="text-lg">Loading...</span>
-	{:then myTree}
-		{#if typeof myTree == 'string'}
-			<p class="text-red-500">Failed to load company tree.</p>
-		{:else if myTree}
-			<div class="flex items-center">
-				{#if myTree.queried_company_domain}
-					{#if myTree.parent_company_domain == myTree.queried_company_domain}
-						<!-- IS PARENT COMPANY -->
-						<h2 class="text-xl font-bold text-primary-900-100 mr-2">
-							{myTree.parent_company_name}
-						</h2>
-						<div class="h-8 w-px bg-gray-300 mx-2"></div>
-						<ExternalLink domain={myTree.parent_company_domain} />
-					{:else}
-						<h2 class="text-xl font-bold text-primary-900-100 mr-2">
-							{myTree.queried_company_name}
-						</h2>
-						<div class="h-8 w-px bg-gray-300 mx-2"></div>
-						<ExternalLink domain={myTree.queried_company_domain} />
-						<div class="h-8 w-px bg-gray-300 mx-2"></div>
-						<!-- HAS PARENT COMPANY -->
-						<!-- <h2 class="text-xl font-bold text-primary-900-100 mr-2">PARENT: {myTree.queried_company_domain} {myTree.parent_company_name} AA</h2> -->
-						<h2 class="h2 text-xl font-bold text-primary-900-100 mr-2">Parent Company:</h2>
-						<CompanyButton
-							companyName={myTree.parent_company_name}
-							companyDomain={myTree.parent_company_domain}
-						/>
-					{/if}
-				{/if}
-			</div>
-		{/if}
-	{:catch error}
-		<p class="text-red-500">{error.message}</p>
-	{/await}
-</div>
 
 <CompaniesLayout>
 	{#snippet card1()}
