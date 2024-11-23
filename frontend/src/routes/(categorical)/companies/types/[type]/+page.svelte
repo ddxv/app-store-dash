@@ -28,7 +28,7 @@
 </script>
 
 <div class="flex items-center mb-2">
-	<h1 class="text-3xl font-bold text-primary-900-100">
+	<h1 class="h1 text-3xl font-bold text-primary-900-100">
 		{#await currentType}
 			<div><span>Loading...</span></div>
 		{:then type}

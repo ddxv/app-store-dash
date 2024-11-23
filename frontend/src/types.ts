@@ -314,7 +314,7 @@ export interface CompanyCategoryDetails {
 
 export interface AppFullDetails {
 	myapp: AppFullDetail;
-	companyTypes: { types: companyType[] };
+	companyTypes: CompanyTypes;
 	status?: number;
 	error?: string;
 	myranks: Promise<{ latest: AppRankDetail[]; history: AppRankDetail[] }>;
@@ -348,6 +348,10 @@ export interface Company {
 	installs_percent: number;
 	ratings_percent: number;
 	app_count_percent: number;
+}
+
+export interface CompanyTypes {
+	types: companyType[];
 }
 
 export interface companyType {
