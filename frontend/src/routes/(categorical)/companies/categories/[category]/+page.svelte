@@ -25,8 +25,7 @@
 </script>
 
 <div class="flex items-center mb-2">
-	<h1 class="text-3xl font-bold text-primary-900-100">Companies in {currentCategoryName}</h1>
-	<div class="h-8 w-px bg-gray-300 mx-2"></div>
+	<h1 class="h1 text-3xl font-bold text-primary-900-100">Companies in {currentCategoryName}</h1>
 </div>
 
 {#await data.companiesOverview}
@@ -53,16 +52,19 @@
 
 			{#snippet card2()}
 				<WhiteCard>
-					<CompaniesBarChart plotData={myData.top.sdk} plotTitle="Top SDK Companies" />
+					{#snippet title()}
+						Top SDK Companies
+					{/snippet}
+					<CompaniesBarChart plotData={myData.top.sdk} />
 				</WhiteCard>
 			{/snippet}
 			{#snippet card3()}
-				<WhiteCard
-					><CompaniesBarChart
-						plotData={myData.top.adstxt_direct}
-						plotTitle="Top Adstxt Companies"
-					/></WhiteCard
-				>
+				<WhiteCard>
+					{#snippet title()}
+						Top Adstxt Companies
+					{/snippet}
+					<CompaniesBarChart plotData={myData.top.adstxt_direct} />
+				</WhiteCard>
 			{/snippet}
 		</CompaniesLayout>
 	{/if}
