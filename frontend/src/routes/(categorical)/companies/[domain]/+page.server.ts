@@ -82,7 +82,7 @@ export const load: PageServerLoad = async ({ parent, params }) => {
 		return {
 			results: {},
 			status: 500,
-			error: 'Failed to load trending apps'
+			error: 'Failed to load company data'
 		};
 	}
 };
