@@ -7,9 +7,6 @@ SELECT
     cavd.category_slug
 FROM
     companies_apps_version_details AS cavd
-LEFT JOIN store_apps AS sa
-    ON
-        cavd.store_app = sa.id
 WHERE
-    sa.store_id = :store_id
+    cavd.store_id = :store_id
 ORDER BY cavd.xml_path, cavd.value_name;
