@@ -35,7 +35,7 @@ QUERY_SEARCH_APPS = load_sql_file("query_search_apps.sql")
 QUERY_SEARCH_COMPANIES = load_sql_file("query_search_companies.sql")
 QUERY_SEARCH_DEVS = load_sql_file("query_search_devs.sql")
 QUERY_SINGLE_DEVELOPER = load_sql_file("query_single_developer.sql")
-QUERY_SINGLE_DEVELOPER_ADSTXT = load_sql_file("query_single_developer_adstxt.sql")
+QUERY_SINGLE_APP_ADSTXT = load_sql_file("query_single_app_adstxt.sql")
 QUERY_APP_HISTORY = load_sql_file("query_app_history.sql")
 QUERY_SINGLE_APP = load_sql_file("query_single_app.sql")
 QUERY_APP_PACKAGE_DETAILS = load_sql_file("query_app_package_details.sql")
@@ -260,6 +260,7 @@ def get_category_top_apps_by_installs(category: str, limit: int = 10) -> pd.Data
     return df
 
 
+@lru_cache(maxsize=100)
 def get_single_app(store_id: str) -> pd.DataFrame:
     """Get basic app details for a single store_id."""
     logger.info(f"Query for single app_id={store_id}")
@@ -455,7 +456,7 @@ def get_single_apps_adstxt(store_id: str) -> pd.DataFrame:
     """Get single developer's app ads txt entries."""
     logger.info(f"Query app's app-ads-txt: {store_id=}")
     df = pd.read_sql(
-        QUERY_SINGLE_DEVELOPER_ADSTXT,
+        QUERY_SINGLE_APP_ADSTXT,
         con=DBCON.engine,
         params={"store_id": store_id},
     )

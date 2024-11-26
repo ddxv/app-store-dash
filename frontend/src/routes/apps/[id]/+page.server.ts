@@ -17,9 +17,6 @@ function checkStatus(resp: Response) {
 export const load: PageServerLoad = async ({ params, parent }) => {
 	const id = params.id;
 
-	// Load parent data first because it is cached
-	const { appCats, companyTypes } = await parent();
-
 	const myapp = async () => {
 		const resp = await fetch(`http://localhost:8000/api/apps/${id}`);
 		return checkStatus(resp);
@@ -41,6 +38,9 @@ export const load: PageServerLoad = async ({ params, parent }) => {
 		const resp = await fetch(`http://localhost:8000/api/apps/${id}/adstxt`);
 		return checkStatus(resp);
 	};
+
+	// Load parent data first because it is cached
+	const { appCats, companyTypes } = await parent();
 
 	return {
 		myapp: myapp(),
