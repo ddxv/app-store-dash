@@ -1,22 +1,33 @@
 import type { Handle } from '@sveltejs/kit';
 
 export const handle: Handle = async ({ event, resolve }) => {
-	if (event.url.pathname.startsWith('/networks')) {
+	const route = event.url.pathname;
+
+	if (route.startsWith('/networks')) {
 		return new Response(undefined, {
 			status: 301,
 			headers: { Location: '/companies/types/ad-networks' }
 		});
 	}
-	if (event.url.pathname.startsWith('/trackers')) {
+	if (route.startsWith('/trackers')) {
 		return new Response(undefined, {
 			status: 301,
 			headers: { Location: '/companies/types/ad-attribution' }
 		});
 	}
-	if (event.url.pathname.startsWith('/adtech')) {
+	if (route.startsWith('/adtech')) {
 		return new Response(undefined, { status: 301, headers: { Location: '/companies' } });
 	}
+
+	let start = performance.now();
+
 	// For all other paths, proceed with the request as usual
 	const response = await resolve(event);
+	let end = performance.now();
+
+	let duration = end - start;
+	duration = duration.toFixed(2);
+
+	console.log(`${route} took ${duration}ms`);
 	return response;
 };

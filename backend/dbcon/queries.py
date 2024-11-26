@@ -53,6 +53,7 @@ QUERY_ADTECH_TYPE = load_sql_file("query_adtech_type.sql")
 QUERY_TOP_COMPANIES_MONTH = load_sql_file("query_top_companies_month.sql")
 QUERY_TOP_PARENT_COMPANIES_MONTH = load_sql_file("query_top_companies_month_parent.sql")
 QUERY_COMPANY_TOP_APPS = load_sql_file("query_company_top_apps.sql")
+QUERY_COMPANY_CATEGORY_TOP_APPS = load_sql_file("query_company_category_top_apps.sql")
 QUERY_COMPANIES_PARENT_OVERVIEW = load_sql_file("query_companies_parent_overview.sql")
 QUERY_COMPANIES_PARENT_OVERVIEW_CATEGORY = load_sql_file(
     "query_companies_parent_overview_category.sql"
@@ -471,15 +472,25 @@ def new_get_top_apps_for_company(
     if mapped_category == "games":
         mapped_category = "game%"
 
-    df = pd.read_sql(
-        QUERY_COMPANY_TOP_APPS,
-        con=DBCON.engine,
-        params={
-            "company_domain": company_domain,
-            "mapped_category": mapped_category,
-            "mylimit": mylimit,
-        },
-    )
+    if mapped_category:
+        df = pd.read_sql(
+            QUERY_COMPANY_CATEGORY_TOP_APPS,
+            con=DBCON.engine,
+            params={
+                "company_domain": company_domain,
+                "mapped_category": mapped_category,
+                "mylimit": mylimit,
+            },
+        )
+    else:
+        df = pd.read_sql(
+            QUERY_COMPANY_TOP_APPS,
+            con=DBCON.engine,
+            params={
+                "company_domain": company_domain,
+                "mylimit": mylimit,
+            },
+        )
     if not df.empty:
         df["review_count"] = 0
         df["rating"] = 5
