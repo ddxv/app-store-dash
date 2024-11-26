@@ -1,20 +1,38 @@
 import type { LayoutServerLoad } from './$types';
 
-export const ssr = true;
-export const csr = true;
+function checkStatus(resp: Response) {
+	if (resp.status === 200) {
+		return resp.json();
+	} else if (resp.status === 404) {
+		console.log('App Not found');
+		return 'App Not Found';
+	} else if (resp.status === 500) {
+		console.log('App API Server error');
+		return 'Backend Error';
+	} else {
+		throw new Error('Unknown error');
+	}
+}
 
 export const load: LayoutServerLoad = async ({ fetch }) => {
 	console.log(`root layout load appCats, appsOverview, companyTypes start`);
-	const appCats = await fetch(`http://localhost:8000/api/categories`);
-	const appsOverview = await fetch(`http://localhost:8000/api/apps/overview`);
-	const companyTypes = await fetch(`http://localhost:8000/api/companies/types`);
+	const appCats = async () => {
+		const resp = await fetch(`http://localhost:8000/api/categories`);
+		return checkStatus(resp);
+	};
+	const appsOverview = async () => {
+		const resp = await fetch(`http://localhost:8000/api/apps/overview`);
+		return checkStatus(resp);
+	};
+	const companyTypes = async () => {
+		const resp = await fetch(`http://localhost:8000/api/companies/types`);
+		return checkStatus(resp);
+	};
 	console.log(`root layout load appCats, appsOverview, companyTypes end`);
 
 	return {
-		appCats: appCats.status === 200 ? await appCats.json() : 'Layout Categories API Not Found',
-		appsOverview:
-			appsOverview.status === 200 ? await appsOverview.json() : 'Layout Overview API Not Found',
-		companyTypes:
-			companyTypes.status === 200 ? await companyTypes.json() : 'Layout Company Types API Not Found'
+		appCats: appCats(),
+		appsOverview: appsOverview(),
+		companyTypes: companyTypes()
 	};
 };
