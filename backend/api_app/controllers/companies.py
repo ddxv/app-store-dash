@@ -4,6 +4,7 @@
 
 """
 
+import time
 import urllib
 from typing import Self
 
@@ -48,7 +49,7 @@ logger = get_logger(__name__)
 
 
 def get_search_results(search_term: str) -> pd.DataFrame:
-    """Parse search term and return resulting APpGroup."""
+    """Parse search term and return resulting AppGroup."""
     decoded_input = urllib.parse.unquote(search_term)
     df = search_companies(search_input=decoded_input, limit=20)
     logger.info(f"{decoded_input=} returned rows: {df.shape[0]}")
@@ -563,9 +564,12 @@ class CompaniesController(Controller):
             An overview of companies across different platforms and sources.
 
         """
-        logger.info("GET /api/companies start")
+        start = time.perf_counter()
 
         overview = get_overviews()
+
+        duration = round((time.perf_counter() - start), 2)
+        logger.info(f"GET /api/companies took {duration}ms")
 
         return overview
 
@@ -606,12 +610,13 @@ class CompaniesController(Controller):
             An overview of companies, filtered for the specified company and category.
 
         """
-        logger.info(f"GET /api/companies/{company_domain}/ start")
-
+        start = time.perf_counter()
         df = get_company_overview(company_domain=company_domain)
 
         overview = make_company_category_sums(df=df)
 
+        duration = round((time.perf_counter() - start), 2)
+        logger.info(f"GET /api/companies/{company_domain} took {duration}ms")
         return overview
 
     @get(
@@ -638,11 +643,13 @@ class CompaniesController(Controller):
             An overview of companies, filtered for the specified company and category.
 
         """
-        logger.info(f"GET /api/companies/{company_domain}/topapps {category=} start")
-
+        start = time.perf_counter()
         results = get_company_apps_new(company_domain=company_domain, category=category)
 
-        logger.info(f"GET /api/companies/{company_domain}/topapps {category=} end")
+        duration = round((time.perf_counter() - start), 2)
+        logger.info(
+            f"GET /api/companies/{company_domain}/topapps {category=} took {duration}ms"
+        )
         return results
 
     @get(
@@ -666,7 +673,7 @@ class CompaniesController(Controller):
             A dictionary of parent categories for the specified company.
 
         """
-        logger.info(f"GET /api/companies/{company_domain}/parentcategories start")
+        start = time.perf_counter()
 
         df = get_company_parent_categories(company_domain=company_domain)
 
@@ -694,6 +701,10 @@ class CompaniesController(Controller):
 
         df = df.rename(columns={"name": "group", "app_count": "value"})
 
+        duration = round((time.perf_counter() - start), 2)
+        logger.info(
+            f"GET /api/companies/{company_domain}/parentcategories took {duration}ms"
+        )
         return df.to_dict(orient="records")
 
     @get(
@@ -717,7 +728,7 @@ class CompaniesController(Controller):
             An overview of companies, filtered for the specified company and category.
 
         """
-        logger.info(f"GET /api/companies/{queried_domain}/tree start")
+        start = time.perf_counter()
 
         df = get_company_tree(company_domain=queried_domain)
 
@@ -762,6 +773,9 @@ class CompaniesController(Controller):
             children_companies=children_companies,
         )
 
+        duration = round((time.perf_counter() - start), 2)
+        logger.info(f"GET /api/companies/{queried_domain}/tree took {duration}ms")
+
         return tree
 
     @get(
@@ -785,7 +799,7 @@ class CompaniesController(Controller):
             An overview of companies, filtered for the specified company and category.
 
         """
-        logger.info(f"GET /api/companies/{company_domain}/sdks start")
+        start = time.perf_counter()
 
         df = get_company_sdks(company_domain=company_domain)
 
@@ -799,6 +813,9 @@ class CompaniesController(Controller):
             },
         )
 
+        duration = round((time.perf_counter() - start), 2)
+        logger.info(f"GET /api/companies/{company_domain}/sdks took {duration}ms")
+
         return mydict
 
     @get(path="/companies/types/", cache=True)
@@ -811,11 +828,13 @@ class CompaniesController(Controller):
             each with an id, name, type and total of apps
 
         """
-        logger.info(f"{self.path} start")
+        start = time.perf_counter()
         company_types_df = get_adtech_categories()
-        logger.info(f"{self.path} return")
 
         company_types = CompanyTypes(types=company_types_df.to_dict(orient="records"))
+
+        duration = round((time.perf_counter() - start), 2)
+        logger.info(f"{self.path} took {duration}ms")
 
         return company_types
 
@@ -833,9 +852,11 @@ class CompaniesController(Controller):
             each with an id, name, type and total of apps
 
         """
-        logger.info(f"/companies/types/{type_slug}?{category=} start")
+        start = time.perf_counter()
         overview = get_overviews(category=category, type_slug=type_slug)
-        logger.info(f"/companies/types/{type_slug}?{category=} return")
+
+        duration = round((time.perf_counter() - start), 2)
+        logger.info(f"/companies/types/{type_slug}?{category=} took {duration}ms")
 
         return overview
 
@@ -849,7 +870,7 @@ class CompaniesController(Controller):
             each with an id, name, type and total of apps
 
         """
-        logger.info(f"{self.path} start")
+        start = time.perf_counter()
         adnetworks = get_companies_top(
             type_slug="ad-networks", app_category=None, limit=5
         )
@@ -860,13 +881,15 @@ class CompaniesController(Controller):
         top_ad_networks = make_top_companies(adnetworks)
         top_mmps = make_top_companies(mmps)
         top_analytics = make_top_companies(analytics)
-        logger.info(f"{self.path} return")
 
         top_companies = TopCompaniesOverviewShort(
             adnetworks=top_ad_networks,
             attribution=top_mmps,
             analytics=top_analytics,
         )
+
+        duration = round((time.perf_counter() - start), 2)
+        logger.info(f"{self.path} took {duration}ms")
 
         return top_companies
 
@@ -879,7 +902,7 @@ class CompaniesController(Controller):
             A list of CompanyDetail objects
 
         """
-        logger.info(f"{self.path}/{search_term} start")
+        start = time.perf_counter()
         results = get_search_results(search_term=search_term)
 
         results["app_category"] = "all"
@@ -889,6 +912,8 @@ class CompaniesController(Controller):
         overview_df, _category_overview = prep_companies_overview_df(
             results, category_totals_df
         )
-        logger.info(f"{self.path}/{search_term} return")
+
+        duration = round((time.perf_counter() - start), 2)
+        logger.info(f"{self.path}/{search_term} took {duration}ms")
 
         return overview_df.to_dict(orient="records")
