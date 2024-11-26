@@ -554,7 +554,7 @@ class CompaniesController(Controller):
 
     path = "/api/"
 
-    @get(path="/companies", cache=3600)
+    @get(path="/companies", cache=86400)
     async def companies(self: Self) -> CompaniesOverview:
         """Handle GET request for all companies.
 
@@ -573,7 +573,7 @@ class CompaniesController(Controller):
 
         return overview
 
-    @get(path="/companies/categories/{category:str}", cache=3600)
+    @get(path="/companies/categories/{category:str}", cache=86400)
     async def companies_categories(self: Self, category: str) -> CompaniesOverview:
         """Handle GET request for all companies in a category.
 
@@ -591,7 +591,7 @@ class CompaniesController(Controller):
 
     @get(
         path="/companies/{company_domain:str}",
-        cache=3600,
+        cache=86400,
     )
     async def company_overview(
         self: Self,
@@ -621,7 +621,7 @@ class CompaniesController(Controller):
 
     @get(
         path="/companies/{company_domain:str}/topapps",
-        cache=3600,
+        cache=86400,
     )
     async def company_apps(
         self: Self,
@@ -654,7 +654,7 @@ class CompaniesController(Controller):
 
     @get(
         path="/companies/{company_domain:str}/parentcategories",
-        cache=3600,
+        cache=86400,
     )
     async def company_parent_categories(
         self: Self,
@@ -709,7 +709,7 @@ class CompaniesController(Controller):
 
     @get(
         path="/companies/{queried_domain:str}/tree",
-        cache=3600,
+        cache=86400,
     )
     async def company_tree(
         self: Self,
@@ -893,7 +893,7 @@ class CompaniesController(Controller):
 
         return top_companies
 
-    @get(path="/companies/search/{search_term:str}", cache=True)
+    @get(path="/companies/search/{search_term:str}", cache=86400)
     async def get_companies_search(self: Self, search_term: str) -> list[CompanyDetail]:
         """Handle GET request for a list of adtech company categories.
 
