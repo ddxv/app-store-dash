@@ -230,11 +230,11 @@ class AppController(Controller):
             A dictionary representation of the total counts
 
         """
-        start = time.perf_counter()
+        start = time.perf_counter() * 1000
         overview_df = get_total_counts()
         overview_dict = overview_df.to_dict(orient="records")[0]
-        duration = round((time.perf_counter() - start), 2)
-        logger.info(f"{self.path} took {duration}ms")
+        duration = round((time.perf_counter() * 1000 - start), 2)
+        logger.info(f"{self.path}/overview took {duration}ms")
         return overview_dict
 
     @get(path="/collections/{collection:str}", cache=3600)
@@ -250,11 +250,11 @@ class AppController(Controller):
             A dictionary representation of the list of apps for homepage
 
         """
-        start = time.perf_counter()
+        start = time.perf_counter() * 1000
         home_dict = get_app_overview_dict(collection=collection)
 
-        duration = round((time.perf_counter() - start), 2)
-        logger.info(f"{self.path} took {duration}ms")
+        duration = round((time.perf_counter() * 1000 - start), 2)
+        logger.info(f"{self.path}/collections/{collection} took {duration}ms")
         return home_dict
 
     @get(path="/{store_id:str}", cache=3600)
@@ -268,7 +268,7 @@ class AppController(Controller):
             json
 
         """
-        start = time.perf_counter()
+        start = time.perf_counter() * 1000
         app_df = get_single_app(store_id)
         if app_df.empty:
             msg = f"Store ID not found: {store_id!r}"
@@ -277,8 +277,8 @@ class AppController(Controller):
                 status_code=404,
             )
         app_dict = app_df.to_dict(orient="records")[0]
-        duration = round((time.perf_counter() - start), 2)
-        logger.info(f"{self.path} took {duration}ms")
+        duration = round((time.perf_counter() * 1000 - start), 2)
+        logger.info(f"{self.path}/{store_id} took {duration}ms")
         return app_dict
 
     @get(path="/{store_id:str}/history", cache=3600)
@@ -292,7 +292,7 @@ class AppController(Controller):
             json
 
         """
-        start = time.perf_counter()
+        start = time.perf_counter() * 1000
         app_df = get_single_app(store_id)
         if app_df.empty:
             msg = f"Store ID not found: {store_id!r}"
@@ -305,8 +305,8 @@ class AppController(Controller):
         app_name = app_dict["name"]
 
         hist_dict = app_history(store_app=store_app, app_name=app_name)
-        duration = round((time.perf_counter() - start), 2)
-        logger.info(f"{self.path} took {duration}ms")
+        duration = round((time.perf_counter() * 1000 - start), 2)
+        logger.info(f"{self.path}/{store_id}/history took {duration}ms")
         return hist_dict
 
     @get(path="/{store_id:str}/packageinfo", cache=3600)
@@ -320,7 +320,7 @@ class AppController(Controller):
             json
 
         """
-        start = time.perf_counter()
+        start = time.perf_counter() * 1000
 
         df = get_app_package_details(store_id)
 
@@ -369,8 +369,8 @@ class AppController(Controller):
             .apply(list)
             .to_dict(),
         )
-        duration = round((time.perf_counter() - start), 2)
-        logger.info(f"{self.path} took {duration}ms")
+        duration = round((time.perf_counter() * 1000 - start), 2)
+        logger.info(f"{self.path}/{store_id}/packageinfo took {duration}ms")
         return trackers_dict
 
     @get(path="/{store_id:str}/ranks", cache=3600)
@@ -386,7 +386,7 @@ class AppController(Controller):
             json
 
         """
-        start = time.perf_counter()
+        start = time.perf_counter() * 1000
         df = get_ranks_for_app(store_id=store_id)
         if df.empty:
             msg = f"Ranks not found for {store_id!r}"
@@ -411,8 +411,8 @@ class AppController(Controller):
             .to_dict(orient="records")
         )
         rank_dict = AppRank(latest=latest_dict, history=hist_dict)
-        duration = round((time.perf_counter() - start), 2)
-        logger.info(f"{self.path} took {duration}ms")
+        duration = round((time.perf_counter() * 1000 - start), 2)
+        logger.info(f"{self.path}/{store_id}/ranks took {duration}ms")
         return rank_dict
 
     @get(path="/developers/{developer_id:str}", cache=3600)
@@ -428,7 +428,7 @@ class AppController(Controller):
             json
 
         """
-        start = time.perf_counter()
+        start = time.perf_counter() * 1000
         apps_df = get_single_developer(developer_id)
 
         if apps_df.empty:
@@ -445,8 +445,8 @@ class AppController(Controller):
             title=developer_name,
             apps=apps_dict,
         )
-        duration = round((time.perf_counter() - start), 2)
-        logger.info(f"{self.path} took {duration}ms")
+        duration = round((time.perf_counter() * 1000 - start), 2)
+        logger.info(f"{self.path}/developers/{developer_id} took {duration}ms")
         return developer_apps
 
     @get(path="/{store_id:str}/adstxt", cache=3600)
@@ -465,7 +465,7 @@ class AppController(Controller):
             json
 
         """
-        start = time.perf_counter()
+        start = time.perf_counter() * 1000
         adstxt_df = get_single_apps_adstxt(store_id)
 
         if adstxt_df.empty:
@@ -485,8 +485,8 @@ class AppController(Controller):
             direct_entries=direct_adstxt_dict,
             reseller_entries=reseller_adstxt_dict,
         )
-        duration = round((time.perf_counter() - start), 2)
-        logger.info(f"{self.path} took {duration}ms")
+        duration = round((time.perf_counter() * 1000 - start), 2)
+        logger.info(f"{self.path}/{store_id}/adstxt took {duration}ms")
         return txts
 
     @get(path="/search/{search_term:str}", cache=3600)
@@ -499,9 +499,9 @@ class AppController(Controller):
                 Can search packages, developers and app names.
 
         """
-        start = time.perf_counter()
+        start = time.perf_counter() * 1000
         apps_dict = get_search_results(search_term)
-        duration = round((time.perf_counter() - start), 2)
+        duration = round((time.perf_counter() * 1000 - start), 2)
         logger.info(f"{self.path} took {duration}ms")
         return Response(
             apps_dict,
@@ -518,11 +518,11 @@ class AppController(Controller):
                 Can search packages, developers and app names.
 
         """
-        start = time.perf_counter()
+        start = time.perf_counter() * 1000
         results = google.search_play_store(search_term)
         app_group = AppGroup(title="Google Playstore Results", apps=results)
-        duration = round((time.perf_counter() - start), 2)
-        logger.info(f"{self.path} took {duration}ms")
+        duration = round((time.perf_counter() * 1000 - start), 2)
+        logger.info(f"{self.path}/{search_term}/playstore took {duration}ms")
         if len(results) > 0:
             return Response(
                 app_group,
@@ -542,7 +542,7 @@ class AppController(Controller):
         """
         logger.info(f"{self.path} term={search_term} for apple store")
 
-        start = time.perf_counter()
+        start = time.perf_counter() * 1000
 
         ids = apple.search_app_store_for_ids(search_term)
         full_results = [{"store_id": store_id, "store": 2} for store_id in ids]
@@ -556,7 +556,7 @@ class AppController(Controller):
         results_dict = df.to_dict(orient="records")
 
         app_group = AppGroup(title="Apple App Store Results", apps=results_dict)
-        duration = round((time.perf_counter() - start), 2)
+        duration = round((time.perf_counter() * 1000 - start), 2)
         logger.info(f"{self.path} took {duration}ms")
         if len(results) > 0:
             return Response(
