@@ -1,8 +1,5 @@
 import type { PageServerLoad } from './$types.js';
 
-export const ssr: boolean = true;
-export const csr: boolean = true;
-
 export const load: PageServerLoad = async ({}) => {
 	const res = fetch(`http://localhost:8000/api/companies`);
 	console.log(`start load overview for companies`);

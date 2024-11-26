@@ -15,4 +15,4 @@ GROUP BY
     tag_source,
     company_domain,
     company_name,
-    type_url_slug;;
+    type_url_slug;
