@@ -21,6 +21,7 @@
 		chartOptions = {
 			title: plotTitle,
 			theme: 'g90', // <- how to set the theme
+			toolbar: { enabled: false },
 			axes: {
 				left: {
 					mapsTo: 'group',

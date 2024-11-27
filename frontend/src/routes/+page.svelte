@@ -222,16 +222,17 @@
 						<h3 class="h3">Top SDK Advertising Networks</h3>
 					</div>
 					<div class="card-content">
-						Checkout the top SDK advertising networks.
+						These are the top Mobile Advertising Networks based on SDKs we found in iOS and Android
+						apps.
 						{#await data.topCompanies}
 							Loading ...
 						{:then myTops}
 							{#if myTops.adnetworks}
 								<WhiteCard>
-									<CompaniesBarChart
-										plotData={myTops.adnetworks.sdk}
-										plotTitle="Top SDK Ad Networks Companies"
-									/>
+									{#snippet title()}
+										Top SDK Ad Networks
+									{/snippet}
+									<CompaniesBarChart plotData={myTops.adnetworks.sdk} />
 								</WhiteCard>
 							{/if}
 						{/await}
@@ -245,16 +246,17 @@
 						<h3 class="h3">Top iOS MMPs & Ad Tracking</h3>
 					</div>
 					<div class="card-content">
-						Checkout the top MMPs and tracking companies.
+						See which MMPs and mobile app tracking companies are used most often in Android and iOS
+						apps.
 						{#await data.topCompanies}
 							Loading ...
 						{:then myTops}
 							{#if myTops.attribution}
 								<WhiteCard>
-									<CompaniesBarChart
-										plotData={myTops.attribution.sdk}
-										plotTitle="Top MMPs & Attribution Companies"
-									/>
+									{#snippet title()}
+										Top MMPs & Attribution Companies
+									{/snippet}
+									<CompaniesBarChart plotData={myTops.attribution.sdk} />
 								</WhiteCard>
 							{/if}
 						{/await}
@@ -268,16 +270,17 @@
 						<h3 class="h3">Top Product Analytics</h3>
 					</div>
 					<div class="card-content">
-						Checkout the top product analytics companies.
+						These are the most popular Product Analytics companies or open source libraries based on
+						SDKs we found in iOS and Android apps.
 						{#await data.topCompanies}
 							Loading ...
 						{:then myTops}
 							{#if myTops.analytics}
 								<WhiteCard>
-									<CompaniesBarChart
-										plotData={myTops.analytics.sdk}
-										plotTitle="Top Product Analytics Companies"
-									/>
+									{#snippet title()}
+										Top Product Analytics Companies
+									{/snippet}
+									<CompaniesBarChart plotData={myTops.analytics.sdk} />
 								</WhiteCard>
 							{/if}
 						{/await}
