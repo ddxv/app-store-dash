@@ -1,7 +1,6 @@
-export const ssr: boolean = true;
-export const csr: boolean = true;
-
 import type { PageServerLoad } from './$types.js';
+
+export const prerender = false;
 
 export const load: PageServerLoad = async ({ setHeaders, parent }) => {
 	const emptyResponse = {};
