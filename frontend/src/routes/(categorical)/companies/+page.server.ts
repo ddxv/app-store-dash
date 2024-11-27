@@ -1,4 +1,5 @@
 import type { PageServerLoad } from './$types.js';
+export const prerender = 'auto';
 
 export const load: PageServerLoad = async ({}) => {
 	const res = fetch(`http://localhost:8000/api/companies`);
