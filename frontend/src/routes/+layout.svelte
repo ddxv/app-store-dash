@@ -50,8 +50,8 @@
 					<a href="/" class="flex">
 						<img
 							class="md:ml-2 h-8 md:h-12 w-8 md:w-12"
-							src="/goblin_purple_hat_250.png"
-							alt="Goblin Icon"
+							src="/goblin_purple_hat_60.png"
+							alt="AppGoblin Icon"
 						/>
 						<strong class="text-xl ml-1 md:ml-2 md:text-3xl uppercase text-primary-900-100"
 							>AppGoblin</strong
