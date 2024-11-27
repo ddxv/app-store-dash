@@ -8,6 +8,7 @@ from typing import Self
 
 import pandas as pd
 from litestar import Controller, get
+from litestar.config.response_cache import CACHE_FOREVER
 
 from api_app.models import (
     RankingOverview,
@@ -62,7 +63,7 @@ class RankingsController(Controller):
 
     path = "/api/rankings/"
 
-    @get(path="/", cache=True)
+    @get(path="/", cache=CACHE_FOREVER)
     async def get_ranking_overview(self: Self) -> RankingOverview:
         """Handle GET request for a list of ranking collecitons and categories.
 
@@ -77,7 +78,7 @@ class RankingsController(Controller):
 
         return overview
 
-    @get(path="/{store:int}/{collection:int}/{category:int}/short", cache=40000)
+    @get(path="/{store:int}/{collection:int}/{category:int}/short", cache=86400)
     async def get_short_ranks_for_category(
         self: Self,
         store: int,
@@ -102,7 +103,7 @@ class RankingsController(Controller):
         ranks_dict = df.to_dict(orient="records")
         return {"ranks": ranks_dict}
 
-    @get(path="/{store:int}/{collection:int}/{category:int}", cache=3600)
+    @get(path="/{store:int}/{collection:int}/{category:int}", cache=86400)
     async def get_ranks_for_category(
         self: Self,
         store: int,
@@ -127,7 +128,7 @@ class RankingsController(Controller):
         ranks_dict = df.to_dict(orient="records")
         return {"ranks": ranks_dict}
 
-    @get(path="/{store:int}/{collection:int}/{category:int}/history", cache=3600)
+    @get(path="/{store:int}/{collection:int}/{category:int}/history", cache=86400)
     async def get_ranks_history_for_category(
         self: Self,
         store: int,

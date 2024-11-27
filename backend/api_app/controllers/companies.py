@@ -11,6 +11,7 @@ from typing import Self
 import numpy as np
 import pandas as pd
 from litestar import Controller, get
+from litestar.config.response_cache import CACHE_FOREVER
 
 from api_app.models import (
     AppGroup,
@@ -818,7 +819,7 @@ class CompaniesController(Controller):
 
         return mydict
 
-    @get(path="/companies/types/", cache=True)
+    @get(path="/companies/types/", cache=CACHE_FOREVER)
     async def all_adtech_types(self: Self) -> CompanyTypes:
         """Handle GET request for a list of adtech company categories.
 
@@ -838,7 +839,7 @@ class CompaniesController(Controller):
 
         return company_types
 
-    @get(path="/companies/types/{type_slug:str}", cache=True)
+    @get(path="/companies/types/{type_slug:str}", cache=86400)
     async def adtech_type(
         self: Self,
         type_slug: str,
@@ -860,7 +861,7 @@ class CompaniesController(Controller):
 
         return overview
 
-    @get(path="/companies/topshort/", cache=True)
+    @get(path="/companies/topshort/", cache=CACHE_FOREVER)
     async def get_companies_shortlist_top(self: Self) -> TopCompaniesOverviewShort:
         """Handle GET request for a list of adtech company categories.
 

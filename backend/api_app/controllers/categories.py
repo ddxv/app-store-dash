@@ -7,6 +7,7 @@ from typing import Self
 
 import numpy as np
 from litestar import Controller, get
+from litestar.config.response_cache import CACHE_FOREVER
 
 from api_app.models import AppGroup, CategoriesOverview, Category
 from config import get_logger
@@ -55,7 +56,7 @@ class CategoryController(Controller):
 
     path = "/api/categories"
 
-    @get(path="/", cache=True)
+    @get(path="/", cache=CACHE_FOREVER)
     async def get_categories_overview(self: Self) -> CategoriesOverview:
         """Handle GET request for a list of categories.
 
@@ -71,7 +72,7 @@ class CategoryController(Controller):
 
         return overview
 
-    @get(path="/{category_id:str}", cache=True)
+    @get(path="/{category_id:str}", cache=86400)
     async def get_category(self: Self, category_id: str) -> Category:
         """Handle GET request for a single category.
 
