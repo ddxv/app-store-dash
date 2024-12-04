@@ -133,7 +133,7 @@ def create_paginated_sitemaps(
         filename = f"{base_filename}_{i // chunk_size + 1}.xml"
         create_sitemap(chunk, filename)
         logger.info(f"Generated {filename}")
-        filenames.append(filename)
+        filenames.append(f"https://appgoblin.info/{filename}")
     return filenames
 
 

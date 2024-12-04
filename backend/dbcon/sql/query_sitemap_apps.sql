@@ -5,8 +5,8 @@ FROM
     store_apps
 WHERE
     crawl_result = 1
-    AND installs > 1000
-    OR rating_count > 100
+    AND installs > 100000
+    OR rating_count > 10000
 ORDER BY
     GREATEST(
         COALESCE(
