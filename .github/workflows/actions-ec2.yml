@@ -29,8 +29,7 @@ jobs:
             cd $TARGETDIR
             pwd
             git pull origin main
-            cd backend
-            cd ../frontend
+            cd frontend
             sudo systemctl enable /home/goblin/app-store-dash/scripts/app-store-api.service
             sudo systemctl enable /home/goblin/app-store-dash/scripts/app-store-frontend.service
             sudo systemctl daemon-reload
