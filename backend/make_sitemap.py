@@ -109,7 +109,7 @@ def create_main_sitemap(sitemaps: list[str], filename: str) -> None:
 
     # Write to file, excluding the first line with the XML declaration
     with pathlib.Path(SITEMAP_DIR / filename).open("w", encoding="utf-8") as f:
-        f.write("\n".join(pretty_xml.splitlines()[1:]))
+        f.write("\n".join(pretty_xml.splitlines()))
 
 
 def create_paginated_sitemaps(
