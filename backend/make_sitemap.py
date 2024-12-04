@@ -136,8 +136,10 @@ def create_paginated_sitemaps(
 apps = get_sitemap_apps()
 cdf = get_sitemap_companies()
 
+MIN_APP_COUNT = 10
+
 # Companies with URL slugs are more likely to be relevant (ie not typos from app-ads.txt)
-cdf = cdf[(cdf["app_count"] > 10) | (cdf["type_url_slug"].notnull())]
+cdf = cdf[(cdf["app_count"] > MIN_APP_COUNT) | (cdf["type_url_slug"].notna())]
 
 
 # about 6
@@ -199,7 +201,10 @@ company_domain_categories = (
     .reset_index()
 )
 # about 28k
-company_domain_categories[company_domain_categories["app_count"] > 20]
+MIN_CD_APP_COUNT = 20
+company_domain_categories = company_domain_categories[
+    company_domain_categories["app_count"] > MIN_CD_APP_COUNT
+]
 company_domain_categories["url"] = (
     "https://appgoblin.info/companies/"
     + company_domain_categories["company_domain"]
