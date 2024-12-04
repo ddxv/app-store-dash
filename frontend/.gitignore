@@ -9,3 +9,13 @@ node_modules
 !.env.example
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+
+# Sitemaps, ignore all but except for the smaller ones
+/static/sitemap*.xml
+!/static/sitemap.xml
+!/static/sitemap_company_types.xml
+!/static/sitemap_company_categories.xml
+!/static/sitemap_companies.xml
+!/static/sitemap_company_types.xml
+!/static/sitemap_company_categories.xml
+!/static/sitemap_company_type_categories.xml

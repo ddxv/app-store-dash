@@ -74,6 +74,10 @@ QUERY_SDKS = load_sql_file("query_sdks.sql")
 QUERY_SDK_PATTERN = load_sql_file("query_sdk_pattern.sql")
 QUERY_SDK_PATTERN_COMPANIES = load_sql_file("query_sdk_pattern_companies.sql")
 
+# Used for generating sitemaps
+QUERY_SITEMAP_APPS = load_sql_file("query_sitemap_apps.sql")
+QUERY_SITEMAP_COMPANIES = load_sql_file("query_sitemap_companies.sql")
+
 
 def get_recent_apps(collection: str, limit: int = 20) -> pd.DataFrame:
     """Get app collections by time."""
@@ -582,6 +586,18 @@ def get_sdk_pattern_companies(value_pattern: str) -> pd.DataFrame:
         DBCON.engine,
         params={"value_pattern": value_pattern},
     )
+    return df
+
+
+def get_sitemap_companies() -> pd.DataFrame:
+    """Get sitemap companies."""
+    df = pd.read_sql(QUERY_SITEMAP_COMPANIES, DBCON.engine)
+    return df
+
+
+def get_sitemap_apps() -> pd.DataFrame:
+    """Get sitemap apps."""
+    df = pd.read_sql(QUERY_SITEMAP_APPS, DBCON.engine)
     return df
 
 
