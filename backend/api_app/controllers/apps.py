@@ -340,6 +340,9 @@ class AppController(Controller):
             }
 
         is_permission = df["xml_path"] == "uses-permission"
+        df.loc[df["xml_path"].str.contains("key", case=False), "value_name"] = (
+            "redacted_key"
+        )
         is_matching_packages = df["value_name"].str.startswith(
             ".".join(store_id.split(".")[:2]),
         )
