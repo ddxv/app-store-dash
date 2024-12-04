@@ -1,21 +1,22 @@
 SELECT
-    store_id, store_last_updated
+    store_id,
+    store_last_updated
 FROM
-    store_apps sa
+    store_apps
 WHERE
     crawl_result = 1
     AND installs > 1000
     OR rating_count > 100
 ORDER BY
     GREATEST(
-    COALESCE(
+        COALESCE(
             installs,
             0
         ),
-    COALESCE(
+        COALESCE(
             CAST(
                 rating_count AS bigint
             ),
             0
-        )* 50
+        ) * 50
     ) DESC;
