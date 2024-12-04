@@ -7,8 +7,10 @@ from xml.etree.ElementTree import Element, SubElement, tostring
 
 import pandas as pd
 
-from config import MODULE_DIR
+from config import MODULE_DIR, get_logger
 from dbcon.queries import get_sitemap_apps, get_sitemap_companies
+
+logger = get_logger(__name__)
 
 SITEMAP_DIR = MODULE_DIR.parent / pathlib.Path("frontend/static")
 
@@ -128,7 +130,7 @@ def create_paginated_sitemaps(
         chunk = df.iloc[i : i + chunk_size]
         filename = f"{base_filename}_{i // chunk_size + 1}.xml"
         create_sitemap(chunk, filename)
-        print(f"Generated {filename}")
+        logger.info(f"Generated {filename}")
         filenames.append(filename)
     return filenames
 
@@ -138,7 +140,7 @@ cdf = get_sitemap_companies()
 
 MIN_APP_COUNT = 10
 
-# Companies with URL slugs are more likely to be relevant 
+# Companies with URL slugs are more likely to be relevant
 # (ie not typos from app-ads.txt)
 cdf = cdf[(cdf["app_count"] > MIN_APP_COUNT) | (cdf["type_url_slug"].notna())]
 
