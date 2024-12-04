@@ -1,7 +1,7 @@
 """Script to generate sitemaps for AppGoblin."""
 
 import pathlib
-from datetime import datetime
+import datetime
 from xml.dom.minidom import parseString
 from xml.etree.ElementTree import Element, SubElement, tostring
 
@@ -31,7 +31,7 @@ def set_df_sitemap_columns(
     """
     df["priority"] = priority
     df["changefreq"] = changefreq
-    df["lastmod"] = datetime.now().strftime("%Y-%m-%d")
+    df["lastmod"] = datetime.datetime.now(datetime.UTC).strftime("%Y-%m-%d")
     return df
 
 
@@ -98,11 +98,13 @@ def create_main_sitemap(sitemaps: list[str], filename: str) -> None:
     for sitemap in sitemaps:
         sitemap_elem = SubElement(sitemap_index, "sitemap")
         SubElement(sitemap_elem, "loc").text = sitemap
-        SubElement(sitemap_elem, "lastmod").text = datetime.now().strftime("%Y-%m-%d")
+        SubElement(sitemap_elem, "lastmod").text = datetime.datetime.now(datetime.UTC).strftime(
+            "%Y-%m-%d"
+        )
 
     # Convert to string and prettify
     raw_xml = tostring(sitemap_index, encoding="utf-8")
-    dom = parseString(raw_xml)
+    dom = parseString(raw_xml)  # noqa: S318
     pretty_xml = dom.toprettyxml(indent="  ")
 
     # Write to file, excluding the first line with the XML declaration
