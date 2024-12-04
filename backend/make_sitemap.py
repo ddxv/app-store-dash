@@ -138,7 +138,8 @@ cdf = get_sitemap_companies()
 
 MIN_APP_COUNT = 10
 
-# Companies with URL slugs are more likely to be relevant (ie not typos from app-ads.txt)
+# Companies with URL slugs are more likely to be relevant 
+# (ie not typos from app-ads.txt)
 cdf = cdf[(cdf["app_count"] > MIN_APP_COUNT) | (cdf["type_url_slug"].notna())]
 
 
