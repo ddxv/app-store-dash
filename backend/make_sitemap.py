@@ -1,7 +1,7 @@
 """Script to generate sitemaps for AppGoblin."""
 
-import pathlib
 import datetime
+import pathlib
 from xml.dom.minidom import parseString
 from xml.etree.ElementTree import Element, SubElement, tostring
 
@@ -98,9 +98,9 @@ def create_main_sitemap(sitemaps: list[str], filename: str) -> None:
     for sitemap in sitemaps:
         sitemap_elem = SubElement(sitemap_index, "sitemap")
         SubElement(sitemap_elem, "loc").text = sitemap
-        SubElement(sitemap_elem, "lastmod").text = datetime.datetime.now(datetime.UTC).strftime(
-            "%Y-%m-%d"
-        )
+        SubElement(sitemap_elem, "lastmod").text = datetime.datetime.now(
+            datetime.UTC
+        ).strftime("%Y-%m-%d")
 
     # Convert to string and prettify
     raw_xml = tostring(sitemap_index, encoding="utf-8")
