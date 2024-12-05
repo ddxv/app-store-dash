@@ -18,7 +18,7 @@
 		"@sveltejs/adapter-auto": "^3.0.0",
 		"@sveltejs/adapter-node": "^5.2.6",
 		"@sveltejs/kit": "^2.5.27",
-		"@sveltejs/vite-plugin-svelte": "^4.0.0",
+		"@sveltejs/vite-plugin-svelte": "^5.0.0",
 		"@types/eslint": "^9.6.1",
 		"@types/node": "^22.9.0",
 		"@typescript-eslint/eslint-plugin": "^8.8.1",
@@ -36,8 +36,8 @@
 		"tslib": "^2.4.1",
 		"typescript": "^5.5.0",
 		"typescript-eslint": "^8.0.0",
-		"vite": "^5.4.4",
-		"vite-plugin-tailwind-purgecss": "0.3.3"
+		"vite": "^6.0.0",
+		"vite-plugin-tailwind-purgecss": "^0.3.3"
 	},
 	"dependencies": {
 		"@carbon/charts-svelte": "^1.22.3",
