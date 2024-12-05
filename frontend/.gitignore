@@ -15,6 +15,5 @@ vite.config.ts.timestamp-*
 !/static/sitemap.xml
 !/static/sitemap_static.xml
 !/static/sitemap_company_types.xml
-!/static/sitemap_company_categories.xml
 !/static/sitemap_companies.xml
 !/static/sitemap_company_types.xml
