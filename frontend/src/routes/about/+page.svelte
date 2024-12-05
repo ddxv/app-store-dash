@@ -117,13 +117,11 @@
 			<br />
 			<p>
 				The website itself is also open source and can be found at
-				<strong
-					><a href="https://github.com/ddxv/app-store-dash">github.com/ddxv/app-store-dash</a
-					></strong
-				> The website is built from a Python backend API based on LiteStar which manages queries to the
-				PostgreSQL database. The API is used by a JavaScript Svelte frontend with Tailwind and Skeleton
-				for CSS. All projects are glued together with systemd and websockets where needed. Everything
-				is hosted on AWS in the small EC2 instances.
+				<strong><a href="https://github.com/ddxv/appgoblin">github.com/ddxv/appgoblin</a></strong> The
+				website is built from a Python backend API based on LiteStar which manages queries to the PostgreSQL
+				database. The API is used by a JavaScript Svelte frontend with Tailwind and Skeleton for CSS.
+				All projects are glued together with systemd and websockets where needed. Everything is hosted
+				on AWS in the small EC2 instances.
 			</p>
 
 			<br />
