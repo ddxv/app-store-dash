@@ -1,91 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <sitemap>
-    <loc>https://appgoblin.info</loc>
-    <lastmod>2024-12-04</lastmod>
-  </sitemap>
-  <sitemap>
-    <loc>https://appgoblin.info/about</loc>
-    <lastmod>2024-12-04</lastmod>
-  </sitemap>
-  <sitemap>
-    <loc>https://appgoblin.info/sdks</loc>
-    <lastmod>2024-12-04</lastmod>
-  </sitemap>
-  <sitemap>
-    <loc>https://appgoblin.info/companies</loc>
-    <lastmod>2024-12-04</lastmod>
-  </sitemap>
-  <sitemap>
-    <loc>https://appgoblin.info/rankings/store/1/collection/1/category/1</loc>
-    <lastmod>2024-12-04</lastmod>
-  </sitemap>
-  <sitemap>
-    <loc>https://appgoblin.info/rankings/store/2/collection/4/category/120</loc>
-    <lastmod>2024-12-04</lastmod>
-  </sitemap>
-  <sitemap>
-    <loc>https://appgoblin.info/collections/new_monthly</loc>
-    <lastmod>2024-12-04</lastmod>
-  </sitemap>
-  <sitemap>
-    <loc>https://appgoblin.info/collections/new_weekly</loc>
-    <lastmod>2024-12-04</lastmod>
-  </sitemap>
-  <sitemap>
-    <loc>https://appgoblin.info/collections/new_yearly</loc>
-    <lastmod>2024-12-04</lastmod>
+    <loc>https://appgoblin.info/sitemap_static.xml</loc>
+    <lastmod>2024-12-05</lastmod>
   </sitemap>
   <sitemap>
     <loc>https://appgoblin.info/sitemap_companies.xml</loc>
-    <lastmod>2024-12-04</lastmod>
+    <lastmod>2024-12-05</lastmod>
   </sitemap>
   <sitemap>
     <loc>https://appgoblin.info/sitemap_company_types.xml</loc>
-    <lastmod>2024-12-04</lastmod>
+    <lastmod>2024-12-05</lastmod>
   </sitemap>
   <sitemap>
     <loc>https://appgoblin.info/sitemap_company_categories.xml</loc>
-    <lastmod>2024-12-04</lastmod>
+    <lastmod>2024-12-05</lastmod>
   </sitemap>
   <sitemap>
     <loc>https://appgoblin.info/sitemap_company_type_categories.xml</loc>
-    <lastmod>2024-12-04</lastmod>
+    <lastmod>2024-12-05</lastmod>
   </sitemap>
   <sitemap>
     <loc>https://appgoblin.info/sitemap_company_domain_categories_1.xml</loc>
-    <lastmod>2024-12-04</lastmod>
+    <lastmod>2024-12-05</lastmod>
   </sitemap>
   <sitemap>
     <loc>https://appgoblin.info/sitemap_company_domain_categories_2.xml</loc>
-    <lastmod>2024-12-04</lastmod>
+    <lastmod>2024-12-05</lastmod>
   </sitemap>
   <sitemap>
     <loc>https://appgoblin.info/sitemap_apps_1.xml</loc>
-    <lastmod>2024-12-04</lastmod>
+    <lastmod>2024-12-05</lastmod>
   </sitemap>
   <sitemap>
     <loc>https://appgoblin.info/sitemap_apps_2.xml</loc>
-    <lastmod>2024-12-04</lastmod>
+    <lastmod>2024-12-05</lastmod>
   </sitemap>
   <sitemap>
     <loc>https://appgoblin.info/sitemap_apps_3.xml</loc>
-    <lastmod>2024-12-04</lastmod>
+    <lastmod>2024-12-05</lastmod>
   </sitemap>
   <sitemap>
     <loc>https://appgoblin.info/sitemap_apps_4.xml</loc>
-    <lastmod>2024-12-04</lastmod>
+    <lastmod>2024-12-05</lastmod>
   </sitemap>
   <sitemap>
     <loc>https://appgoblin.info/sitemap_apps_5.xml</loc>
-    <lastmod>2024-12-04</lastmod>
+    <lastmod>2024-12-05</lastmod>
   </sitemap>
   <sitemap>
     <loc>https://appgoblin.info/sitemap_apps_6.xml</loc>
-    <lastmod>2024-12-04</lastmod>
+    <lastmod>2024-12-05</lastmod>
   </sitemap>
   <sitemap>
     <loc>https://appgoblin.info/sitemap_apps_7.xml</loc>
-    <lastmod>2024-12-04</lastmod>
+    <lastmod>2024-12-05</lastmod>
   </sitemap>
 </sitemapindex>

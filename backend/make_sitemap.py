@@ -66,6 +66,34 @@ def create_sitemap(df: pd.DataFrame, filename: str) -> None:
         f.write("\n".join(xml_lines))
 
 
+def create_static_sitemap() -> str:
+    """Create a sitemap for static pages.
+
+    Returns:
+        Filename of the generated static sitemap
+
+    """
+    # Static URLs to include
+    static_urls = [
+        "https://appgoblin.info",
+        "https://appgoblin.info/about",
+        "https://appgoblin.info/companies",
+        "https://appgoblin.info/sdks",
+        "https://appgoblin.info/rankings/store/1/collection/1/category/1",
+        "https://appgoblin.info/rankings/store/2/collection/4/category/120",
+        "https://appgoblin.info/collections/new_monthly",
+        "https://appgoblin.info/collections/new_weekly",
+        "https://appgoblin.info/collections/new_yearly",
+    ]
+
+    static_df = pd.DataFrame({"url": static_urls})
+    static_df = set_df_sitemap_columns(static_df, priority=1.0)
+
+    filename = "sitemap_static.xml"
+    create_sitemap(static_df, filename)
+    return f"https://appgoblin.info/{filename}"
+
+
 def create_main_sitemap(sitemaps: list[str], filename: str) -> None:
     """Create main sitemap index file.
 
@@ -74,22 +102,6 @@ def create_main_sitemap(sitemaps: list[str], filename: str) -> None:
         filename: Output filename
 
     """
-    # List of static URLs to include
-    static_urls = [
-        "https://appgoblin.info",
-        "https://appgoblin.info/about",
-        "https://appgoblin.info/sdks",
-        "https://appgoblin.info/companies",
-        "https://appgoblin.info/rankings/store/1/collection/1/category/1",
-        "https://appgoblin.info/rankings/store/2/collection/4/category/120",
-        "https://appgoblin.info/collections/new_monthly",
-        "https://appgoblin.info/collections/new_weekly",
-        "https://appgoblin.info/collections/new_yearly",
-    ]
-
-    # Combine static URLs with sitemaps
-    sitemaps = static_urls + sitemaps
-
     # Start creating the sitemap index
     sitemap_index = Element(
         "sitemapindex", xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
@@ -222,7 +234,7 @@ company_domain_categories = set_df_sitemap_columns(company_domain_categories, 0.
 
 # about 600k
 apps["url"] = "https://appgoblin.info/apps/" + apps["store_id"]
-apps = set_df_sitemap_columns(apps, 0.5)
+apps = set_df_sitemap_columns(apps, 0.5, "monthly")
 
 
 create_sitemap(companies, "sitemap_companies.xml")
@@ -248,4 +260,8 @@ default_sitemaps = [
     "https://appgoblin.info/sitemap_company_type_categories.xml",
 ]
 
-create_main_sitemap(default_sitemaps + paginated_sitemaps, "sitemap.xml")
+# Modify your main script to:
+static_sitemap = create_static_sitemap()
+create_main_sitemap(
+    [static_sitemap, *default_sitemaps, *paginated_sitemaps], "sitemap.xml"
+)
