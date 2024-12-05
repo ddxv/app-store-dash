@@ -31,7 +31,6 @@ def set_df_sitemap_columns(
     """
     df["priority"] = priority
     df["changefreq"] = changefreq
-    df["lastmod"] = datetime.datetime.now(datetime.UTC).strftime("%Y-%m-%d")
     return df
 
 
