@@ -123,8 +123,15 @@
 				All projects are glued together with systemd and websockets where needed. Everything is hosted
 				on AWS in the small EC2 instances.
 			</p>
-
 			<br />
+			<p>
+				Finally, some of the data is also available for download. The data can be found on
+				<strong
+					><a href="https://github.com/ddxv/appgoblin-data">github.com/ddxv/appgoblin-data</a
+					></strong
+				>. Feelf free to reach out if there are other parts of data you'd like to see exported.
+			</p>
+
 			You can also reach me personally:
 			<a href="https://jamesoclaire.com">
 				<p>https://jamesoclaire.com</p>
