@@ -13,6 +13,7 @@ vite.config.ts.timestamp-*
 # Sitemaps, ignore all but except for the smaller ones
 /static/sitemap*.xml
 !/static/sitemap.xml
+!/static/sitemap_static.xml
 !/static/sitemap_company_types.xml
 !/static/sitemap_company_categories.xml
 !/static/sitemap_companies.xml
