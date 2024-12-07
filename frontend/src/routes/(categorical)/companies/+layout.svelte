@@ -19,7 +19,7 @@
 
 	let pageDataCrumbs = $derived($page.data.crumbs as Crumb<MyCrumbMetadata>[] | undefined);
 
-	let rel_link = $state('');
+	// let rel_link = $state('');
 
 	let type_title: string = $derived(getTypeTitle(companyTypes, $page.params.type));
 	let category_title = $derived(getCategoryName($page.params.category));
@@ -41,22 +41,22 @@
 		return '';
 	}
 
-	if ($page.params.type) {
-		// type_title = companyTypes.types[type].name;
-		if (!$page.params.category) {
-			// page is /companies/types/[type]
-			rel_link = `types/${$page.params.type}`;
-		} else if ($page.params.category) {
-			// page is /companies/types/[type]/[category]
-			rel_link = `types/${$page.params.type}/${$page.params.category}`;
-		}
-	} else if ($page.params.category) {
-		// page is /companies/categores/[category]
-		rel_link = `categories/${$page.params.category}`;
-	} else {
-		// page is /companies
-		rel_link = '';
-	}
+	// if ($page.params.type) {
+	// 	// type_title = companyTypes.types[type].name;
+	// 	if (!$page.params.category) {
+	// 		// page is /companies/types/[type]
+	// 		rel_link = `types/${$page.params.type}`;
+	// 	} else if ($page.params.category) {
+	// 		// page is /companies/types/[type]/[category]
+	// 		rel_link = `types/${$page.params.type}/${$page.params.category}`;
+	// 	}
+	// } else if ($page.params.category) {
+	// 	// page is /companies/categores/[category]
+	// 	rel_link = `categories/${$page.params.category}`;
+	// } else {
+	// 	// page is /companies
+	// 	rel_link = '';
+	// }
 
 	let title = $derived(`${type_title} ${category_title} Top Companies | AppGoblin`);
 	let description = $derived(
@@ -78,7 +78,7 @@
 	<meta name="twitter:description" content={description} />
 
 	<meta property="og:image" content="https://appgoblin.info/goblin_purple_hat_250.png" />
-	<meta property="og:url" content="https://appgoblin.info/" />
+	<meta property="og:url" content={$page.url.href} />
 	<meta property="og:type" content="website" />
 	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:image" content="https://appgoblin.info/goblin_purple_hat_250.png" />

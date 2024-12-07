@@ -47,10 +47,7 @@
 		content="Discover the top-performing apps across Google Play and iOS App Store. Access monthly ranking charts, category top 100 lists, and historical data to enhance your ASO strategy with AppGoblin."
 	/>
 	<meta property="og:image" content="https://appgoblin.info/goblin_purple_hat_250.png" />
-	<meta
-		property="og:url"
-		content="https://appgoblin.info/rankings/store/1/collection/1/category/1"
-	/>
+	<meta property="og:url" content={$page.url.href} />
 	<meta property="og:type" content="website" />
 
 	<!-- Twitter Card meta tags -->

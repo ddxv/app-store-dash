@@ -8,15 +8,15 @@
 	const { domain, category } = $page.params;
 
 	let category_title: string = $state(category);
-	let rel_link = $state(domain);
+	// let rel_link = $state(domain);
 
-	if (!category) {
-		category_title = ' | ';
-		rel_link = domain;
-	} else {
-		category_title = category + ' | ';
-		rel_link = `${domain}/${category}`;
-	}
+	// if (!category) {
+	// 	category_title = ' | ';
+	// 	rel_link = domain;
+	// } else {
+	// 	category_title = category + ' | ';
+	// 	rel_link = `${domain}/${category}`;
+	// }
 
 	let categoryName = $derived(getAppCategories($page.params.category));
 
@@ -61,7 +61,7 @@
 	/>
 
 	<meta property="og:image" content="https://appgoblin.info/goblin_purple_hat_250.png" />
-	<meta property="og:url" content="https://appgoblin.info/" />
+	<meta property="og:url" content={$page.url.href} />
 	<meta property="og:type" content="website" />
 	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:image" content="https://appgoblin.info/goblin_purple_hat_250.png" />
