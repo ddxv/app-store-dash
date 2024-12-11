@@ -201,9 +201,9 @@ class TopCompaniesOverviewShort:
 
 @dataclass
 class CategoryCompaniesStats:
-    """Contains a list of CompanyDetail objects.
+    """Contains a list of total count objects.
 
-    Representing the top networks identified.
+    Representing various total counts.
     """
 
     total_companies: int = 0
@@ -213,6 +213,9 @@ class CategoryCompaniesStats:
     adstxt_reseller_android_total_companies: int = 0
     sdk_ios_total_companies: int = 0
     sdk_android_total_companies: int = 0
+    total_apps: int = 0
+    sdk_ios_total_apps: int = 0
+    sdk_android_total_apps: int = 0
 
 
 @dataclass

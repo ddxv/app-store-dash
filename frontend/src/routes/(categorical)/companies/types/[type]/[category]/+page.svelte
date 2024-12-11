@@ -54,22 +54,20 @@
 			{/snippet}
 			{#snippet sdkAndroidTotalApps()}
 				Android Companies: {formatNumber(
-					tableData.categories.categories.companies.sdk_android_total_companies
+					tableData.categories.categories.all.sdk_android_total_companies
 				)}
 			{/snippet}
 			{#snippet sdkIosTotalApps()}
-				iOS Companies: {formatNumber(
-					tableData.categories.categories.companies.sdk_ios_total_companies
-				)}
+				iOS Companies: {formatNumber(tableData.categories.categories.all.sdk_ios_total_companies)}
 			{/snippet}
 			{#snippet adstxtAndroidTotalApps()}
 				Android Companies: {formatNumber(
-					tableData.categories.categories.companies.adstxt_direct_android_total_companies
+					tableData.categories.categories.all.adstxt_direct_android_total_companies
 				)}
 			{/snippet}
 			{#snippet adstxtIosTotalApps()}
 				iOS Companies: {formatNumber(
-					tableData.categories.categories.companies.adstxt_direct_ios_total_companies
+					tableData.categories.categories.all.adstxt_direct_ios_total_companies
 				)}
 			{/snippet}
 		</CompaniesTableGrid>

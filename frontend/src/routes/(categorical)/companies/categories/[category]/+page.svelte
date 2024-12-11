@@ -35,7 +35,7 @@
 {:then myData}
 	{#if typeof myData == 'string'}
 		<p class="text-red-500 text-center">Failed to load company details.</p>
-	{:else if myData.categories.categories.companies}
+	{:else if myData.categories.categories.all}
 		<CompaniesLayout>
 			{#snippet card1()}
 				<WhiteCard>
@@ -43,7 +43,7 @@
 						<h2 class="text-xl font-bold text-primary-900-100 mb-4">Total Companies</h2>
 						<p class="text-lg">
 							<span class="font-semibold text-primary-900-100"
-								>{formatNumber(myData.categories.categories.companies.total_companies)}</span
+								>{formatNumber(myData.categories.categories.all.total_companies)}</span
 							>
 						</p>
 					</div>
@@ -87,23 +87,19 @@
 
 			{#snippet sdkAndroidTotalApps()}
 				Android Companies: {formatNumber(
-					tableData.categories.categories.companies.sdk_android_total_companies
+					tableData.categories.categories.all.sdk_android_total_companies
 				)}
 			{/snippet}
 			{#snippet sdkIosTotalApps()}
-				iOS Companies: {formatNumber(
-					tableData.categories.categories.companies.sdk_ios_total_companies
-				)}
+				iOS Companies: {formatNumber(tableData.categories.categories.all.sdk_ios_total_companies)}
 			{/snippet}
 			{#snippet adstxtAndroidTotalApps()}
 				Android Companies:
-				{formatNumber(
-					tableData.categories.categories.companies.adstxt_direct_android_total_companies
-				)}
+				{formatNumber(tableData.categories.categories.all.adstxt_direct_android_total_companies)}
 			{/snippet}
 			{#snippet adstxtIosTotalApps()}
 				iOS Companies: {formatNumber(
-					tableData.categories.categories.companies.adstxt_direct_ios_total_companies
+					tableData.categories.categories.all.adstxt_direct_ios_total_companies
 				)}
 			{/snippet}
 		</CompaniesTableGrid>
