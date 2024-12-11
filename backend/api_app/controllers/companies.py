@@ -39,9 +39,9 @@ from dbcon.queries import (
     get_company_parent_categories,
     get_company_sdks,
     get_company_tree,
+    get_tag_source_category_totals,
+    get_tag_source_totals,
     get_top_companies,
-    get_types_category_totals,
-    get_types_totals,
     new_get_top_apps_for_company,
     search_companies,
 )
@@ -231,11 +231,11 @@ def get_overviews(
 
     if category:
         logger.info("Getting category totals")
-        category_totals_df = get_types_category_totals()
+        category_totals_df = get_tag_source_category_totals()
         logger.info("Getting category totals FINSIHED")
     else:
         logger.info("Getting category totals")
-        category_totals_df = get_types_totals()
+        category_totals_df = get_tag_source_totals()
         logger.info("Getting category totals FINSIHED")
 
     top_companies_short = make_top_companies(top_df)
@@ -908,7 +908,7 @@ class CompaniesController(Controller):
 
         results["app_category"] = "all"
 
-        category_totals_df = get_types_totals()
+        category_totals_df = get_tag_source_totals()
 
         overview_df, _category_overview = prep_companies_overview_df(
             results, category_totals_df

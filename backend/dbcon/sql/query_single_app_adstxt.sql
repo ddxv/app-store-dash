@@ -1,6 +1,5 @@
 SELECT
     company_name,
-    ad_domain,
     ad_domain_url,
     publisher_id,
     relationship,
