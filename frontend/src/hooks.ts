@@ -18,6 +18,12 @@ export const handle: Handle = async ({ event, resolve }) => {
 	if (route.startsWith('/adtech')) {
 		return new Response(undefined, { status: 301, headers: { Location: '/companies' } });
 	}
+	if (route.startsWith('/companies/types/monetization')) {
+		return new Response(undefined, {
+			status: 301,
+			headers: { Location: '/companies/types/ad-networks' }
+		});
+	}
 
 	let start = performance.now();
 

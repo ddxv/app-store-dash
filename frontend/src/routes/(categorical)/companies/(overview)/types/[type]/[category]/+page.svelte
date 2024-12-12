@@ -2,25 +2,9 @@
 	import CompaniesOverviewTable from '$lib/CompaniesOverviewTable.svelte';
 	import CompaniesTableGrid from '$lib/CompaniesTableGrid.svelte';
 
-	import { page } from '$app/stores';
-
 	import type { PageData } from './$types';
 
-	let companyType = $derived($page.params.type);
-
 	let { data }: { data: PageData } = $props();
-
-	let currentType = $derived(
-		data.companyTypes.types.find((type: { url_slug: string }) => type.url_slug === companyType)
-	);
-
-	let currentCategoryName = $derived(getCategoryName($page.params.category));
-
-	function getCategoryName(category: string) {
-		return (
-			data?.appCats?.categories?.find((cat: { id: string }) => cat.id == category)?.name || category
-		);
-	}
 
 	function formatNumber(num: number) {
 		return new Intl.NumberFormat('en-US').format(num);

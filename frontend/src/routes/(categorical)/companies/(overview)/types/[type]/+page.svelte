@@ -2,8 +2,6 @@
 	import CompaniesOverviewTable from '$lib/CompaniesOverviewTable.svelte';
 	import CompaniesTableGrid from '$lib/CompaniesTableGrid.svelte';
 
-	import { page } from '$app/stores';
-
 	import type { PageData } from './$types';
 
 	interface Props {
@@ -15,12 +13,6 @@
 	function formatNumber(num: number) {
 		return new Intl.NumberFormat('en-US').format(num);
 	}
-
-	let currentType = $derived(
-		data.companyTypes.types.find(
-			(type: { url_slug: string }) => type.url_slug === $page.params.type
-		)
-	);
 </script>
 
 {#await data.companiesOverview}
