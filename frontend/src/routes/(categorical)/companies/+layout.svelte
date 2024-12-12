@@ -7,19 +7,11 @@
 
 	import type { CompanyTypes } from '../../../types';
 
-	// interface Props {
-	// 	data: CompaniesLayoutResponse;
-	// 	children?: import('svelte').Snippet;
-	// }
-
 	let { data, children } = $props();
 
 	let companyTypes = $page.data.companyTypes;
-	// let appCats = $page.data.appCats;
 
 	let pageDataCrumbs = $derived($page.data.crumbs as Crumb<MyCrumbMetadata>[] | undefined);
-
-	// let rel_link = $state('');
 
 	let type_title: string = $derived(getTypeTitle(companyTypes, $page.params.type));
 	let category_title = $derived(getCategoryName($page.params.category));
