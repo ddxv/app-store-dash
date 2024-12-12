@@ -25,15 +25,12 @@ export const handle: Handle = async ({ event, resolve }) => {
 		});
 	}
 
-	let start = performance.now();
-
-	// For all other paths, proceed with the request as usual
+	// let start = performance.now();
 	const response = await resolve(event);
-	let end = performance.now();
+	// let end = performance.now();
+	// let duration = end - start;
+	// duration = duration.toFixed(2);
+	// console.log(`${route} took ${duration}ms`);
 
-	let duration = end - start;
-	duration = duration.toFixed(2);
-
-	console.log(`${route} took ${duration}ms`);
 	return response;
 };
