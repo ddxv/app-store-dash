@@ -1,14 +1,14 @@
 import type { PageServerLoad } from './$types.js';
 
-function checkStatus(resp: Response) {
+function checkStatus(resp: Response, name: string) {
 	if (resp.status === 200) {
 		return resp.json();
 	} else if (resp.status === 404) {
-		console.log('App Not found');
-		return 'App Not Found';
+		console.log(`App ${name} Not found`);
+		return `${name} Not Found`;
 	} else if (resp.status === 500) {
-		console.log('App API Server error');
-		return 'Backend Error';
+		console.log(`App ${name} API Server error`);
+		return `${name} API Server error`;
 	} else {
 		throw new Error('Unknown error');
 	}
@@ -19,24 +19,24 @@ export const load: PageServerLoad = async ({ params, parent }) => {
 
 	const myapp = async () => {
 		const resp = await fetch(`http://localhost:8000/api/apps/${id}`);
-		return checkStatus(resp);
+		return checkStatus(resp, 'App');
 	};
 
 	const myranks = async () => {
 		const resp = await fetch(`http://localhost:8000/api/apps/${id}/ranks`);
-		return checkStatus(resp);
+		return checkStatus(resp, 'App Ranks');
 	};
 	const myhistory = async () => {
 		const resp = await fetch(`http://localhost:8000/api/apps/${id}/history`);
-		return checkStatus(resp);
+		return checkStatus(resp, 'App History');
 	};
 	const myPackageInfo = async () => {
 		const resp = await fetch(`http://localhost:8000/api/apps/${id}/packageinfo`);
-		return checkStatus(resp);
+		return checkStatus(resp, 'App Package Info');
 	};
 	const myAdsTxt = async () => {
 		const resp = await fetch(`http://localhost:8000/api/apps/${id}/adstxt`);
-		return checkStatus(resp);
+		return checkStatus(resp, 'App AdsTxt');
 	};
 
 	// Load parent data first because it is cached

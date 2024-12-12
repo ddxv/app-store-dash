@@ -167,6 +167,7 @@ def get_adtech_categories() -> pd.DataFrame:
     return df
 
 
+@lru_cache(maxsize=1)
 def get_total_counts() -> pd.DataFrame:
     """Get total counts."""
     df = pd.read_sql(QUERY_TOTAL_COUNTS, con=DBCON.engine)
@@ -563,6 +564,7 @@ def get_top_companies(
     return df
 
 
+@lru_cache(maxsize=1)
 def get_sdks() -> pd.DataFrame:
     """Get top sdks."""
     df = pd.read_sql(QUERY_SDKS, DBCON.engine)
