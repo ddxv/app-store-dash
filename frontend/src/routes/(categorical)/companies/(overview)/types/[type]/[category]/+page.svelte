@@ -27,19 +27,6 @@
 	}
 </script>
 
-{#await currentType}
-	<div><span>Loading...</span></div>
-{:then type}
-	<div class="flex items-center mb-2">
-		<h1 class="h1 text-3xl font-bold text-primary-900-100">
-			{type ? type.name : 'Unknown'} -
-			{#await currentCategoryName then myCategoryName}
-				{myCategoryName}
-			{/await}
-		</h1>
-	</div>
-{/await}
-
 {#await data.companiesOverview}
 	<div><span>Loading...</span></div>
 {:then tableData}

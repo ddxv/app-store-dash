@@ -2,7 +2,7 @@
 	import { page } from '$app/stores';
 	import CompaniesBarChart from '$lib/CompaniesBarChart.svelte';
 	import CompaniesOverviewTable from '$lib/CompaniesOverviewTable.svelte';
-
+	import TotalsBox from '$lib/TotalsBox.svelte';
 	import WhiteCard from '$lib/WhiteCard.svelte';
 	import CompaniesLayout from '$lib/CompaniesLayout.svelte';
 	import CompaniesTableGrid from '$lib/CompaniesTableGrid.svelte';
@@ -24,10 +24,6 @@
 	}
 </script>
 
-<div class="flex items-center mb-2">
-	<h1 class="h1 text-3xl font-bold text-primary-900-100">Companies in {currentCategoryName}</h1>
-</div>
-
 {#await data.companiesOverview}
 	<div class="card preset-tonal p-6 rounded-lg shadow-md flex justify-center items-center h-40">
 		<span class="text-lg">Loading...</span>
@@ -39,14 +35,7 @@
 		<CompaniesLayout>
 			{#snippet card1()}
 				<WhiteCard>
-					<div class="p-6 rounded-lg shadow-md">
-						<h2 class="text-xl font-bold text-primary-900-100 mb-4">Total Companies</h2>
-						<p class="text-lg">
-							<span class="font-semibold text-primary-900-100"
-								>{formatNumber(myData.categories.categories.all.total_companies)}</span
-							>
-						</p>
-					</div>
+					<TotalsBox myTotals={myData.categories.categories.all} myType={currentCategoryName} />
 				</WhiteCard>
 			{/snippet}
 

@@ -234,7 +234,10 @@ def get_overviews(
         validate="m:1",
     )
 
-    category_overview = make_category_uniques(df=overview_df.copy())
+    category_overview = make_category_uniques(
+        df=overview_df.copy(),
+        tag_source_category_app_counts=tag_source_category_app_counts,
+    )
 
     overview_df = prep_companies_overview_df(overview_df)
 
@@ -352,7 +355,9 @@ def old_companies_overview(categories: list[int]) -> TopCompanies:
     return top
 
 
-def make_category_uniques(df: pd.DataFrame) -> CompaniesCategoryOverview:
+def make_category_uniques(
+    df: pd.DataFrame, tag_source_category_app_counts: pd.DataFrame
+) -> CompaniesCategoryOverview:
     """Make category sums for overview."""
     overview = CompaniesCategoryOverview()
 
@@ -367,17 +372,11 @@ def make_category_uniques(df: pd.DataFrame) -> CompaniesCategoryOverview:
     def get_unique_company_counts(mask: pd.Series) -> int:
         return df.loc[mask, "company_domain"].nunique()
 
-    def get_app_sums(mask: pd.Series) -> int:
-        return df.loc[mask, "app_count"].sum()
-
     # Calculate overall stats
     overall_stats = {
         "total_companies": df["company_domain"].nunique(),
-        "total_apps": int(df["app_count"].sum()),
         "sdk_ios_total_companies": get_unique_company_counts(is_apple & is_sdk),
-        "sdk_ios_total_apps": int(get_app_sums(is_apple & is_sdk)),
         "sdk_android_total_companies": get_unique_company_counts(is_google & is_sdk),
-        "sdk_android_total_apps": int(get_app_sums(is_google & is_sdk)),
         "adstxt_direct_ios_total_companies": get_unique_company_counts(
             is_apple & is_app_ads_direct
         ),
@@ -392,6 +391,32 @@ def make_category_uniques(df: pd.DataFrame) -> CompaniesCategoryOverview:
         ),
     }
     overview.update_stats("all", **overall_stats)
+
+    is_apple = tag_source_category_app_counts["store"].str.contains("Apple")
+    is_google = tag_source_category_app_counts["store"].str.contains("Google")
+    is_sdk = tag_source_category_app_counts["tag_source"] == "sdk"
+    is_app_ads_reseller = (
+        tag_source_category_app_counts["tag_source"] == "app_ads_reseller"
+    )
+    is_app_ads_direct = tag_source_category_app_counts["tag_source"] == "app_ads_direct"
+
+    sdk_app_counts = {
+        "sdk_total_apps": int(
+            tag_source_category_app_counts[is_sdk]["total_app_count"].sum()
+        ),
+        "sdk_android_total_apps": int(
+            tag_source_category_app_counts[is_sdk & is_google][
+                "total_app_count"
+            ].to_numpy()[0]
+        ),
+        "sdk_ios_total_apps": int(
+            tag_source_category_app_counts[is_sdk & is_apple][
+                "total_app_count"
+            ].to_numpy()[0]
+        ),
+    }
+
+    overview.update_stats("all", **sdk_app_counts)
 
     return overview
 
