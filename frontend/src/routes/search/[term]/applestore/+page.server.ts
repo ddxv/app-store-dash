@@ -11,8 +11,8 @@ export const load: PageServerLoad = async ({ params }) => {
 			console.log('Search success');
 			return { results: await response.json() };
 		} else if (response.status === 404) {
-			console.log('App Not found');
-			return { results: 'App Not Found' };
+			console.log('Search Term Not found');
+			return { results: 'Search Term Not Found' };
 		} else if (response.status === 500) {
 			console.log('API Server error');
 			return { results: 'Backend Error' };

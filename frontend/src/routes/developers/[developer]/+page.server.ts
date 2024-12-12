@@ -14,8 +14,8 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 					if (resp.status === 200) {
 						return resp.json();
 					} else if (resp.status === 404) {
-						console.log('App Not found');
-						return 'App Not Found';
+						console.log('Developer Not found');
+						return 'Developer Not Found';
 					} else if (resp.status === 500) {
 						console.log('API Server error');
 						return 'Backend Error';
