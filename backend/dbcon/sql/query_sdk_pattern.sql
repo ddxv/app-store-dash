@@ -11,7 +11,7 @@ FROM
     companies_apps_version_details AS cavd
 LEFT JOIN store_apps AS sa
     ON
-        cavd.store_app = sa.id
+        cavd.store_id = sa.store_id
 WHERE
     cavd.value_name LIKE :value_pattern || '%'
 ORDER BY COALESCE(sa.installs, sa.rating_count) DESC NULLS LAST
