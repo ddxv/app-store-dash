@@ -6,12 +6,12 @@ export const csr: boolean = true;
 
 export const load: PageServerLoad = async ({ params, parent }) => {
 	console.log(`start load overview for companies in ${params.category}`);
-	const res = fetch(`http://localhost:8000/api/companies/categories/${params.category}`);
-
 	const { appCats } = await parent();
+	const res = fetch(`http://localhost:8000/api/companies/categories/${params.category}`);
 
 	try {
 		return {
+			appCats: await appCats,
 			companiesOverview: res
 				.then((resp) => {
 					if (resp.status === 200) {
@@ -30,8 +30,7 @@ export const load: PageServerLoad = async ({ params, parent }) => {
 						console.log('Uncaught error', error);
 						return 'Uncaught Error';
 					}
-				),
-			appCats: await appCats
+				)
 		};
 	} catch (error) {
 		console.error('Failed to load data:', error);
