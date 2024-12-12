@@ -41,23 +41,6 @@
 		return '';
 	}
 
-	// if ($page.params.type) {
-	// 	// type_title = companyTypes.types[type].name;
-	// 	if (!$page.params.category) {
-	// 		// page is /companies/types/[type]
-	// 		rel_link = `types/${$page.params.type}`;
-	// 	} else if ($page.params.category) {
-	// 		// page is /companies/types/[type]/[category]
-	// 		rel_link = `types/${$page.params.type}/${$page.params.category}`;
-	// 	}
-	// } else if ($page.params.category) {
-	// 	// page is /companies/categores/[category]
-	// 	rel_link = `categories/${$page.params.category}`;
-	// } else {
-	// 	// page is /companies
-	// 	rel_link = '';
-	// }
-
 	let title = $derived(`${type_title} ${category_title} Top Companies | AppGoblin`);
 	let description = $derived(
 		`Explore ${type_title} ${category_title} biggest companies and user bases. Explore detailed analytics, market presence, and insights about ${type_title}'s role in the mobile ecosystem.`

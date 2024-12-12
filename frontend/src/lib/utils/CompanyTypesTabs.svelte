@@ -8,7 +8,14 @@
 		const unselectedClass =
 			'px-2 md:px-4 py-2 border-b-2 border-surface-800-200 hover:border-primary-300-700 hover:border-b-2 hover:underline';
 		if (tab === 'all') {
-			return $page.url.pathname === '/companies' ? selectedClass : unselectedClass;
+			if (
+				$page.url.pathname === '/companies' ||
+				$page.url.pathname.startsWith('/companies/categories')
+			) {
+				return selectedClass;
+			} else {
+				return unselectedClass;
+			}
 		} else if ($page.url.pathname.startsWith(`/companies/types/${tab}`)) {
 			return selectedClass;
 		} else return unselectedClass;
