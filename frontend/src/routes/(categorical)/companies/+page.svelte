@@ -5,6 +5,7 @@
 	import WhiteCard from '$lib/WhiteCard.svelte';
 	import CompaniesLayout from '$lib/CompaniesLayout.svelte';
 	import CompaniesTableGrid from '$lib/CompaniesTableGrid.svelte';
+	import TotalsBox from '$lib/TotalsBox.svelte';
 	interface Props {
 		data: CompaniesOverview;
 	}
@@ -60,13 +61,12 @@
 			{#snippet card1()}
 				<WhiteCard>
 					{#snippet title()}
-						Total Companies
+						Totals
 					{/snippet}
-					<p class="text-lg p-2 md:p-4">
-						<span class="font-semibold"
-							>{formatNumber(myData.categories.categories.all.total_companies)}</span
-						>
-					</p>
+					<TotalsBox
+						myTotals={myData.categories.categories.all}
+						myType={{ name: 'All Companies & Domains' }}
+					/>
 				</WhiteCard>
 			{/snippet}
 

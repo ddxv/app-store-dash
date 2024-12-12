@@ -39,9 +39,9 @@ from dbcon.queries import (
     get_company_parent_categories,
     get_company_sdks,
     get_company_tree,
+    get_tag_source_category_totals,
+    get_tag_source_totals,
     get_top_companies,
-    get_types_category_totals,
-    get_types_totals,
     new_get_top_apps_for_company,
     search_companies,
 )
@@ -161,17 +161,9 @@ def make_top_companies(top_df: pd.DataFrame) -> TopCompaniesShort:
 
 
 def prep_companies_overview_df(
-    overview_df: pd.DataFrame, category_totals_df: pd.DataFrame
+    overview_df: pd.DataFrame,
 ) -> tuple[pd.DataFrame, CompaniesCategoryOverview]:
     """Prep companies overview dataframe."""
-    overview_df = overview_df.merge(
-        category_totals_df,
-        on=["app_category", "store", "tag_source"],
-        validate="m:1",
-    )
-
-    category_overview = make_category_uniques(df=overview_df)
-
     overview_df = (
         overview_df.groupby(
             ["company_name", "company_domain", "store", "tag_source"],
@@ -210,7 +202,7 @@ def prep_companies_overview_df(
         by=store_tag_source_values,
         ascending=False,
     ).head(1000)
-    return overview_df, category_overview
+    return overview_df
 
 
 def get_overviews(
@@ -218,31 +210,36 @@ def get_overviews(
     type_slug: str | None = None,
 ) -> CompaniesOverview:
     """Get the overview data from the database."""
+    # Get Top 5 Companies for Plots
+    top_df = get_companies_top(type_slug=type_slug, app_category=category, limit=5)
+    top_companies_short = make_top_companies(top_df)
+
     if type_slug:
         logger.info("Getting adtech category type")
         overview_df = get_adtech_category_type(type_slug, app_category=category)
-        logger.info("Getting companies top")
-        top_df = get_companies_top(type_slug=type_slug, app_category=category, limit=5)
     else:
-        logger.info("Getting companies top")
-        top_df = get_companies_top(app_category=category, limit=5)
         logger.info("Getting companies parent overview")
         overview_df = get_companies_parent_overview(app_category=category)
 
     if category:
         logger.info("Getting category totals")
-        category_totals_df = get_types_category_totals()
-        logger.info("Getting category totals FINSIHED")
+        tag_source_category_app_counts = get_tag_source_category_totals()
     else:
         logger.info("Getting category totals")
-        category_totals_df = get_types_totals()
-        logger.info("Getting category totals FINSIHED")
+        tag_source_category_app_counts = get_tag_source_totals()
 
-    top_companies_short = make_top_companies(top_df)
-
-    overview_df, category_overview = prep_companies_overview_df(
-        overview_df, category_totals_df
+    overview_df = overview_df.merge(
+        tag_source_category_app_counts,
+        on=["app_category", "store", "tag_source"],
+        validate="m:1",
     )
+
+    category_overview = make_category_uniques(
+        df=overview_df.copy(),
+        tag_source_category_app_counts=tag_source_category_app_counts,
+    )
+
+    overview_df = prep_companies_overview_df(overview_df)
 
     results = CompaniesOverview(
         companies_overview=overview_df.to_dict(orient="records"),
@@ -358,7 +355,9 @@ def old_companies_overview(categories: list[int]) -> TopCompanies:
     return top
 
 
-def make_category_uniques(df: pd.DataFrame) -> CompaniesCategoryOverview:
+def make_category_uniques(
+    df: pd.DataFrame, tag_source_category_app_counts: pd.DataFrame
+) -> CompaniesCategoryOverview:
     """Make category sums for overview."""
     overview = CompaniesCategoryOverview()
 
@@ -391,34 +390,33 @@ def make_category_uniques(df: pd.DataFrame) -> CompaniesCategoryOverview:
             is_google & is_app_ads_reseller,
         ),
     }
-    overview.update_stats("companies", **overall_stats)
+    overview.update_stats("all", **overall_stats)
 
-    # Calculate stats for each category
-    categories = df["app_category"].unique()
-    for cat in categories:
-        cat_mask = df["app_category"] == cat
-        cat_stats = {
-            "total_companies": get_unique_company_counts(cat_mask),
-            "sdk_ios_total_companies": get_unique_company_counts(
-                cat_mask & is_apple & is_sdk
-            ),
-            "sdk_android_total_companies": get_unique_company_counts(
-                cat_mask & is_google & is_sdk
-            ),
-            "adstxt_direct_ios_total_companies": get_unique_company_counts(
-                cat_mask & is_apple & is_app_ads_direct,
-            ),
-            "adstxt_direct_android_total_companies": get_unique_company_counts(
-                cat_mask & is_google & is_app_ads_direct,
-            ),
-            "adstxt_reseller_ios_total_companies": get_unique_company_counts(
-                cat_mask & is_apple & is_app_ads_reseller,
-            ),
-            "adstxt_reseller_android_total_companies": get_unique_company_counts(
-                cat_mask & is_google & is_app_ads_reseller,
-            ),
-        }
-        overview.update_stats(cat, **cat_stats)
+    is_apple = tag_source_category_app_counts["store"].str.contains("Apple")
+    is_google = tag_source_category_app_counts["store"].str.contains("Google")
+    is_sdk = tag_source_category_app_counts["tag_source"] == "sdk"
+    is_app_ads_reseller = (
+        tag_source_category_app_counts["tag_source"] == "app_ads_reseller"
+    )
+    is_app_ads_direct = tag_source_category_app_counts["tag_source"] == "app_ads_direct"
+
+    sdk_app_counts = {
+        "sdk_total_apps": int(
+            tag_source_category_app_counts[is_sdk]["total_app_count"].sum()
+        ),
+        "sdk_android_total_apps": int(
+            tag_source_category_app_counts[is_sdk & is_google][
+                "total_app_count"
+            ].to_numpy()[0]
+        ),
+        "sdk_ios_total_apps": int(
+            tag_source_category_app_counts[is_sdk & is_apple][
+                "total_app_count"
+            ].to_numpy()[0]
+        ),
+    }
+
+    overview.update_stats("all", **sdk_app_counts)
 
     return overview
 
@@ -908,11 +906,15 @@ class CompaniesController(Controller):
 
         results["app_category"] = "all"
 
-        category_totals_df = get_types_totals()
+        category_totals_df = get_tag_source_totals()
 
-        overview_df, _category_overview = prep_companies_overview_df(
-            results, category_totals_df
+        overview_df = results.merge(
+            category_totals_df,
+            on=["app_category", "store", "tag_source"],
+            validate="m:1",
         )
+
+        overview_df = prep_companies_overview_df(overview_df)
 
         duration = round((time.perf_counter() * 1000 - start), 2)
         logger.info(f"{self.path}/{search_term} took {duration}ms")

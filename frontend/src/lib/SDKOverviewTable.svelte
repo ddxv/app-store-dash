@@ -76,9 +76,9 @@
 							<a href={`/apps/${row.store_id}`} class="inline-flex gap-1 md:gap-2">
 								<div>
 									{#if row.store.startsWith('Google')}
-										<IconGoogle size={16} />
+										<IconGoogle size="16" />
 									{:else}
-										<IconiOs size={16} />
+										<IconiOs size="16" />
 									{/if}
 								</div>
 								{row.app_name}

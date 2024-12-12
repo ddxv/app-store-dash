@@ -246,6 +246,9 @@ export interface CategoryCompaniesStats {
 	adstxt_reseller_ios_total_companies: number;
 	adstxt_reseller_android_total_companies: number;
 	total_companies: number;
+	sdk_total_apps: number;
+	sdk_ios_total_apps: number;
+	sdk_android_total_apps: number;
 }
 
 export interface CategoryAppStats {

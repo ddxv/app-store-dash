@@ -68,8 +68,8 @@ QUERY_COMPANY_TREE = load_sql_file("query_company_tree.sql")
 QUERY_COMPANY_SDKS = load_sql_file("query_company_sdks.sql")
 QUERY_PARENT_COMPANY_CATEGORIES = load_sql_file("query_company_parent_category.sql")
 QUERY_COMPANY_CATEGORIES = load_sql_file("query_company_category.sql")
-QUERY_CATEGORY_TYPES_TOTALS = load_sql_file("query_category_totals.sql")
-QUERY_TYPE_TOTALS = load_sql_file("query_type_totals.sql")
+QUERY_TAG_SOURCE_CATEGORY_TOTALS = load_sql_file("query_category_totals.sql")
+QUERY_TAG_SOURCE_TOTALS = load_sql_file("query_tag_source_totals.sql")
 QUERY_SDKS = load_sql_file("query_sdks.sql")
 QUERY_SDK_PATTERN = load_sql_file("query_sdk_pattern.sql")
 QUERY_SDK_PATTERN_COMPANIES = load_sql_file("query_sdk_pattern_companies.sql")
@@ -388,17 +388,19 @@ def get_company_parent_categories(company_domain: str) -> pd.DataFrame:
     return df
 
 
-def get_types_category_totals() -> pd.DataFrame:
+@lru_cache(maxsize=1)
+def get_tag_source_category_totals() -> pd.DataFrame:
     """Get category totals."""
-    df = pd.read_sql(QUERY_CATEGORY_TYPES_TOTALS, DBCON.engine)
+    df = pd.read_sql(QUERY_TAG_SOURCE_CATEGORY_TOTALS, DBCON.engine)
     df = df.rename(columns={"app_count": "total_app_count"})
     df["store"] = df["store"].replace({1: "Google Play", 2: "Apple App Store"})
     return df
 
 
-def get_types_totals() -> pd.DataFrame:
+@lru_cache(maxsize=1)
+def get_tag_source_totals() -> pd.DataFrame:
     """Get types totals."""
-    df = pd.read_sql(QUERY_TYPE_TOTALS, DBCON.engine)
+    df = pd.read_sql(QUERY_TAG_SOURCE_TOTALS, DBCON.engine)
     df = df.rename(columns={"app_count": "total_app_count"})
     df["store"] = df["store"].replace({1: "Google Play", 2: "Apple App Store"})
     return df
