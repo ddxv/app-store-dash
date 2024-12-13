@@ -32,17 +32,29 @@ export const load: PageServerLoad = async ({ params, parent }) => {
 		const resp = await fetch(`http://localhost:8000/api/apps/${id}/history`);
 		return checkStatus(resp, 'App History');
 	};
-	const myPackageInfo = async () => {
-		const resp = await fetch(`http://localhost:8000/api/apps/${id}/packageinfo`);
-		return checkStatus(resp, 'App Package Info');
-	};
-	const myAdsTxt = async () => {
-		const resp = await fetch(`http://localhost:8000/api/apps/${id}/adstxt`);
-		return checkStatus(resp, 'App AdsTxt');
-	};
+
+	// Get the app data first
+	const app = await myapp();
+
+	// Conditionally create myPackageInfo based on sdk_crawl_result
+	let myPackageInfo = async () => null;
+	if (app.sdk_crawl_result > 0) {
+		myPackageInfo = async () => {
+			const resp = await fetch(`http://localhost:8000/api/apps/${id}/packageinfo`);
+			return checkStatus(resp, 'App Package Info');
+		};
+	}
+
+	let myAdsTxt = async () => null;
+	if (app.adstxt_crawl_result === 1) {
+		myAdsTxt = async () => {
+			const resp = await fetch(`http://localhost:8000/api/apps/${id}/adstxt`);
+			return checkStatus(resp, 'App AdsTxt');
+		};
+	}
 
 	return {
-		myapp: myapp(),
+		myapp: app,
 		myranks: myranks(),
 		myhistory: myhistory(),
 		myPackageInfo: myPackageInfo(),

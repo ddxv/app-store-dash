@@ -122,8 +122,10 @@
 			{:then myapp}
 				<div class="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-4">
 					<!-- Developer Information Section -->
-					<div class="card preset-tonal p-4">
-						<h3 class="text-lg font-semibold mb-2">Developer Details</h3>
+					<WhiteCard>
+						{#snippet title()}
+							Developer Details
+						{/snippet}
 						<div class="space-y-2">
 							{#if myapp.developer_id}
 								<div class="flex items-center gap-2">
@@ -161,11 +163,13 @@
 								</div>
 							{/if}
 						</div>
-					</div>
+					</WhiteCard>
 
 					<!-- App Information Section -->
-					<div class="card preset-tonal p-4">
-						<h3 class="text-lg font-semibold mb-2">App Details</h3>
+					<WhiteCard>
+						{#snippet title()}
+							App Details
+						{/snippet}
 						<div class="space-y-2">
 							<div class="flex items-center gap-2">
 								<span class="font-medium">Store ID:</span>
@@ -180,11 +184,13 @@
 								<span>{myapp.store_last_updated}</span>
 							</div>
 						</div>
-					</div>
+					</WhiteCard>
 
 					<!-- Tracking Information Section -->
-					<div class="card preset-tonal p-4">
-						<h3 class="text-lg font-semibold mb-2">Tracking Status</h3>
+					<WhiteCard>
+						{#snippet title()}
+							Tracking Status
+						{/snippet}
 						<div class="space-y-2">
 							<div class="flex items-center gap-2">
 								<span class="font-medium">Last Crawled:</span>
@@ -196,17 +202,25 @@
 							</div>
 							<div class="flex items-center gap-2">
 								<span class="font-medium">Crawl Status:</span>
-								<span class={myapp.crawl_result == 1 ? 'text-success-600' : 'text-error-600'}>
+								<span
+									class={myapp.crawl_result == 1 ? 'text-success-900-100' : 'text-error-900-100'}
+								>
 									{myapp.crawl_result == 1 ? 'Success' : 'Failed'}
 								</span>
 							</div>
 							<div class="flex items-center gap-2">
-								<span class="font-medium">Adstxt Last Crawled:</span>
+								<span class="font-medium">Ads.txt Last Crawled:</span>
 								<span>{myapp.adstxt_last_crawled}</span>
 							</div>
 							<div class="flex items-center gap-2">
-								<span class="font-medium">Adstxt Crawl Status:</span>
-								<span>{myapp.adstxt_crawl_result}</span>
+								<span class="font-medium">Ads.txt Crawl Status:</span>
+								<span
+									class={myapp.adstxt_crawl_result == 1
+										? 'text-success-900-100'
+										: 'text-error-900-100'}
+								>
+									{myapp.adstxt_crawl_result == 1 ? 'Success' : 'Failed'}
+								</span>
 							</div>
 							<div class="flex items-center gap-2">
 								<span class="font-medium">SDK Last Crawled:</span>
@@ -214,10 +228,16 @@
 							</div>
 							<div class="flex items-center gap-2">
 								<span class="font-medium">SDK Crawl Status:</span>
-								<span>{myapp.sdk_crawl_result}</span>
+								<span
+									class={myapp.sdk_crawl_result == 1
+										? 'text-success-900-100'
+										: 'text-error-900-100'}
+								>
+									{myapp.sdk_crawl_result == 1 ? 'Success' : 'Failed'}
+								</span>
 							</div>
 						</div>
-					</div>
+					</WhiteCard>
 					<div class="ml-auto">
 						<a href={myapp.store_link} target="_blank" class="anchor inline-flex items-baseline">
 							{#if myapp.store_link.includes('google')}
@@ -236,8 +256,8 @@
 				Loading app rating details...
 			{:then myapp}
 				<div class="self-center text-center">
-					<h1 class="h1 p-2">{myapp.rating}★</h1>
-					Ratings: {myapp.rating_count}
+					<p class="text-4xl p-2 text-primary-800-200">{myapp.rating}★</p>
+					<p>Ratings: {myapp.rating_count}</p>
 				</div>
 			{/await}
 			<div class="flex-1">
@@ -247,9 +267,9 @@
 					{#each [...histdata.histogram].reverse() as count, index}
 						<div class="flex bar-spacer">
 							<span class="label">{histdata.histogram.length - index}★</span>
-							<div class="bar-container flex-1">
+							<div class="bar-container bg-surface-100-900">
 								<div
-									class="bar"
+									class="bar bg-primary-100-900"
 									style="width: {(count / sum(histdata.histogram)) * 100}%"
 									title="{index + 1} star: {count} ratings"
 								></div>
@@ -431,19 +451,21 @@
 		margin: 10px;
 	}
 
+	.label {
+		max-width: 20px;
+	}
+
 	.bar-container {
 		align-self: center;
 		align-items: center;
-		background-color: gainsboro;
 		border-radius: 5px; /* Rounded corners */
 		margin-left: 5px;
 		padding: 0px;
+		flex-grow: 1;
 	}
 
 	.bar {
 		height: 20px; /* Fixed height for each bar */
-		background-color: #3498db;
 		border-radius: 5px; /* Rounded corners */
-		/* flex-grow: 1; Allow the bar to grow and take available space */
 	}
 </style>

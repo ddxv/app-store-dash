@@ -1,5 +1,6 @@
 SELECT
     id,
+    name,
     store_id,
     store,
     category,
