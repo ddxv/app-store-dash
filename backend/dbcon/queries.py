@@ -441,7 +441,8 @@ def clean_app_df(df: pd.DataFrame) -> pd.DataFrame:
     for x in date_cols:
         if x not in df.columns:
             continue
-        df[x] = df[x].dt.strftime("%Y-%m-%d")
+        if df[x].notna().all():
+            df[x] = df[x].dt.strftime("%Y-%m-%d")
     return df
 
 
