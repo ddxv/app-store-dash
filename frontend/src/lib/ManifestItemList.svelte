@@ -15,7 +15,11 @@
 
 <div class="max-w-sm lg:max-w-full overflow-x-scroll">
 	<ul>
-		<div class="grid grid-cols-2 gap-2 md:gap-4">
+		<div
+			class="grid grid-cols-1 md:grid-cols-{Object.keys(items).length === 1
+				? '1'
+				: '2'} gap-2 md:gap-4"
+		>
 			{#each Object.entries(items) as [key, value]}
 				{#if Array.isArray(value)}
 					<!-- For leftovers -->
@@ -23,7 +27,9 @@
 						<p class={xmlPathFont}>{key}</p>
 						<ul>
 							{#each value as androidName}
-								<li><a href={`/sdks/${androidName}`} class={androidNameFont}>{androidName}</a></li>
+								<li>
+									<a href={`/sdks/${androidName}`} class={androidNameFont}>{androidName}</a>
+								</li>
 							{/each}
 						</ul>
 					</li>

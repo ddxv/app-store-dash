@@ -106,15 +106,6 @@
 				</div>
 
 				<div class="block md:hidden"></div>
-				{#if myapp.developer_id}
-					<div class="p-2 md:py-2">
-						<a href="/developers/{myapp.developer_id}">
-							<div class="btn preset-tonal hover:preset-tonal-primary">
-								<span>Developer: {myapp.developer_name}</span>
-							</div>
-						</a>
-					</div>
-				{/if}
 				<div class="p-2 md:py-2">
 					<a href="/categories/{myapp.category}">
 						<div class="btn preset-tonal hover:preset-tonal-primary">
@@ -129,41 +120,97 @@
 			{#await data.myapp}
 				Loading app details...
 			{:then myapp}
-				<div class="block">
-					<p>Store ID: {myapp.store_id}</p>
-					{#if myapp.developer_id}
-						Developer: <a
-							class="anchor inline-flex items-baseline"
-							href={myapp.store_developer_link}
-							target="_blank"
-						>
-							{myapp.developer_name}
-							<ExternalLinkSvg />
+				<div class="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-4">
+					<!-- Developer Information Section -->
+					<div class="card preset-tonal p-4">
+						<h3 class="text-lg font-semibold mb-2">Developer Details</h3>
+						<div class="space-y-2">
+							{#if myapp.developer_id}
+								<div class="flex items-center gap-2">
+									<span class="font-medium">Developer:</span>
+									<a
+										class="anchor inline-flex items-baseline"
+										href={myapp.store_developer_link}
+										target="_blank"
+									>
+										{myapp.developer_name}
+										<ExternalLinkSvg />
+									</a>
+								</div>
+							{:else}
+								<div class="flex items-center gap-2">
+									<span class="font-medium">Developer Name:</span>
+									<span>{myapp.developer_name}</span>
+								</div>
+								<div class="flex items-center gap-2">
+									<span class="font-medium">Developer ID:</span>
+									<span>{myapp.developer_id}</span>
+								</div>
+							{/if}
+							{#if myapp.developer_url}
+								<div class="flex items-center gap-2">
+									<span class="font-medium">Website:</span>
+									<a
+										href="https://{myapp.developer_url}"
+										target="_blank"
+										class="anchor inline-flex"
+									>
+										{myapp.developer_url}
+										<ExternalLinkSvg />
+									</a>
+								</div>
+							{/if}
+						</div>
+					</div>
+
+					<!-- App Information Section -->
+					<div class="card preset-tonal p-4">
+						<h3 class="text-lg font-semibold mb-2">App Details</h3>
+						<div class="space-y-2">
+							<div class="flex items-center gap-2">
+								<span class="font-medium">Store ID:</span>
+								<span>{myapp.store_id}</span>
+							</div>
+							<div class="flex items-center gap-2">
+								<span class="font-medium">First Released:</span>
+								<span>{myapp.release_date}</span>
+							</div>
+							<div class="flex items-center gap-2">
+								<span class="font-medium">Store Last Updated:</span>
+								<span>{myapp.store_last_updated}</span>
+							</div>
+						</div>
+					</div>
+
+					<!-- Tracking Information Section -->
+					<div class="card preset-tonal p-4">
+						<h3 class="text-lg font-semibold mb-2">Tracking Status</h3>
+						<div class="space-y-2">
+							<div class="flex items-center gap-2">
+								<span class="font-medium">Last Crawled:</span>
+								<span>{myapp.updated_at}</span>
+							</div>
+							<div class="flex items-center gap-2">
+								<span class="font-medium">First Crawled:</span>
+								<span>{myapp.created_at}</span>
+							</div>
+							<div class="flex items-center gap-2">
+								<span class="font-medium">Crawl Status:</span>
+								<span class={myapp.crawl_result == 1 ? 'text-success-600' : 'text-error-600'}>
+									{myapp.crawl_result == 1 ? 'Success' : 'Failed'}
+								</span>
+							</div>
+						</div>
+					</div>
+					<div class="ml-auto">
+						<a href={myapp.store_link} target="_blank" class="anchor inline-flex items-baseline">
+							{#if myapp.store_link.includes('google')}
+								<img class="w-40 md:w-60" src="/gp_en_badge_web_generic.png" alt={myapp.name} />
+							{:else}
+								<AvailableOniOs />
+							{/if}
 						</a>
-					{:else}
-						<p>Developer Name: {myapp.developer_name}</p>
-						<p>Developer ID: {myapp.developer_id}</p>
-					{/if}
-					{#if myapp.developer_url}
-						<p>
-							Developer URL:
-							<a href="https://{myapp.developer_url}" target="_blank" class="anchor inline-flex">
-								{myapp.developer_url}
-								<ExternalLinkSvg />
-							</a>
-						</p>
-					{/if}
-					<p>App Last Updated on Store: {myapp.store_last_updated}</p>
-					<p>App Last Crawled: {myapp.updated_at}</p>
-				</div>
-				<div class="ml-auto">
-					<a href={myapp.store_link} target="_blank" class="anchor inline-flex items-baseline">
-						{#if myapp.store_link.includes('google')}
-							<img class="w-40 md:w-60" src="/gp_en_badge_web_generic.png" alt={myapp.name} />
-						{:else}
-							<AvailableOniOs />
-						{/if}
-					</a>
+					</div>
 				</div>
 			{/await}
 		</div>
@@ -302,7 +349,7 @@
 				</section>
 			{/await}
 		</div>
-		<div class="card preset-tonal p-2 md:p-8 mt-2 md:mt-4">
+		<!-- <div class="card preset-tonal p-2 md:p-8 mt-2 md:mt-4">
 			<h4 class="h4 md:h3 p-2">Additional Information</h4>
 			<div class="px-4 md:px-8">
 				{#await data.myapp then myapp}
@@ -315,13 +362,9 @@
 					<p>Ad Supported: {myapp.ad_supported || 'N/A'}</p>
 					<p>In-App Purchases: {myapp.in_app_purchases || 'N/A'}</p>
 					<p>Editor's Choice: {myapp.editors_choice || 'N/A'}</p>
-					<p>Last Crawl Result: {myapp.crawl_result}</p>
-					<p>First Released: {myapp.release_date}</p>
-					<p>Store Last Updated: {myapp.store_last_updated}</p>
-					<p>First Crawled: {myapp.created_at}</p>
 				{/await}
 			</div>
-		</div>
+		</div> -->
 		<div class="card preset-tonal p-2 md:p-8 mt-2 md:mt-4">
 			<h4 class="h4 md:h3 p-2">Ad SDKs, Trackers & Permissions</h4>
 			{#await data.myPackageInfo}

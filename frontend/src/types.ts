@@ -393,7 +393,7 @@ export interface AppFullDetail {
 	ad_supported?: string;
 	in_app_purchases?: string;
 	editors_choice?: string;
-	crawl_result: string;
+	crawl_result: number;
 	release_date: string;
 	store_last_updated: string;
 	created_at: string;
