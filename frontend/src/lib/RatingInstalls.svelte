@@ -24,7 +24,7 @@
 		<!-- Installs DownloadIcon 123-->
 		{#if app.installs != '0' && app.installs != 'N/A'}
 			<div class="block p-0">
-				<div class="inline-flex">
+				<div class="inline-flex items-center gap-1">
 					<IconDownload />
 					{app.installs}
 				</div>
