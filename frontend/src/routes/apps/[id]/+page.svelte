@@ -200,6 +200,22 @@
 									{myapp.crawl_result == 1 ? 'Success' : 'Failed'}
 								</span>
 							</div>
+							<div class="flex items-center gap-2">
+								<span class="font-medium">Adstxt Last Crawled:</span>
+								<span>{myapp.adstxt_last_crawled}</span>
+							</div>
+							<div class="flex items-center gap-2">
+								<span class="font-medium">Adstxt Crawl Status:</span>
+								<span>{myapp.adstxt_crawl_result}</span>
+							</div>
+							<div class="flex items-center gap-2">
+								<span class="font-medium">SDK Last Crawled:</span>
+								<span>{myapp.sdk_last_crawled}</span>
+							</div>
+							<div class="flex items-center gap-2">
+								<span class="font-medium">SDK Crawl Status:</span>
+								<span>{myapp.sdk_crawl_result}</span>
+							</div>
 						</div>
 					</div>
 					<div class="ml-auto">

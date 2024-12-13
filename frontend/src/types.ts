@@ -404,6 +404,11 @@ export interface AppFullDetail {
 	tablet_image_url_1?: string;
 	tablet_image_url_2?: string;
 	tablet_image_url_3?: string;
+	adstxt_last_crawled: string;
+	adstxt_crawl_result: number;
+	version_code: string;
+	sdk_last_crawled: string;
+	sdk_crawl_result: number;
 }
 
 export type CategoryRanks = {
